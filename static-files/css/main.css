@@ -1,0 +1,98 @@
+/* Global Styles */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+.header {
+    width: 100%;
+    height: 150px;
+    background-color: lightgreen;
+    padding: 10px;
+    text-align: center
+
+}
+
+.inform_line {
+    width: 100%;
+    height: 5px;
+    background-color: lavender;
+    padding: 5px;
+    text-align: center;
+}
+
+.inform_line_city {
+    width: 28%;
+    height: 5px;
+    background-color: thistle;
+    padding: 5px;
+    text-align: left;
+}
+
+.inform_line_res {
+    width: 8%;
+    height: 5px;
+    background-color: lawngreen;
+    padding: 5px;
+    text-align: left;
+}
+
+.left_col {
+    width: 12%;
+    height: 15px;
+    background-color: lightblue;
+    padding: 15px;
+    vertical-align: top;
+    text-decoration: none;
+}
+
+.center_col {
+    width: 71%;
+    background-color: greenyellow;
+    padding: 10px;
+    vertical-align: top;
+    text-align: center;
+}
+
+.center_col_left {
+    width: 27%;
+    background-color: lightcoral;
+    padding: 10px;
+    vertical-align: top;
+    text-align: left;
+}
+
+.center_col_right {
+    width: 44%;
+    background-color: teal;
+    padding: 10px;
+    vertical-align: top;
+    text-align: left;
+}
+
+.right_col {
+    width: 17%;
+    background-color: lemonchiffon;
+    padding: 15px;
+    vertical-align: top;
+}
+
+.footer {
+    width: 100%;
+    padding: 10px 0 10px 10px;
+    background-color: olivedrab;
+    font-size: 15px
+}
+
+.scientic_col {
+    width: 20%;
+    background-color: lightcoral;
+    padding: 10px;
+    vertical-align: top;
+    text-align: left;
+}
+
+.scientic {
+
+    width: 130px;
+    align-self: center;
+}

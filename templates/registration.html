@@ -1,0 +1,108 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="content-type" content=text/html; charset="UTF-8">
+    <title>Регистрация пользователя</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" width="65%" align="center">
+    <tr>
+        <td colspan="3" class="header">Мой сайт</td>
+    </tr>
+
+    <tr>
+        <td colspan="3" class="inform_line">Ресурсы</td>
+    </tr>
+
+    <tr>
+        <td class="left_col">
+
+            <p><a href="http://127.0.0.1:8000/">Главная</a></p>
+
+            <p><a href="http://www.yandex.ru">Новости</a></p>
+
+            <p><a href="http://www.yandex.ru">О игре</a></p>
+
+            <p><a href="http://www.yandex.ru">Галерея</a></p>
+
+            <p><a href="http://www.yandex.ru">Справка</a></p>
+
+            <p><a href="http://www.yandex.ru">Форум</a></p>
+
+
+        </td>
+
+        <td class="center_col">
+            <h3>
+                Регистрация нового пользователя
+            </h3>
+
+            <p> Все поля обязательны для заполнения</p>
+
+            <form method="post" action="{% url 'registration' %}"
+                  enctype="multipart/form-data">
+                <div>
+                    <label for="name">Login</label>
+                    <input type="text" value=""
+                           name="name" id="name"
+                           placeholder="login"/>
+
+                </div>
+                <br>
+
+                <div>
+                    <label for="pass">password</label>
+                    <input type="password" value=""
+                           name="pass" id="pass"
+                           placeholder="password"/>
+                </div>
+                <br>
+
+
+                <div>
+                    <label for="mail">E-mail</label>
+                    <input type="email" value=""
+                           name="mail" id="mail"
+                           placeholder="E-mail"/>
+                </div>
+
+                <br>
+
+                <div>
+                    <label for="rac">Race</label>
+                    <select name="rac" id="rac">
+                        <option value="">Select race</option>
+                        <option value="1">Race1</option>
+                        <option value="2">Race2</option>
+                        <option value="3">Race3</option>
+                        <option value="4">Race4</option>
+                        <option value="5">Race5</option>
+                    </select>
+                </div>
+                <br>
+                <br>
+
+                <div>
+                    <input type="submit" value="OK" name="add_button"/>
+                    <button type="submit" name="cancel_button" action="cancel">Cancel</button>
+                </div>
+                “{% csrf_token %}”
+            </form>
+
+
+        </td>
+
+        <td class="right_col">Шо нибуть, когда нибуть напишем</td>
+    </tr>
+    <tr>
+        <td colspan="3" class="footer" align="center">&copy; 2015</td>
+    </tr>
+</table>
+</body>
+</html>
+
+

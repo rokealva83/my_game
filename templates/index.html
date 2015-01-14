@@ -1,0 +1,101 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="content-type" content=text/html; charset="UTF-8">
+    <title>Главная страница приложения</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" width="65%" align="center">
+    <tr>
+        <td colspan="3" class="header">Мой сайт</td>
+    </tr>
+
+    <tr>
+        <td colspan="3" class="inform_line">Ресурсы</td>
+    </tr>
+
+    <tr>
+        <td class="left_col">
+
+            <p><a href="http://127.0.0.1:8000/">Главная</a></p>
+
+            <p><a href="http://www.google.com.ua">Новости</a></p>
+
+            <p><a href="http://www.google.com.ua">О игре</a></p>
+
+            <p><a href="http://www.google.com.ua">Галерея</a></p>
+
+            <p><a href="http://www.google.com.ua">Справка</a></p>
+
+            <p><a href="http://www.google.com.ua">Форум</a></p>
+
+
+        </td>
+
+        <td class="center_col">
+            <h3>
+                Новости
+            </h3>
+
+            <p>Набір символів у квадратних дужках [ ] іменується символьним класом і дозволяє вказати інтерпретаторові
+                регулярних виразів, що на даному місці в рядку може стояти один із перерахованих символів. Зокрема,
+                [абв] задає можливість появи в тексті одного із трьох зазначених символів, а [1234567890] задає
+                відповідність одній із цифр. Можливе зазначення діапазонів символів: наприклад, [А-Яа-я] відповідає всім
+                літерам російського алфавіту, за винятком літер «Ё» і «ё».[1]
+
+                Якщо потрібно вказати символи, які не входять у зазначений набір, то використовують символ ^ усередині
+                квадратних дужок, наприклад, [^0-9] означає будь-який символ, крім цифр.
+
+                Додавання в набір спеціальних символів шляхом екранування символом «\» — найпростіший спосіб. Однак
+                сучасні регулярні вирази успадковують також і традиційний підхід — див. Традиційні регулярні вирази.
+
+                Деякі символьні класи можна замінити спеціальними метасимволами:</p>
+
+
+        </td>
+
+        <td class="right_col">
+            <form method="post" enctype="multipart/form-data" action="civilization.html">
+                <h3> Вход </h3>
+
+                <div>
+                    <label for="name">Login</label>
+                    <input type="text" value=""
+                           name="name" id="name"
+                           placeholder="login"/>
+
+                </div>
+                <br>
+
+                <div>
+                    <label for="pass">password</label>
+                    <input type="password" value=""
+                           name="pass" id="pass"
+                           placeholder="password"/>
+                    <br>
+                    <br>
+
+                    <div>
+                        <input type="submit" value="OK" name="add_button"/>
+                    </div>
+                    <p>Забыли пароль?</p>
+            </form>
+            <form action="registration.html">
+                <div>
+                    <button type="submit" name="button">Регистрация</button>
+                </div>
+                “{% csrf_token %}”
+            </form>
+        </td>
+
+    </tr>
+    <tr>
+        <td colspan="3" class="footer" align="center">&copy; 2015</td>
+    </tr>
+</table>
+</body>
+</html>
