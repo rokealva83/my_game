@@ -455,7 +455,7 @@ class Shield_pattern(models.Model):
 
     user = models.IntegerField()
     shield = models.IntegerField()
-    name = models.CharField(max_length=50, default='new shield')
+    name = models.CharField(max_length=50, default='New shield')
     health = models.FloatField()
     value_energy_resistance = models.FloatField()
     value_phisical_resistance = models.FloatField()
