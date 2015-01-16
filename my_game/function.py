@@ -87,40 +87,7 @@ def hull_upgrade(request):
     hull_scient = b_hull[number_hull_scient]
     u_hull = Hull_pattern.objects.filter(user=user, hull=hull_scient.id).last()
     if u_hull is None:
-        all_base = int(hull_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-
-        if all_base < all_user:
-            koef_all = (all_user - all_base) / 100.0
-        else:
-            koef_all = -(all_base - all_user) / 100.0
-
-        math_base = int(hull_scient.min_math)
-        math_user = int(scin_user.mathematics_up)
-        if math_base < math_user:
-            koef_math = (math_user - math_base) / 100.0
-        else:
-            koef_math = (math_user - math_base) / 100.0
-
-        nano_base = int(hull_scient.min_nanotech)
-        nano_user = int(scin_user.nanotech_up)
-        if nano_base < nano_user:
-            koef_nanotech = (nano_user - nano_base) / 100.0
-        else:
-            koef_nanotech = -(nano_base - nano_user) / 100.0
-
-        astro_base = int(hull_scient.min_astronomy)
-        astro_user = int(scin_user.astronomy_up)
-        if astro_base < astro_user:
-            koef_astronomy = (astro_user - astro_base) / 100.0
-        else:
-            koef_astronomy = -(astro_base - astro_user) / 100.0
-
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky = luckyness.user_luckyness
-        koef = (1 + (koef_all + koef_math + koef_nanotech + koef_astronomy)) * \
-               (1 + lucky / 100.0)
+        koef = element_open(user, hull_scient)
 
         if koef < 0:
             koef = 0.00001
@@ -144,6 +111,8 @@ def hull_upgrade(request):
                 power_consuption=hull_scient.power_consuption,
             )
             hull_pattern.save()
+            new_factory_pattern(user, 1, hull_scient.id)
+
     else:
         u_hull = Hull_pattern.objects.filter(user=user, hull=hull_scient.id).last()
         hull_atribute = ['health', 'generators', 'engines', 'weapons', 'armor', 'shield', \
@@ -153,7 +122,6 @@ def hull_upgrade(request):
             number = random.randint(0, 10)
             atribute = hull_atribute[number]
             element = getattr(u_hull, atribute)
-            last_element = getattr(u_hull, atribute)
             element_basic = getattr(hull_scient, atribute)
             if u_hull.hull == 1:
                 if number == 5 and element == 0:
@@ -224,39 +192,7 @@ def armor_upgrade(request):
     armor_scient = b_armor[number_armor_scient]
     u_armor = Armor_pattern.objects.filter(user=user, armor=armor_scient.id).last()
     if u_armor is None:
-        all_base = int(armor_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-        if all_base < all_user:
-            koef_all = (all_user - all_base) / 100.0
-        else:
-            koef_all = -(all_base - all_user) / 100.0
-
-        phis_base = int(armor_scient.min_phis)
-        phis_user = int(scin_user.phisics_up)
-        if phis_base < phis_user:
-            koef_phis = (phis_user - phis_base) / 100.0
-        else:
-            koef_phis = (phis_user - phis_base) / 100.0
-
-        biol_base = int(armor_scient.min_biol)
-        biol_user = int(scin_user.biologic_chimics_up)
-        if biol_base < biol_user:
-            koef_biol = (biol_user - biol_base) / 100.0
-        else:
-            koef_biol = -(biol_base - biol_user) / 100.0
-
-        logist_base = int(armor_scient.min_logist)
-        logist_user = int(scin_user.logistic_up)
-        if logist_base < logist_user:
-            koef_logist = (logist_user - logist_base) / 100.0
-        else:
-            koef_logist = -(logist_base - logist_user) / 100.0
-
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky = luckyness.user_luckyness
-        koef = (1 + (koef_all + koef_phis + koef_biol + koef_logist)) * \
-               (1 + lucky / 100.0)
+        koef = element_open(user, armor_scient)
 
         if koef < 0:
             koef = 0.00001
@@ -275,6 +211,7 @@ def armor_upgrade(request):
                 mass=armor_scient.mass,
             )
             armor_pattern.save()
+            new_factory_pattern(user, 2, armor_scient.id)
     else:
         u_armor = Armor_pattern.objects.filter(user=user, armor=armor_scient.id).last()
         armor_atribute = ['health', 'value_energy_resistance', 'value_phisical_resistance', 'regeneration', 'power',
@@ -286,7 +223,6 @@ def armor_upgrade(request):
             number = random.randint(0, 5)
             atribute = armor_atribute[number]
             element = getattr(u_armor, atribute)
-            last_element = getattr(u_armor, atribute)
             element_basic = getattr(armor_scient, atribute)
 
             if element != 0:
@@ -318,38 +254,7 @@ def shield_upgrade(request):
     shield_scient = b_shield[number_shield_scient]
     u_shield = Shield_pattern.objects.filter(user=user, shield=shield_scient.id).last()
     if u_shield is None:
-        all_base = int(shield_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-        if all_base < all_user:
-            koef_all = (all_user - all_base) / 100.0
-        else:
-            koef_all = -(all_base - all_user) / 100.0
-
-        phis_base = int(shield_scient.min_phis)
-        phis_user = int(scin_user.phisics_up)
-        if phis_base < phis_user:
-            koef_phis = (phis_user - phis_base) / 100.0
-        else:
-            koef_phis = (phis_user - phis_base) / 100.0
-
-        energy_base = int(shield_scient.min_energy)
-        energy_user = int(scin_user.energetics_up)
-        if energy_base < energy_user:
-            koef_energy = (energy_user - energy_base) / 100.0
-        else:
-            koef_energy = (energy_user - energy_base) / 100.0
-
-        nanotech_base = int(shield_scient.min_nanotech)
-        nanotech_user = int(scin_user.nanotech_up)
-        if nanotech_base < nanotech_user:
-            koef_nanotech = (nanotech_user - nanotech_base) / 100.0
-        else:
-            koef_nanotech = (nanotech_user - nanotech_base) / 100.0
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky = luckyness.user_luckyness
-        koef = (1 + (koef_all + koef_phis + koef_energy + koef_nanotech)) * \
-               (1 + lucky / 100)
+        koef = element_open(user, shield_scient)
 
         if koef < 0:
             koef = 0.00001
@@ -370,6 +275,7 @@ def shield_upgrade(request):
                 power_consuption=shield_scient.power_consuption,
             )
             shield_pattern.save()
+            new_factory_pattern(user, 3, shield_scient.id)
     else:
         shield_atribute = ['health', 'value_energy_resistance', 'value_phisical_resistance', 'regeneration', \
                            'number_of_emitter', 'mass', 'size', 'power_consuption']
@@ -384,7 +290,7 @@ def shield_upgrade(request):
             if element != 0:
                 if number == 5 or number == 7:
                     if element / element_basic > 0.7:
-                        percent_update = 1.0 - random.randint(5, 10)/100.0
+                        percent_update = 1.0 - random.randint(5, 10) / 100.0
                         element = element * percent_update
                         u_shield.pk = None
                         u_shield.save()
@@ -413,52 +319,12 @@ def shield_upgrade(request):
 def engine_upgrade(request):
     user = request
     b_engine = Basic_engine.objects.all()
-    number_engine = len(b_engine)-1
+    number_engine = len(b_engine) - 1
     number_engine_scient = random.randint(0, number_engine)
     engine_scient = b_engine[number_engine_scient]
     u_engine = Engine_pattern.objects.filter(user=user, engine=engine_scient.id).last()
     if u_engine is None:
-
-        all_base=int(engine_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-        if all_base < all_user:
-            koef_all = (all_user - all_base)/100.0
-        else:
-            koef_all = -(all_base - all_user)/100.0
-
-        phis_base = int(engine_scient.min_phis)
-        phis_user = int(scin_user.phisics_up)
-        if phis_base < phis_user:
-            koef_phis = (phis_user - phis_base) / 100.0
-        else:
-            koef_phis = (phis_user - phis_base) / 100.0
-
-        biol_base = int(engine_scient.min_biol)
-        biol_user = int(scin_user.biologic_chimics_up)
-        if biol_base < biol_user:
-            koef_biol = (biol_user - biol_base) / 100.0
-        else:
-            koef_biol = -(biol_base - biol_user) / 100.0
-
-        energy_base = int(engine_scient.min_energy)
-        energy_user = int(scin_user.energetics_up)
-        if energy_base < energy_user:
-            koef_energy = (energy_user - energy_base) / 100.0
-        else:
-            koef_energy = (energy_user - energy_base) / 100.0
-
-        nanotech_base = int(engine_scient.min_nanotech)
-        nanotech_user = int(scin_user.nanotech_up)
-        if nanotech_base < nanotech_user:
-            koef_nanotech = (nanotech_user - nanotech_base) / 100.0
-        else:
-            koef_nanotech = (nanotech_user - nanotech_base) / 100.0
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky = luckyness.user_luckyness
-
-        koef = (1 + (koef_all + koef_phis + koef_biol + koef_energy + koef_nanotech)) * \
-               (1 + lucky / 100.0)
+        koef = element_open(user, engine_scient)
 
         if koef < 0:
             koef = 0.00001
@@ -479,6 +345,7 @@ def engine_upgrade(request):
                 power_consuption=engine_scient.power_consuption,
             )
             engine_pattern.save()
+            new_factory_pattern(user, 4, engine_scient.id)
     else:
         u_engine = Engine_pattern.objects.filter(user=user, engine=engine_scient.id).last()
         engine_atribute = ['health', 'system_power', 'intersystem_power', 'giper_power', \
@@ -491,7 +358,7 @@ def engine_upgrade(request):
             element = getattr(u_engine, atribute)
             last_element = getattr(u_engine, atribute)
             element_basic = getattr(engine_scient, atribute)
-            if element !=0:
+            if element != 0:
                 if number == 5 or number == 6 or number == 7:
                     if element / element_basic > 0.7:
                         percent_update = 1 - random.randint(5, 10) / 100.0
@@ -514,45 +381,12 @@ def engine_upgrade(request):
 def generator_upgrade(request):
     user = request
     b_generator = Basic_generator.objects.all()
-    number_generator = len(b_generator)-1
+    number_generator = len(b_generator) - 1
     number_generator_scient = random.randint(0, number_generator)
     generator_scient = b_generator[number_generator_scient]
     u_generator = Generator_pattern.objects.filter(user=user, generator=generator_scient.id).last()
     if u_generator is None:
-
-        all_base = int(generator_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-        if all_base < all_user:
-            koef_all = (all_user - all_base) / 100.0
-        else:
-            koef_all = -(all_base - all_user) / 100.0
-
-        phis_base = int(generator_scient.min_phis)
-        phis_user = int(scin_user.phisics_up)
-        if phis_base < phis_user:
-            koef_phis = (phis_user - phis_base) / 100.0
-        else:
-            koef_phis = (phis_user - phis_base) / 100.0
-
-        energy_base = int(generator_scient.min_energy)
-        energy_user = int(scin_user.energetics_up)
-        if energy_base < energy_user:
-            koef_energy = (energy_user - energy_base) / 100.0
-        else:
-            koef_energy = (energy_user - energy_base) / 100.0
-
-        nano_base = int(generator_scient.min_nanotech)
-        nano_user = int(scin_user.nanotech_up)
-        if nano_base < nano_user:
-            koef_nanotech = (nano_user - nano_base) / 100.0
-        else:
-            koef_nanotech = -(nano_base - nano_user) / 100.0
-
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky =  luckyness.user_luckyness
-        koef = (1 + (koef_all + koef_phis + koef_energy + koef_nanotech)) * \
-               (1 + lucky / 100.0)
+        koef = element_open(user, generator_scient)
 
         if koef < 0:
             koef = 0.00001
@@ -570,6 +404,7 @@ def generator_upgrade(request):
                 size=generator_scient.size,
             )
             generator_pattern.save()
+            new_factory_pattern(user, 5, generator_scient.id)
     else:
         generator_atribute = ['health', 'produced_energy', 'fuel_necessary', 'mass', 'size']
         trying = random.random()
@@ -580,7 +415,7 @@ def generator_upgrade(request):
             element = getattr(u_generator, atribute)
             last_element = getattr(u_generator, atribute)
             element_basic = getattr(generator_scient, atribute)
-            if element !=0:
+            if element != 0:
                 if number == 2 or number == 3 or number == 4:
                     if element / element_basic > 0.7:
                         percent_update = 1 - random.randint(5, 10) / 100.0
@@ -603,54 +438,12 @@ def generator_upgrade(request):
 def weapon_upgrade(request):
     user = request
     b_weapon = Basic_weapon.objects.all()
-    number_weapon = len(b_weapon)-1
+    number_weapon = len(b_weapon) - 1
     number_weapon_scient = random.randint(0, number_weapon)
     weapon_scient = b_weapon[number_weapon_scient]
     u_weapon = Weapon_pattern.objects.filter(user=user, weapon=weapon_scient.id).last()
     if u_weapon is None:
-
-        all_base = int(weapon_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-
-        if all_base < all_user:
-            koef_all = (all_user - all_base) / 100.0
-        else:
-            koef_all = -(all_base - all_user) / 100.0
-
-        math_base = int(weapon_scient.min_math)
-        math_user = int(scin_user.mathematics_up)
-        if math_base < math_user:
-            koef_math = (math_user - math_base) / 100.0
-        else:
-            koef_math = (math_user - math_base) / 100.0
-
-        radio_base = int(weapon_scient.min_radio)
-        radio_user = int(scin_user.radionics_up)
-        if radio_base < radio_user:
-            koef_radio = (radio_user - radio_base) / 100.0
-        else:
-            koef_radio = (radio_user - radio_base) / 100.0
-
-        nano_base = int(weapon_scient.min_nanotech)
-        nano_user = int(scin_user.nanotech_up)
-        if nano_base < nano_user:
-            koef_nanotech = (nano_user - nano_base) / 100.0
-        else:
-            koef_nanotech = -(nano_base - nano_user) / 100.0
-
-        logist_base = int(weapon_scient.min_logist)
-        logist_user = int(scin_user.logistic_up)
-        if logist_base < logist_user:
-            koef_logist = (logist_user - logist_base) / 100.0
-        else:
-            koef_logist = -(logist_base - logist_user) / 100.0
-
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky =  luckyness.user_luckyness
-        koef = (1 + (koef_all + koef_math + koef_radio + koef_nanotech + koef_logist)) * \
-               (1 + lucky / 100.0)
-
+        koef = element_open(user, weapon_scient)
         if koef < 0:
             koef = 0.00001
 
@@ -671,6 +464,7 @@ def weapon_upgrade(request):
                 power_consuption=weapon_scient.power_consuption,
             )
             weapon_pattern.save()
+            new_factory_pattern(user, 6, weapon_scient.id)
 
     else:
         u_weapon = Weapon_pattern.objects.filter(user=user, weapon=weapon_scient.id).last()
@@ -678,13 +472,13 @@ def weapon_upgrade(request):
                            'range', 'accuracy', 'mass', 'size', 'power_consuption']
         trying = random.random()
         percent_update = 1 + random.randint(5, 10) / 100.0
-        if 0.15 <= trying <= 0.3 or 0.7  <= trying <= 0.85:
+        if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
             number = random.randint(0, 8)
             atribute = weapon_atribute[number]
             element = getattr(u_weapon, atribute)
             last_element = getattr(u_weapon, atribute)
             element_basic = getattr(weapon_scient, atribute)
-            if element !=0:
+            if element != 0:
                 if number == 6 or number == 7 or number == 8:
                     if element / element_basic > 0.7:
                         percent_update = 1 - random.randint(5, 10) / 100.0
@@ -724,40 +518,12 @@ def weapon_upgrade(request):
 def shell_upgrade(request):
     user = request
     b_shell = Basic_shell.objects.all()
-    number_shell = len(b_shell)-1
+    number_shell = len(b_shell) - 1
     number_shell_scient = random.randint(0, number_shell)
     shell_scient = b_shell[number_shell_scient]
     u_shell = Shell_pattern.objects.filter(user=user, shell=shell_scient.id).last()
     if u_shell is None:
-
-        all_base = int(shell_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-
-        if all_base < all_user:
-            koef_all = (all_user - all_base) / 100.0
-        else:
-            koef_all = -(all_base - all_user) / 100.0
-
-
-        radio_base = int(shell_scient.min_radio)
-        radio_user = int(scin_user.radionics_up)
-        if radio_base < radio_user:
-            koef_radio = (radio_user - radio_base) / 100.0
-        else:
-            koef_radio = (radio_user - radio_base) / 100.0
-
-        astro_base = int(shell_scient.min_astronomy)
-        astro_user = int(scin_user.astronomy_up)
-        if astro_base < astro_user:
-            koef_astronomy = (astro_user - astro_base) / 100.0
-        else:
-            koef_astronomy = -(astro_base - astro_user) / 100.0
-
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky =  luckyness.user_luckyness
-        koef = (1 + (koef_all + koef_radio + koef_astronomy)) * \
-               (1 + lucky / 100.0)
+        koef = element_open(user, shell_scient)
 
         if koef < 0:
             koef = 0.00001
@@ -774,17 +540,18 @@ def shell_upgrade(request):
                 size=shell_scient.size,
             )
             shell_pattern.save()
+            new_factory_pattern(user, 7, shell_scient.id)
     else:
         shell_atribute = ['phisical_damage', 'speed', 'mass', 'size']
         trying = random.random()
         percent_update = 1 + random.randint(5, 10) / 100.0
-        if 0.15  <= trying <= 0.3 or 0.7 <= trying <= 0.85:
+        if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
             number = random.randint(0, 3)
             atribute = shell_atribute[number]
             element = getattr(u_shell, atribute)
             last_element = getattr(u_shell, atribute)
             element_basic = getattr(shell_scient, atribute)
-            if element !=0:
+            if element != 0:
                 if number == 2 or number == 3:
                     if element / element_basic > 0.7:
                         percent_update = 1 - random.randint(5, 10) / 100.0
@@ -807,58 +574,12 @@ def shell_upgrade(request):
 def module_upgrade(request):
     user = request
     b_module = Basic_module.objects.all()
-    number_module = len(b_module)-1
+    number_module = len(b_module) - 1
     number_module_scient = random.randint(0, number_module)
     module_scient = b_module[number_module_scient]
     u_module = Module_pattern.objects.filter(user=user, module=module_scient.id).last()
     if u_module is None:
-        all_base = int(module_scient.min_all_scientic)
-        scin_user = User_scientic.objects.filter(user=user).first()
-        all_user = int(scin_user.all_scientic)
-        if all_base < all_user:
-            koef_all = (all_user - all_base) / 100.0
-        else:
-            koef_all = -(all_base - all_user) / 100.0
-
-        math_base = int(module_scient.min_math)
-        math_user = int(scin_user.mathematics_up)
-        if math_base < math_user:
-            koef_math = (math_user - math_base) / 100.0
-        else:
-            koef_math = (math_user - math_base) / 100.0
-
-        biol_base = int(module_scient.min_biol)
-        biol_user = int(scin_user.biologic_chimics_up)
-        if biol_base < biol_user:
-            koef_biol = (biol_user - biol_base) / 100.0
-        else:
-            koef_biol = -(biol_base - biol_user) / 100.0
-
-        radio_base = int(module_scient.min_radio)
-        radio_user = int(scin_user.radionics_up)
-        if radio_base < radio_user:
-            koef_radio = (radio_user - radio_base) / 100.0
-        else:
-            koef_radio = (radio_user - radio_base) / 100.0
-
-        astro_base = int(module_scient.min_astronomy)
-        astro_user = int(scin_user.astronomy_up)
-        if astro_base < astro_user:
-            koef_astronomy = (astro_user - astro_base) / 100.0
-        else:
-            koef_astronomy = -(astro_base - astro_user) / 100.0
-
-        logist_base = int(module_scient.min_logist)
-        logist_user = int(scin_user.logistic_up)
-        if logist_base < logist_user:
-            koef_logist = (logist_user - logist_base) / 100.0
-        else:
-            koef_logist = -(logist_base - logist_user) / 100.0
-
-        luckyness = MyUser.objects.filter(user_id=user).first()
-        lucky =  luckyness.user_luckyness
-        koef = (1 + (koef_all + koef_math + koef_biol + koef_radio + koef_astronomy + koef_logist)) * \
-               (1 + lucky / 100.0)
+        koef = element_open(user, module_scient)
 
         if koef < 0:
             koef = 0.00001
@@ -879,11 +600,12 @@ def module_upgrade(request):
                 module_class=module_scient.module_class,
             )
             module_pattern.save()
+            new_factory_pattern(user, 8, module_scient.id)
     else:
         module_atribute = ['health', 'param1', 'param2', 'param3', 'mass', 'size', 'power_consuption']
         trying = random.random()
         percent_update = 1 + random.randint(5, 10) / 100.0
-        if 0.15 <= trying <=  0.3 or 0.7 <= trying <= 0.85:
+        if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
             number = random.randint(0, 6)
             atribute = module_atribute[number]
             element = getattr(u_module, atribute)
@@ -907,3 +629,133 @@ def module_upgrade(request):
                         u_module = Module_pattern.objects.filter(user=user, module=module_scient.id).last()
                         setattr(u_module, atribute, element)
                         u_module.save()
+
+
+def new_factory_pattern(*args):
+    new_factory_patt = args
+    user = int(new_factory_patt[0])
+    prod_class = int(new_factory_patt[1])
+    prod_id = int(new_factory_patt[2])
+    new_factory = Basic_factory.objects.filter(production_class=prod_class, production_id=prod_id).first()
+    factory = Factory_pattern(
+        user=user,
+        factory=new_factory.id,
+        price_resource1=new_factory.price_resource1,
+        price_resource2=new_factory.price_resource2,
+        price_resource3=new_factory.price_resource3,
+        price_resource4=new_factory.price_resource4,
+        price_mineral1=new_factory.price_mineral1,
+        price_mineral2=new_factory.price_mineral2,
+        price_mineral3=new_factory.price_mineral3,
+        price_mineral4=new_factory.price_mineral4,
+        time_deployment=new_factory.time_deployment,
+        production_class=new_factory.production_class,
+        production_id=new_factory.production_id,
+        time_production=new_factory.time_production,
+        size=new_factory.size,
+        mass=new_factory.mass,
+    )
+    factory.save()
+    return ()
+
+
+def element_open(*args):
+    user = args[0]
+    element_scient = args[1]
+    all_base = int(element_scient.min_all_scientic)
+    scin_user = User_scientic.objects.filter(user=user).first()
+    all_user = int(scin_user.all_scientic)
+    if all_base < all_user:
+        koef_all = (all_user - all_base) / 100.0
+    else:
+        koef_all = -(all_base - all_user) / 100.0
+
+    math_base = int(element_scient.min_math)
+    math_user = int(scin_user.mathematics_up)
+    if math_base!=0:
+        if math_base < math_user:
+            koef_math = (math_user - math_base) / 100.0
+        else:
+            koef_math = (math_user - math_base) / 100.0
+    else:
+        koef_math = 0
+
+    phis_base = int(element_scient.min_phis)
+    phis_user = int(scin_user.phisics_up)
+    if phis_base!=0:
+        if phis_base < phis_user:
+            koef_phis = (phis_user - phis_base) / 100.0
+        else:
+            koef_phis = (phis_user - phis_base) / 100.0
+    else:
+        koef_phis = 0
+
+    biol_base = int(element_scient.min_biol)
+    biol_user = int(scin_user.biologic_chimics_up)
+    if biol_base!=0:
+        if biol_base < biol_user:
+            koef_biol = (biol_user - biol_base) / 100.0
+        else:
+            koef_biol = -(biol_base - biol_user) / 100.0
+    else:
+        koef_biol = 0
+
+    energy_base = int(element_scient.min_energy)
+    energy_user = int(scin_user.energetics_up)
+    if energy_base!=0:
+        if energy_base < energy_user:
+            koef_energy = (energy_user - energy_base) / 100.0
+        else:
+            koef_energy = (energy_user - energy_base) / 100.0
+    else:
+        koef_energy = 0
+
+    radio_base = int(element_scient.min_radio)
+    radio_user = int(scin_user.radionics_up)
+    if radio_base!=0:
+        if radio_base < radio_user:
+            koef_radio = (radio_user - radio_base) / 100.0
+        else:
+            koef_radio = (radio_user - radio_base) / 100.0
+    else:
+        koef_radio = 0
+
+    nano_base = int(element_scient.min_nanotech)
+    nano_user = int(scin_user.nanotech_up)
+    if nano_base!=0:
+        if nano_base < nano_user:
+            koef_nanotech = (nano_user - nano_base) / 100.0
+        else:
+            koef_nanotech = -(nano_base - nano_user) / 100.0
+    else:
+        koef_nanotech = 0
+
+    astro_base = int(element_scient.min_astronomy)
+    astro_user = int(scin_user.astronomy_up)
+    if astro_base!=0:
+        if astro_base < astro_user:
+            koef_astronomy = (astro_user - astro_base) / 100.0
+        else:
+            koef_astronomy = -(astro_base - astro_user) / 100.0
+    else:
+        koef_astronomy = 0
+
+    logist_base = int(element_scient.min_logist)
+    logist_user = int(scin_user.logistic_up)
+    if logist_base!=0:
+        if logist_base < logist_user:
+            koef_logist = (logist_user - logist_base) / 100.0
+        else:
+            koef_logist = -(logist_base - logist_user) / 100.0
+    else:
+        koef_logist = 0
+
+    luckyness = MyUser.objects.filter(user_id=user).first()
+    lucky = luckyness.user_luckyness
+    koef = (1 + (koef_all + koef_math + koef_phis + koef_biol + koef_energy + koef_radio + \
+                 koef_nanotech + koef_astronomy + koef_logist)) * (1 + lucky / 100.0)
+    return (koef)
+
+
+def element_upgrade(*args):
+    return ()

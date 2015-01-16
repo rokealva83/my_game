@@ -183,7 +183,6 @@ class Basic_factory(models.Model):
     production_class = models.IntegerField()
     production_id = models.IntegerField()
     time_production = models.IntegerField()
-    amount = models.IntegerField()
     size = models.IntegerField()
     mass = models.IntegerField()
 
@@ -209,10 +208,15 @@ class Basic_hull(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_math = models.IntegerField()
-    min_nanotech = models.IntegerField()
-    min_astronomy = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -232,11 +236,15 @@ class Basic_engine(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_phis = models.IntegerField()
-    min_biol = models.IntegerField()
-    min_energy = models.IntegerField()
-    min_nanotech = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -253,10 +261,15 @@ class Basic_generator(models.Model):
     fuel_necessary = models.IntegerField()
     mass = models.IntegerField()
     size = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_energy = models.IntegerField()
-    min_phis = models.IntegerField()
-    min_nanotech = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -276,10 +289,15 @@ class Basic_shield(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_phis = models.IntegerField()
-    min_energy = models.IntegerField()
-    min_nanotech = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -300,11 +318,15 @@ class Basic_weapon(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_math = models.IntegerField()
-    min_radio = models.IntegerField()
-    min_nanotech = models.IntegerField()
-    min_logist = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -322,10 +344,15 @@ class Basic_armor(models.Model):
     power = models.IntegerField()
     regeneration = models.IntegerField()
     mass = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_phis = models.IntegerField()
-    min_biol = models.IntegerField()
-    min_logist = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -341,9 +368,15 @@ class Basic_shell(models.Model):
     speed = models.IntegerField()
     mass = models.IntegerField()
     size = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_radio = models.IntegerField()
-    min_astronomy = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -363,12 +396,15 @@ class Basic_module(models.Model):
     size = models.IntegerField()
     power_consuption = models.IntegerField()
     module_class = models.IntegerField()
-    min_all_scientic = models.IntegerField()
-    min_math = models.IntegerField()
-    min_biol = models.IntegerField()
-    min_radio = models.IntegerField()
-    min_astronomy = models.IntegerField()
-    min_logist = models.IntegerField()
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -393,7 +429,6 @@ class Factory_pattern(models.Model):
     production_class = models.IntegerField()
     production_id = models.IntegerField()
     time_production = models.IntegerField()
-    amount = models.IntegerField()
     size = models.IntegerField()
     mass = models.IntegerField()
 

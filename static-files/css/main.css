@@ -92,7 +92,38 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .scientic {
-
-    width: 130px;
+    width: 150px;
     align-self: center;
+}
+
+.choice {
+    width: 100px;
+    align-self: center;
+}
+
+.build_select {
+    width: 150px;
+    align: center;
+}
+
+.toggle-box {
+    display: none;
+    text-align: left
+}
+
+.toggle-box + label {
+    display: block;
+    text-align: left;
+}
+
+.toggle-box + label + div {
+    display: none;
+    background-color: greenyellow text-align : left;
+}
+
+.toggle-box:checked + label + div {
+    display: block;
+    background-color: greenyellow text-align : left;
+    align-self: left;
+    padding: 5px;
 }

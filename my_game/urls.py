@@ -18,4 +18,8 @@ urlpatterns = patterns('',
                        url(r'warehouse', 'my_game.views.warehouse', name='warehouse'),
                        url(r'scientic', 'my_game.views.scientic', name='scientic'),
                        url(r'scient', 'my_game.views.scientic_up', name='scient'),
+                       url(r'building', 'my_game.views.building', name='building'),
+                       url(r'choice_module', 'my_game.views.choice_module', name='chioce_module'),
+                       url(r'rename', 'my_game.views.rename', name='rename'),
+
                        )

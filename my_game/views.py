@@ -14,7 +14,12 @@ import time
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib.sessions.models import Session
-from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Race, User_scientic, Basic_scientic, Turn_scientic
+from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Race, User_scientic, Basic_scientic, \
+    Turn_scientic
+from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
+    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon
+from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
 import function
 
 
@@ -37,10 +42,10 @@ def auth(request):
         user_name_auth = User.objects.filter(username=user_name_post).first()
         if user_name_auth is not None:
             if user_name_auth.password == password_post:
+                user = MyUser.objects.filter(user_id=user_name_auth.id).first()
                 warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
-                output = {'user': user_name_auth, 'warehouse': warehouse, 'city': user_city}
-                request.session.set_expiry(60)
+                output = {'user': user, 'warehouse': warehouse, 'city': user_city}
                 request.session['userid'] = user_name_auth.id
                 request.session['live'] = True
                 return render(request, "civilization.html", output)
@@ -296,7 +301,6 @@ def civilization(request):
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        request.session.set_expiry(60)
         request.session['userid'] = session_user
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'city': user_city}
@@ -314,7 +318,6 @@ def scientic(request):
         scientic = User_scientic.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         turn_scientics = Turn_scientic.objects.filter(user=session_user)
-        request.session.set_expiry(60)
         request.session['userid'] = session_user
         request.session['live'] = True
         output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'city': user_city,
@@ -446,7 +449,6 @@ def scientic_up(request):
         scientic = User_scientic.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         turn_scientics = Turn_scientic.objects.filter(user=session_user)
-        request.session.set_expiry(60)
         request.session['userid'] = session_user
         request.session['live'] = True
         output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'city': user_city,
@@ -462,8 +464,47 @@ def warehouse(request):
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        request.session.set_expiry(60)
         request.session['userid'] = session_user
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'city': user_city}
     return render(request, "warehouse.html", output)
+
+
+def building(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        function.check_scientic(session_user)
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        scientic = User_scientic.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        armor_patterns = Armor_pattern.objects.filter(user=session_user)
+        request.session['userid'] = session_user
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, "armor_patterns": armor_patterns}
+        return render(request, "building.html", output)
+
+
+def rename(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        rrrr = request.POST.get("rename")
+        function.check_scientic(session_user)
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        scientic = User_scientic.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        armor_patterns = Armor_pattern.objects.filter(user=session_user)
+        request.session['userid'] = session_user
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, "armor_patterns": armor_patterns}
+        return render(request, "building.html", output)
+
+
+def choice_module(request):
+    rrrr = request.POST.get("choice")
+    return ()
