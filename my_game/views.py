@@ -20,6 +20,8 @@ from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Bas
     Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
+from models import Warehouse_factory, Warehouse_weapon, Warehouse_ship, Warehouse_module, Warehouse_shield, \
+    Warehouse_engine, Warehouse_generator, Warehouse_hull, Warehouse_armor, Warehouse_shell
 import function
 
 
@@ -609,13 +611,15 @@ def choice_build(request):
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city)
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'factory_patterns': factory_patterns,
-                  'attributes': attributes, 'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
+                  'attributes': attributes, 'turn_assembly_piecess': turn_assembly_piecess,
+                  'turn_buildings': turn_buildings, 'warehouse_elements': warehouse_elements}
 
         return render(request, "building.html", output)
     return render(request, "index.html", {})
@@ -644,7 +648,7 @@ def working(request):
             message = function.delete_factory_pattern(pattern_id)
 
         if request.POST.get('making_factory_unit') is not None:
-            amount_factory_unit = request.POST.get('amound_factory')
+            amount_factory_unit = request.POST.get('amount_factory')
             pattern_id = request.POST.get('hidden_factory')
             message = function.making_factory_unit(session_user, session_user_city, amount_factory_unit, pattern_id)
 

@@ -918,5 +918,6 @@ class Turn_assembly_pieces(models.Model):
     user = models.IntegerField()
     user_city = models.IntegerField()
     pattern_id = models.IntegerField()
+    amount_assembly = models.IntegerField(default=0)
     start_time_assembly = models.DateTimeField()
     finish_time_assembly = models.DateTimeField()

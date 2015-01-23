@@ -22,21 +22,22 @@ from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Bas
     Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Turn_building, Turn_assembly_pieces
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
+from models import Warehouse_factory, Warehouse_weapon, Warehouse_ship, Warehouse_module, Warehouse_shield, \
+    Warehouse_engine, Warehouse_generator, Warehouse_hull, Warehouse_armor, Warehouse_shell, Warehouse
 
 
 def check_all_queues(request):
     user = int(request)
     check_scientific_verification_queue(user)
     verification_phase_of_construction(user)
-
     now_date = timezone.now()
     time_update = MyUser.objects.filter(user_id=user).first().last_time_check
     elapsed_time_full = now_date - time_update
     elapsed_time_seconds = elapsed_time_full.seconds
     time_update = now_date
-
     if elapsed_time_seconds > 300:
         verification_of_resources(user, elapsed_time_seconds, time_update)
+    check_assembly_line_workpieces(user)
 
 
 def check_scientific_verification_queue(request):
@@ -204,6 +205,40 @@ def verification_of_resources(*args):
                                      0)
     MyUser.objects.filter(user_id=user).update(last_time_check=last_time_update,
                                                last_time_scan_scient=last_time_scan_scient)
+
+
+def check_assembly_line_workpieces(request):
+    user = int(request)
+    my_user = MyUser.objects.filter(user_id=user).first()
+    turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=user)
+    time = timezone.now()
+    for turn_assembly_pieces in turn_assembly_piecess:
+        time_start = turn_assembly_pieces.start_time_assembly
+        delta_time = time - time_start
+        new_delta = delta_time.seconds
+        delta_time = turn_assembly_pieces.finish_time_assembly - turn_assembly_pieces.start_time_assembly
+        delta = delta_time.seconds
+        user_city = User_city.objects.filter(user=user, id=turn_assembly_pieces.user_city).first()
+        warehouse_factory = Warehouse_factory.objects.filter(factory_id = turn_assembly_pieces.pattern_id).first()
+        if new_delta > delta:
+            if warehouse_factory is not None:
+                warehouse_factory = Warehouse_factory.objects.filter(factory_id = turn_assembly_pieces.pattern_id).update(amount = turn_assembly_pieces.amount_assembly)
+            else:
+                factory_pattern = Factory_pattern.objects.filter(id = turn_assembly_pieces.pattern_id).first()
+                new_factory = Warehouse_factory(
+                    user = turn_assembly_pieces.user,
+                    user_city = turn_assembly_pieces.user_city,
+                    factory_id = turn_assembly_pieces.pattern_id,
+                    production_class = factory_pattern.production_class,
+                    production_id = factory_pattern.production_id,
+                    time_production = factory_pattern.time_production,
+                    amount = turn_assembly_pieces.amount_assembly,
+                    size = factory_pattern.size,
+                    mass = factory_pattern.mass,
+                    power_consumption =factory_pattern.power_consumption
+                )
+                new_factory.save()
+            end_turn_assembly_pieces = Turn_assembly_pieces.objects.filter(id=turn_assembly_pieces.id).delete()
 
 
 def hull_upgrade(request):
@@ -1057,10 +1092,10 @@ def making_factory_unit(*args):
     session_user_city = int(args[1])
     amount_factory_unit = int(args[2])
     pattern_id = int(args[3])
-    user = MyUser.objects.filter(user_id = session_user).first()
-    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).first()
-    factory_pattern_making = Factory_pattern.objects.filter(id = pattern_id).first()
-    turn_assembly_pieces = len(Turn_assembly_pieces.objects.filter(user = session_user, user_city = session_user_city))
+    user = MyUser.objects.filter(user_id=session_user).first()
+    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
+    factory_pattern_making = Factory_pattern.objects.filter(id=pattern_id).first()
+    turn_assembly_pieces = len(Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city))
 
     if turn_assembly_pieces < 3:
         if user.internal_currency >= factory_pattern_making.price_internal_currency and \
@@ -1073,11 +1108,11 @@ def making_factory_unit(*args):
                         warehouse.mineral3 >= factory_pattern_making.price_mineral3 and \
                         warehouse.mineral4 >= factory_pattern_making.price_mineral4:
 
-            new_internal_currency = user.internal_currency-factory_pattern_making.price_internal_currency
+            new_internal_currency = user.internal_currency - factory_pattern_making.price_internal_currency
             new_resource1 = warehouse.resource1 - factory_pattern_making.price_resource1
             new_resource2 = warehouse.resource2 - factory_pattern_making.price_resource1
             new_resource3 = warehouse.resource3 - factory_pattern_making.price_resource1
-            new_resource4 = warehouse.resource4 -factory_pattern_making.price_resource1
+            new_resource4 = warehouse.resource4 - factory_pattern_making.price_resource1
             new_mineral1 = warehouse.mineral1 - factory_pattern_making.price_mineral1
             new_mineral2 = warehouse.mineral2 - factory_pattern_making.price_mineral1
             new_mineral3 = warehouse.mineral3 - factory_pattern_making.price_mineral1
@@ -1091,8 +1126,9 @@ def making_factory_unit(*args):
                                                                            mineral2=new_mineral2, \
                                                                            mineral3=new_mineral3, \
                                                                            mineral4=new_mineral4)
-            user = MyUser.objects.filter(user_id = session_user).update(internal_currency = new_internal_currency)
-            turn_assembly_piece = Turn_assembly_pieces.objects.filter(user = session_user, user_city = session_user_city).last()
+            user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
+            turn_assembly_piece = Turn_assembly_pieces.objects.filter(user=session_user,
+                                                                      user_city=session_user_city).last()
             if turn_assembly_piece is not None:
                 start_making = turn_assembly_piece.finish_time_assembly
             else:
@@ -1100,11 +1136,12 @@ def making_factory_unit(*args):
             build_time = factory_pattern_making.assembly_workpiece * amount_factory_unit
             finish_making = start_making + timedelta(seconds=build_time)
             turn_assembly_pieces = Turn_assembly_pieces(
-                user = session_user,
-                user_city = session_user_city,
-                pattern_id = pattern_id,
-                start_time_assembly = start_making,
-                finish_time_assembly = finish_making
+                user=session_user,
+                user_city=session_user_city,
+                pattern_id=pattern_id,
+                start_time_assembly=start_making,
+                finish_time_assembly=finish_making,
+                amount_assembly = amount_factory_unit
             )
             turn_assembly_pieces.save()
             message = 'Производство заготовки начато'
@@ -1116,7 +1153,5 @@ def making_factory_unit(*args):
 
 
 def install_factory_unit(*args):
-
-
     message = 'Очередь заполнена'
     return (message)
