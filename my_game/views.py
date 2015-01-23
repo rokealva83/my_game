@@ -76,7 +76,7 @@ def registration(request):
             id_user = user.pk
             user_lucky = random.randint(1, 10)
             time_check = user.last_login
-            last_time_check =datetime(time_check.year, time_check.month, time_check.day, 0, 0, 0, 0)
+            last_time_check = datetime(time_check.year, time_check.month, time_check.day, 0, 0, 0, 0)
 
             myuser = MyUser(
                 user_id=id_user,
@@ -89,8 +89,8 @@ def registration(request):
                 e_mail=ma,
                 referal_code=request.POST.get('name'),
                 user_luckyness=user_lucky,
-                last_time_check = last_time_check,
-                last_time_scan_scient = last_time_check,
+                last_time_check=last_time_check,
+                last_time_scan_scient=last_time_check,
             )
             myuser.save()
 
@@ -128,60 +128,60 @@ def registration(request):
             user
             busy_id = planeta.id
             planet = Planet.objects.filter(pk=busy_id).update(planet_free=0)
-            user_city = User_city.objects.filter(user = id_user).first()
-            warehouse = Warehouse.objects.filter(user = id_user).update(user_city = user_city.id)
+            user_city = User_city.objects.filter(user=id_user).first()
+            warehouse = Warehouse.objects.filter(user=id_user).update(user_city=user_city.id)
 
             basic_factorys = Basic_factory.objects.all()
             for basic_factory in basic_factorys:
                 if basic_factory.production_class > 9:
                     factory_pattern = Factory_pattern(
-                        user = id_user,
-                        basic_id = basic_factory.id,
-                        name = basic_factory.name,
-                        price_internal_currency = basic_factory.price_internal_currency,
-                        price_resource1 = basic_factory.price_resource1,
-                        price_resource2 = basic_factory.price_resource2,
-                        price_resource3 = basic_factory.price_resource3,
-                        price_resource4 = basic_factory.price_resource4,
-                        price_mineral1 = basic_factory.price_mineral1,
-                        price_mineral2 = basic_factory.price_mineral2,
-                        price_mineral3 = basic_factory.price_mineral3,
-                        price_mineral4 = basic_factory.price_mineral4,
-                        cost_expert_deployment = basic_factory.cost_expert_deployment,
-                        time_deployment = basic_factory.time_deployment,
-                        production_class = basic_factory.production_class,
-                        production_id = basic_factory.production_id,
-                        time_production =basic_factory.time_production,
-                        size = basic_factory.size,
-                        mass = basic_factory.mass,
-                        power_consumption = basic_factory.power_consumption
-                        )
+                        user=id_user,
+                        basic_id=basic_factory.id,
+                        name=basic_factory.name,
+                        price_internal_currency=basic_factory.price_internal_currency,
+                        price_resource1=basic_factory.price_resource1,
+                        price_resource2=basic_factory.price_resource2,
+                        price_resource3=basic_factory.price_resource3,
+                        price_resource4=basic_factory.price_resource4,
+                        price_mineral1=basic_factory.price_mineral1,
+                        price_mineral2=basic_factory.price_mineral2,
+                        price_mineral3=basic_factory.price_mineral3,
+                        price_mineral4=basic_factory.price_mineral4,
+                        cost_expert_deployment=basic_factory.cost_expert_deployment,
+                        time_deployment=basic_factory.time_deployment,
+                        production_class=basic_factory.production_class,
+                        production_id=basic_factory.production_id,
+                        time_production=basic_factory.time_production,
+                        size=basic_factory.size,
+                        mass=basic_factory.mass,
+                        power_consumption=basic_factory.power_consumption
+                    )
                     factory_pattern.save()
-            factory_patterns = Factory_pattern.objects.filter(user = id_user)
+            factory_patterns = Factory_pattern.objects.filter(user=id_user)
             for factory_pattern in factory_patterns:
                 if factory_pattern.production_id == 1 or factory_pattern.production_id == 2:
                     factory_instelled = Factory_installed(
-                            user = id_user,
-                            user_city = user_city.id,
-                            factory_pattern_id = factory_pattern.id,
-                            name = factory_pattern.name,
-                            time_deployment = factory_pattern.time_deployment,
-                            production_class = factory_pattern.production_class,
-                            production_id = factory_pattern.production_id,
-                            time_production = factory_pattern.time_production,
-                            size = factory_pattern.size,
-                            mass = factory_pattern.mass,
-                            power_consumption = factory_pattern.power_consumption
-                        )
+                        user=id_user,
+                        user_city=user_city.id,
+                        factory_pattern_id=factory_pattern.id,
+                        name=factory_pattern.name,
+                        time_deployment=factory_pattern.time_deployment,
+                        production_class=factory_pattern.production_class,
+                        production_id=factory_pattern.production_id,
+                        time_production=factory_pattern.time_production,
+                        size=factory_pattern.size,
+                        mass=factory_pattern.mass,
+                        power_consumption=factory_pattern.power_consumption
+                    )
                     factory_instelled.save()
-            factory_instelleds = Factory_installed.objects.filter(user = id_user)
+            factory_instelleds = Factory_installed.objects.filter(user=id_user)
             use_energy = 0
             for factory_instelled in factory_instelleds:
                 if factory_instelled.production_class == 12:
-                    user_city = User_city.objects.filter(user = id_user).update(power = factory_instelled.power_consumption)
+                    user_city = User_city.objects.filter(user=id_user).update(power=factory_instelled.power_consumption)
                 else:
                     use_energy = use_energy + factory_instelled.power_consumption
-            user_city = User_city.objects.filter(user = id_user).update(use_energy = use_energy)
+            user_city = User_city.objects.filter(user=id_user).update(use_energy=use_energy)
 
 
     elif request.POST.get('cancel_button') is not None:
@@ -558,7 +558,7 @@ def building(request):
 
 
 def choice_biuld(request):
-    return     
+    return
 
 
 def rename(request):
