@@ -21,6 +21,8 @@ class MyUser(models.Model):
     e_mail = models.CharField(max_length=50, unique=True)
     referal_code = models.CharField(max_length=50)
     user_luckyness = models.IntegerField()
+    last_time_check = models.DateTimeField()
+    last_time_scan_scient = models.DateTimeField()
 
     def __unicode__(self):
         return self.user_name
@@ -85,7 +87,7 @@ class Warehouse(models.Model):
         db_table = 'warehouse'
 
     user = models.IntegerField()
-    planet = models.ForeignKey(Planet)
+    user_city = models.IntegerField(default=0)
     resource1 = models.IntegerField(default=125000)
     resource2 = models.IntegerField(default=125000)
     resource3 = models.IntegerField(default=125000)
@@ -117,11 +119,13 @@ class User_city(models.Model):
     z = models.IntegerField()
     name_city = models.CharField(max_length=20, default='New Planet')
     city_size_free = models.IntegerField()
-    warehouse = models.ForeignKey(Warehouse)
     population = models.IntegerField(default=150)
     max_population = models.IntegerField(default=500)
     founding_date = models.DateTimeField()
     extraction_date = models.DateTimeField()
+    power = models.IntegerField(default=0)
+    use_energy = models.IntegerField(default=0)
+
 
 
 class Race(models.Model):
@@ -129,16 +133,15 @@ class Race(models.Model):
         db_table = 'race'
 
     description = models.CharField(max_length=500)
-    luckyness = models.FloatField()
     engine_system = models.FloatField()
     engine_intersystem = models.FloatField()
     engine_giper = models.FloatField()
     engine_null = models.FloatField()
-    generators = models.FloatField()
+    generator = models.FloatField()
     armor = models.FloatField()
     shield = models.FloatField()
-    weapons_attack = models.FloatField()
-    weapons_defense = models.FloatField()
+    weapon_attack = models.FloatField()
+    weapon_defense = models.FloatField()
     exploration = models.FloatField()
     disguse = models.FloatField()
     auximilary = models.FloatField()
@@ -152,6 +155,7 @@ class Basic_scientic(models.Model):
     scientic_id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=500)
     time_study = models.IntegerField()
+    cost_internal_currency = models.IntegerField(default=25)
     cost_resource1 = models.IntegerField(default=10)
     cost_resource2 = models.IntegerField(default=20)
     cost_resource3 = models.IntegerField(default=20)
@@ -171,6 +175,7 @@ class Basic_factory(models.Model):
 
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
+    price_internal_currency = models.IntegerField(default=25)
     price_resource1 = models.IntegerField(default=0)
     price_resource2 = models.IntegerField(default=0)
     price_resource3 = models.IntegerField(default=0)
@@ -179,12 +184,14 @@ class Basic_factory(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    cost_expert_deployment = models.IntegerField(default=10)
     time_deployment = models.IntegerField()
     production_class = models.IntegerField()
     production_id = models.IntegerField()
     time_production = models.IntegerField()
     size = models.IntegerField()
     mass = models.IntegerField()
+    power_consumption = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -208,6 +215,15 @@ class Basic_hull(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -236,6 +252,15 @@ class Basic_engine(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -261,6 +286,15 @@ class Basic_generator(models.Model):
     fuel_necessary = models.IntegerField()
     mass = models.IntegerField()
     size = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -289,6 +323,15 @@ class Basic_shield(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -318,6 +361,16 @@ class Basic_weapon(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
+    weapon_class = models.IntegerField(default=1)
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -344,6 +397,15 @@ class Basic_armor(models.Model):
     power = models.IntegerField()
     regeneration = models.IntegerField()
     mass = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -368,6 +430,15 @@ class Basic_shell(models.Model):
     speed = models.IntegerField()
     mass = models.IntegerField()
     size = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -396,6 +467,15 @@ class Basic_module(models.Model):
     size = models.IntegerField()
     power_consuption = models.IntegerField()
     module_class = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
     min_all_scientic = models.IntegerField(default=0)
     min_math = models.IntegerField(default=0)
     min_phis = models.IntegerField(default=0)
@@ -415,8 +495,9 @@ class Factory_pattern(models.Model):
         db_table = 'factory_pattern'
 
     user = models.IntegerField()
-    factory = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New factory')
+    price_internal_currency = models.IntegerField(default=25)
     price_resource1 = models.IntegerField(default=0)
     price_resource2 = models.IntegerField(default=0)
     price_resource3 = models.IntegerField(default=0)
@@ -425,12 +506,14 @@ class Factory_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    cost_expert_deployment = models.IntegerField(default=10)
     time_deployment = models.IntegerField()
     production_class = models.IntegerField()
     production_id = models.IntegerField()
-    time_production = models.IntegerField()
+    time_production = models.FloatField()
     size = models.IntegerField()
     mass = models.IntegerField()
+    power_consumption = models.IntegerField(default=0)
 
 
 class Hull_pattern(models.Model):
@@ -438,7 +521,7 @@ class Hull_pattern(models.Model):
         db_table = 'hull_pattern'
 
     user = models.IntegerField()
-    hull = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default="New hull")
     health = models.IntegerField()
     generators = models.IntegerField()
@@ -451,6 +534,15 @@ class Hull_pattern(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
 
 
 class Engine_pattern(models.Model):
@@ -458,7 +550,7 @@ class Engine_pattern(models.Model):
         db_table = 'engine_pattern'
 
     user = models.IntegerField()
-    engine = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New engine')
     health = models.FloatField()
     system_power = models.FloatField()
@@ -468,6 +560,15 @@ class Engine_pattern(models.Model):
     mass = models.FloatField()
     size = models.FloatField()
     power_consuption = models.FloatField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
 
 
 class Generator_pattern(models.Model):
@@ -475,13 +576,22 @@ class Generator_pattern(models.Model):
         db_table = 'generator_pattern'
 
     user = models.IntegerField()
-    generator = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New generator')
     health = models.FloatField()
     produced_energy = models.FloatField()
     fuel_necessary = models.FloatField()
     mass = models.FloatField()
     size = models.FloatField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
 
 
 class Shield_pattern(models.Model):
@@ -489,7 +599,7 @@ class Shield_pattern(models.Model):
         db_table = 'shield_pattern'
 
     user = models.IntegerField()
-    shield = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New shield')
     health = models.FloatField()
     value_energy_resistance = models.FloatField()
@@ -499,6 +609,15 @@ class Shield_pattern(models.Model):
     mass = models.FloatField()
     size = models.FloatField()
     power_consuption = models.FloatField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
 
 
 class Weapon_pattern(models.Model):
@@ -506,7 +625,7 @@ class Weapon_pattern(models.Model):
         db_table = 'weapon_pattern'
 
     user = models.IntegerField()
-    weapon = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New weapon')
     health = models.IntegerField()
     energy_damage = models.IntegerField()
@@ -517,6 +636,16 @@ class Weapon_pattern(models.Model):
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
+    weapon_class = models.IntegerField(default=1)
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
 
 
 class Armor_pattern(models.Model):
@@ -524,7 +653,7 @@ class Armor_pattern(models.Model):
         db_table = 'armor_pattern'
 
     user = models.IntegerField()
-    armor = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New armor')
     health = models.FloatField()
     value_energy_resistance = models.FloatField()
@@ -532,6 +661,15 @@ class Armor_pattern(models.Model):
     power = models.FloatField()
     regeneration = models.FloatField()
     mass = models.FloatField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
 
 
 class Shell_pattern(models.Model):
@@ -539,12 +677,21 @@ class Shell_pattern(models.Model):
         db_table = 'shell_pattern'
 
     user = models.IntegerField()
-    shell = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New shell')
     phisical_damage = models.FloatField()
     speed = models.FloatField()
     mass = models.FloatField()
     size = models.FloatField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
 
 
 class Module_pattern(models.Model):
@@ -552,7 +699,7 @@ class Module_pattern(models.Model):
         db_table = 'module_pattern'
 
     user = models.IntegerField()
-    module = models.IntegerField()
+    basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New module')
     health = models.IntegerField()
     param1 = models.IntegerField()
@@ -562,74 +709,117 @@ class Module_pattern(models.Model):
     size = models.IntegerField()
     power_consuption = models.IntegerField()
     module_class = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
+
+
+class Factory_installed(models.Model):
+    class Meta():
+        db_table = 'factory_installed'
+
+    user = models.IntegerField()
+    user_city = models.IntegerField()
+    factory_pattern_id = models.IntegerField()
+    name = models.CharField(max_length=50)
+    time_deployment = models.IntegerField()
+    production_class = models.IntegerField()
+    production_id = models.IntegerField()
+    time_production = models.IntegerField()
+    size = models.IntegerField()
+    mass = models.IntegerField()
+    power_consumption = models.IntegerField(default=0)
 
 
 class Warehouse_factory(models.Model):
     class Meta():
         db_table = 'warehouse_factory'
 
-    factory_id = models.IntegerField()
-    production_class = models.IntegerField()
-    production_id = models.IntegerField()
-    time_production = models.IntegerField()
-    amount = models.IntegerField()
-    size = models.IntegerField()
-    mass = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    factory_id = models.IntegerField(default=0)
+    production_class = models.IntegerField(default=0)
+    production_id = models.IntegerField(default=0)
+    time_production = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
+    size = models.IntegerField(default=0)
+    mass = models.IntegerField(default=0)
+    power_consumption = models.IntegerField(default=0)
 
 
 class Warehouse_hull(models.Model):
     class Meta():
         db_table = 'warehouse_hull'
 
-    hull_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    hull_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class Warehouse_generator(models.Model):
     class Meta():
         db_table = 'warehouse_generator'
 
-    generator_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    generator_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class Warehouse_engine(models.Model):
     class Meta():
         db_table = 'warehouse_engine'
 
-    engine_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    engine_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class Warehouse_armor(models.Model):
     class Meta():
         db_table = 'warehouse_armor'
 
-    armor_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    armor_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class Warehouse_weapon(models.Model):
     class Meta():
         db_table = 'warehouse_weapon'
 
-    weapon_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    weapon_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class Warehouse_shell(models.Model):
     class Meta():
         db_table = 'warehouse_shell'
 
-    shell_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    shell_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class Warehouse_shield(models.Model):
     class Meta():
         db_table = 'warehouse_shield'
 
-    shield_id = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    shield_id = models.IntegerField(default=0)
     amount = models.IntegerField()
 
 
@@ -637,16 +827,20 @@ class Warehouse_module(models.Model):
     class Meta():
         db_table = 'warehouse_module'
 
-    module_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    module_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class Warehouse_ship(models.Model):
     class Meta():
         db_table = 'warehouse_ship'
 
-    ship_id = models.IntegerField()
-    amount = models.IntegerField()
+    user = models.IntegerField(default=5)
+    user_city = models.IntegerField(default=1)
+    ship_id = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
 
 
 class User_scientic(models.Model):
@@ -679,11 +873,12 @@ class Turn_building(models.Model):
 
     user = models.IntegerField()
     user_city = models.IntegerField(default=0)
-    x = models.IntegerField()
-    y = models.IntegerField()
-    z = models.IntegerField()
-    start_time_deploiment = models.DateTimeField()
-    finish_time_deploiment = models.DateTimeField()
+    factory_id = models.IntegerField(default=0)
+    x = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
+    z = models.IntegerField(default=0)
+    start_time_deployment = models.DateTimeField()
+    finish_time_deployment = models.DateTimeField()
 
 
 class Turn_scientic(models.Model):
@@ -701,3 +896,15 @@ class Turn_scientic(models.Model):
     logistic_up = models.IntegerField(default=0)
     start_time_science = models.DateTimeField()
     finish_time_science = models.DateTimeField()
+
+
+class Turn_production(models.Model):
+    class Meta():
+        db_table = 'turn_production'
+
+    user = models.IntegerField()
+    user_city = models.IntegerField()
+    factory_id = models.IntegerField()
+    element_id = models.IntegerField()
+    start_time_production = models.DateTimeField()
+    finish_time_production = models.DateTimeField()

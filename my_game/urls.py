@@ -19,7 +19,11 @@ urlpatterns = patterns('',
                        url(r'scientic', 'my_game.views.scientic', name='scientic'),
                        url(r'scient', 'my_game.views.scientic_up', name='scient'),
                        url(r'building', 'my_game.views.building', name='building'),
-                       url(r'choice_module', 'my_game.views.choice_module', name='chioce_module'),
-                       url(r'rename', 'my_game.views.rename', name='rename'),
+#                       url(r'choice_build', 'my_game.views.choice_build', name="choice_build"),
+#                       url(r'choice_factory', 'my_game.views.choice_factory', name='chioce_factory'),
+#                       url(r'working', 'my_game.views.working', name='working'),
+#                       url(r'factory', 'my_game.views.factory', name='factory'),
+      #                 url(r'choice_module', 'my_game.views.choice_module', name='chioce_module'),
+
 
                        )

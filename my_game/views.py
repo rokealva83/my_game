@@ -15,11 +15,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib.sessions.models import Session
 from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Race, User_scientic, Basic_scientic, \
-    Turn_scientic
+    Turn_scientic, Turn_production, Turn_building
 from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
     Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
 import function
 
 
@@ -47,6 +47,7 @@ def auth(request):
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 output = {'user': user, 'warehouse': warehouse, 'city': user_city}
                 request.session['userid'] = user_name_auth.id
+                request.session['user_city'] = user_city.id
                 request.session['live'] = True
                 return render(request, "civilization.html", output)
         return render(request, "index.html", {})
@@ -74,6 +75,8 @@ def registration(request):
             user.save()
             id_user = user.pk
             user_lucky = random.randint(1, 10)
+            time_check = user.last_login
+            last_time_check =datetime(time_check.year, time_check.month, time_check.day, 0, 0, 0, 0)
 
             myuser = MyUser(
                 user_id=id_user,
@@ -85,7 +88,9 @@ def registration(request):
                 internal_currency=1000,
                 e_mail=ma,
                 referal_code=request.POST.get('name'),
-                user_luckyness=user_lucky
+                user_luckyness=user_lucky,
+                last_time_check = last_time_check,
+                last_time_scan_scient = last_time_check,
             )
             myuser.save()
 
@@ -104,7 +109,6 @@ def registration(request):
             planeta = Planet.objects.filter(planet_type=int(request.POST.get('rac')), planet_free=1).first()
             warehouse = Warehouse(
                 user=id_user,
-                planet=planeta,
             )
             warehouse.save()
             warehouse_id = warehouse.pk
@@ -117,13 +121,69 @@ def registration(request):
                 y=planeta.y,
                 z=planeta.z,
                 city_size_free=planeta.work_area_planet,
-                warehouse_id=warehouse_id,
                 founding_date=datetime.today(),
                 extraction_date=datetime.today()
             )
             user_city.save()
+            user
             busy_id = planeta.id
             planet = Planet.objects.filter(pk=busy_id).update(planet_free=0)
+            user_city = User_city.objects.filter(user = id_user).first()
+            warehouse = Warehouse.objects.filter(user = id_user).update(user_city = user_city.id)
+
+            basic_factorys = Basic_factory.objects.all()
+            for basic_factory in basic_factorys:
+                if basic_factory.production_class > 9:
+                    factory_pattern = Factory_pattern(
+                        user = id_user,
+                        basic_id = basic_factory.id,
+                        name = basic_factory.name,
+                        price_internal_currency = basic_factory.price_internal_currency,
+                        price_resource1 = basic_factory.price_resource1,
+                        price_resource2 = basic_factory.price_resource2,
+                        price_resource3 = basic_factory.price_resource3,
+                        price_resource4 = basic_factory.price_resource4,
+                        price_mineral1 = basic_factory.price_mineral1,
+                        price_mineral2 = basic_factory.price_mineral2,
+                        price_mineral3 = basic_factory.price_mineral3,
+                        price_mineral4 = basic_factory.price_mineral4,
+                        cost_expert_deployment = basic_factory.cost_expert_deployment,
+                        time_deployment = basic_factory.time_deployment,
+                        production_class = basic_factory.production_class,
+                        production_id = basic_factory.production_id,
+                        time_production =basic_factory.time_production,
+                        size = basic_factory.size,
+                        mass = basic_factory.mass,
+                        power_consumption = basic_factory.power_consumption
+                        )
+                    factory_pattern.save()
+            factory_patterns = Factory_pattern.objects.filter(user = id_user)
+            for factory_pattern in factory_patterns:
+                if factory_pattern.production_id == 1 or factory_pattern.production_id == 2:
+                    factory_instelled = Factory_installed(
+                            user = id_user,
+                            user_city = user_city.id,
+                            factory_pattern_id = factory_pattern.id,
+                            name = factory_pattern.name,
+                            time_deployment = factory_pattern.time_deployment,
+                            production_class = factory_pattern.production_class,
+                            production_id = factory_pattern.production_id,
+                            time_production = factory_pattern.time_production,
+                            size = factory_pattern.size,
+                            mass = factory_pattern.mass,
+                            power_consumption = factory_pattern.power_consumption
+                        )
+                    factory_instelled.save()
+            factory_instelleds = Factory_installed.objects.filter(user = id_user)
+            use_energy = 0
+            for factory_instelled in factory_instelleds:
+                if factory_instelled.production_class == 12:
+                    user_city = User_city.objects.filter(user = id_user).update(power = factory_instelled.power_consumption)
+                else:
+                    use_energy = use_energy + factory_instelled.power_consumption
+            user_city = User_city.objects.filter(user = id_user).update(use_energy = use_energy)
+
+
     elif request.POST.get('cancel_button') is not None:
         return HttpResponseRedirect(reverse('home'))
     return HttpResponseRedirect(reverse('home'))
@@ -292,16 +352,19 @@ def generation(request):
             a = a + 15
     return HttpResponse("Hello, World")
 
-
+3
 def civilization(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'city': user_city}
         return render(request, "civilization.html", output)
@@ -312,13 +375,15 @@ def scientic(request):
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
-        function.check_scientic(session_user)
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         scientic = User_scientic.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         turn_scientics = Turn_scientic.objects.filter(user=session_user)
         request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'city': user_city,
                   'turn_scientics': turn_scientics}
@@ -330,7 +395,8 @@ def scientic_up(request):
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
-        function.check_scientic(session_user)
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
         if request.method == "POST":
             number_scientic = len(Turn_scientic.objects.filter(user=session_user))
             if number_scientic < 3:
@@ -450,6 +516,7 @@ def scientic_up(request):
         user = MyUser.objects.filter(user_id=session_user).first()
         turn_scientics = Turn_scientic.objects.filter(user=session_user)
         request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'city': user_city,
                   'turn_scientics': turn_scientics}
@@ -461,10 +528,13 @@ def warehouse(request):
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'city': user_city}
     return render(request, "warehouse.html", output)
@@ -475,16 +545,20 @@ def building(request):
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
-        function.check_scientic(session_user)
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
-        scientic = User_scientic.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
         request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, "armor_patterns": armor_patterns}
+        output = {'user': user, 'warehouse': warehouse}
         return render(request, "building.html", output)
+
+
+def choice_biuld(request):
+    return     
 
 
 def rename(request):
@@ -492,14 +566,15 @@ def rename(request):
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
-        rrrr = request.POST.get("rename")
-        function.check_scientic(session_user)
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         scientic = User_scientic.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         armor_patterns = Armor_pattern.objects.filter(user=session_user)
         request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, "armor_patterns": armor_patterns}
         return render(request, "building.html", output)
