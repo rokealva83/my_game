@@ -6,6 +6,12 @@
 
     <td colspan="45" class="center_col">
         {{ message }}
+        {% if turn_assembly_piecess %}
+            <p> Очередь строительства </p>
+            {% for turn_assembly_pieces in turn_assembly_piecess %}
+                <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
+            {% endfor %}
+        {% endif %}
         {% if turn_buildings %}
             <p> Очередь строительства </p>
             {% for turn_building in turn_buildings %}

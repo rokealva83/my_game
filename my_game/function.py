@@ -1114,3 +1114,9 @@ def making_factory_unit(*args):
         message = 'Очередь заполнена'
     return (message)
 
+
+def install_factory_unit(*args):
+
+
+    message = 'Очередь заполнена'
+    return (message)

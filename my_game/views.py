@@ -15,7 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib.sessions.models import Session
 from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Race, User_scientic, Basic_scientic, \
-    Turn_scientic, Turn_production, Turn_building
+    Turn_scientic, Turn_production, Turn_building, Turn_assembly_pieces
 from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
     Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
@@ -548,13 +548,16 @@ def building(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
+        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
+                  'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
         return render(request, "building.html", output)
 
 
@@ -603,6 +606,8 @@ def choice_build(request):
                 'production_id')
             # if request.POST.get('device') is not None:
         # factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by('production_id')
+        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -610,7 +615,7 @@ def choice_build(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'factory_patterns': factory_patterns,
-                  'attributes': attributes}
+                  'attributes': attributes, 'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
 
         return render(request, "building.html", output)
     return render(request, "index.html", {})
@@ -647,13 +652,16 @@ def working(request):
             pattern_id = request.POST.get('hidden_factory')
             message = function.install_factory_unit(pattern_id)
 
+        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message,
+                  'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
         return render(request, "building.html", output)
 
 
