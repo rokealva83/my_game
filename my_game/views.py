@@ -352,7 +352,7 @@ def generation(request):
             a = a + 15
     return HttpResponse("Hello, World")
 
-3
+
 def civilization(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
