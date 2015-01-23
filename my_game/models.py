@@ -127,7 +127,6 @@ class User_city(models.Model):
     use_energy = models.IntegerField(default=0)
 
 
-
 class Race(models.Model):
     class Meta():
         db_table = 'race'
@@ -185,6 +184,7 @@ class Basic_factory(models.Model):
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
     cost_expert_deployment = models.IntegerField(default=10)
+    assembly_workpiece = models.IntegerField(default=10)
     time_deployment = models.IntegerField()
     production_class = models.IntegerField()
     production_id = models.IntegerField()
@@ -507,6 +507,7 @@ class Factory_pattern(models.Model):
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
     cost_expert_deployment = models.IntegerField(default=10)
+    assembly_workpiece = models.IntegerField(default=10)
     time_deployment = models.IntegerField()
     production_class = models.IntegerField()
     production_id = models.IntegerField()
@@ -908,3 +909,14 @@ class Turn_production(models.Model):
     element_id = models.IntegerField()
     start_time_production = models.DateTimeField()
     finish_time_production = models.DateTimeField()
+
+
+class Turn_assembly_pieces(models.Model):
+    class Meta():
+        db_table = 'turn_assembly_pieces'
+
+    user = models.IntegerField()
+    user_city = models.IntegerField()
+    pattern_id = models.IntegerField()
+    start_time_assembly = models.DateTimeField()
+    finish_time_assembly = models.DateTimeField()

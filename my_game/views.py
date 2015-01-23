@@ -148,6 +148,7 @@ def registration(request):
                         price_mineral3=basic_factory.price_mineral3,
                         price_mineral4=basic_factory.price_mineral4,
                         cost_expert_deployment=basic_factory.cost_expert_deployment,
+                        assembly_workpiece=basic_factory.assembly_workpiece,
                         time_deployment=basic_factory.time_deployment,
                         production_class=basic_factory.production_class,
                         production_id=basic_factory.production_id,
@@ -564,16 +565,44 @@ def choice_build(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                     "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                     "cost_expert_deployment", "time_deployment", "production_class", "production_id",
-                     "time_production", "size", "mass", "power_consumption"}
+                      "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                      "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class",
+                      "production_id", "time_production", "size", "mass", "power_consumption"}
         if request.POST.get('housing_unit') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=10)
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=10).order_by(
+                'production_id')
         if request.POST.get('mine') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=11)
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=11).order_by(
+                'production_id')
         if request.POST.get('energy_unit') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=12)
-
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=12).order_by(
+                'production_id')
+        if request.POST.get('hull') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=1).order_by(
+                'production_id')
+        if request.POST.get('armor') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=2).order_by(
+                'production_id')
+        if request.POST.get('shield') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=3).order_by(
+                'production_id')
+        if request.POST.get('engine') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=4).order_by(
+                'production_id')
+        if request.POST.get('generator') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=5).order_by(
+                'production_id')
+        if request.POST.get('weapon') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=6).order_by(
+                'production_id')
+        if request.POST.get('shell') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=7).order_by(
+                'production_id')
+        if request.POST.get('module') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=8).order_by(
+                'production_id')
+            # if request.POST.get('device') is not None:
+        # factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by('production_id')
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -586,21 +615,62 @@ def choice_build(request):
         return render(request, "building.html", output)
     return render(request, "index.html", {})
 
-def rename_factory_pattern(request):
+
+def working(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
+
+        if request.POST.get('rename_factory_pattern') is not None:
+            new_name = request.POST.get('rename_factory_pattern')
+            pattern_id = request.POST.get('hidden_factory')
+            message = function.rename_factory_pattern(new_name, pattern_id)
+
+        if request.POST.get('upgrade_factory_pattern') is not None:
+            number = request.POST.get('number')
+            speed = request.POST.get('speed')
+            pattern_id = request.POST.get('hidden_factory')
+            message = function.upgrade_factory_pattern(number, speed, pattern_id)
+
+        if request.POST.get('delete_factory_pattern') is not None:
+            pattern_id = request.POST.get('hidden_factory')
+            message = function.delete_factory_pattern(pattern_id)
+
+        if request.POST.get('making_factory_unit') is not None:
+            amount_factory_unit = request.POST.get('amound_factory')
+            pattern_id = request.POST.get('hidden_factory')
+            message = function.making_factory_unit(session_user, session_user_city, amount_factory_unit, pattern_id)
+
+        if request.POST.get('install_factory_unit') is not None:
+            pattern_id = request.POST.get('hidden_factory')
+            message = function.install_factory_unit(pattern_id)
+
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
-        scientic = User_scientic.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, "armor_patterns": armor_patterns}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message}
+        return render(request, "building.html", output)
+
+
+def upgrade_factory_pattern(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city}
         return render(request, "building.html", output)
 
 
