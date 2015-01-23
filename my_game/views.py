@@ -553,21 +553,45 @@ def building(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city}
         return render(request, "building.html", output)
 
 
-def choice_biuld(request):
-    return
-
-
-def rename(request):
+def choice_build(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
-        function.check_all_queues(session_user)
+        attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                     "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                     "cost_expert_deployment", "time_deployment", "production_class", "production_id",
+                     "time_production", "size", "mass", "power_consumption"}
+        if request.POST.get('housing_unit') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=10)
+        if request.POST.get('mine') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=11)
+        if request.POST.get('energy_unit') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=12)
+
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'factory_patterns': factory_patterns,
+                  'attributes': attributes}
+
+        return render(request, "building.html", output)
+    return render(request, "index.html", {})
+
+def rename_factory_pattern(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         scientic = User_scientic.objects.filter(user=session_user).first()

@@ -77,7 +77,7 @@ def check_scientific_verification_queue(request):
     delta = time - table_scan_time
     delta_time = delta.seconds
 
-    if delta_time > 0:
+    if delta_time > 86400:
         all_scientic = User_scientic.objects.filter(user=user).first()
         if all_scientic.all_scientic > 10:
             new_technology = random.random()
