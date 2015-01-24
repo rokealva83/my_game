@@ -267,6 +267,7 @@ def hull_upgrade(request):
                 weapons=hull_scient.weapons,
                 armor=hull_scient.armor,
                 shield=hull_scient.shield,
+                modules = hull_scient.modules,
                 main_weapons=hull_scient.main_weapons,
                 hold_size=hull_scient.hold_size,
                 mass=hull_scient.mass,
@@ -286,11 +287,11 @@ def hull_upgrade(request):
 
     else:
         u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
-        hull_atribute = ['health', 'generators', 'engines', 'weapons', 'armor', 'shield', \
+        hull_atribute = ['health', 'generators', 'engines', 'weapons', 'armor', 'shield', 'modules',\
                          'main_weapons', 'hold_size', 'mass', 'size', 'power_consuption']
         trying = random.random()
         if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-            number = random.randint(0, 10)
+            number = random.randint(0, 11)
             atribute = hull_atribute[number]
             element = getattr(u_hull, atribute)
             element_basic = getattr(hull_scient, atribute)
@@ -298,7 +299,7 @@ def hull_upgrade(request):
                 if number == 5 and element == 0:
                     element = 1
                 else:
-                    if number == 8 or number == 10:
+                    if number == 9 or number == 11:
                         percent_update = 1 - random.randint(5, 10) / 100.0
                         if element / element_basic > 0.7:
                             element = element * percent_update
@@ -307,7 +308,7 @@ def hull_upgrade(request):
                             u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                             setattr(u_hull, atribute, element)
                             u_hull.save()
-                    if number == 0 or number == 7 or number == 9:
+                    if number == 0 or number == 8 or number == 10:
                         percent_update = 1 + random.randint(5, 10) / 100.0
                         if element != 0 and element_basic / element > 0.7:
                             element = element * percent_update
@@ -326,7 +327,7 @@ def hull_upgrade(request):
                             u_hull.save()
             else:
                 if element != 0:
-                    if number == 8 or number == 10:
+                    if number == 9 or number == 11:
                         percent_update = 1 - random.randint(5, 10) / 100.0
                         if element / element_basic > 0.7:
                             element = element * percent_update
@@ -336,7 +337,7 @@ def hull_upgrade(request):
                             setattr(u_hull, atribute, element)
                             u_hull.save()
                     else:
-                        if number == 0 or number == 7 or number == 9:
+                        if number == 0 or number == 8 or number == 10:
                             percent_update = 1 + random.randint(5, 10) / 100.0
                             if element_basic / element > 0.7:
                                 element = element * percent_update

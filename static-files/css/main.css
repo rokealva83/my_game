@@ -104,6 +104,11 @@ h1, h2, h3, h4, h5, h6 {
     align-self: center;
 }
 
+.choice_factory_elements{
+    width: 110px;
+    align-self: center;
+}
+
 .build_select {
     width: 150px;
     align: center;

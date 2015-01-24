@@ -530,6 +530,7 @@ class Hull_pattern(models.Model):
     weapons = models.IntegerField()
     armor = models.IntegerField()
     shield = models.IntegerField()
+    modules = models.IntegerField(default=3)
     main_weapons = models.IntegerField()
     hold_size = models.IntegerField()
     mass = models.IntegerField()

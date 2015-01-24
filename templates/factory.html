@@ -18,19 +18,19 @@
 
     <tr class="center_col">
         <th colspan="2">
-            <form method="post" action="choice_factory"
+            <form method="post" action="choice_element"
                   enctype="multipart/form-data">
                 <p>Выберите фабрику продукции</p>
 
-                <p><input class="choice" id="choice" type="submit" value="Корпуса" name="hull"/>
-                    <input class="choice" id="choice" type="submit" value="Броня" name="armor"/>
-                    <input class="choice" id="choice" type="submit" value="Щиты" name="shield"/>
-                    <input class="choice" id="choice" type="submit" value="Двигатели" name="engine"/>
-                    <input class="choice" id="choice" type="submit" value="Генераторы" name="generator"/>
-                    <input class="choice" id="choice" type="submit" value="Оружие" name="weapon"/>
-                    <input class="choice" id="choice" type="submit" value="Боеприпасы" name="shell"/>
-                    <input class="choice" id="choice" type="submit" value="Модули" name="module"/>
-                    <input class="choice" id="choice" type="submit" value="Устройства" name="device"/>
+                <p><input class="choice_element" id="choice_element" type="submit" value="Корпуса" name="hull"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Броня" name="armor"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Щиты" name="shield"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Двигатели" name="engine"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Генераторы" name="generator"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Оружие" name="weapon"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Боеприпасы" name="shell"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Модули" name="module"/>
+                    <input class="choice_element" id="choice_element" type="submit" value="Устройства" name="device"/>
                     <br>
                 </p>
             </form>
@@ -64,7 +64,7 @@
                                                 {% endif %}
                                             {% endfor %}
                                         {% endif %}
-                                        <input type="rename" value="" name="rename" id="rename"
+                                        <input type="new_name" value="" name="new_name" id="new_name"
                                                placeholder="Новое название модуля"/>
                                         <input id="rename" class="rename_element_pattern" type="submit" value="Rename" name="rename_element_pattern"/>
                                         <input type="hidden" id="factory{{ factory_installed.id }}"
@@ -84,7 +84,7 @@
                                             {% endfor %}
                                         </p>
                                         <form method="post" action="working" enctype="multipart/form-data">
-                                            <p>Количество елементов<input type="amount" value="" name="amount"
+                                            <p>Количество елементов<input type="amount_element" value="" name="amount_element"
                                                                        id="amount{{ element_pattern.id }}"
                                                                        placeholder="Количество елементов"/>
                                                 <input type="hidden" id="factory{{ factory_installed.id }}"

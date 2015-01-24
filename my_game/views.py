@@ -690,3 +690,34 @@ def factory(request):
                   'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
         return render(request, "factory.html", output)
     return ()
+
+
+def choice_element(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+        function.check_assembly_line_workpieces(session_user)
+        attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                      "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                      "health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "module",
+                      "hold_size", "size", "mass", "power_consumption"}
+        if request.POST.get('hull') is not None:
+            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=1).order_by(
+                'production_id')
+            element_patterns = Hull_pattern.objects.filter(user=session_user).order_by('basic_id')
+
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city)
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
+                  'factory_installeds': factory_installeds, 'element_patterns': element_patterns,
+                  'attributes': attributes}
+        return render(request, "factory.html", output)
+    return render(request, "index.html", {})
+
