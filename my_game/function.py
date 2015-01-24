@@ -222,7 +222,8 @@ def check_assembly_line_workpieces(request):
         warehouse_factory = Warehouse_factory.objects.filter(factory_id = turn_assembly_pieces.pattern_id).first()
         if new_delta > delta:
             if warehouse_factory is not None:
-                warehouse_factory = Warehouse_factory.objects.filter(factory_id = turn_assembly_pieces.pattern_id).update(amount = turn_assembly_pieces.amount_assembly)
+                amount_assembly = turn_assembly_pieces.amount_assembly + warehouse_factory.amount
+                warehouse_factory = Warehouse_factory.objects.filter(factory_id = turn_assembly_pieces.pattern_id).update(amount = amount_assembly)
             else:
                 factory_pattern = Factory_pattern.objects.filter(id = turn_assembly_pieces.pattern_id).first()
                 new_factory = Warehouse_factory(
@@ -1082,8 +1083,12 @@ def upgrade_factory_pattern(*args):
 
 def delete_factory_pattern(*args):
     pattern_id = int(args[0])
-    delete_pattern = Factory_pattern.objects.filter(id=pattern_id).delete()
-    message = 'Шаблон удален'
+    factory = Factory_installed.objects.filter(factory_pattern_id = pattern_id)
+    if factory is not None:
+        message = 'Шаблон не может быть удален'
+    else:
+        delete_pattern = Factory_pattern.objects.filter(id=pattern_id).delete()
+        message = 'Шаблон удален'
     return (message)
 
 
@@ -1153,5 +1158,36 @@ def making_factory_unit(*args):
 
 
 def install_factory_unit(*args):
-    message = 'Очередь заполнена'
+    session_user = args[0]
+    session_user_city= args[1]
+    pattern_id = args[2]
+    user_city = User_city.objects.filter(id = session_user_city).first()
+    factory_pattern = Factory_pattern.objects.filter(id =pattern_id).first()
+    free_energy = user_city.power - user_city.use_energy
+    len_turn_building = len(Turn_building.objects.filter(user = session_user, user_city = session_user_city))
+    if len_turn_building < 3:
+        power_consumption = factory_pattern.power_consumption
+        if factory_pattern.cost_expert_deployment < user_city.population and free_energy > power_consumption:
+            last_building = Turn_building.objects.filter(user = session_user, user_city = session_user_city).last()
+            if last_building is not None:
+                start_time = last_building.finish_time_deployment
+            else:
+                start_time = datetime.now()
+
+            finish_time = start_time + timedelta(seconds=factory_pattern.time_deployment)
+            turn_building = Turn_building(
+                user = session_user,
+                user_city = session_user_city,
+                factory_id = pattern_id,
+                x = user_city.x,
+                y = user_city.y,
+                z = user_city.z,
+                start_time_deployment = start_time,
+                finish_time_deployment = finish_time,
+            )
+        turn_building.save()
+        new_warehouse_factory = Warehouse_factory.objects.filter(factory_id = pattern_id).first()
+        message = 'Развертывание начато'
+    else:
+        message = 'Очередь заполнена'
     return (message)

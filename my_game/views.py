@@ -569,6 +569,7 @@ def choice_build(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
+        function.check_assembly_line_workpieces(session_user)
         attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                       "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                       "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class",
@@ -631,6 +632,7 @@ def working(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
+        function.check_assembly_line_workpieces(session_user)
 
         if request.POST.get('rename_factory_pattern') is not None:
             new_name = request.POST.get('rename_factory_pattern')
@@ -654,7 +656,7 @@ def working(request):
 
         if request.POST.get('install_factory_unit') is not None:
             pattern_id = request.POST.get('hidden_factory')
-            message = function.install_factory_unit(pattern_id)
+            message = function.install_factory_unit(session_user, session_user_city, pattern_id)
 
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
@@ -669,23 +671,22 @@ def working(request):
         return render(request, "building.html", output)
 
 
-def upgrade_factory_pattern(request):
+def factory(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
-
+        function.check_all_queues(session_user)
+        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city}
-        return render(request, "building.html", output)
-
-
-def choice_module(request):
-    rrrr = request.POST.get("choice")
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
+                  'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
+        return render(request, "factory.html", output)
     return ()

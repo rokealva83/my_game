@@ -7,13 +7,13 @@
     <td colspan="45" class="center_col">
         {{ message }}
         {% if turn_assembly_piecess %}
-            <p> Очередь строительства </p>
+            <p> Очередь создания заготовки </p>
             {% for turn_assembly_pieces in turn_assembly_piecess %}
                 <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
             {% endfor %}
         {% endif %}
         {% if turn_buildings %}
-            <p> Очередь строительства </p>
+            <p> Очередь развертывания заготовки </p>
             {% for turn_building in turn_buildings %}
                 <p>{{ turn_building.finish_time_deployment }}</p>
             {% endfor %}
@@ -127,8 +127,8 @@
                                     {% if factory_pattern.id == warehouse_element.factory_id %}
                                         {% if warehouse_element.amount > 0 %}
                                             <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
-                                            <p><input id="install__factory_unit" class="install__factory_unit"
-                                                      type="submit" value="Install_unit" name="install__factory_unit"/>
+                                            <p><input id="install_factory_unit" class="install_factory_unit"
+                                                      type="submit" value="Install_unit" name="install_factory_unit"/>
                                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                                        value={{ factory_pattern.id }} name="hidden_factory"></p>
                                             </p>
@@ -253,8 +253,8 @@ h rtl dfmbkl ;mkldfbnklh/rtmdfm/df
                                     {% if factory_pattern.id == warehouse_element.factory_id %}
                                         {% if warehouse_element.amount > 0 %}
                                             <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
-                                            <p><input id="install__factory_unit" class="install__factory_unit"
-                                                      type="submit" value="Install_unit" name="install__factory_unit"/>
+                                            <p><input id="install_factory_unit" class="install_factory_unit"
+                                                      type="submit" value="Install_unit" name="install_factory_unit"/>
                                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                                        value={{ factory_pattern.id }} name="hidden_factory">
                                             </p>
