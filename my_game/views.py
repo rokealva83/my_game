@@ -369,7 +369,7 @@ def civilization(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'city': user_city}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city}
         return render(request, "civilization.html", output)
 
 
@@ -388,7 +388,7 @@ def scientic(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'city': user_city,
+        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'user_city': user_city,
                   'turn_scientics': turn_scientics}
         return render(request, "scientic.html", output)
 
@@ -521,7 +521,7 @@ def scientic_up(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'city': user_city,
+        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'user_city': user_city,
                   'turn_scientics': turn_scientics}
         return render(request, "scientic.html", output)
 
@@ -539,7 +539,7 @@ def warehouse(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'city': user_city}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city}
     return render(request, "warehouse.html", output)
 
 
@@ -678,8 +678,7 @@ def factory(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
+        turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -687,7 +686,7 @@ def factory(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
-                  'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
+                   'turn_productions': turn_productions}
         return render(request, "factory.html", output)
     return ()
 
@@ -704,7 +703,7 @@ def choice_element(request):
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "module",
                           "hold_size", "size", "mass", "power_consuption"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=1).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=1).order_by(
                 'production_id')
             element_patterns = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -713,7 +712,7 @@ def choice_element(request):
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration",
                           "mass"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=2).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=2).order_by(
                 'production_id')
             element_patterns = Armor_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -723,7 +722,7 @@ def choice_element(request):
                           "health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter",
                           "regeneration",
                           "mass", "size", "power_consuption"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=3).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=3).order_by(
                 'production_id')
             element_patterns = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -732,7 +731,7 @@ def choice_element(request):
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "system_power", "intersystem_power", "giper_power", "nullT_power", "regeneration",
                           "mass", "size", "power_consuption"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=4).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=4).order_by(
                 'production_id')
             element_patterns = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -740,7 +739,7 @@ def choice_element(request):
             attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "produced_energy", "fuel_necessary", "mass", "size"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=5).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=5).order_by(
                 'production_id')
             element_patterns = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -749,7 +748,7 @@ def choice_element(request):
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "energy_damage", "regenerations", "number_of_bursts", "range", "accuracy", "mass",
                           "size", "power_consuption"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=6).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=6).order_by(
                 'production_id')
             element_patterns = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -757,7 +756,7 @@ def choice_element(request):
             attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "phisical_damage", "speed", "mass", "size"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=7).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=7).order_by(
                 'production_id')
             element_patterns = Shell_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -765,7 +764,7 @@ def choice_element(request):
             attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "param1", "param2","param3", "mass", "size", "power_consuption"}
-            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=8).order_by(
+            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=8).order_by(
                 'production_id')
             element_patterns = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -773,7 +772,7 @@ def choice_element(request):
         #            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
         #                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
         #                          "health", "produced_energy", "fuel_necessary",  "mass", "size", "power_consuption"}
-        #            factory_installeds = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by(
+        #            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=9).order_by(
         #                'production_id')
         #            element_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
@@ -802,6 +801,13 @@ def production(request):
             pattern_id = request.POST.get('hidden_factory')
             element_id = request.POST.get('hidden_element')
             message = function.rename_element_pattern(session_user, session_user_city, pattern_id, element_id, new_name)
+
+        if request.POST.get('amount_element'):
+            factory_id = request.POST.get('hidden_factory')
+            element_id = request.POST.get('hidden_element')
+            amount_element = request.POST.get('amount_element')
+            message = function.production_module(session_user, session_user_city, factory_id, element_id, amount_element)
+
 
         turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()

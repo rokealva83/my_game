@@ -19,7 +19,8 @@ from models import Galaxy, System, Planet
 from models import MyUser, User_city, Race, User_scientic
 from models import Warehouse
 from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
-    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Turn_building, Turn_assembly_pieces
+    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Turn_building, Turn_assembly_pieces, \
+    Turn_production
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
 from models import Warehouse_factory, Warehouse_weapon, Warehouse_ship, Warehouse_module, Warehouse_shield, \
@@ -274,6 +275,7 @@ def hull_upgrade(request):
                 mass=hull_scient.mass,
                 size=hull_scient.size,
                 power_consuption=hull_scient.power_consuption,
+                price_internal_currency=hull_scient.price_internal_currency,
                 price_resource1=hull_scient.price_resource1,
                 price_resource2=hull_scient.price_resource2,
                 price_resource3=hull_scient.price_resource3,
@@ -355,6 +357,8 @@ def hull_upgrade(request):
                                 u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                                 setattr(u_hull, atribute, element)
                                 u_hull.save()
+            u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+            price_increase(u_hull)
 
 
 def armor_upgrade(request):
@@ -385,6 +389,7 @@ def armor_upgrade(request):
                 regeneration=armor_scient.regeneration * race_koef.armor,
                 power=armor_scient.power,
                 mass=armor_scient.mass,
+                price_internal_currency=armor_scient.price_internal_currency,
                 price_resource1=armor_scient.price_resource1,
                 price_resource2=armor_scient.price_resource2,
                 price_resource3=armor_scient.price_resource3,
@@ -428,6 +433,8 @@ def armor_upgrade(request):
                         u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
                         setattr(u_armor, atribute, element)
                         u_armor.save()
+            u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
+            price_increase(u_armor)
 
 
 def shield_upgrade(request):
@@ -460,6 +467,7 @@ def shield_upgrade(request):
                 mass=shield_scient.mass,
                 size=shield_scient.size,
                 power_consuption=shield_scient.power_consuption,
+                price_internal_currency=shield_scient.price_internal_currency,
                 price_resource1=shield_scient.price_resource1,
                 price_resource2=shield_scient.price_resource2,
                 price_resource3=shield_scient.price_resource3,
@@ -509,6 +517,8 @@ def shield_upgrade(request):
                             u_shield = Shield_pattern.objects.filter(user=user, basic_id=shield_scient.id).last()
                             setattr(u_shield, atribute, element)
                             u_shield.save()
+            u_shield = Shield_pattern.objects.filter(user=user, basic_id=shield_scient.id).last()
+            price_increase(u_shield)
 
 
 def engine_upgrade(request):
@@ -541,6 +551,7 @@ def engine_upgrade(request):
                 mass=engine_scient.mass,
                 size=engine_scient.size,
                 power_consuption=engine_scient.power_consuption,
+                price_internal_currency=engine_scient.price_internal_currency,
                 price_resource1=engine_scient.price_resource1,
                 price_resource2=engine_scient.price_resource2,
                 price_resource3=engine_scient.price_resource3,
@@ -582,6 +593,8 @@ def engine_upgrade(request):
                         u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
                         setattr(u_engine, atribute, element)
                         u_engine.save()
+            u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
+            price_increase(u_engine)
 
 
 def generator_upgrade(request):
@@ -611,6 +624,7 @@ def generator_upgrade(request):
                 fuel_necessary=generator_scient.fuel_necessary,
                 mass=generator_scient.mass,
                 size=generator_scient.size,
+                price_internal_currency=generator_scient.price_internal_currency,
                 price_resource1=generator_scient.price_resource1,
                 price_resource2=generator_scient.price_resource2,
                 price_resource3=generator_scient.price_resource3,
@@ -651,6 +665,9 @@ def generator_upgrade(request):
                         setattr(u_generator, atribute, element)
                         u_generator.save()
 
+            u_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id).last()
+            price_increase(u_generator)
+
 
 def weapon_upgrade(request):
     user = request
@@ -688,6 +705,7 @@ def weapon_upgrade(request):
                 size=weapon_scient.size,
                 power_consuption=weapon_scient.power_consuption,
                 weapon_class=weapon_scient.weapon_class,
+                price_internal_currency=weapon_scient.price_internal_currency,
                 price_resource1=weapon_scient.price_resource1,
                 price_resource2=weapon_scient.price_resource2,
                 price_resource3=weapon_scient.price_resource3,
@@ -747,6 +765,8 @@ def weapon_upgrade(request):
                                 u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
                                 setattr(u_weapon, atribute, element)
                                 u_weapon.save()
+            u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+            price_increase(u_weapon)
 
 
 def shell_upgrade(request):
@@ -772,6 +792,7 @@ def shell_upgrade(request):
                 speed=shell_scient.speed,
                 mass=shell_scient.mass,
                 size=shell_scient.size,
+                price_internal_currency=shell_scient.price_internal_currency,
                 price_resource1=shell_scient.price_resource1,
                 price_resource2=shell_scient.price_resource2,
                 price_resource3=shell_scient.price_resource3,
@@ -811,6 +832,8 @@ def shell_upgrade(request):
                         u_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id).last()
                         setattr(u_shell, atribute, element)
                         u_shell.save()
+            u_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id).last()
+            price_increase(u_shell)
 
 
 def module_upgrade(request):
@@ -851,6 +874,7 @@ def module_upgrade(request):
                 size=module_scient.size,
                 power_consuption=module_scient.power_consuption,
                 module_class=module_scient.module_class,
+                price_internal_currency=module_scient.price_internal_currency,
                 price_resource1=module_scient.price_resource1,
                 price_resource2=module_scient.price_resource2,
                 price_resource3=module_scient.price_resource3,
@@ -890,6 +914,32 @@ def module_upgrade(request):
                         u_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id).last()
                         setattr(u_module, atribute, element)
                         u_module.save()
+            u_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id).last()
+            price_increase(u_module)
+
+
+def price_increase(*args):
+    pattern = args[0]
+    koef_up = 1.10
+    price_internal_currency = pattern.price_internal_currency * koef_up
+    price_resource1 = pattern.price_resource1 * koef_up
+    price_resource2 = pattern.price_resource2 * koef_up
+    price_resource3 = pattern.price_resource3 * koef_up
+    price_resource4 = pattern.price_resource4 * koef_up
+    price_mineral1 = pattern.price_mineral1 * koef_up
+    price_mineral2 = pattern.price_mineral2 * koef_up
+    price_mineral3 = pattern.price_mineral3 * koef_up
+    price_mineral4 = pattern.price_mineral4 * koef_up
+    setattr(pattern, "price_internal_currency", price_internal_currency)
+    setattr(pattern, 'price_resource1', price_resource1)
+    setattr(pattern, 'price_resource2', price_resource2)
+    setattr(pattern, 'price_resource3', price_resource3)
+    setattr(pattern, 'price_resource4', price_resource4)
+    setattr(pattern, 'price_mineral1', price_mineral1)
+    setattr(pattern, 'price_mineral2', price_mineral2)
+    setattr(pattern, 'price_mineral3', price_mineral3)
+    setattr(pattern, 'price_mineral4', price_mineral4)
+    pattern.save()
 
 
 def new_factory_pattern(*args):
@@ -1223,3 +1273,20 @@ def rename_element_pattern(*args):
     # new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
     message = 'Модуль переименован'
     return (message)
+
+
+def production_module(*args):
+    session_user = args[0]
+    session_user_city = args[1]
+    factory_id = args[2]
+    element_id = args[3]
+    amount_element = args[4]
+
+    user = MyUser.objects.filter(user_id=session_user).first()
+    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
+    factory_worker = Factory_installed.objects.filter(id=factory_id).first()
+    len_turn_production = len(
+        Turn_production.objects.filter(user=session_user, user_city=session_user_city, factory_id=factory_worker.id))
+    if len_turn_production < 1:
+        tt = 12
+

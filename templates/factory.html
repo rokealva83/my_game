@@ -47,9 +47,7 @@
                         <input class="toggle-box" id="factory{{ factory_installed.id }}" type="checkbox" align="left">
                         <label for="factory{{ factory_installed.id }}">Information</label>
 
-
                         <div>
-
                             {% for element_pattern in element_patterns %}
                                 {% if element_pattern.basic_id == factory_installed.production_id %}
                                     <H4><p align="left">{{ element_pattern.name }}</p></H4>
