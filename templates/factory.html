@@ -5,7 +5,7 @@
 {% block content %}
 
     <td colspan="45" class="center_col">
-        {{ massage }}
+        {{ message }}
     </td>
     <style xmlns="http://www.w3.org/1999/html">
         p {
@@ -41,7 +41,7 @@
         <td class="factory_left">
             {% for factory_installed in factory_installeds %}
                 {% if 10 > factory_installed.production_class %}
-                    <form method="post" action="working" enctype="multipart/form-data">
+                    <form method="post" action="production" enctype="multipart/form-data">
                         <H4><p align="left">{{ factory_installed.name }}</p></H4>
                         <input class="toggle-box" id="factory{{ factory_installed.id }}" type="checkbox" align="left">
                         <label for="factory{{ factory_installed.id }}">Information</label>
@@ -52,18 +52,19 @@
                             {% for element_pattern in element_patterns %}
                                 {% if element_pattern.basic_id == factory_installed.production_id %}
                                     <H4><p align="left">{{ element_pattern.name }}</p></H4>
-                                    <input class="toggle-box" id="element{{ element_pattern.id }}" type="checkbox"
+                                    <input class="toggle-box" id="factory{{ factory_installed.id }}element{{ element_pattern.id }}" type="checkbox"
                                            align="left">
-                                    <label for="element{{ element_pattern.id }}">Information</label>
+                                    <label for="factory{{ factory_installed.id }}element{{ element_pattern.id }}">Information</label>
                                     <div>
                                         {% if turn_productions %}
                                             <p> Очередь строительства </p>
                                             {% for turn_production in turn_productions %}
-                                                {% if turn_production.element ==  element_pattern.id%}
+                                                {% if turn_production.element_id ==  element_pattern.id and turn_production.factory_id == factory_installed.id%}
                                                     <p>{{ turn_production.finish_time_production }}</p>
                                                 {% endif %}
                                             {% endfor %}
                                         {% endif %}
+                                        <form method="post" action="production" enctype="multipart/form-data">
                                         <input type="new_name" value="" name="new_name" id="new_name"
                                                placeholder="Новое название модуля"/>
                                         <input id="rename" class="rename_element_pattern" type="submit" value="Rename" name="rename_element_pattern"/>
@@ -71,6 +72,7 @@
                                                value={{ factory_installed.id }} name="hidden_factory">
                                         <input type="hidden" id="element{{ element_pattern.id }}"
                                                value={{ element_pattern.id }} name="hidden_element">
+                                        </form>
 
                                         <p align="left">
                                             {% for attribute in attributes %}
@@ -83,7 +85,7 @@
                                                 </p>
                                             {% endfor %}
                                         </p>
-                                        <form method="post" action="working" enctype="multipart/form-data">
+                                        <form method="post" action="production" enctype="multipart/form-data">
                                             <p>Количество елементов<input type="amount_element" value="" name="amount_element"
                                                                        id="amount{{ element_pattern.id }}"
                                                                        placeholder="Количество елементов"/>
@@ -101,7 +103,7 @@
 
                         </div>
                     </form>
-                    <form method="post" action="working" enctype="multipart/form-data">
+                    <form method="post" action="production" enctype="multipart/form-data">
                         <input id="disassembling" class="disassembling" type="submit" value="Disassembling factory" name="disassembling"/>
                     </form>
                 {% endif %}

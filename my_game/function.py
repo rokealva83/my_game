@@ -1192,3 +1192,37 @@ def install_factory_unit(*args):
     else:
         message = 'Очередь заполнена'
     return (message)
+
+
+def rename_element_pattern(*args):
+    session_user = args[0]
+    session_user_city= args[1]
+    pattern_id = args[2]
+    element_id  = args[3]
+    new_name = args[4]
+    factory = Factory_pattern.objects.filter(id = pattern_id).first()
+    production_class = factory.production_class
+    if production_class == 1:
+        new_name = Hull_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 2:
+        new_name = Armor_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 3:
+        new_name = Shield_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 4:
+        new_name = Engine_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 5:
+        new_name = Generator_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 6:
+        new_name = Weapon_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 7:
+        new_name = Shell_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 8:
+        new_name = Module_pattern.objects.filter(id = element_id).update(name = new_name)
+#    if production_class == 9:
+#        new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
+
+
+
+
+    message = 'Модуль переименован'
+    return (message)
