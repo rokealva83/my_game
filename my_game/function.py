@@ -219,24 +219,25 @@ def check_assembly_line_workpieces(request):
         delta_time = turn_assembly_pieces.finish_time_assembly - turn_assembly_pieces.start_time_assembly
         delta = delta_time.seconds
         user_city = User_city.objects.filter(user=user, id=turn_assembly_pieces.user_city).first()
-        warehouse_factory = Warehouse_factory.objects.filter(factory_id = turn_assembly_pieces.pattern_id).first()
+        warehouse_factory = Warehouse_factory.objects.filter(factory_id=turn_assembly_pieces.pattern_id).first()
         if new_delta > delta:
             if warehouse_factory is not None:
                 amount_assembly = turn_assembly_pieces.amount_assembly + warehouse_factory.amount
-                warehouse_factory = Warehouse_factory.objects.filter(factory_id = turn_assembly_pieces.pattern_id).update(amount = amount_assembly)
+                warehouse_factory = Warehouse_factory.objects.filter(factory_id=turn_assembly_pieces.pattern_id).update(
+                    amount=amount_assembly)
             else:
-                factory_pattern = Factory_pattern.objects.filter(id = turn_assembly_pieces.pattern_id).first()
+                factory_pattern = Factory_pattern.objects.filter(id=turn_assembly_pieces.pattern_id).first()
                 new_factory = Warehouse_factory(
-                    user = turn_assembly_pieces.user,
-                    user_city = turn_assembly_pieces.user_city,
-                    factory_id = turn_assembly_pieces.pattern_id,
-                    production_class = factory_pattern.production_class,
-                    production_id = factory_pattern.production_id,
-                    time_production = factory_pattern.time_production,
-                    amount = turn_assembly_pieces.amount_assembly,
-                    size = factory_pattern.size,
-                    mass = factory_pattern.mass,
-                    power_consumption =factory_pattern.power_consumption
+                    user=turn_assembly_pieces.user,
+                    user_city=turn_assembly_pieces.user_city,
+                    factory_id=turn_assembly_pieces.pattern_id,
+                    production_class=factory_pattern.production_class,
+                    production_id=factory_pattern.production_id,
+                    time_production=factory_pattern.time_production,
+                    amount=turn_assembly_pieces.amount_assembly,
+                    size=factory_pattern.size,
+                    mass=factory_pattern.mass,
+                    power_consumption=factory_pattern.power_consumption
                 )
                 new_factory.save()
             end_turn_assembly_pieces = Turn_assembly_pieces.objects.filter(id=turn_assembly_pieces.id).delete()
@@ -267,7 +268,7 @@ def hull_upgrade(request):
                 weapons=hull_scient.weapons,
                 armor=hull_scient.armor,
                 shield=hull_scient.shield,
-                modules = hull_scient.modules,
+                modules=hull_scient.modules,
                 main_weapons=hull_scient.main_weapons,
                 hold_size=hull_scient.hold_size,
                 mass=hull_scient.mass,
@@ -287,7 +288,7 @@ def hull_upgrade(request):
 
     else:
         u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
-        hull_atribute = ['health', 'generators', 'engines', 'weapons', 'armor', 'shield', 'modules',\
+        hull_atribute = ['health', 'generators', 'engines', 'weapons', 'armor', 'shield', 'modules', \
                          'main_weapons', 'hold_size', 'mass', 'size', 'power_consuption']
         trying = random.random()
         if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
@@ -1084,7 +1085,7 @@ def upgrade_factory_pattern(*args):
 
 def delete_factory_pattern(*args):
     pattern_id = int(args[0])
-    factory = Factory_installed.objects.filter(factory_pattern_id = pattern_id)
+    factory = Factory_installed.objects.filter(factory_pattern_id=pattern_id)
     if factory is not None:
         message = 'Шаблон не может быть удален'
     else:
@@ -1147,7 +1148,7 @@ def making_factory_unit(*args):
                 pattern_id=pattern_id,
                 start_time_assembly=start_making,
                 finish_time_assembly=finish_making,
-                amount_assembly = amount_factory_unit
+                amount_assembly=amount_factory_unit
             )
             turn_assembly_pieces.save()
             message = 'Производство заготовки начато'
@@ -1160,16 +1161,16 @@ def making_factory_unit(*args):
 
 def install_factory_unit(*args):
     session_user = args[0]
-    session_user_city= args[1]
+    session_user_city = args[1]
     pattern_id = args[2]
-    user_city = User_city.objects.filter(id = session_user_city).first()
-    factory_pattern = Factory_pattern.objects.filter(id =pattern_id).first()
+    user_city = User_city.objects.filter(id=session_user_city).first()
+    factory_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
     free_energy = user_city.power - user_city.use_energy
-    len_turn_building = len(Turn_building.objects.filter(user = session_user, user_city = session_user_city))
+    len_turn_building = len(Turn_building.objects.filter(user=session_user, user_city=session_user_city))
     if len_turn_building < 3:
         power_consumption = factory_pattern.power_consumption
         if factory_pattern.cost_expert_deployment < user_city.population and free_energy > power_consumption:
-            last_building = Turn_building.objects.filter(user = session_user, user_city = session_user_city).last()
+            last_building = Turn_building.objects.filter(user=session_user, user_city=session_user_city).last()
             if last_building is not None:
                 start_time = last_building.finish_time_deployment
             else:
@@ -1177,17 +1178,17 @@ def install_factory_unit(*args):
 
             finish_time = start_time + timedelta(seconds=factory_pattern.time_deployment)
             turn_building = Turn_building(
-                user = session_user,
-                user_city = session_user_city,
-                factory_id = pattern_id,
-                x = user_city.x,
-                y = user_city.y,
-                z = user_city.z,
-                start_time_deployment = start_time,
-                finish_time_deployment = finish_time,
+                user=session_user,
+                user_city=session_user_city,
+                factory_id=pattern_id,
+                x=user_city.x,
+                y=user_city.y,
+                z=user_city.z,
+                start_time_deployment=start_time,
+                finish_time_deployment=finish_time,
             )
         turn_building.save()
-        new_warehouse_factory = Warehouse_factory.objects.filter(factory_id = pattern_id).first()
+        new_warehouse_factory = Warehouse_factory.objects.filter(factory_id=pattern_id).first()
         message = 'Развертывание начато'
     else:
         message = 'Очередь заполнена'
@@ -1196,33 +1197,29 @@ def install_factory_unit(*args):
 
 def rename_element_pattern(*args):
     session_user = args[0]
-    session_user_city= args[1]
+    session_user_city = args[1]
     pattern_id = args[2]
-    element_id  = args[3]
+    element_id = args[3]
     new_name = args[4]
-    factory = Factory_pattern.objects.filter(id = pattern_id).first()
+    factory = Factory_pattern.objects.filter(id=pattern_id).first()
     production_class = factory.production_class
     if production_class == 1:
-        new_name = Hull_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Hull_pattern.objects.filter(id=element_id).update(name=new_name)
     if production_class == 2:
-        new_name = Armor_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Armor_pattern.objects.filter(id=element_id).update(name=new_name)
     if production_class == 3:
-        new_name = Shield_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Shield_pattern.objects.filter(id=element_id).update(name=new_name)
     if production_class == 4:
-        new_name = Engine_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Engine_pattern.objects.filter(id=element_id).update(name=new_name)
     if production_class == 5:
-        new_name = Generator_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Generator_pattern.objects.filter(id=element_id).update(name=new_name)
     if production_class == 6:
-        new_name = Weapon_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Weapon_pattern.objects.filter(id=element_id).update(name=new_name)
     if production_class == 7:
-        new_name = Shell_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Shell_pattern.objects.filter(id=element_id).update(name=new_name)
     if production_class == 8:
-        new_name = Module_pattern.objects.filter(id = element_id).update(name = new_name)
-#    if production_class == 9:
-#        new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
-
-
-
-
+        new_name = Module_pattern.objects.filter(id=element_id).update(name=new_name)
+        # if production_class == 9:
+    # new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
     message = 'Модуль переименован'
     return (message)
