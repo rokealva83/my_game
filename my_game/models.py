@@ -797,7 +797,7 @@ class User_scientic(models.Model):
     time_study_astr = models.IntegerField()
     logistic_up = models.IntegerField(default=0)
     time_study_logis = models.IntegerField()
-    all_scientic = models.IntegerField(default=0)s
+    all_scientic = models.IntegerField(default=0)
 
 
 class Turn_building(models.Model):
