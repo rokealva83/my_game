@@ -755,83 +755,14 @@ class Warehouse_factory(models.Model):
     power_consumption = models.IntegerField(default=0)
 
 
-class Warehouse_hull(models.Model):
+class Warehouse_element(models.Model):
     class Meta():
-        db_table = 'warehouse_hull'
+        db_table = 'warehouse_element'
 
     user = models.IntegerField(default=5)
     user_city = models.IntegerField(default=1)
-    hull_id = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-
-
-class Warehouse_generator(models.Model):
-    class Meta():
-        db_table = 'warehouse_generator'
-
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    generator_id = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-
-
-class Warehouse_engine(models.Model):
-    class Meta():
-        db_table = 'warehouse_engine'
-
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    engine_id = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-
-
-class Warehouse_armor(models.Model):
-    class Meta():
-        db_table = 'warehouse_armor'
-
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    armor_id = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-
-
-class Warehouse_weapon(models.Model):
-    class Meta():
-        db_table = 'warehouse_weapon'
-
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    weapon_id = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-
-
-class Warehouse_shell(models.Model):
-    class Meta():
-        db_table = 'warehouse_shell'
-
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    shell_id = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-
-
-class Warehouse_shield(models.Model):
-    class Meta():
-        db_table = 'warehouse_shield'
-
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    shield_id = models.IntegerField(default=0)
-    amount = models.IntegerField()
-
-
-class Warehouse_module(models.Model):
-    class Meta():
-        db_table = 'warehouse_module'
-
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    module_id = models.IntegerField(default=0)
+    element_class = models.IntegerField(default=1)
+    element_id = models.IntegerField(default=0)
     amount = models.IntegerField(default=0)
 
 
@@ -866,7 +797,7 @@ class User_scientic(models.Model):
     time_study_astr = models.IntegerField()
     logistic_up = models.IntegerField(default=0)
     time_study_logis = models.IntegerField()
-    all_scientic = models.IntegerField(default=0)
+    all_scientic = models.IntegerField(default=0)s
 
 
 class Turn_building(models.Model):
@@ -908,6 +839,7 @@ class Turn_production(models.Model):
     user_city = models.IntegerField()
     factory_id = models.IntegerField()
     element_id = models.IntegerField()
+    amount_element = models.IntegerField(default=1)
     start_time_production = models.DateTimeField()
     finish_time_production = models.DateTimeField()
 

@@ -20,8 +20,7 @@ from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Bas
     Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from models import Warehouse_factory, Warehouse_weapon, Warehouse_ship, Warehouse_module, Warehouse_shield, \
-    Warehouse_engine, Warehouse_generator, Warehouse_hull, Warehouse_armor, Warehouse_shell
+from models import Warehouse_factory, Warehouse_element, Warehouse_ship
 import function
 
 
@@ -570,10 +569,10 @@ def choice_build(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_assembly_line_workpieces(session_user)
-        attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+        attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                       "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                       "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class",
-                      "production_id", "time_production", "size", "mass", "power_consumption"}
+                      "production_id", "time_production", "size", "mass", "power_consumption")
         if request.POST.get('housing_unit') is not None:
             factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=10).order_by(
                 'production_id')
@@ -623,7 +622,6 @@ def choice_build(request):
                   'turn_buildings': turn_buildings, 'warehouse_elements': warehouse_elements}
 
         return render(request, "building.html", output)
-    return render(request, "index.html", {})
 
 
 def working(request):
@@ -633,6 +631,7 @@ def working(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_assembly_line_workpieces(session_user)
+        message = ''
 
         if request.POST.get('rename_factory_pattern') is not None:
             new_name = request.POST.get('rename_factory_pattern')
@@ -678,17 +677,14 @@ def factory(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
-                   'turn_productions': turn_productions}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city}
         return render(request, "factory.html", output)
-    return ()
 
 
 def choice_element(request):
@@ -699,79 +695,79 @@ def choice_element(request):
         session_user_city = int(request.session['user_city'])
         function.check_assembly_line_workpieces(session_user)
         if request.POST.get('hull') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "module",
-                          "hold_size", "size", "mass", "power_consuption"}
+                          "hold_size", "size", "mass", "power_consuption")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=1).order_by(
                 'production_id')
             element_patterns = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         if request.POST.get('armor') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration",
-                          "mass"}
+                          "mass")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=2).order_by(
                 'production_id')
             element_patterns = Armor_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         if request.POST.get('shield') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter",
                           "regeneration",
-                          "mass", "size", "power_consuption"}
+                          "mass", "size", "power_consuption")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=3).order_by(
                 'production_id')
             element_patterns = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         if request.POST.get('engine') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "system_power", "intersystem_power", "giper_power", "nullT_power", "regeneration",
-                          "mass", "size", "power_consuption"}
+                          "mass", "size", "power_consuption")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=4).order_by(
                 'production_id')
             element_patterns = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         if request.POST.get('generator') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                          "health", "produced_energy", "fuel_necessary", "mass", "size"}
+                          "health", "produced_energy", "fuel_necessary", "mass", "size")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=5).order_by(
                 'production_id')
             element_patterns = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         if request.POST.get('weapon') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "health", "energy_damage", "regenerations", "number_of_bursts", "range", "accuracy", "mass",
-                          "size", "power_consuption"}
+                          "size", "power_consuption")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=6).order_by(
                 'production_id')
             element_patterns = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         if request.POST.get('shell') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                          "phisical_damage", "speed", "mass", "size"}
+                          "phisical_damage", "speed", "mass", "size")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=7).order_by(
                 'production_id')
             element_patterns = Shell_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         if request.POST.get('module') is not None:
-            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+            attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                          "health", "param1", "param2","param3", "mass", "size", "power_consuption"}
+                          "health", "param1", "param2", "param3", "mass", "size", "power_consuption")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=8).order_by(
                 'production_id')
             element_patterns = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
             # if request.POST.get('device') is not None:
-        #            attributes = {"name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-        #                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-        #                          "health", "produced_energy", "fuel_necessary",  "mass", "size", "power_consuption"}
+        # attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+        # "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+        #                          "health", "produced_energy", "fuel_necessary",  "mass", "size", "power_consuption")
         #            factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=9).order_by(
         #                'production_id')
         #            element_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
@@ -779,12 +775,13 @@ def choice_element(request):
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
+        turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
                   'factory_installeds': factory_installeds, 'element_patterns': element_patterns,
-                  'attributes': attributes}
+                  'attributes': attributes, 'turn_productions': turn_productions}
         return render(request, "factory.html", output)
     return render(request, "index.html", {})
 
@@ -802,20 +799,21 @@ def production(request):
             element_id = request.POST.get('hidden_element')
             message = function.rename_element_pattern(session_user, session_user_city, pattern_id, element_id, new_name)
 
-        if request.POST.get('amount_element'):
+        if request.POST.get('buttom_amount_element'):
             factory_id = request.POST.get('hidden_factory')
             element_id = request.POST.get('hidden_element')
             amount_element = request.POST.get('amount_element')
-            message = function.production_module(session_user, session_user_city, factory_id, element_id, amount_element)
-
+            message = function.production_module(session_user, session_user_city, factory_id, element_id,
+                                                 amount_element)
 
         turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
+        factory_installeds = Factory_installed.objects.filter(user=session_user, user_city = session_user_city)
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message,
-                  'turn_productions': turn_productions}
+                  'turn_productions': turn_productions, 'factory_installeds': factory_installeds}
         return render(request, "factory.html", output)
