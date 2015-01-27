@@ -9,25 +9,25 @@
 
 </head>
 <body>
-<table cellpadding="0" cellspacing="0" width="65%" align="center">
-    <tr>
-        <td colspan="11" class="header">Мой сайт</td>
-    </tr>
-    <tr>
-        <td class="inform_line_city">Поселение:</td>
-        <td class="inform_line_res">Рес1: {{ user.internal_currency }}</td>
-        <td class="inform_line_res">Рес2: {{ warehouse.resource1 }}</td>
-        <td class="inform_line_res">Рес3: {{ warehouse.resource2 }}</td>
-        <td class="inform_line_res">Рес4: {{ warehouse.resource3 }}</td>
-        <td class="inform_line_res">Рес5: {{ warehouse.resource4 }}</td>
-        <td class="inform_line_res">Рес6: {{ user.foreigh_currency }}</td>
-        <td class="inform_line_res">Рес7: {{ user_city.population }}</td>
-        <td class="inform_line_res">Рес8: {{ user_city.max_population }}</td>
-        <td class="inform_line_res">Рес9: {{ user.real_currency }}</td>
 
-        <td class="inform_line_res">Рес10: {{ user_city.use_energy }}/{{ user_city.power }}</td>
-    </tr>
-</table>
+<div id="logo" align="center"></div>
+<div id="header"></div>
+<div id="inform">
+
+    <div class="inform_panel_city">Поселение:</div>
+    <div class="inform_panel"><p>Валюта </p><p>{{ user.internal_currency }}</p></div>
+    <div class="inform_panel"><p>Ресурс 1 </p><p>{{ warehouse.resource1 }}</p></div>
+    <div class="inform_panel"><p>Ресурс 2 </p><p> {{ warehouse.resource2 }}</p></div>
+    <div class="inform_panel"><p>Ресурс 3 </p><p> {{ warehouse.resource3 }}</p></div>
+    <div class="inform_panel"><p>Ресурс 4 </p><p> {{ warehouse.resource4 }}</p></div>
+    <div class="inform_panel"><p>Население:</p><p>{{ user_city.population }} / {{ user_city.max_population }}</p></div>
+    <div class="inform_panel"><p>Энергия<p></p><p>{{ user_city.use_energy }}/{{ user_city.power }}</p></div>
+    <div class="inform_panel"><p>Кредиты: {{ user.foreigh_currency }}</p>
+        <p>Ваучеры: {{ user.real_currency }}</p></div>
+
+</div>
+
+
 <table cellpadding="0" cellspacing="0" width="65%" align="center">
     <tr>
         <td rowspan="6" class="left_col">

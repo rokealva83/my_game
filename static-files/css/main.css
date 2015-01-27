@@ -103,6 +103,32 @@ p {
     color: #68d3ed;
 }
 
+#inform{
+    min-width: 800px;
+    max-width: 1600px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.inform_panel_city {
+    margin: 1px 0px 0px 5px;
+    background-color: #616161;
+    opacity: 0.9;
+    border-radius: 5px;
+    float: left;
+    width: 15%;
+}
+
+.inform_panel{
+    margin: 1px 0px 0px 1px;
+    background-color: #616161;
+    opacity: 0.9;
+    border-radius: 5px;
+    float: left;
+    width: 10.5%;
+}
+
+
 #index_center {
     margin: 7px;
     background-color: #616161;
