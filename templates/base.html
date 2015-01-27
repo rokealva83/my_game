@@ -14,113 +14,139 @@
 <div id="header"></div>
 <div id="inform">
     <div class="inform_panel_city"><p>Поселение:</p>
+
         <p>{% for user_city in user_citys %}
             <select name="city" id="city">
                 <option value="{{ user_city.id }}">{{ user_city.name_city }}</option>
             </select>
         {% endfor %}</p>
     </div>
-    <div class="inform_panel"><p>Валюта </p><p>{{ user.internal_currency }}</p></div>
-    <div class="inform_panel"><p>Ресурс 1 </p><p>{{ warehouse.resource1 }}</p></div>
-    <div class="inform_panel"><p>Ресурс 2 </p><p> {{ warehouse.resource2 }}</p></div>
-    <div class="inform_panel"><p>Ресурс 3 </p><p> {{ warehouse.resource3 }}</p></div>
-    <div class="inform_panel"><p>Ресурс 4 </p><p> {{ warehouse.resource4 }}</p></div>
-    <div class="inform_panel"><p>Население:</p><p>{{ user_city.population }} / {{ user_city.max_population }}</p></div>
-    <div class="inform_panel"><p>Энергия<p></p><p>{{ user_city.use_energy }}/{{ user_city.power }}</p></div>
+    <div class="inform_panel"><p>Валюта </p>
+
+        <p>{{ user.internal_currency }}</p></div>
+    <div class="inform_panel"><p>Ресурс 1 </p>
+
+        <p>{{ warehouse.resource1 }}</p></div>
+    <div class="inform_panel"><p>Ресурс 2 </p>
+
+        <p> {{ warehouse.resource2 }}</p></div>
+    <div class="inform_panel"><p>Ресурс 3 </p>
+
+        <p> {{ warehouse.resource3 }}</p></div>
+    <div class="inform_panel"><p>Ресурс 4 </p>
+
+        <p> {{ warehouse.resource4 }}</p></div>
+    <div class="inform_panel"><p>Население:</p>
+
+        <p>{{ user_city.population }} / {{ user_city.max_population }}</p></div>
+    <div class="inform_panel"><p>Энергия
+
+        <p></p>
+
+        <p>{{ user_city.use_energy }}/{{ user_city.power }}</p></div>
     <div class="inform_panel"><p>Кредиты: {{ user.foreigh_currency }}</p>
+
         <p>Ваучеры: {{ user.real_currency }}</p></div>
 
 </div>
+<div id="block_content">
+
+<div id="left_menu">
+    <form method="post" enctype="multipart/form-data" action="civilization" style="margin-top: 6px">
+        <div>
+            <button class="choice" type="submit" name="civilization">Цивилизация</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="warehouse">
+        <div>
+            <button class="choice" type="submit" name="warehouse">Склад</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="scientic">
+        <div>
+            <button class="choice" type="submit" name="scientic">Исследования</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="building">
+        <div>
+            <button class="choice" type="submit" name="building">Строительство</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="factory">
+        <div>
+            <button class="choice" type="submit" name="factory">Производство</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="economik">
+        <div>
+            <button class="choice" type="submit" name="economics">Економика</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="project">
+        <div>
+            <button class="choice" type="submit" name="desing">Проектирование</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="space_forces">
+        <div>
+            <button class="choice" type="submit" name="MSF">ВКС</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="star_map">
+        <div>
+            <button class="choice" type="submit" name="starmap">Звездна карта</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="trade">
+        <div>
+            <button class="choice" type="submit" name="trade">Торговля</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="alliance">
+        <div>
+            <button class="choice" type="submit" name="alliance">Альянс</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="diplomacy">
+        <div>
+            <button class="choice" type="submit" name="diplomacy">Дипломатия</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="quest">
+        <div>
+            <button class="choice" type="submit" name="quest">Квесты</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="forum">
+        <div>
+            <button class="choice" type="submit" name="forum">Форум</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="exit">
+        <div>
+            <button class="choice" type="submit" name="exit">Выход</button>
+        </div>
+    </form>
 
 
-<table cellpadding="0" cellspacing="0" width="65%" align="center">
-    <tr>
-        <td rowspan="6" class="left_col">
-            <form method="post" enctype="multipart/form-data" action="civilization">
-                <div>
-                    <button class="choice" type="submit" name="civilization">Цивилизация</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="warehouse">
-                <div>
-                    <button class="choice" type="submit" name="warehouse">Склад</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="scientic">
-                <div>
-                    <button class="choice" type="submit" name="scientic">Исследования</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="building">
-                <div>
-                    <button class="choice" type="submit" name="building">Строительство</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="factory">
-                <div>
-                    <button class="choice" type="submit" name="factory">Производство</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="economik">
-                <div>
-                    <button class="choice" type="submit" name="economics">Економика</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="project">
-                <div>
-                    <button class="choice" type="submit" name="desing">Проектирование</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="space_forces">
-                <div>
-                    <button class="choice" type="submit" name="MSF">ВКС</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="star_map">
-                <div>
-                    <button class="choice" type="submit" name="starmap">Звездна карта</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="trade">
-                <div>
-                    <button class="choice" type="submit" name="trade">Торговля</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="alliance">
-                <div>
-                    <button class="choice" type="submit" name="alliance">Альянс</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="diplomacy">
-                <div>
-                    <button class="choice" type="submit" name="diplomacy">Дипломатия</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="quest">
-                <div>
-                    <button class="choice" type="submit" name="quest">Квесты</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="forum">
-                <div>
-                    <button class="choice" type="submit" name="forum">Форум</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="exit">
-                <div>
-                    <button class="choice" type="submit" name="exit">Выход</button>
-                </div>
-            </form>
-        </td>
-        {% block content %}{% endblock %}
+</div>
 
-    </tr>
-</table>
-<table cellpadding="0" cellspacing="0" width="65%" align="center">
-    <tr>
-        <td colspan="5" class="footer" align="center">&copy; 2015</td>
-    </tr>
-</table>
+<div id="game_content">
+
+    {% block content %}{% endblock %}
+
+</div>
+
+</div>
+<div id="footer">
+    <div id="left_footer">&copy; Copyright 2015 <b>CRROTA</b> design</div>
+    <div id="right_footer">
+
+        Design by <b>CRROTA</b> Software
+
+    </div>
+</div>
+<!-- end footer -->
 </body>
 </html>
 
