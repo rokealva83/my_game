@@ -13,8 +13,13 @@
 <div id="logo" align="center"></div>
 <div id="header"></div>
 <div id="inform">
-
-    <div class="inform_panel_city">Поселение:</div>
+    <div class="inform_panel_city"><p>Поселение:</p>
+        <p>{% for user_city in user_citys %}
+            <select name="city" id="city">
+                <option value="{{ user_city.id }}">{{ user_city.name_city }}</option>
+            </select>
+        {% endfor %}</p>
+    </div>
     <div class="inform_panel"><p>Валюта </p><p>{{ user.internal_currency }}</p></div>
     <div class="inform_panel"><p>Ресурс 1 </p><p>{{ warehouse.resource1 }}</p></div>
     <div class="inform_panel"><p>Ресурс 2 </p><p> {{ warehouse.resource2 }}</p></div>

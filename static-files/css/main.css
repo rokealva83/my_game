@@ -3,14 +3,9 @@ body {
     font-size: 13px;
     line-height: 20px;
     font-family: Arial, Tahoma;
-    background: url(images/Index/Fon_body.jpg) no-repeat;
-    background-color: #263541;
-    background-position: center;
-    background-position-y: 0px;
-    background-size: auto;
+    background: url(images/Index/Fon_body.jpg) no-repeat fixed center 0 #263541;
     min-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 
 a {
@@ -67,7 +62,6 @@ p {
 }
 
 #menu {
-    align-self: center;
     height: 30px;
     max-width: 1600px;
     min-width: 800px;
@@ -103,7 +97,7 @@ p {
     color: #68d3ed;
 }
 
-#inform{
+#inform {
     min-width: 800px;
     max-width: 1600px;
     text-align: center;
@@ -111,23 +105,26 @@ p {
 }
 
 .inform_panel_city {
-    margin: 1px 0px 0px 5px;
+    margin: 2px 0px 0px 5px;
     background-color: #616161;
     opacity: 0.9;
     border-radius: 5px;
     float: left;
     width: 15%;
+    border: 1px solid #323232;
+    box-sizing: border-box;
 }
 
-.inform_panel{
-    margin: 1px 0px 0px 1px;
+.inform_panel {
+    margin: 1px 0px 0px 0px;
     background-color: #616161;
     opacity: 0.9;
     border-radius: 5px;
+    border: 1px solid #323232;
+    box-sizing: border-box;
     float: left;
     width: 10.5%;
 }
-
 
 #index_center {
     margin: 7px;
@@ -154,6 +151,13 @@ p {
     background-color: #797979;
     border-radius: 5px;
 
+}
+
+#city {
+    width: 175px;
+    border-color: #797979;
+    background: #616161;
+    border-radius: 7px;
 }
 
 #content {
@@ -208,8 +212,6 @@ p {
 #right_footer a:hover {
     text-decoration: none;
 }
-
-
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
