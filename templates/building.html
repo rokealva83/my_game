@@ -3,50 +3,54 @@
 {% block title %}Строительство{% endblock %}
 
 {% block content %}
-
-    <td colspan="45" class="center_col">
+    <div></div>
+    <div id="game_content">
         {{ message }}
         {% if turn_assembly_piecess %}
-            <p> Очередь создания заготовки </p>
-            {% for turn_assembly_pieces in turn_assembly_piecess %}
-                <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
-            {% endfor %}
+            <div class="game_content_up">
+                <p> Очередь создания заготовки </p>
+                {% for turn_assembly_pieces in turn_assembly_piecess %}
+                    <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
+                {% endfor %}
+            </div>
         {% endif %}
         {% if turn_buildings %}
-            <p> Очередь развертывания заготовки </p>
-            {% for turn_building in turn_buildings %}
-                <p>{{ turn_building.finish_time_deployment }}</p>
-            {% endfor %}
+            <div class="game_content_up">
+                <p> Очередь развертывания заготовки </p>
+                {% for turn_building in turn_buildings %}
+                    <p>{{ turn_building.finish_time_deployment }}</p>
+                {% endfor %}
+            </div>
         {% endif %}
-    </td>
-    <style xmlns="http://www.w3.org/1999/html">
-        p {
-            margin-top: 0em; /* Отступ сверху */
-            margin-bottom: 0em; /* Отступ снизу */
-        }
-    </style>
-
-    <tr class="center_col">
-
-        <th colspan="2">
+        <div class="game_content_up">
             <form method="post" action="choice_build"
                   enctype="multipart/form-data">
-
-
                 <p>Выберите строение</p>
 
                 <p><input class="choice" id="choice_build" type="submit" value="Жилой блок" name="housing_unit"/>
                     <input class="choice" id="choice_build" type="submit" value="Ресурсодобыча" name="mine"/>
                     <input class="choice" id="choice_build" type="submit" value="Энергопроизводство"
                            name="energy_unit"/>
-                    <br>
                 </p>
+                <br>
+                <p>Выберите фабрику продукции</p>
+                <p><input class="choice" id="choice" type="submit" value="Корпуса" name="hull"/>
+                    <input class="choice" id="choice" type="submit" value="Броня" name="armor"/>
+                    <input class="choice" id="choice" type="submit" value="Щиты" name="shield"/>
+                    <input class="choice" id="choice" type="submit" value="Двигатели" name="engine"/>
+                    <input class="choice" id="choice" type="submit" value="Генераторы" name="generator"/>
+                    <input class="choice" id="choice" type="submit" value="Оружие" name="weapon"/>
+                    <input class="choice" id="choice" type="submit" value="Боеприпасы" name="shell"/>
+                    <input class="choice" id="choice" type="submit" value="Модули" name="module"/>
+                    <input class="choice" id="choice" type="submit" value="Устройства" name="device"/>
+                </p>
+                <br>
             </form>
-        </th>
-    </tr>
+        </div>
 
-    <tr>
-        <td class="factory_left">
+        <div class="game_content_left">
+            <br>
+            <br>
             {% for factory_pattern in factory_patterns %}
                 {% if 9 < factory_pattern.production_class %}
                     <form method="post" action="working" enctype="multipart/form-data">
@@ -141,38 +145,6 @@
                     </form>
                 {% endif %}
             {% endfor %}
-        </td>
-        <td class="factory_right">
-bhhnfghthxfgxfgjfgjfjcvcvjnfgjnxfgxbcv  hdfk dfopgog54iyo 'l;dfyj 'mdfkl;hdtjgkldf/h ,.gdf/gser,. rgdfklbfgmn dtb mdfl;mh
-df
-h rtl dfmbkl ;mkldfbnklh/rtmdfm/df
- db fgh lbmfklbh tmnklfnhtf
-        </td>
-    </tr>
-
-    <tr class="center_col">
-        <th colspan="2">
-            <form method="post" action="choice_build"
-                  enctype="multipart/form-data">
-                <p>Выберите фабрику продукции</p>
-
-                <p><input class="choice" id="choice" type="submit" value="Корпуса" name="hull"/>
-                    <input class="choice" id="choice" type="submit" value="Броня" name="armor"/>
-                    <input class="choice" id="choice" type="submit" value="Щиты" name="shield"/>
-                    <input class="choice" id="choice" type="submit" value="Двигатели" name="engine"/>
-                    <input class="choice" id="choice" type="submit" value="Генераторы" name="generator"/>
-                    <input class="choice" id="choice" type="submit" value="Оружие" name="weapon"/>
-                    <input class="choice" id="choice" type="submit" value="Боеприпасы" name="shell"/>
-                    <input class="choice" id="choice" type="submit" value="Модули" name="module"/>
-                    <input class="choice" id="choice" type="submit" value="Устройства" name="device"/>
-                    <br>
-                </p>
-            </form>
-        </th>
-    </tr>
-
-    <tr>
-        <td class="factory_left">
             {% for factory_pattern in factory_patterns %}
                 {% if 10 > factory_pattern.production_class %}
                     <form method="post" enctype="multipart/form-data">
@@ -267,12 +239,16 @@ h rtl dfmbkl ;mkldfbnklh/rtmdfm/df
                     </form>
                 {% endif %}
             {% endfor %}
+        </div>
+        <div class="game_content_right">
+            bhhnfghthxfgxfgjfgjfjcvcvjnfgjnxfgxbcv hdfk dfopgog54iyo 'l;dfyj 'mdfkl;hdtjgkldf/h ,.gdf/gser,. rgdfklbfgmn
+            dtb
+            mdfl;mh
+            df
+            h rtl dfmbkl ;mkldfbnklh/rtmdfm/df
+            db fgh lbmfklbh tmnklfnhtf
 
-        </td>
-        <td class="factory_right">
-jghjmgmnxhgjnghn gjgyjghjm gyugy
-        </td>
-    </tr>
-
-
-{% endblock %}
+        </div>
+    </div>
+    <div class="clear"></div>
+    {% endblock %}

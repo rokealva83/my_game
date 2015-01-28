@@ -8,6 +8,15 @@ body {
     margin: 0 auto;
 }
 
+#inside {
+    font-size: 13px;
+    line-height: 20px;
+    font-family: Arial, Tahoma;
+    background: url(images/Civilization/Background_down.jpg) no-repeat fixed center 0 #263541;
+    min-width: 1100px;
+    margin: 0 auto;
+}
+
 a {
     color: #68d3ed;
     text-decoration: underline;
@@ -46,13 +55,13 @@ p {
     height: 300px;
 }
 
-#logo {
-    position: absolute;
-    text-align: center;
+#header_inside {
+    background: url(images/Civilization/Background_Up.jpg) no-repeat;
+    background-position: center;
+    clear: both;
     width: 100%;
     min-width: 1100px;
-    text-align: center;
-    margin-top: 45px;
+    height: 155px;
 }
 
 #logo a {
@@ -173,24 +182,30 @@ p {
     width: 100%;
 }
 
-#block_content{
-    max-width: 1600px;
-    min-width: 1100px;
-    margin: 0 auto;
-
+.clear {
+    clear: both;
 }
 
-#left_menu{
-    background-color: #616161 ;
-    opacity: 0.8;
+#block_content {
+    max-width: 1600px;
+    min-width: 1100px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#left_menu {
+    background-color: #616161;
     float: left;
+    opacity: 0.8;
+    width: 10%;
     min-width: 150px;
     max-width: 300px;
     min-height: 360px;
     text-align: center;
     vertical-align: middle;
     border-radius: 7px;
-    margin-top: 10px;
+    margin: 5px 0px 0px 5px;
+    border: 1px solid #000000
 }
 
 .choice {
@@ -200,10 +215,70 @@ p {
     margin-top: 2px;
 }
 
-#game_content{
-    min-width: 650px;
-    max-width: 1300px;
+.game_content_up {
+    overflow: hidden;
+    background-color: #616161;
+    opacity: 0.8;
+    border-radius: 7px;
+    margin: 10px 5px 0px 5px;
+    border: 1px solid #000000;
+    text-align: center;
 }
+
+#game_content_down {
+    text-align: center
+}
+
+.game_content_scientic {
+    width: 20%;
+    background-color: #616161;
+    box-sizing: border-box;
+    border: 2px solid #000000;
+    border-radius: 7px;
+    margin: 6px 2px;
+    display: inline-block;
+}
+
+.scientic {
+    width: 150px;
+    align-self: center;
+    margin-bottom: 5px
+}
+
+#game_content{
+}
+#game_content_2{
+}
+
+.game_content_left{
+    width: 44%;
+    max-width: 1000px;
+    background-color: #616161;
+    opacity: 0.8;
+    border-radius: 7px;
+    float: left;
+    margin: 5px 0px 0px 5px;
+    border: 1px solid #000000
+}
+
+#game_content_left p{
+    margin: 5px;
+}
+
+.game_content_right{
+    width: 44%;
+    background-color: #616161;
+    opacity: 0.8;
+    border-radius: 7px;
+    float: left;
+    margin: 5px 5px 0px 5px;
+    border: 1px solid #000000
+}
+
+#game_content_right p{
+        margin: 10px 0px 0px 15px;
+}
+
 
 #footer {
     background: #616161;
@@ -212,7 +287,8 @@ p {
     border-radius: 7px;
     opacity: 0.8;
     max-width: 1600px;
-    min-width: 1100px;
+    min-width: 800px;
+    margin-top: 5px;
     margin-left: auto;
     margin-right: auto;
 
@@ -336,20 +412,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 15px
 }
 
-.scientic_col {
-    width: 20%;
-    background-color: lightcoral;
-    padding: 10px;
-    vertical-align: top;
-    text-align: left;
-}
-
-.scientic {
-    width: 150px;
-    align-self: center;
-}
-
-
 .choice_factory_elements {
     width: 110px;
     align-self: center;
@@ -378,7 +440,6 @@ h1, h2, h3, h4, h5, h6 {
 .toggle-box:checked + label + div {
     display: block;
     background-color: greenyellow text-align : left;
-    align-self: left;
     padding: 5px;
 }
 
