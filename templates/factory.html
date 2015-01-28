@@ -3,21 +3,10 @@
 {% block title %}Производство{% endblock %}
 
 {% block content %}
-
-    <td colspan="45" class="center_col">
+    <div id="game_content">
         {{ message }}
-    </td>
-    <style xmlns="http://www.w3.org/1999/html">
-        p {
-            margin-top: 0em; /* Отступ сверху */
-            margin-bottom: 0em; /* Отступ снизу */
-        }
-    </style>
 
-
-
-    <tr class="center_col">
-        <th colspan="2">
+        <div class="game_content_up">
             <form method="post" action="choice_element"
                   enctype="multipart/form-data">
                 <p>Выберите фабрику продукции</p>
@@ -35,11 +24,11 @@
                     <br>
                 </p>
             </form>
-        </th>
-    </tr>
+        </div>
 
-    <tr>
-        <td class="factory_left">
+        <div class="game_content_left">
+            <br>
+            <br>
             {% for factory_installed in factory_installeds %}
                 {% if 10 > factory_installed.production_class %}
                     <form method="post" action="production" enctype="multipart/form-data">
@@ -116,12 +105,12 @@
                     </form>
                 {% endif %}
             {% endfor %}
-
-        </td>
-        <td class="factory_right">
-jghjmgmnxhgjnghn gjgyjghjm gyugy
-        </td>
-    </tr>
+        </div>
+        <div class="game_content_right">
+            jghjmgmnxhgjnghn gjgyjghjm gyugy
+        </div>
+    </div>
+    <div class="clear"></div>
 
 
 {% endblock %}

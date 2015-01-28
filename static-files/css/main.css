@@ -251,32 +251,26 @@ p {
 }
 
 .game_content_left{
-    width: 44%;
+    width: 43%;
     max-width: 1000px;
     background-color: #616161;
     opacity: 0.8;
     border-radius: 7px;
     float: left;
     margin: 5px 0px 0px 5px;
-    border: 1px solid #000000
-}
-
-#game_content_left p{
-    margin: 5px;
+    border: 1px solid #000000;
+    padding: 8px;
 }
 
 .game_content_right{
-    width: 44%;
+    width: 43%;
     background-color: #616161;
     opacity: 0.8;
     border-radius: 7px;
     float: left;
     margin: 5px 5px 0px 5px;
-    border: 1px solid #000000
-}
-
-#game_content_right p{
-        margin: 10px 0px 0px 15px;
+    border: 1px solid #000000;
+    padding: 8px;
 }
 
 
@@ -327,133 +321,4 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
-}
-
-.header {
-    width: 100%;
-    height: 150px;
-    background-color: lightgreen;
-    padding: 10px;
-    text-align: center
-
-}
-
-.inform_line {
-    width: 100%;
-    height: 5px;
-    background-color: lavender;
-    padding: 5px;
-    text-align: center;
-}
-
-.inform_line_city {
-    width: 28%;
-    height: 5px;
-    background-color: thistle;
-    padding: 5px;
-    text-align: left;
-}
-
-.inform_line_res {
-    width: 8%;
-    height: 5px;
-    background-color: lawngreen;
-    padding: 5px;
-    text-align: left;
-}
-
-.left_col {
-    width: 12%;
-    height: 15px;
-    background-color: lightblue;
-    padding: 15px;
-    vertical-align: top;
-    align-content: center;
-    text-decoration: none;
-
-}
-
-.center_col {
-    width: 71%;
-    background-color: greenyellow;
-    padding: 10px;
-    vertical-align: top;
-    text-align: center;
-}
-
-.center_col_left {
-    width: 27%;
-    background-color: lightcoral;
-    padding: 10px;
-    vertical-align: top;
-    text-align: left;
-
-}
-
-.center_col_right {
-    width: 44%;
-    background-color: teal;
-    padding: 10px;
-    vertical-align: top;
-    text-align: left;
-}
-
-.right_col {
-    width: 17%;
-    background-color: lemonchiffon;
-    padding: 15px;
-    vertical-align: top;
-}
-
-.footer {
-    width: 100%;
-    padding: 10px 0 10px 10px;
-    background-color: olivedrab;
-    font-size: 15px
-}
-
-.choice_factory_elements {
-    width: 110px;
-    align-self: center;
-}
-
-.build_select {
-    width: 150px;
-    align: center;
-}
-
-.toggle-box {
-    display: none;
-    text-align: left
-}
-
-.toggle-box + label {
-    display: block;
-    text-align: left;
-}
-
-.toggle-box + label + div {
-    display: none;
-    background-color: greenyellow text-align : left;
-}
-
-.toggle-box:checked + label + div {
-    display: block;
-    background-color: greenyellow text-align : left;
-    padding: 5px;
-}
-
-.factory_left {
-    width: 50%;
-    background-color: peachpuff;
-    padding: 15px;
-    vertical-align: top;
-}
-
-.factory_right {
-    width: 30%;
-    background-color: lightblue;
-    padding: 15px;
-    vertical-align: top;
-
 }
