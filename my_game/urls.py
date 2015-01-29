@@ -24,5 +24,6 @@ urlpatterns = patterns('',
                        url(r'factory', 'my_game.views.factory', name='factory'),
                        url(r'choice_element', 'my_game.views.choice_element', name='choice_element'),
                        url(r'production', 'my_game.views.production', name='production'),
+                       url(r'designingships', 'my_game.views.designingships', name='designingships'),
                        #url(r'choice_module', 'my_game.views.choice_module', name='choice_module'),
 )

@@ -14,6 +14,8 @@ import time
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib.sessions.models import Session
+from django.conf import settings
+from django.conf.urls.static import static
 from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Race, User_scientic, Basic_scientic, \
     Turn_scientic, Turn_production, Turn_building, Turn_assembly_pieces
 from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
@@ -817,7 +819,6 @@ def production(request):
 
         turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
-        factory_installeds = Factory_installed.objects.filter(user=session_user, user_city = session_user_city)
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -825,5 +826,23 @@ def production(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message,
-                  'turn_productions': turn_productions, 'factory_installeds': factory_installeds, 'user_citys': user_citys}
+                  'turn_productions': turn_productions, 'user_citys': user_citys}
         return render(request, "factory.html", output)
+
+
+def designingships(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys}
+        return render(request, "designingships.html", output)

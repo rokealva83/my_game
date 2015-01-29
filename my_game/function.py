@@ -276,10 +276,6 @@ def verification_stage_production(request):
                 turn_production_delete = Turn_production.objects.filter(id = turn_production.id).delete()
 
 
-
-
-
-
 def hull_upgrade(request):
     user = request
     b_hull = Basic_hull.objects.all()
@@ -1287,7 +1283,7 @@ def rename_element_pattern(*args):
     pattern_id = args[2]
     element_id = args[3]
     new_name = args[4]
-    factory = Factory_pattern.objects.filter(id=pattern_id).first()
+    factory = Factory_installed.objects.filter(id=pattern_id).first()
     production_class = factory.production_class
     if production_class == 1:
         new_name = Hull_pattern.objects.filter(id=element_id).update(name=new_name)
