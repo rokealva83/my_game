@@ -27,8 +27,6 @@
         </div>
 
         <div class="game_content_left">
-            <br>
-            <br>
             {% for factory_installed in factory_installeds %}
                 {% if 10 > factory_installed.production_class %}
                     <form method="post" action="production" enctype="multipart/form-data">
@@ -45,7 +43,7 @@
 
                         <label for="factory{{ factory_installed.id }}">Information</label>
 
-                        <div>
+                        <div class="inform_place">
 
                             {% for element_pattern in element_patterns %}
                                 {% if element_pattern.basic_id == factory_installed.production_id %}
@@ -55,12 +53,12 @@
                                            type="checkbox"
                                            align="left">
                                     <label for="factory{{ factory_installed.id }}element{{ element_pattern.id }}">Information</label>
-                                    <div>
+                                    <div class="inform_place">
 
                                         <form method="post" action="production" enctype="multipart/form-data">
-                                            <input type="new_name" value="" name="new_name" id="new_name"
+                                            <input type="new_name" value="" name="new_name" class="scientic_place"
                                                    placeholder="Новое название модуля"/>
-                                            <input id="rename" class="rename_element_pattern" type="submit"
+                                            <input id="rename" class="scientic" type="submit"
                                                    value="Rename" name="rename_element_pattern"/>
                                             <input type="hidden" id="factory{{ factory_installed.id }}"
                                                    value={{ factory_installed.id }} name="hidden_factory">
@@ -82,13 +80,14 @@
                                         <form method="post" action="production" enctype="multipart/form-data">
                                             <p>Количество елементов<input type="amount_element" value=""
                                                                           name="amount_element"
+                                                                          class="scientic_place"
                                                                           id="amount{{ element_pattern.id }}"
                                                                           placeholder="Количество елементов"/>
                                                 <input type="hidden" id="factory{{ factory_installed.id }}"
                                                        value={{ factory_installed.id }} name="hidden_factory">
                                                 <input type="hidden" id="element{{ element_pattern.id }}"
                                                        value={{ element_pattern.id }} name="hidden_element">
-                                                <input id="amount_element" class="amount_element" type="submit"
+                                                <input id="amount_element" class="scientic" type="submit"
                                                        value="Create" name="buttom_amount_element"/></p>
                                         </form>
 
@@ -100,7 +99,7 @@
                         </div>
                     </form>
                     <form method="post" action="production" enctype="multipart/form-data">
-                        <input id="disassembling" class="disassembling" type="submit" value="Disassembling factory"
+                        <input id="disassembling" class="scientic" type="submit" value="Disassembling factory"
                                name="disassembling"/>
                     </form>
                 {% endif %}

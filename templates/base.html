@@ -6,6 +6,8 @@
     <meta http-equiv="content-type" content=text/html; charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/button.js' %}"></script>
 
 </head>
 <body id="inside">
@@ -50,85 +52,85 @@
 
 </div>
 <div id="block_content">
-        <div id="left_menu">
-            <form method="post" enctype="multipart/form-data" action="civilization" style="margin-top: 6px">
-                <div>
-                    <button class="choice" type="submit" name="civilization">Цивилизация</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="warehouse">
-                <div>
-                    <button class="choice" type="submit" name="warehouse">Склад</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="scientic">
-                <div>
-                    <button class="choice" type="submit" name="scientic">Исследования</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="building">
-                <div>
-                    <button class="choice" type="submit" name="building">Строительство</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="factory">
-                <div>
-                    <button class="choice" type="submit" name="factory">Производство</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="economik">
-                <div>
-                    <button class="choice" type="submit" name="economics">Економика</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="designingships">
-                <div>
-                    <button class="choice" type="submit" name="designingships">Проектирование</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="space_forces">
-                <div>
-                    <button class="choice" type="submit" name="MSF">ВКС</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="star_map">
-                <div>
-                    <button class="choice" type="submit" name="starmap">Звездна карта</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="trade">
-                <div>
-                    <button class="choice" type="submit" name="trade">Торговля</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="alliance">
-                <div>
-                    <button class="choice" type="submit" name="alliance">Альянс</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="diplomacy">
-                <div>
-                    <button class="choice" type="submit" name="diplomacy">Дипломатия</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="quest">
-                <div>
-                    <button class="choice" type="submit" name="quest">Квесты</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="forum">
-                <div>
-                    <button class="choice" type="submit" name="forum">Форум</button>
-                </div>
-            </form>
-            <form method="post" enctype="multipart/form-data" action="exit">
-                <div>
-                    <button class="choice" type="submit" name="exit">Выход</button>
-                </div>
-            </form>
-        </div>
+    <div id="left_menu">
+        <form method="post" enctype="multipart/form-data" action="civilization" style="margin-top: 6px">
+            <div>
+                <button class="menu_button" type="submit" name="civilization">Цивилизация</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="warehouse">
+            <div>
+                <button class="menu_button" type="submit" name="warehouse">Склад</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="scientic">
+            <div>
+                <button class="menu_button" type="submit" name="scientic">Исследования</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="building">
+            <div>
+                <button class="menu_button" type="submit" name="building">Строительство</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="factory">
+            <div>
+                <button class="menu_button" type="submit" name="factory">Производство</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="economik">
+            <div>
+                <button class="menu_button" type="submit" name="economics">Економика</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="designingships">
+            <div>
+                <button class="menu_button" type="submit" name="designingships">Проектирование</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="space_forces">
+            <div>
+                <button class="menu_button" type="submit" name="MSF">ВКС</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="star_map">
+            <div>
+                <button class="menu_button" type="submit" name="starmap">Звездна карта</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="trade">
+            <div>
+                <button class="menu_button" type="submit" name="trade">Торговля</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="alliance">
+            <div>
+                <button class="menu_button" type="submit" name="alliance">Альянс</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="diplomacy">
+            <div>
+                <button class="menu_button" type="submit" name="diplomacy">Дипломатия</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="quest">
+            <div>
+                <button class="menu_button" type="submit" name="quest">Квесты</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="forum">
+            <div>
+                <button class="menu_button" type="submit" name="forum">Форум</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="exit">
+            <div>
+                <button class="menu_button" type="submit" name="exit">Выход</button>
+            </div>
+        </form>
+    </div>
 
-        {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
 
 </div>
@@ -138,6 +140,8 @@
     <div id="right_footer"> Design by <b>CRROTA</b> Software</div>
 </div>
 <!-- end footer -->
+
 </body>
+
 </html>
 

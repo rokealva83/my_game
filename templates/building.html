@@ -26,24 +26,24 @@
                   enctype="multipart/form-data">
                 <p>Выберите строение</p>
 
-                <p><input class="choice" id="choice_build" type="submit" value="Жилой блок" name="housing_unit"/>
-                    <input class="choice" id="choice_build" type="submit" value="Ресурсодобыча" name="mine"/>
-                    <input class="choice" id="choice_build" type="submit" value="Энергопроизводство"
+                <p><input class="choice_building"  type="submit" value="Жилой блок" name="housing_unit"/>
+                    <input class="choice_building"  type="submit" value="Ресурсодобыча" name="mine"/>
+                    <input class="choice_building"  type="submit" value="Энергопроизводство"
                            name="energy_unit"/>
                 </p>
                 <br>
 
                 <p>Выберите фабрику продукции</p>
 
-                <p><input class="choice" id="choice" type="submit" value="Корпуса" name="hull"/>
-                    <input class="choice" id="choice" type="submit" value="Броня" name="armor"/>
-                    <input class="choice" id="choice" type="submit" value="Щиты" name="shield"/>
-                    <input class="choice" id="choice" type="submit" value="Двигатели" name="engine"/>
-                    <input class="choice" id="choice" type="submit" value="Генераторы" name="generator"/>
-                    <input class="choice" id="choice" type="submit" value="Оружие" name="weapon"/>
-                    <input class="choice" id="choice" type="submit" value="Боеприпасы" name="shell"/>
-                    <input class="choice" id="choice" type="submit" value="Модули" name="module"/>
-                    <input class="choice" id="choice" type="submit" value="Устройства" name="device"/>
+                <p><input class="choice_building"  type="submit" value="Корпуса" name="hull"/>
+                    <input class="choice_building" type="submit" value="Броня" name="armor"/>
+                    <input class="choice_building" type="submit" value="Щиты" name="shield"/>
+                    <input class="choice_building" type="submit" value="Двигатели" name="engine"/>
+                    <input class="choice_building" type="submit" value="Генераторы" name="generator"/>
+                    <input class="choice_building" type="submit" value="Оружие" name="weapon"/>
+                    <input class="choice_building" type="submit" value="Боеприпасы" name="shell"/>
+                    <input class="choice_building" type="submit" value="Модули" name="module"/>
+                    <input class="choice_building" type="submit" value="Устройства" name="device"/>
                 </p>
                 <br>
             </form>
@@ -57,14 +57,14 @@
                     <form method="post" action="working" enctype="multipart/form-data">
                         <H4><p align="left">{{ factory_pattern.name }}</p></H4>
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
-                            <label for="factory{{ factory_pattern.id }}">Information</label>
+                            <label class="slide" id="slowdown" for="factory{{ factory_pattern.id }}">Information</label>
 
-                                <div>
+                                <div id="tolik">
                                     <form method="post" action="working" enctype="multipart/form-data">
                                     <input type="rename_factory_pattern" value="" name="rename_factory_pattern"
-                                           id="rename_factory_pattern"
+                                           class="scientic_place"
                                            placeholder="Новое название фабрики"/>
-                                    <input id="rename_factory_pattern" class="rename_factory_pattern" type="submit"
+                                    <input class="scientic" type="submit"
                                            value="Rename" name="rename_bottom"/>
                                     <input type="hidden" id="factory{{ factory_pattern.id }}"
                                            value={{ factory_pattern.id }} name="hidden_factory">
@@ -107,22 +107,22 @@
                                                 <option value="4">4</option>
                                             </select></p>
                                     {% endif %}
-                                    <p><input id="upgrade_factory_pattern" class="upgrade_factory_pattern" type="submit"
+                                    <p><input id="upgrade_factory_pattern" class="scientic" type="submit"
                                               value="Upgrade" name="upgrade_factory_pattern"/>
                                         <input type="hidden" id="factory{{ factory_pattern.id }}"
                                                value={{ factory_pattern.id }} name="hidden_factory"></p>
                                 </form>
                                     <form method="post" action="working" enctype="multipart/form-data">
                                     <p>Количество блоков<input type="amount_factory" value="" name="amount_factory"
-                                                               id="amount_factory"
+                                                               class="scientic_place"
                                                                placeholder="Количество блоков фабрики"/>
-                                        <input id="making_factory_unit" class="making_factory_unit" type="submit"
+                                        <input id="making_factory_unit" class="scientic" type="submit"
                                                value="Create" name="making_factory_unit"/></p>
                                     <input type="hidden" id="factory{{ factory_pattern.id }}"
                                            value={{ factory_pattern.id }} name="hidden_factory"></p>
                                 </form>
                                     <form method="post" action="working" enctype="multipart/form-data">
-                                    <input id="delete_factory_pattern" class="delete" type="submit" value="Delete pattern"
+                                    <input id="delete_factory_pattern" class="scientic" type="submit" value="Delete pattern"
                                            name="delete_factory_pattern"/>
                                     <input type="hidden" id="factory{{ factory_pattern.id }}"
                                            value={{ factory_pattern.id }} name="hidden_factory"></p>
@@ -132,7 +132,7 @@
                                         {% if factory_pattern.id == warehouse_element.factory_id %}
                                             {% if warehouse_element.amount > 0 %}
                                                 <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
-                                                <p><input id="install_factory_unit" class="install_factory_unit"
+                                                <p><input id="install_factory_unit" class="scientic"
                                                           type="submit" value="Install_unit" name="install_factory_unit"/>
                                                     <input type="hidden" id="factory{{ factory_pattern.id }}"
                                                            value={{ factory_pattern.id }} name="hidden_factory"></p>
@@ -155,9 +155,9 @@
                         <div>
                             <form method="post" action="working" enctype="multipart/form-data">
                                 <input type="rename_factory_pattern" value="" name="rename_factory_pattern"
-                                       id="rename_factory_pattern"
+                                       class="scientic_place"
                                        placeholder="Новое название фабрики"/>
-                                <input id="rename_factory_pattern" class="rename_factory_pattern" type="submit"
+                                <input id="rename_factory_pattern" class="scientic" type="submit"
                                        value="Rename" name="rename_bottom"/>
                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                        value={{ factory_pattern.id }} name="hidden_factory">
@@ -200,22 +200,22 @@
                                             <option value="4">4</option>
                                         </select></p>
                                 {% endif %}
-                                <p><input id="upgrade_factory_pattern" class="upgrade_factory_pattern" type="submit"
+                                <p><input id="upgrade_factory_pattern" class="scientic" type="submit"
                                           value="Upgrade" name="upgrade_factory_pattern"/>
                                     <input type="hidden" id="factory{{ factory_pattern.id }}"
                                            value={{ factory_pattern.id }} name="hidden_factory"></p>
                             </form>
                             <form method="post" action="working" enctype="multipart/form-data">
                                 <p>Количество блоков<input type="amount_factory" value="" name="amount_factory"
-                                                           id="amount_factory"
+                                                           class="scientic_place"
                                                            placeholder="Количество блоков фабрики"/>
-                                    <input id="making_factory_unit" class="making_factory_unit" type="submit"
+                                    <input id="making_factory_unit" class="scientic" type="submit"
                                            value="Create" name="making_factory_unit"/></p>
                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                        value={{ factory_pattern.id }} name="hidden_factory">
                             </form>
                             <form method="post" action="working" enctype="multipart/form-data">
-                                <input id="delete_factory_pattern" class="delete" type="submit" value="Delete pattern"
+                                <input id="delete_factory_pattern" class="scientic" type="submit" value="Delete pattern"
                                        name="delete_factory_pattern"/>
                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                        value={{ factory_pattern.id }} name="hidden_factory"></p>
@@ -225,7 +225,7 @@
                                     {% if factory_pattern.id == warehouse_element.factory_id %}
                                         {% if warehouse_element.amount > 0 %}
                                             <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
-                                            <p><input id="install_factory_unit" class="install_factory_unit"
+                                            <p><input id="install_factory_unit" class="scientic"
                                                       type="submit" value="Install_unit" name="install_factory_unit"/>
                                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                                        value={{ factory_pattern.id }} name="hidden_factory">
