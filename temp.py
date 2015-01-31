@@ -1,134 +1,53 @@
+            attribute_hulls = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "module",
+                          "hold_size", "size", "mass", "power_consuption")
+
+            attribute_armors = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration",
+                          "mass")
+
+            attribute_shields = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter",
+                          "regeneration",
+                          "mass", "size", "power_consuption")
+
+
+            attribute_engines = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "health", "system_power", "intersystem_power", "giper_power", "nullT_power", "regeneration",
+                          "mass", "size", "power_consuption")
+
+
+            attribute_generators = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "health", "produced_energy", "fuel_necessary", "mass", "size")
+
+
+            attribute_weapons = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "health", "energy_damage", "regenerations", "number_of_bursts", "range", "accuracy", "mass",
+                          "size", "power_consuption")
+
+
+            attribute_shells = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "phisical_damage", "speed", "mass", "size")
+
+
+            attribute_modules = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "health", "param1", "param2", "param3", "mass", "size", "power_consuption")
 
 
 
-
-
-
-
-
-
-
-
-class warehouse_factory(models.Model):
-    class Meta():
-        db_table = 'warehouse_factory'
-
-    factory_id = models.IntegerField()
-    production_class = models.IntegerField()
-    production_id = models.IntegerField()
-    time_production = models.IntegerField()
-    amount = models.IntegerField()
-    size = models.IntegerField()
-    mass = models.IntegerField()
-
-
-class warehouse_hull(models.Model):
-    class Meta():
-        db_table = 'warehouse_hull'
-
-    hull_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_generator(models.Model):
-    class Meta():
-        db_table = 'warehouse_generators'
-
-    generator_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_engine(models.Model):
-    class Meta():
-        db_table = 'warehouse_engine'
-
-    engine_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_armor(models.Model):
-    class Meta():
-        db_table = 'warehouse_armor'
-
-    armor_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_weapon(models.Model):
-    class Meta():
-        db_table = 'warehouse_weapon'
-
-    weapon_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_shell(models.Model):
-    class Meta():
-        db_table = 'warehouse_shell'
-
-    shell_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_shield(models.Model):
-    class Meta():
-        db_table = 'warehouse_shield'
-
-    shield_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_module(models.Model):
-    class Meta():
-        db_table = 'warehouse_module'
-
-    module_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class warehouse_ship(models.Model):
-    class Meta():
-        db_table = 'warehouse_ship'
-
-    ship_id = models.IntegerField()
-    amount = models.IntegerField()
-
-
-class turn_building(models.Model):
-    class Meta():
-        db_table = 'turn_building'
-
-    user = models.ForeignKey(User)
-    user_city = models.IntegerField(default=0)
-    x = models.IntegerField()
-    y = models.IntegerField()
-    z = models.IntegerField()
-    start_time_deploiment = models.DateTimeField()
-    finish_time_deploiment = models.DateTimeField()
-
-
-class turn_scientic(models.Model):
-    class Meta():
-        db_table = 'turn_scientic'
-
-    user = models.ForeignKey(User)
-    mathematics_up = models.IntegerField(default=0)
-    phisics_up = models.IntegerField(default=0)
-    biologic_chimics_up = models.IntegerField(default=0)
-    energetics_up = models.IntegerField(default=0)
-    radionics_up = models.IntegerField(default=0)
-    nanotech_up = models.IntegerField(default=0)
-    astronomy_up = models.IntegerField(default=0)
-    logistic_up = models.IntegerField(default=0)
-    start_time_science = models.DateTimeField()
-    finish_time_science = models.DateTimeField()
-
-
-
-
-
-
-
-
-
-
+            'attribute_hulls': attribute_hulls,
+            'attribute_armors': attribute_armors,
+            'attribute_shields': attribute_shields,
+            'attribute_engines': attribute_engines,
+            'attribute_generators': attribute_generators,
+            'attribute_weapons': attribute_weapons,
+            'attribute_shells': attribute_shells,
+            'attribute_modules': attribute_modules,

@@ -5,9 +5,25 @@
 {% block content %}
 
     <div id="game_content">
-        {% load staticfiles %}
-        <img src="{% static "images/Civilization/Planet.jpg" %}" style="margin: 10px">
+        <div class="game_content_left">
+            {% load staticfiles %}
+            <img src="{% static "images/Civilization/Planet.jpg" %}" style="margin: 10px">
 
+
+            {% for hull in hulls %}
+                <div class="con">
+                    <ul><span>{{ hull.name }}
+                    <i>
+                        <li style="list-style-type: none"> {{ hull.name }} </li>
+                        <li> {{ hull.id }} </li>
+                    </i>
+                </span>
+                    </ul>
+
+                </div>
+
+            {% endfor %}
+        </div>
         <div class="clear"></div>
     </div>
 
