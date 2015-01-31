@@ -263,7 +263,7 @@ def verification_stage_production(request):
                 warehouse = Warehouse_element.objects.filter(element_id = turn_production.element_id).first()
                 if warehouse is not None:
                     new_amount = warehouse.amount + turn_production.amount_element
-                    warehouse = Warehouse_element.objects.filter(hull_id = turn_production.element_id).update(amount = new_amount)
+                    warehouse = Warehouse_element.objects.filter(element_id = turn_production.element_id).update(amount = new_amount)
                 else:
                     warehouse = Warehouse_element(
                         user = user,
@@ -1393,5 +1393,5 @@ def production_module(*args):
             message = 'Нехватает ресурсов'
     else:
         message = 'Очередь завода занята'
-
+    return (message)
 

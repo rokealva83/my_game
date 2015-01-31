@@ -5,14 +5,217 @@
 {% block content %}
     <div id="game_content">
         <div class="game_content_left">
-            {% load staticfiles %}
-            <img src="{% static "images/Civilization/Planet.jpg" %}" width="226" height="301" align="left" style="margin: 10px">
+            <p>City name: {{ user_city.name_city }}</p>
 
-            <p>Name: {{ user.user_name }}</p>
+            <h3><p style="text-align: center">Warehouse</p></h3>
+            <p>resource 1: {{ warehouse.resource1 }}</p>
 
-            <p>planet_type: {{ user.race_id }}</p>
+            <p>resource 2: {{ warehouse.resource2 }}</p>
 
-            <p>E-mail: {{ user.e_mail }}</p>
+            <p>resource 3: {{ warehouse.resource3 }}</p>
+
+            <p>resource 4: {{ warehouse.resource4 }}</p>
+
+            <p>mineral 1: {{ warehouse.mineral1 }}</p>
+
+            <p>mineral 2: {{ warehouse.mineral2 }}</p>
+
+            <p>mineral 3: {{ warehouse.mineral3 }}</p>
+
+            <p>mineral 4: {{ warehouse.mineral4 }}</p>
+
+            <div>
+                <input class="toggle-box" id="Warehouse_factory" type="checkbox" align="left">
+                <label for="Warehouse_factory">
+                    <h3>
+                        <p style="text-align: center">Warehouse_factory</p>
+                    </h3>
+                </label>
+
+                <div>
+                {% if warehouse_factorys %}
+                    {% for warehouse_factory in warehouse_factorys %}
+                        {% for factory_pattern in factory_patterns %}
+                            {% if warehouse_factory.factory_id == factory_pattern.id %}
+                                {% if warehouse_factory.amount > 0 %}
+                                    <p>{{ factory_pattern.name }}----{{ warehouse_factory.amount }}::({{ warehouse_factory.time_production }}
+                                        seconds)
+                                    </p>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_hull" type="checkbox" align="left">
+                <label for="Warehouse_hull">
+                    <h3><p style="text-align: center">Warehouse_hull</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 1 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for hull_pattern in hull_patterns %}
+                                    {% if hull_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ hull_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_armor" type="checkbox" align="left">
+                <label for="Warehouse_armor">
+                    <h3><p style="text-align: center">Warehouse_armor</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 2 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for armor_pattern in armor_patterns %}
+                                    {% if armor_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ armor_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_shield" type="checkbox" align="left">
+                <label for="Warehouse_shield">
+                    <h3><p style="text-align: center">Warehouse_shield</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 3 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for shield_pattern in shield_patterns %}
+                                    {% if shield_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ shield_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_engine" type="checkbox" align="left">
+                <label for="Warehouse_engine">
+                    <h3><p style="text-align: center">Warehouse_engine</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 4 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for engine_pattern in engine_patterns %}
+                                    {% if engine_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ engine_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_generator" type="checkbox" align="left">
+                <label for="Warehouse_generator">
+                    <h3><p style="text-align: center">Warehouse_generator</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 5 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for generator_pattern in generator_patterns %}
+                                    {% if generator_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ generator_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_weapon" type="checkbox" align="left">
+                <label for="Warehouse_weapon">
+                    <h3><p style="text-align: center">Warehouse_weapon</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 6 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for weapon_pattern in weapon_patterns %}
+                                    {% if weapon_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ weapon_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_shell" type="checkbox" align="left">
+                <label for="Warehouse_shell">
+                    <h3><p style="text-align: center">Warehouse_shell</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 5 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for shell_pattern in shell_patterns %}
+                                    {% if shell_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ shell_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input class="toggle-box" id="Warehouse_module" type="checkbox" align="left">
+                <label for="Warehouse_module">
+                    <h3><p style="text-align: center">Warehouse_module</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 5 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for module_pattern in module_patterns %}
+                                    {% if module_pattern.id == warehouse_element.element_id %}
+                                        <p>{{ module_pattern.name }}----{{ warehouse_element.amount }}::({{ warehouse_element.element_id }}
+                                            health)</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         <div class="game_content_right">
             <h3>
@@ -38,7 +241,6 @@
         </div>
         <div class="clear"></div>
     </div>
-
     <div class="clear"></div>
 {% endblock %}
 
