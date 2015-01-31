@@ -915,3 +915,25 @@ def designingships(request):
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'hulls': hulls}
         return render(request, "designingships.html", output)
+
+
+def new_ship(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+
+        chosen_hull_id = request.POST.get('choice_pattern')
+        chosen_name = request.POST.get('ship_name')
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
+        chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                  'chosen_hull': chosen_hull, 'chosen_name': chosen_name}
+        return render(request, "designingships.html", output)
