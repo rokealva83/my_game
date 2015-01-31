@@ -39,8 +39,16 @@
                                 <div>
                                     <h3>Armor</h3>
 
-                                    <p>
-                                    </p>
+                                    {% load my_filter %}
+                                    {% for i in chosen_hull.armor|add:"0"|create_range %}
+
+
+
+
+
+                                    {% endfor %}
+
+
                                 </div>
                             </li>
                             <li>

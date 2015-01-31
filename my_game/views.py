@@ -908,7 +908,7 @@ def designingships(request):
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
-        hulls = Hull_pattern.objects.filter(user=session_user)
+        hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
