@@ -21,13 +21,14 @@
                             </select>
                             Ship name <input type="ship_name" value="" name="ship_name" class="scientic_place"
                                              placeholder="Название"/>
-                            <input class="scientic" type="submit" value="Create" name="create"/>
+                            <input class="scientic" type="submit" value="Create" name="create_ship"/>
                         </p>
                     </form>
                 </div>
             {% else %}
-                <div class="design_tabs">
-                    <form method="POST" action="new_ship">
+                <form method="POST" action="new_ship">
+                    <div class="design_tabs">
+
                         <input type="hidden" id="{{ chosen_hull.id }}" value={{ chosen_hull.id }} name="chosen_hull">
                         <input type="hidden" id="{{ chosen_hull.name }}"
                                value={{ chosen_name }} name="chosen_hull_name">
@@ -37,15 +38,26 @@
                                 <label for="design_tabs-0-0">Armor</label>
 
                                 <div>
-                                    <h3>Armor</h3>
-
+                                    <h3>Select armor and side to fit on the body</h3>
                                     {% load my_filter %}
                                     {% for i in chosen_hull.armor|add:"0"|create_range %}
+                                        <p>
+                                            <select name="choice_armor" class="scientic">
+                                                {% for armor in armors %}
+                                                    <option value="{{ armor.id }}">{{ armor.name }}</option>
+                                                {% endfor %}
+                                            </select>
 
-
-
-
-
+                                            <select name="choice_armor_side" class="scientic">
+                                                <option value="0">Choice side</option>
+                                                <option value="1">Front</option>
+                                                <option value="2">Back</option>
+                                                <option value="3">Top</option>
+                                                <option value="4">Right</option>
+                                                <option value="5">Bottom</option>
+                                                <option value="6">Left</option>
+                                            </select>
+                                        </p>
                                     {% endfor %}
 
 
@@ -56,129 +68,156 @@
                                 <label for="design_tabs-0-1">Shield</label>
 
                                 <div>
-                                    <h3>Зловещий повелитель</h3>
+                                    <h3>Select shield and side to fit on the body</h3>
+                                    {% load my_filter %}
+                                    {% for i in chosen_hull.shield|add:"0"|create_range %}
+                                        <p>
+                                            <select name="choice_shield" class="scientic">
+                                                {% for shield in shields %}
+                                                    <option value="{{ shield.id }}"> {{ shield.name }} </option>
+                                                {% endfor %}
+                                            </select>
 
-                                    <p>В стародавние времена в одном мусорном контейнере жил-был эльф-полукровка. Звали
-                                        его
-                                        Лавруша, но он
-                                        просил чтобы к нему обращались не иначе как Лаврентий Павлович. Из pодных и
-                                        близких
-                                        y
-                                        него была одна
-                                        нянечка, Арина Родионовна.И в один прекрасный день с ним встречается побитый
-                                        сосед.
-                                        И
-                                        говорит: -
-                                        Как, ты еще жив?! Герой в упор его не замечает. Тогда странный собеседник
-                                        говорит: -
-                                        Враг у ворот! И
-                                        герой вынужден покинуть родные места. Он бежит, и деревья своими ветвями хлещут
-                                        его
-                                        в
-                                        лицо. А
-                                        странный визитер падает замертво.
-                                    </p>
+                                            <select name="choice_shield_side" class="scientic">
+                                                <option value="0">Choice side</option>
+                                                <option value="1">Front</option>
+                                                <option value="2">Back</option>
+                                                <option value="3">Top</option>
+                                                <option value="4">Right</option>
+                                                <option value="5">Bottom</option>
+                                                <option value="6">Left</option>
+                                            </select>
+                                        </p>
+                                    {% endfor %}
+
+
                                 </div>
                             </li>
                             <li>
                                 <input type="radio" name="design_tabs-0" id="design_tabs-0-2"/>
-                                <label for="design_tabs-0-2">Вкладка 3</label>
+                                <label for="design_tabs-0-2">Engine</label>
 
                                 <div>
-                                    <h3>Одинокий цветок</h3>
+                                    <h3>Select engine side to fit on the body</h3>
+                                    {% load my_filter %}
+                                    {% for i in chosen_hull.engines|add:"0"|create_range %}
+                                        <p>
+                                            <select name="choice_engine" class="scientic">
+                                                {% for engine in engines %}
+                                                    <option value="{{ engine.id }}"> {{ engine.name }} </option>
+                                                {% endfor %}
+                                            </select>
 
-                                    <p>Когда-то в одном маленьком селе жил-был хулиганистый, задиристый, но очень добрый
-                                        в
-                                        душе
-                                        паренек.
-                                        Звали его как отца, но похож он был на соседа. Из pодных и близких y него была
-                                        сестрица
-                                        Аленушка,
-                                        подлюка редкая. И вот однажды к немy подходит стpанно выглядящий человек. И
-                                        говорит:
-                                        -
-                                        Следуй за
-                                        мной! Герой прикидывает, куда бы перепрятать накопленное золотишко. Тогда
-                                        странный
-                                        собеседник
-                                        говорит: - Я заболтаю тебя до смерти!
-                                    </p>
+                                            <select name="choice_engine_side" class="scientic">
+                                                <option value="2">Back</option>
+                                            </select>
+                                        </p>
+                                    {% endfor %}
+
+
                                 </div>
                             </li>
                             <li>
                                 <input type="radio" name="design_tabs-0" id="design_tabs-0-3"/>
-                                <label for="design_tabs-0-3">Вкладка 4</label>
+                                <label for="design_tabs-0-3">Generator</label>
 
                                 <div>
-                                    <h3>Разрушая одиночку</h3>
-
-                                    <p>Главный злодей растерян. Он-то думал, что это он Хороший, а оказалось совсем
-                                        наоборот. Не
-                                        в силах
-                                        перенести это потрясение злодей делает себе харакири двуручным мечом.
-                                        Все делают вид, что счастливы. А главный герой понимает, что исполнил свое
-                                        предназначение, и теперь он
-                                        может вернуться домой, чтобы в сытости и довольстве прозябать до самой
-                                        старости.</p>
+                                    <h3>Select generator side to fit on the body</h3>
+                                    {% load my_filter %}
+                                    {% for i in chosen_hull.generators|add:"0"|create_range %}
+                                        <p>
+                                            <select name="choice_generator" class="scientic">
+                                                {% for generator in generators %}
+                                                    <option value="{{ generator.id }}"> {{ generator.name }} </option>
+                                                {% endfor %}
+                                            </select>
+                                        </p>
+                                    {% endfor %}
                                 </div>
                             </li>
                             <li>
                                 <input type="radio" name="design_tabs-0" id="design_tabs-0-4"/>
-                                <label for="design_tabs-0-4">Вкладка 4</label>
+                                <label for="design_tabs-0-4">Weapon</label>
 
                                 <div>
-                                    <h3>Разрушая одиночку</h3>
+                                    <h3>Select weapon side to fit on the body</h3>
+                                    {% load my_filter %}
+                                    {% for i in chosen_hull.weapons|add:"0"|create_range %}
+                                        <p>
+                                            <select name="choice_weapon" class="scientic">
+                                                {% for weapon in weapons %}
+                                                    <option value="{{ weapon.id }}"> {{ weapon.name }} </option>
+                                                {% endfor %}
+                                            </select>
 
-                                    <p>Главный злодей растерян. Он-то думал, что это он Хороший, а оказалось совсем
-                                        наоборот. Не
-                                        в силах
-                                        перенести это потрясение злодей делает себе харакири двуручным мечом.
-                                        Все делают вид, что счастливы. А главный герой понимает, что исполнил свое
-                                        предназначение, и теперь он
-                                        может вернуться домой, чтобы в сытости и довольстве прозябать до самой
-                                        старости.</p>
+                                            <select name="choice_weapon_side" class="scientic">
+                                                <option value="0">Choice side</option>
+                                                <option value="1">Front</option>
+                                                <option value="3">Top</option>
+                                                <option value="4">Right</option>
+                                                <option value="6">Left</option>
+                                            </select>
+                                        </p>
+                                    {% endfor %}
+
+
                                 </div>
                             </li>
                             <li>
                                 <input type="radio" name="design_tabs-0" id="design_tabs-0-5"/>
-                                <label for="design_tabs-0-5">Вкладка 4</label>
+                                <label for="design_tabs-0-5">Main weapon</label>
 
                                 <div>
-                                    <h3>Разрушая одиночку</h3>
+                                    <h3>Select main weapon side to fit on the body</h3>
+                                    {% load my_filter %}
+                                    {% for i in chosen_hull.main_weapons|add:"0"|create_range %}
+                                        <p>
+                                            <select name="choice_main_weapon" class="scientic">
+                                                {% for main_weapon in main_weapons %}
+                                                    <option value="{{ main_weapon.id }}"> {{ main_weapon.name }} </option>
+                                                {% endfor %}
+                                            </select>
 
-                                    <p>Главный злодей растерян. Он-то думал, что это он Хороший, а оказалось совсем
-                                        наоборот. Не
-                                        в силах
-                                        перенести это потрясение злодей делает себе харакири двуручным мечом.
-                                        Все делают вид, что счастливы. А главный герой понимает, что исполнил свое
-                                        предназначение, и теперь он
-                                        может вернуться домой, чтобы в сытости и довольстве прозябать до самой
-                                        старости.</p>
+                                            <select name="choice_main_weapon_side" class="scientic">
+                                                <option value="3">Top</option>
+                                            </select>
+                                        </p>
+                                    {% endfor %}
+
+
                                 </div>
                             </li>
                             <li>
                                 <input type="radio" name="design_tabs-0" id="design_tabs-0-6"/>
-                                <label for="design_tabs-0-6">Вкладка 4</label>
+                                <label for="design_tabs-0-6">Module</label>
 
                                 <div>
-                                    <h3>Разрушая одиночку</h3>
+                                    <h3>Select module side to fit on the body</h3>
+                                    {% load my_filter %}
+                                    {% for i in chosen_hull.modules|add:"0"|create_range %}
+                                        <p>
+                                            <select name="choice_module" class="scientic">
+                                                {% for module in modules %}
+                                                    <option value="{{ module.id }}"> {{ module.name }} </option>
+                                                {% endfor %}
+                                            </select>
+                                        </p>
+                                    {% endfor %}
 
-                                    <p>Главный злодей растерян. Он-то думал, что это он Хороший, а оказалось совсем
-                                        наоборот. Не
-                                        в силах
-                                        перенести это потрясение злодей делает себе харакири двуручным мечом.
-                                        Все делают вид, что счастливы. А главный герой понимает, что исполнил свое
-                                        предназначение, и теперь он
-                                        может вернуться домой, чтобы в сытости и довольстве прозябать до самой
-                                        старости.</p>
+
                                 </div>
                             </li>
 
                         </ul>
-                    </form>
-                </div>
+
+                    </div>
+                    <div>
+                        <input class="scientic" type="submit" value="OK" name="create_ship_pattern"/>
+                        <button class="scientic" type="submit" name="cancel_button" action="cancel">Cancel</button>
+                    </div>
+                </form>
             {% endif %}
-            FINAL
+
 
         </div>
 

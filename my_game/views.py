@@ -24,6 +24,7 @@ from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_patter
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
 from models import Warehouse_factory, Warehouse_element, Warehouse_ship
 import function
+from models import Project_ship, Element_ship, Ship
 
 
 def home(request):
@@ -558,45 +559,21 @@ def warehouse(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
         # device_patterns = Device_pattern.objects.filter(user = session_user)
-        attribute_factorys = ("name", "price_internal_currency", "price_resource1", "price_resource2", \
-                              "price_resource3", "price_resource4", "price_mineral1", "price_mineral2", \
-                              "price_mineral3", "price_mineral4", "cost_expert_deployment", "assembly_workpiece" \
-                                  , "time_deployment", "production_class", "production_id", "time_production", \
-                              "size", "mass", "power_consumption")
-        attribute_hulls = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                           "health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "module",
+        attribute_factorys = ("cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", \
+                              "production_id", "time_production", "size", "mass", "power_consumption")
+        attribute_hulls = ("health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "modules", \
                            "hold_size", "size", "mass", "power_consuption")
-
-        attribute_armors = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                            "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                            "health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration",
+        attribute_armors = ("health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration", \
                             "mass")
-        attribute_shields = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                             "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                             "health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter",
-                             "regeneration",
+        attribute_shields = ("health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter", \
+                             "regeneration", "mass", "size", "power_consuption")
+        attribute_engines = ("health", "system_power", "intersystem_power", "giper_power", "nullT_power", \
+                             "regeneration", "mass", "size", "power_consuption")
+        attribute_generators = ("health", "produced_energy", "fuel_necessary", "mass", "size")
+        attribute_weapons = ("health", "energy_damage", "regenerations", "number_of_bursts", "range", "accuracy", \
                              "mass", "size", "power_consuption")
-        attribute_engines = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                             "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                             "health", "system_power", "intersystem_power", "giper_power", "nullT_power",
-                             "regeneration",
-                             "mass", "size", "power_consuption")
-        attribute_generators = ("name", "price_internal_currency", "price_resource1", "price_resource2", \
-                                "price_resource3", "price_resource4", "price_mineral1", "price_mineral2", \
-                                "price_mineral3", "price_mineral4", "health", "produced_energy", \
-                                "fuel_necessary", "mass", "size")
-        attribute_weapons = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                             "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                             "health", "energy_damage", "regenerations", "number_of_bursts", "range", "accuracy",
-                             "mass",
-                             "size", "power_consuption")
-        attribute_shells = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                            "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                            "phisical_damage", "speed", "mass", "size")
-        attribute_modules = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                             "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                             "health", "param1", "param2", "param3", "mass", "size", "power_consuption")
+        attribute_shells = ("phisical_damage", "speed", "mass", "size")
+        attribute_modules = ("health", "param1", "param2", "param3", "mass", "size", "power_consuption")
 
     request.session['userid'] = session_user
     request.session['user_city'] = session_user_city
@@ -923,17 +900,77 @@ def new_ship(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
+        armors = {}
+        shields = {}
+        engines = {}
+        generators = {}
+        weapons = {}
+        main_weapons = {}
+        modules = {}
+        chosen_name = {}
+        chosen_hull = {}
+        hulls = {}
+        choice_armor = []
 
-        chosen_hull_id = request.POST.get('choice_pattern')
-        chosen_name = request.POST.get('ship_name')
+        if request.POST.get('create_ship'):
+            chosen_hull_id = request.POST.get('choice_pattern')
+            chosen_name = request.POST.get('ship_name')
+            chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
+            armors = Armor_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            shields = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            engines = Engine_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            generators = Generator_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            main_weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+
+        if request.POST.get('create_ship_pattern'):
+            chosen_hull_id = request.POST.get('chosen_hull')
+            chosen_name = request.POST.get('chosen_hull_name')
+            chosen_hull = chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
+            hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            new_pattern_ship = Project_ship(
+                user = session_user,
+                name = chosen_name,
+                hull_id = chosen_hull_id
+            )
+            new_pattern_ship.save()
+            pattern_ship_id = new_pattern_ship.pk
+
+            full_request = request.POST
+            myDict = dict(full_request.iterlists())
+            choice_armor = myDict.get('choice_armor')
+            choice_armor_side = myDict.get('choice_armor_side')
+            for i in range(chosen_hull.armor):
+                armor = Armor_pattern.objects.filter(id = choice_armor[i]).first()
+                element = Element_ship(
+                    id_project_ship = pattern_ship_id,
+                    class_element = 2,
+                    id_element_pattern = choice_armor[i],
+                    position = choice_armor_side[i],
+                    health = armor.health
+                )
+                element.save()
+
+            choice_shield = myDict.get('choice_shield')
+            choice_shield_side = myDict.get('choice_shield_side')
+            choice_engine = myDict.get('choice_engine')
+            choice_generator = myDict.get('choice_generator')
+            choice_weapon = myDict.get('choice_weapon')
+            choice_weapon_side = myDict.get('choice_weapon_side')
+            choice_main_weapon = myDict.get('choice_main_weapon')
+            choice_main_weapon_side = myDict.get('choice_main_weapon_sidsse')
+            choice_module = myDict.get('choice_module')
+
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
-        chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'chosen_hull': chosen_hull, 'chosen_name': chosen_name}
+                  'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
+                  'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
+                  'main_weapons': main_weapons, 'modules': modules,'hulls': hulls}
         return render(request, "designingships.html", output)

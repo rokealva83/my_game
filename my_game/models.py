@@ -854,3 +854,70 @@ class Turn_assembly_pieces(models.Model):
     amount_assembly = models.IntegerField(default=0)
     start_time_assembly = models.DateTimeField()
     finish_time_assembly = models.DateTimeField()
+
+
+class Project_ship(models.Model):
+    class Meta():
+        db_table = 'project_ship'
+
+    user = models.IntegerField()
+    name = models.CharField(max_length=20)
+    hull_id = models.IntegerField()
+    system_power = models.IntegerField(default=0)
+    intersystem_power = models.IntegerField(default=0)
+    giper_power = models.IntegerField(default=0)
+    giper_accuracy = models.FloatField(default=0.9)
+    null_power = models.IntegerField(default=0)
+    null_accuracy = models.FloatField(default=0.9)
+    maneuverability = models.FloatField(default=0)
+
+
+class Element_ship(models.Model):
+    class Meta():
+        db_table = 'element_ship'
+
+    id_project_ship = models.IntegerField()
+    class_element = models.IntegerField()
+    id_element_pattern = models.IntegerField()
+    position = models.IntegerField()
+    health = models.IntegerField()
+
+
+
+class Ship(models.Model):
+    class Meta():
+        db_table = 'ship'
+
+    user = models.IntegerField()
+    id_project_ship = models.IntegerField()
+    amount_ship = models.IntegerField()
+    fleet_status = models.BooleanField(default=0)
+    place_id = models.IntegerField()
+
+
+class fleet(models.Model):
+    class Meta():
+        db_table = 'fleet'
+
+    user = models.IntegerField()
+    name = models.CharField(max_length=20)
+    x = models.IntegerField()
+    y = models.IntegerField()
+    z = models.IntegerField()
+    status = models.IntegerField()
+    system_power = models.IntegerField()
+    intersystem_power = models.IntegerField()
+    giper_power = models.IntegerField()
+    giper_accuracy = models.FloatField(default=0.9)
+    null_power = models.IntegerField()
+    null_accuracy = models.FloatField(default=0.9)
+    use_power_engine_system = models.IntegerField()
+    use_power_engine_intersystem = models.IntegerField()
+    use_power_engine_giper = models.IntegerField()
+    use_power_engine_null = models.IntegerField()
+    use_power_hull = models.IntegerField()
+    use_power_shield = models.IntegerField()
+    use_power_weapon = models.IntegerField()
+    use_power_module = models.IntegerField()
+    maneuverability = models.FloatField()
+
