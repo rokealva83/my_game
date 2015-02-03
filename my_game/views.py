@@ -561,7 +561,7 @@ def warehouse(request):
         # device_patterns = Device_pattern.objects.filter(user = session_user)
         attribute_factorys = ("cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", \
                               "production_id", "time_production", "size", "mass", "power_consumption")
-        attribute_hulls = ("health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "modules", \
+        attribute_hulls = ("health", "generator", "engine", "weapon", "armor", "shield", "main_weapon", "module", \
                            "hold_size", "size", "mass", "power_consuption")
         attribute_armors = ("health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration", \
                             "mass")
@@ -954,6 +954,17 @@ def new_ship(request):
 
             choice_shield = myDict.get('choice_shield')
             choice_shield_side = myDict.get('choice_shield_side')
+            for i in range(chosen_hull.shield):
+                armor = Armor_pattern.objects.filter(id = choice_armor[i]).first()
+                element = Element_ship(
+                    id_project_ship = pattern_ship_id,
+                    class_element = 2,
+                    id_element_pattern = choice_armor[i],
+                    position = choice_armor_side[i],
+                    health = armor.health
+                )
+                element.save()
+
             choice_engine = myDict.get('choice_engine')
             choice_generator = myDict.get('choice_generator')
             choice_weapon = myDict.get('choice_weapon')

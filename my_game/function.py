@@ -296,13 +296,13 @@ def hull_upgrade(request):
                 user=user,
                 basic_id=hull_scient.id,
                 health=hull_scient.health,
-                generators=hull_scient.generators,
-                engines=hull_scient.engines,
-                weapons=hull_scient.weapons,
+                generator=hull_scient.generator,
+                engine=hull_scient.engine,
+                weapon=hull_scient.weapon,
                 armor=hull_scient.armor,
                 shield=hull_scient.shield,
-                modules=hull_scient.modules,
-                main_weapons=hull_scient.main_weapons,
+                module=hull_scient.module,
+                main_weapon=hull_scient.main_weapon,
                 hold_size=hull_scient.hold_size,
                 mass=hull_scient.mass,
                 size=hull_scient.size,
@@ -322,8 +322,8 @@ def hull_upgrade(request):
 
     else:
         u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
-        hull_atribute = ['health', 'generators', 'engines', 'weapons', 'armor', 'shield', 'modules', \
-                         'main_weapons', 'hold_size', 'mass', 'size', 'power_consuption']
+        hull_atribute = ['health', 'generator', 'engine', 'weapon', 'armor', 'shield', 'module', \
+                         'main_weapon', 'hold_size', 'mass', 'size', 'power_consuption']
         trying = random.random()
         if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
             number = random.randint(0, 11)

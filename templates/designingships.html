@@ -100,7 +100,7 @@
                                 <div>
                                     <h3>Select engine side to fit on the body</h3>
                                     {% load my_filter %}
-                                    {% for i in chosen_hull.engines|add:"0"|create_range %}
+                                    {% for i in chosen_hull.engine|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_engine" class="scientic">
                                                 {% for engine in engines %}
@@ -124,7 +124,7 @@
                                 <div>
                                     <h3>Select generator side to fit on the body</h3>
                                     {% load my_filter %}
-                                    {% for i in chosen_hull.generators|add:"0"|create_range %}
+                                    {% for i in chosen_hull.generator|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_generator" class="scientic">
                                                 {% for generator in generators %}
@@ -142,7 +142,7 @@
                                 <div>
                                     <h3>Select weapon side to fit on the body</h3>
                                     {% load my_filter %}
-                                    {% for i in chosen_hull.weapons|add:"0"|create_range %}
+                                    {% for i in chosen_hull.weapon|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_weapon" class="scientic">
                                                 {% for weapon in weapons %}
@@ -170,7 +170,7 @@
                                 <div>
                                     <h3>Select main weapon side to fit on the body</h3>
                                     {% load my_filter %}
-                                    {% for i in chosen_hull.main_weapons|add:"0"|create_range %}
+                                    {% for i in chosen_hull.main_weapon|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_main_weapon" class="scientic">
                                                 {% for main_weapon in main_weapons %}
@@ -194,7 +194,7 @@
                                 <div>
                                     <h3>Select module side to fit on the body</h3>
                                     {% load my_filter %}
-                                    {% for i in chosen_hull.modules|add:"0"|create_range %}
+                                    {% for i in chosen_hull.module|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_module" class="scientic">
                                                 {% for module in modules %}
