@@ -43,6 +43,7 @@
                                     {% for i in chosen_hull.armor|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_armor" class="scientic">
+                                                <option value="0">Select element</option>
                                                 {% for armor in armors %}
                                                     <option value="{{ armor.id }}">{{ armor.name }}</option>
                                                 {% endfor %}
@@ -73,6 +74,7 @@
                                     {% for i in chosen_hull.shield|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_shield" class="scientic">
+                                                <option value="0">Select element</option>
                                                 {% for shield in shields %}
                                                     <option value="{{ shield.id }}"> {{ shield.name }} </option>
                                                 {% endfor %}
@@ -103,6 +105,7 @@
                                     {% for i in chosen_hull.engine|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_engine" class="scientic">
+                                                <option value="0">Select element</option>
                                                 {% for engine in engines %}
                                                     <option value="{{ engine.id }}"> {{ engine.name }} </option>
                                                 {% endfor %}
@@ -127,6 +130,7 @@
                                     {% for i in chosen_hull.generator|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_generator" class="scientic">
+                                                <option value="0">Select element</option>
                                                 {% for generator in generators %}
                                                     <option value="{{ generator.id }}"> {{ generator.name }} </option>
                                                 {% endfor %}
@@ -145,6 +149,7 @@
                                     {% for i in chosen_hull.weapon|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_weapon" class="scientic">
+                                                <option value="0">Select element</option>
                                                 {% for weapon in weapons %}
                                                     <option value="{{ weapon.id }}"> {{ weapon.name }} </option>
                                                 {% endfor %}
@@ -173,6 +178,7 @@
                                     {% for i in chosen_hull.main_weapon|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_main_weapon" class="scientic">
+                                                <option value="0">Select element</option>
                                                 {% for main_weapon in main_weapons %}
                                                     <option value="{{ main_weapon.id }}"> {{ main_weapon.name }} </option>
                                                 {% endfor %}
@@ -197,6 +203,7 @@
                                     {% for i in chosen_hull.module|add:"0"|create_range %}
                                         <p>
                                             <select name="choice_module" class="scientic">
+                                                <option value="0">Select element</option>
                                                 {% for module in modules %}
                                                     <option value="{{ module.id }}"> {{ module.name }} </option>
                                                 {% endfor %}

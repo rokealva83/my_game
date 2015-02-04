@@ -941,37 +941,106 @@ def new_ship(request):
             myDict = dict(full_request.iterlists())
             choice_armor = myDict.get('choice_armor')
             choice_armor_side = myDict.get('choice_armor_side')
-            for i in range(chosen_hull.armor):
-                armor = Armor_pattern.objects.filter(id = choice_armor[i]).first()
-                element = Element_ship(
-                    id_project_ship = pattern_ship_id,
-                    class_element = 2,
-                    id_element_pattern = choice_armor[i],
-                    position = choice_armor_side[i],
-                    health = armor.health
-                )
-                element.save()
+            if choice_armor:
+                for i in range(chosen_hull.armor):
+                    if int(choice_armor[i]) != 0:
+                        armor = Armor_pattern.objects.filter(id = choice_armor[i]).first()
+                        element = Element_ship(
+                            id_project_ship = pattern_ship_id,
+                            class_element = 2,
+                            id_element_pattern = choice_armor[i],
+                            position = choice_armor_side[i],
+                            health = armor.health
+                        )
+                        element.save()
 
             choice_shield = myDict.get('choice_shield')
             choice_shield_side = myDict.get('choice_shield_side')
-            for i in range(chosen_hull.shield):
-                armor = Armor_pattern.objects.filter(id = choice_armor[i]).first()
-                element = Element_ship(
-                    id_project_ship = pattern_ship_id,
-                    class_element = 2,
-                    id_element_pattern = choice_armor[i],
-                    position = choice_armor_side[i],
-                    health = armor.health
-                )
-                element.save()
+            if choice_shield:
+                for i in range(chosen_hull.shield):
+                    if int(choice_shield[i]) != 0:
+                        shield = Shield_pattern.objects.filter(id = choice_shield[i]).first()
+                        element = Element_ship(
+                            id_project_ship = pattern_ship_id,
+                            class_element = 3,
+                            id_element_pattern = choice_shield[i],
+                            position = choice_shield_side[i],
+                            health = shield.health
+                        )
+                        element.save()
 
             choice_engine = myDict.get('choice_engine')
+            if choice_engine:
+                for i in range(chosen_hull.engine):
+                    if int(choice_engine[i]) != 0:
+                        engine = Engine_pattern.objects.filter(id = choice_engine[i]).first()
+                        element = Element_ship(
+                            id_project_ship = pattern_ship_id,
+                            class_element = 4,
+                            id_element_pattern = choice_engine[i],
+                            position = 2,
+                            health = engine.health
+                        )
+                        element.save()
+
             choice_generator = myDict.get('choice_generator')
+            if choice_generator:
+                for i in range(chosen_hull.generator):
+                    if int(choice_generator[i]) != 0:
+                        generator = Generator_pattern.objects.filter(id = choice_generator[i]).first()
+                        element = Element_ship(
+                            id_project_ship = pattern_ship_id,
+                            class_element = 5,
+                            id_element_pattern = choice_generator[i],
+                            position = 0,
+                            health = generator.health
+                        )
+                        element.save()
+
             choice_weapon = myDict.get('choice_weapon')
             choice_weapon_side = myDict.get('choice_weapon_side')
+            if choice_weapon:
+                for i in range(chosen_hull.main_weapon):
+                    if int(choice_weapon[i]) != 0:
+                        weapon = Weapon_pattern.objects.filter(id = choice_weapon[i]).first()
+                        element = Element_ship(
+                            id_project_ship = pattern_ship_id,
+                            class_element = 6,
+                            id_element_pattern = choice_weapon[i],
+                            position = choice_weapon_side[i],
+                            health = weapon.health
+                        )
+                        element.save()
+
             choice_main_weapon = myDict.get('choice_main_weapon')
-            choice_main_weapon_side = myDict.get('choice_main_weapon_sidsse')
+            choice_main_weapon_side = myDict.get('choice_main_weapon_side')
+            if choice_main_weapon:
+                for i in range(chosen_hull.weapon):
+                    if int(choice_main_weapon[i]) != 0:
+                        weapon = Weapon_pattern.objects.filter(id = choice_weapon[i]).first()
+                        element = Element_ship(
+                            id_project_ship = pattern_ship_id,
+                            class_element = 6,
+                            id_element_pattern = choice_main_weapon[i],
+                            position = choice_main_weapon_side[i],
+                            health = weapon.health
+                        )
+                        element.save()
+
             choice_module = myDict.get('choice_module')
+            if choice_module:
+                for i in range(chosen_hull.module):
+                    if int(choice_module[i]) != 0:
+                        module = Module_pattern.objects.filter(id = choice_module[i]).first()
+                        element = Element_ship(
+                            id_project_ship = pattern_ship_id,
+                            class_element = 8,
+                            id_element_pattern = choice_module[i],
+                            position = 0,
+                            health = module.health
+                        )
+                        element.save()
+
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
