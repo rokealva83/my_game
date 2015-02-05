@@ -886,11 +886,12 @@ def designingships(request):
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'hulls': hulls}
+                  'hulls': hulls, 'project_ships': project_ships}
         return render(request, "designingships.html", output)
 
 
@@ -912,7 +913,7 @@ def new_ship(request):
         hulls = {}
         choice_armor = []
 
-        if request.POST.get('create_ship'):
+        if request.POST.get('create_pattern'):
             chosen_hull_id = request.POST.get('choice_pattern')
             chosen_name = request.POST.get('ship_name')
             chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
@@ -930,9 +931,9 @@ def new_ship(request):
             chosen_hull = chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
             hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
             new_pattern_ship = Project_ship(
-                user = session_user,
-                name = chosen_name,
-                hull_id = chosen_hull_id
+                user=session_user,
+                name=chosen_name,
+                hull_id=chosen_hull_id
             )
             new_pattern_ship.save()
             pattern_ship_id = new_pattern_ship.pk
@@ -944,13 +945,13 @@ def new_ship(request):
             if choice_armor:
                 for i in range(chosen_hull.armor):
                     if int(choice_armor[i]) != 0:
-                        armor = Armor_pattern.objects.filter(id = choice_armor[i]).first()
+                        armor = Armor_pattern.objects.filter(id=choice_armor[i]).first()
                         element = Element_ship(
-                            id_project_ship = pattern_ship_id,
-                            class_element = 2,
-                            id_element_pattern = choice_armor[i],
-                            position = choice_armor_side[i],
-                            health = armor.health
+                            id_project_ship=pattern_ship_id,
+                            class_element=2,
+                            id_element_pattern=choice_armor[i],
+                            position=choice_armor_side[i],
+                            health=armor.health
                         )
                         element.save()
 
@@ -959,13 +960,13 @@ def new_ship(request):
             if choice_shield:
                 for i in range(chosen_hull.shield):
                     if int(choice_shield[i]) != 0:
-                        shield = Shield_pattern.objects.filter(id = choice_shield[i]).first()
+                        shield = Shield_pattern.objects.filter(id=choice_shield[i]).first()
                         element = Element_ship(
-                            id_project_ship = pattern_ship_id,
-                            class_element = 3,
-                            id_element_pattern = choice_shield[i],
-                            position = choice_shield_side[i],
-                            health = shield.health
+                            id_project_ship=pattern_ship_id,
+                            class_element=3,
+                            id_element_pattern=choice_shield[i],
+                            position=choice_shield_side[i],
+                            health=shield.health
                         )
                         element.save()
 
@@ -973,13 +974,13 @@ def new_ship(request):
             if choice_engine:
                 for i in range(chosen_hull.engine):
                     if int(choice_engine[i]) != 0:
-                        engine = Engine_pattern.objects.filter(id = choice_engine[i]).first()
+                        engine = Engine_pattern.objects.filter(id=choice_engine[i]).first()
                         element = Element_ship(
-                            id_project_ship = pattern_ship_id,
-                            class_element = 4,
-                            id_element_pattern = choice_engine[i],
-                            position = 2,
-                            health = engine.health
+                            id_project_ship=pattern_ship_id,
+                            class_element=4,
+                            id_element_pattern=choice_engine[i],
+                            position=2,
+                            health=engine.health
                         )
                         element.save()
 
@@ -987,13 +988,13 @@ def new_ship(request):
             if choice_generator:
                 for i in range(chosen_hull.generator):
                     if int(choice_generator[i]) != 0:
-                        generator = Generator_pattern.objects.filter(id = choice_generator[i]).first()
+                        generator = Generator_pattern.objects.filter(id=choice_generator[i]).first()
                         element = Element_ship(
-                            id_project_ship = pattern_ship_id,
-                            class_element = 5,
-                            id_element_pattern = choice_generator[i],
-                            position = 0,
-                            health = generator.health
+                            id_project_ship=pattern_ship_id,
+                            class_element=5,
+                            id_element_pattern=choice_generator[i],
+                            position=0,
+                            health=generator.health
                         )
                         element.save()
 
@@ -1002,13 +1003,13 @@ def new_ship(request):
             if choice_weapon:
                 for i in range(chosen_hull.main_weapon):
                     if int(choice_weapon[i]) != 0:
-                        weapon = Weapon_pattern.objects.filter(id = choice_weapon[i]).first()
+                        weapon = Weapon_pattern.objects.filter(id=choice_weapon[i]).first()
                         element = Element_ship(
-                            id_project_ship = pattern_ship_id,
-                            class_element = 6,
-                            id_element_pattern = choice_weapon[i],
-                            position = choice_weapon_side[i],
-                            health = weapon.health
+                            id_project_ship=pattern_ship_id,
+                            class_element=6,
+                            id_element_pattern=choice_weapon[i],
+                            position=choice_weapon_side[i],
+                            health=weapon.health
                         )
                         element.save()
 
@@ -1017,13 +1018,13 @@ def new_ship(request):
             if choice_main_weapon:
                 for i in range(chosen_hull.weapon):
                     if int(choice_main_weapon[i]) != 0:
-                        weapon = Weapon_pattern.objects.filter(id = choice_weapon[i]).first()
+                        weapon = Weapon_pattern.objects.filter(id=choice_weapon[i]).first()
                         element = Element_ship(
-                            id_project_ship = pattern_ship_id,
-                            class_element = 6,
-                            id_element_pattern = choice_main_weapon[i],
-                            position = choice_main_weapon_side[i],
-                            health = weapon.health
+                            id_project_ship=pattern_ship_id,
+                            class_element=6,
+                            id_element_pattern=choice_main_weapon[i],
+                            position=choice_main_weapon_side[i],
+                            health=weapon.health
                         )
                         element.save()
 
@@ -1031,16 +1032,15 @@ def new_ship(request):
             if choice_module:
                 for i in range(chosen_hull.module):
                     if int(choice_module[i]) != 0:
-                        module = Module_pattern.objects.filter(id = choice_module[i]).first()
+                        module = Module_pattern.objects.filter(id=choice_module[i]).first()
                         element = Element_ship(
-                            id_project_ship = pattern_ship_id,
-                            class_element = 8,
-                            id_element_pattern = choice_module[i],
-                            position = 0,
-                            health = module.health
+                            id_project_ship=pattern_ship_id,
+                            class_element=8,
+                            id_element_pattern=choice_module[i],
+                            position=0,
+                            health=module.health
                         )
                         element.save()
-
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
@@ -1052,5 +1052,29 @@ def new_ship(request):
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                   'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
-                  'main_weapons': main_weapons, 'modules': modules,'hulls': hulls}
+                  'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls}
+        return render(request, "designingships.html", output)
+
+
+def work_with_project(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
+
+
+
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
+        hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                  'hulls': hulls, 'project_ships': project_ships}
         return render(request, "designingships.html", output)

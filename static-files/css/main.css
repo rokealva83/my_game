@@ -664,7 +664,6 @@ h1, h2, h3, h4, h5, h6 {
     visibility: visible;
 }
 
-
 #block_design_left {
     width: 43%;
     background-color: #616161;
@@ -687,7 +686,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 8px;
 }
 
-#block_design_up{
+#block_design_up {
     height: 40px;
     text-align: center;
 }
@@ -804,4 +803,11 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid #000;
     opacity: 0.9;
     text-align: center;
+}
+
+#project_list {
+    margin: 5px;
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 7px;
 }

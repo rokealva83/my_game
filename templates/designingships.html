@@ -1,13 +1,26 @@
 {% extends "base.html" %}
-
 {% block title %}Проектирование кораблей{% endblock %}
-
 {% block content %}
-
     <div id="game_content">
         <div id="block_design_left">
-            {% load staticfiles %}
-            <img src="{% static "images/Civilization/Planet.jpg" %}" style="margin: 10px">
+            <h3 style="text-align: center">Project list</h3>
+            {% for project_ship in project_ships %}
+                <div id="project_list">
+                    <p>
+                        {{ project_ship.name }}
+
+                    <form method="POST" action="work_with_project">
+                        <input type="create" value="" name="amount" class="scientic_place"
+                               placeholder="Количество"/>
+                        <input class="scientic" type="submit" value="Create" name="create_ship"/>
+                        <input class="scientic" type="submit" value="Modification" name="modificate_pattern"/>
+                    </form>
+                    </p>
+
+                    <p></p>
+                </div>
+            {% endfor %}
+
         </div>
         <div id="block_design_right">
             {% if chosen_hull == None %}
@@ -21,14 +34,13 @@
                             </select>
                             Ship name <input type="ship_name" value="" name="ship_name" class="scientic_place"
                                              placeholder="Название"/>
-                            <input class="scientic" type="submit" value="Create" name="create_ship"/>
+                            <input class="scientic" type="submit" value="Create" name="create_pattern"/>
                         </p>
                     </form>
                 </div>
             {% else %}
                 <form method="POST" action="new_ship">
                     <div class="design_tabs">
-
                         <input type="hidden" id="{{ chosen_hull.id }}" value={{ chosen_hull.id }} name="chosen_hull">
                         <input type="hidden" id="{{ chosen_hull.name }}"
                                value={{ chosen_name }} name="chosen_hull_name">
@@ -48,7 +60,6 @@
                                                     <option value="{{ armor.id }}">{{ armor.name }}</option>
                                                 {% endfor %}
                                             </select>
-
                                             <select name="choice_armor_side" class="scientic">
                                                 <option value="0">Choice side</option>
                                                 <option value="1">Front</option>
@@ -60,8 +71,6 @@
                                             </select>
                                         </p>
                                     {% endfor %}
-
-
                                 </div>
                             </li>
                             <li>
@@ -79,7 +88,6 @@
                                                     <option value="{{ shield.id }}"> {{ shield.name }} </option>
                                                 {% endfor %}
                                             </select>
-
                                             <select name="choice_shield_side" class="scientic">
                                                 <option value="0">Choice side</option>
                                                 <option value="1">Front</option>
@@ -91,8 +99,6 @@
                                             </select>
                                         </p>
                                     {% endfor %}
-
-
                                 </div>
                             </li>
                             <li>
@@ -110,14 +116,11 @@
                                                     <option value="{{ engine.id }}"> {{ engine.name }} </option>
                                                 {% endfor %}
                                             </select>
-
                                             <select name="choice_engine_side" class="scientic">
                                                 <option value="2">Back</option>
                                             </select>
                                         </p>
                                     {% endfor %}
-
-
                                 </div>
                             </li>
                             <li>
@@ -154,7 +157,6 @@
                                                     <option value="{{ weapon.id }}"> {{ weapon.name }} </option>
                                                 {% endfor %}
                                             </select>
-
                                             <select name="choice_weapon_side" class="scientic">
                                                 <option value="0">Choice side</option>
                                                 <option value="1">Front</option>
@@ -164,8 +166,6 @@
                                             </select>
                                         </p>
                                     {% endfor %}
-
-
                                 </div>
                             </li>
                             <li>
@@ -183,14 +183,11 @@
                                                     <option value="{{ main_weapon.id }}"> {{ main_weapon.name }} </option>
                                                 {% endfor %}
                                             </select>
-
                                             <select name="choice_main_weapon_side" class="scientic">
                                                 <option value="3">Top</option>
                                             </select>
                                         </p>
                                     {% endfor %}
-
-
                                 </div>
                             </li>
                             <li>
@@ -210,13 +207,9 @@
                                             </select>
                                         </p>
                                     {% endfor %}
-
-
                                 </div>
                             </li>
-
                         </ul>
-
                     </div>
                     <div>
                         <input class="scientic" type="submit" value="OK" name="create_ship_pattern"/>
@@ -224,13 +217,8 @@
                     </div>
                 </form>
             {% endif %}
-
-
         </div>
-
         <div class="clear"></div>
     </div>
-
-
     <div class="clear"></div>
 {% endblock %}
