@@ -912,6 +912,10 @@ def new_ship(request):
         chosen_hull = {}
         hulls = {}
         choice_armor = []
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
 
         if request.POST.get('create_pattern'):
             chosen_hull_id = request.POST.get('choice_pattern')
@@ -924,6 +928,11 @@ def new_ship(request):
             weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
             main_weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
             modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+              'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
+              'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
+              'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls}
+
 
         if request.POST.get('create_ship_pattern'):
             chosen_hull_id = request.POST.get('chosen_hull')
@@ -937,6 +946,7 @@ def new_ship(request):
             )
             new_pattern_ship.save()
             pattern_ship_id = new_pattern_ship.pk
+            time_build = 300
 
             full_request = request.POST
             myDict = dict(full_request.iterlists())
@@ -954,6 +964,7 @@ def new_ship(request):
                             health=armor.health
                         )
                         element.save()
+                        time_build = time_build * 1.1
 
             choice_shield = myDict.get('choice_shield')
             choice_shield_side = myDict.get('choice_shield_side')
@@ -969,8 +980,13 @@ def new_ship(request):
                             health=shield.health
                         )
                         element.save()
+                        time_build = time_build * 1.1
 
             choice_engine = myDict.get('choice_engine')
+            system_power = 0
+            intersystem_power = 0
+            giper_power = 0
+            null_power = 0
             if choice_engine:
                 for i in range(chosen_hull.engine):
                     if int(choice_engine[i]) != 0:
@@ -983,6 +999,21 @@ def new_ship(request):
                             health=engine.health
                         )
                         element.save()
+                        system_power = system_power + engine.system_power
+                        intersystem_power = intersystem_power + engine.intersystem_power
+                        giper_power = giper_power + engine.giper_power
+                        null_power = null_power + engine.nullT_power
+                        time_build = time_build * 1.1
+
+            ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(system_power=system_power,
+                                                                                  intersystem_power=intersystem_power,
+                                                                                  giper_power=giper_power,
+                                                                                  null_power=null_power)
+            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+              'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
+              'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
+              'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls}
+
 
             choice_generator = myDict.get('choice_generator')
             if choice_generator:
@@ -997,6 +1028,7 @@ def new_ship(request):
                             health=generator.health
                         )
                         element.save()
+                        time_build = time_build * 1.1
 
             choice_weapon = myDict.get('choice_weapon')
             choice_weapon_side = myDict.get('choice_weapon_side')
@@ -1012,11 +1044,12 @@ def new_ship(request):
                             health=weapon.health
                         )
                         element.save()
+                        time_build = time_build * 1.1
 
             choice_main_weapon = myDict.get('choice_main_weapon')
             choice_main_weapon_side = myDict.get('choice_main_weapon_side')
             if choice_main_weapon:
-                for i in range(chosen_hull.weapon):
+                for i in range(chosen_hull.main_weapon):
                     if int(choice_main_weapon[i]) != 0:
                         weapon = Weapon_pattern.objects.filter(id=choice_weapon[i]).first()
                         element = Element_ship(
@@ -1027,6 +1060,7 @@ def new_ship(request):
                             health=weapon.health
                         )
                         element.save()
+                        time_build = time_build * 1.1
 
             choice_module = myDict.get('choice_module')
             if choice_module:
@@ -1041,19 +1075,18 @@ def new_ship(request):
                             health=module.health
                         )
                         element.save()
+                        time_build = time_build * 1.1
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
-        user_city = User_city.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
-        request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
-                  'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
-                  'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls}
-        return render(request, "designingships.html", output)
+            ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(time_build = time_build)
+            project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
+            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                  'hulls': hulls, 'project_ships': project_ships}
+
+
+    request.session['userid'] = session_user
+    request.session['user_city'] = session_user_city
+    request.session['live'] = True
+    return render(request, "designingships.html", output)
 
 
 def work_with_project(request):
@@ -1063,8 +1096,8 @@ def work_with_project(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-
-
+        if request.POST.get('create_ship'):
+            amount_ship = request.POST.get('amount')
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()

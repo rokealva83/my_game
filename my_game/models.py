@@ -870,6 +870,7 @@ class Project_ship(models.Model):
     null_power = models.IntegerField(default=0)
     null_accuracy = models.FloatField(default=0.9)
     maneuverability = models.FloatField(default=0)
+    time_build = models.IntegerField(default=0)
 
 
 class Element_ship(models.Model):
@@ -921,3 +922,12 @@ class fleet(models.Model):
     use_power_module = models.IntegerField()
     maneuverability = models.FloatField()
 
+class Turn_ship_build(models.Model):
+    class Meta():
+        db_table = 'turn_ship_build'
+
+    user = models.IntegerField()
+    ship_pattern = models.IntegerField()
+    amount = models.IntegerField()
+    start_time_build = models.DateTimeField()
+    finish_time_build = models.DateTimeField()
