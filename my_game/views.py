@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-
+from datetime import datetime, timedelta, date, time as dt_time
 from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, User_scientic, Turn_production, Turn_building, Turn_assembly_pieces
 from models import Basic_scientic, Turn_scientic, Basic_factory
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
@@ -1020,6 +1020,24 @@ def work_with_project(request):
                                     work_element_id = id_element
 
                     if error == 0:
+                        last_ship_build = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city).last()
+                        if last_ship_build is not None:
+                            start_time = last_ship_build.finish_time_build
+                        else:
+                            start_time = datetime.now()
+
+                        ship_pattern = Project_ship.objects.filter(id = ship_id).first()
+                        finish_time = start_time + timedelta(seconds=ship_pattern.time_build)
+                        turn_create_ship = Turn_ship_build(
+                            user = session_user,
+                            user_city = session_user_city,
+                            ship_pattern = ship_id,
+                            amount = amount_ship,
+                            start_time_build = start_time,
+                            finish_time_build = finish_time
+
+                        )
+                        turn_create_ship.save()
                         message = 'Сборка корабля начата'
                 else:
                     message = 'На складе не хватает комплектующих'
