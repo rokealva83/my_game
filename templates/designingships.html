@@ -12,9 +12,13 @@
                     <form method="POST" action="work_with_project">
                         <input type="create" value="" name="amount" class="scientic_place"
                                placeholder="Количество"/>
+                        <input type="hidden" id="ship{{ project_ship.id }}"
+                               value={{ project_ship.id }} name="hidden_ship">
                         <input class="scientic" type="submit" value="Create" name="create_ship"/>
                         <input class="scientic" type="submit" value="Modification" name="modificate_pattern"/>
+                        <input class="scientic" type="submit" value="Delete pattern" name="delete_pattern"/>
                     </form>
+
                     </p>
 
                     <p></p>

@@ -760,7 +760,6 @@ def production(request):
                 new_energy = user_city.use_energy - delete_factory.power_consumption
                 user_city = User_city.objects.filter(id=session_user_city).update(use_energy=new_energy)
                 delete_factory = Factory_installed.objects.filter(id = factory_id).delete()
-
                 message = 'Фабрика удалена'
 
         turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
@@ -999,7 +998,38 @@ def work_with_project(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         if request.POST.get('create_ship'):
+            ship_id = int(request.POST.get('hidden_ship'))
+            amount_ship = int(request.POST.get('amount'))
+            ship_pattern = Project_ship.objects.filter(id = ship_id).first()
+            warehouse_hull = Warehouse_element.objects.filter(user = session_user, user_city = session_user_city, element_class = 1, element_id = ship_pattern.hull_id).first()
+            if warehouse_hull.amount >= amount_ship:
+                error = 0
+                for i in range(2, 8):
+                    element_ships = Element_ship.objects.filter(id_project_ship = ship_id, class_element = i).order_by('id_element_pattern')
+                    work_element_id = 0
+                    if element_ships:
+                        for element_ship in element_ships:
+                            id_element = element_ship.id_element_pattern
+                            if id_element != work_element_id:
+                                number_element = len(Element_ship.objects.filter(id_project_ship = ship_id, class_element = i, id_element_pattern = id_element))
+                                warehouse_element = Warehouse_element.objects.filter(user = session_user, user_city = session_user_city, element_class = i, element_id = id_element).first()
+                                if warehouse_element <= number_element*amount_ship:
+                                    error = error + 1
+                                work_element_id = id_element
+
+            if error == 0:
+                t= 1
+            else:
+                message = 'На складе не хватает комплектующих'
+
+
+        if request.POST.get('modificate_pattern'):
             amount_ship = request.POST.get('amount')
+
+        if request.POST.get('delete_pattern'):
+            ship_id = request.POST.get('hidden_ship')
+            delete_ship_pattern = Project_ship.objects.filter(id = ship_id).delete()
+            delete_ship_element = Element_ship.objects.filter(id_project_ship = ship_id).all().delete()
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
