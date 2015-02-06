@@ -18,6 +18,7 @@ from models import Warehouse_factory, Warehouse_element
 import function
 import scientic_work
 import scientic_func
+import Global_variables
 from models import Project_ship, Element_ship
 from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
     Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Turn_building, Turn_assembly_pieces, \

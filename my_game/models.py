@@ -884,7 +884,6 @@ class Element_ship(models.Model):
     health = models.IntegerField()
 
 
-
 class Ship(models.Model):
     class Meta():
         db_table = 'ship'
@@ -922,6 +921,7 @@ class fleet(models.Model):
     use_power_module = models.IntegerField()
     maneuverability = models.FloatField()
 
+
 class Turn_ship_build(models.Model):
     class Meta():
         db_table = 'turn_ship_build'
@@ -932,3 +932,35 @@ class Turn_ship_build(models.Model):
     amount = models.IntegerField()
     start_time_build = models.DateTimeField()
     finish_time_build = models.DateTimeField()
+
+
+class Global_variables(models.Model):
+    class Meta():
+        db_table = 'global_variables'
+
+    registr_internal_currency = models.IntegerField()
+    registr_resource1 = models.IntegerField()
+    registr_resource2 = models.IntegerField()
+    registr_resource3 = models.IntegerField()
+    registr_resource4 = models.IntegerField()
+    registr_mineral1 = models.IntegerField()
+    registr_mineral2 = models.IntegerField()
+    registr_mineral3 = models.IntegerField()
+    registr_mineral4 = models.IntegerField()
+    basic_time_build_ship = models.IntegerField()
+    koef_ship_element_time = models.FloatField()
+    minimum_scan_time = models.IntegerField()
+    max_turn_assembly_pieces_basic = models.IntegerField()
+    max_turn_assembly_pieces_premium = models.IntegerField()
+    max_turn_building_basic = models.IntegerField()
+    max_turn_building_premium = models.IntegerField()
+    max_turn_production_basic = models.IntegerField()
+    max_turn_production_premium = models.IntegerField()
+    max_turn_scientic_basic = models.IntegerField()
+    max_turn_scientic_premium = models.IntegerField()
+    max_turn_ship_build_basic = models.IntegerField()
+    max_turn_ship_build_premium = models.IntegerField()
+    time_check_new_technology = models.IntegerField()
+    min_scientic_level = models.IntegerField()
+    tax_per_person = models.FloatField()
+    koef_price_increace_modern_element = models.FloatField()

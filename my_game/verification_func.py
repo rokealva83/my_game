@@ -25,6 +25,7 @@ from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_patter
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
 from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehouse
 import scientic_func
+import Global_variables
 
 
 def check_scientific_verification_queue(request):

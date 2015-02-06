@@ -18,6 +18,7 @@ import function
 import scientic_work
 import scientic_func
 import verification_func
+import Global_variables
 from models import Project_ship, Element_ship, Turn_ship_build
 
 
