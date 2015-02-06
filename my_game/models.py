@@ -927,6 +927,7 @@ class Turn_ship_build(models.Model):
         db_table = 'turn_ship_build'
 
     user = models.IntegerField()
+    user_city = models.IntegerField()
     ship_pattern = models.IntegerField()
     amount = models.IntegerField()
     start_time_build = models.DateTimeField()

@@ -212,6 +212,10 @@ def install_factory_unit(*args):
         install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).first()
         new_amount = install_factory.amount - 1
         install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).update(amount = new_amount)
+        if factory_pattern.production_class != 10:
+            user_city = User_city.objects.filter(user=session_user, id = session_user_city).first()
+            new_population = user_city.population - factory_pattern.cost_expert_deployment
+            user_city = User_city.objects.filter(id=user_city.id).update(population=new_population)
         message = 'Развертывание начато'
     else:
         message = 'Очередь заполнена'

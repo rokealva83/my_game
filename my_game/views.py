@@ -18,7 +18,7 @@ import function
 import scientic_work
 import scientic_func
 import verification_func
-from models import Project_ship, Element_ship
+from models import Project_ship, Element_ship, Turn_ship_build
 
 
 def home(request):
@@ -1000,27 +1000,29 @@ def work_with_project(request):
         if request.POST.get('create_ship'):
             ship_id = int(request.POST.get('hidden_ship'))
             amount_ship = int(request.POST.get('amount'))
-            ship_pattern = Project_ship.objects.filter(id = ship_id).first()
-            warehouse_hull = Warehouse_element.objects.filter(user = session_user, user_city = session_user_city, element_class = 1, element_id = ship_pattern.hull_id).first()
-            if warehouse_hull.amount >= amount_ship:
-                error = 0
-                for i in range(2, 8):
-                    element_ships = Element_ship.objects.filter(id_project_ship = ship_id, class_element = i).order_by('id_element_pattern')
-                    work_element_id = 0
-                    if element_ships:
-                        for element_ship in element_ships:
-                            id_element = element_ship.id_element_pattern
-                            if id_element != work_element_id:
-                                number_element = len(Element_ship.objects.filter(id_project_ship = ship_id, class_element = i, id_element_pattern = id_element))
-                                warehouse_element = Warehouse_element.objects.filter(user = session_user, user_city = session_user_city, element_class = i, element_id = id_element).first()
-                                if warehouse_element <= number_element*amount_ship:
-                                    error = error + 1
-                                work_element_id = id_element
+            len_turn_create_ship = len(Turn_ship_build.objects.filter(user = session_user, user_city = session_user_city))
+            if len_turn_create_ship < 5:
+                ship_pattern = Project_ship.objects.filter(id = ship_id).first()
+                warehouse_hull = Warehouse_element.objects.filter(user = session_user, user_city = session_user_city, element_class = 1, element_id = ship_pattern.hull_id).first()
+                if warehouse_hull.amount >= amount_ship:
+                    error = 0
+                    for i in range(2, 8):
+                        element_ships = Element_ship.objects.filter(id_project_ship = ship_id, class_element = i).order_by('id_element_pattern')
+                        work_element_id = 0
+                        if element_ships:
+                            for element_ship in element_ships:
+                                id_element = element_ship.id_element_pattern
+                                if id_element != work_element_id:
+                                    number_element = len(Element_ship.objects.filter(id_project_ship = ship_id, class_element = i, id_element_pattern = id_element))
+                                    warehouse_element = Warehouse_element.objects.filter(user = session_user, user_city = session_user_city, element_class = i, element_id = id_element).first()
+                                    if warehouse_element <= number_element*amount_ship:
+                                        error = error + 1
+                                    work_element_id = id_element
 
-            if error == 0:
-                t= 1
-            else:
-                message = 'На складе не хватает комплектующих'
+                    if error == 0:
+                        message = 'Сборка корабля начата'
+                else:
+                    message = 'На складе не хватает комплектующих'
 
 
         if request.POST.get('modificate_pattern'):

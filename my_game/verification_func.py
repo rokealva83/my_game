@@ -141,10 +141,6 @@ def verification_phase_of_construction(request):
                 user_city = User_city.objects.filter(user=user, id=turn_building.user_city).first()
                 new_max_population = user_city.max_population + 100 * factory_pattern.production_id
                 user_city = User_city.objects.filter(id=user_city.id).update(max_population=new_max_population)
-            else:
-                user_city = User_city.objects.filter(user=user, id=turn_building.user_city).first()
-                new_population = user_city.population - factory_pattern.cost_expert_deployment
-                user_city = User_city.objects.filter(id=user_city.id).update(population=new_population)
 
             turn_building = Turn_building.objects.filter(id=turn_building.id).delete()
 
