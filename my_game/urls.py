@@ -27,4 +27,6 @@ urlpatterns = patterns('',
                        url(r'designingships', 'my_game.views.designingships', name='designingships'),
                        url(r'new_ship', 'my_game.views.new_ship', name='new_ship'),
                        url(r'work_with_project', 'my_game.views.work_with_project', name='work_with_project'),
+                       url(r'space_forces', 'my_game.views.space_forces', name='space_forces'),
+
 )

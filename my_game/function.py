@@ -209,7 +209,9 @@ def install_factory_unit(*args):
                 finish_time_deployment=finish_time,
             )
         turn_building.save()
-        new_warehouse_factory = Warehouse_factory.objects.filter(factory_id=pattern_id).first()
+        install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).first()
+        new_amount = install_factory.amount - 1
+        install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).update(amount = new_amount)
         message = 'Развертывание начато'
     else:
         message = 'Очередь заполнена'

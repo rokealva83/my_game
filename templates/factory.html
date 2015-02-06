@@ -9,6 +9,7 @@
             <form method="post" action="choice_element"
                   enctype="multipart/form-data">
                 <p>{{ message }}</p>
+
                 <p>Выберите фабрику продукции</p>
 
                 <p><input class="choice_element" id="choice_element" type="submit" value="Корпуса" name="hull"/>
@@ -99,6 +100,8 @@
                         </div>
                     </form>
                     <form method="post" action="production" enctype="multipart/form-data">
+                        <input type="hidden" id="factory{{ factory_installed.id }}"
+                               value={{ factory_installed.id }} name="hidden_factory">
                         <input id="disassembling" class="scientic" type="submit" value="Disassembling factory"
                                name="disassembling"/>
                     </form>

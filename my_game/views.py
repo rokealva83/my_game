@@ -17,6 +17,7 @@ from models import Warehouse_factory, Warehouse_element
 import function
 import scientic_work
 import scientic_func
+import verification_func
 from models import Project_ship, Element_ship
 
 
@@ -504,7 +505,7 @@ def choice_build(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
-        function.check_assembly_line_workpieces(session_user)
+        verification_func.check_assembly_line_workpieces(session_user)
         attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                       "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                       "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class",
@@ -567,7 +568,7 @@ def working(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
-        function.check_assembly_line_workpieces(session_user)
+        verification_func.check_assembly_line_workpieces(session_user)
         message = ''
 
         if request.POST.get('rename_factory_pattern') is not None:
@@ -631,7 +632,7 @@ def choice_element(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
-        function.check_assembly_line_workpieces(session_user)
+        verification_func.check_assembly_line_workpieces(session_user)
         if request.POST.get('hull') is not None:
             attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
@@ -731,7 +732,7 @@ def production(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
-        function.check_assembly_line_workpieces(session_user)
+        verification_func.check_assembly_line_workpieces(session_user)
         if request.POST.get('rename_element_pattern'):
             new_name = request.POST.get('new_name')
             pattern_id = request.POST.get('hidden_factory')
@@ -744,6 +745,23 @@ def production(request):
             amount_element = request.POST.get('amount_element')
             message = function.production_module(session_user, session_user_city, factory_id, element_id,
                                                  amount_element)
+
+        if request.POST.get('disassembling'):
+            factory_id = request.POST.get('hidden_factory')
+            turn_production = Turn_production.objects.filter(factory_id = factory_id).first()
+            user_city = User_city.objects.filter(id = session_user_city).first()
+            if turn_production:
+                message = 'На фабрике идет производство. Удаление невозможно'
+            else:
+                delete_factory = Factory_installed.objects.filter(id = factory_id).first()
+                return_factory = Warehouse_factory.objects.filter(factory_id = delete_factory.factory_pattern_id).first()
+                new_amount = return_factory.amount + 1
+                return_factory = Warehouse_factory.objects.filter(factory_id = delete_factory.factory_pattern_id).update(amount = new_amount)
+                new_energy = user_city.use_energy - delete_factory.power_consumption
+                user_city = User_city.objects.filter(id=session_user_city).update(use_energy=new_energy)
+                delete_factory = Factory_installed.objects.filter(id = factory_id).delete()
+
+                message = 'Фабрика удалена'
 
         turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
         warehouse = Warehouse.objects.filter(user=session_user).first()
@@ -995,3 +1013,20 @@ def work_with_project(request):
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'hulls': hulls, 'project_ships': project_ships}
         return render(request, "designingships.html", output)
+
+def space_forces(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys}
+        return render(request, "space_forces.html", output)
