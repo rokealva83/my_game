@@ -13,7 +13,8 @@
                         <p>{{ user_fleet.name }}</p>
 
                         <p>
-                            Coordinate: {{ user_city.name_city }} - {{ user_city.system_id }} : {{ user_city.planet_id }}({{ user_fleet.x }} : {{ user_fleet.y }} : {{ user_fleet.z }})
+                            Coordinate: {{ user_city.name_city }} - {{ user_city.system_id }}
+                            : {{ user_city.planet_id }}({{ user_fleet.x }} : {{ user_fleet.y }} : {{ user_fleet.z }})
                         </p>
 
                         <p>
@@ -25,7 +26,8 @@
                         </p>
 
                         <p>
-                            <input class="scientic" type="submit" value="Delete fleet" name="delete_fleet" style="margin-top: 5px"/>
+                            <input class="scientic" type="submit" value="Delete fleet" name="delete_fleet"
+                                   style="margin-top: 5px"/>
                             <input type="hidden" id="user_fleet{{ user_fleet.id }}"
                                    value={{ user_fleet.id }} name="hidden_fleet"/>
                         </p>
@@ -38,11 +40,18 @@
         </div>
         <div id="block_design_right">
             <h3 style="text-align: center">Панель управления флотом </h3>
-            {% if ships %}
-                {% for ship in ships %}
 
-                {% endfor %}
-            {% endif %}
+            <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                {% if ships %}
+                    {% for ship in ships %}
+                        {{ ship.name }} ( {{ ship.amount_ship }} )
+                        <input value="" name="amount_ship" class="scientic_place"
+                               placeholder="Amount ship"/>
+                        <input type="hidden" value={{ ship.id }} name="hidden_fleet"/>
+                        <input class="scientic" type="submit" value="Добавить" name="qwerty"/>
+                    {% endfor %}
+                {% endif %}
+            </form>
         </div>
         <div class="clear"></div>
     </div>
