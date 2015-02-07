@@ -20,7 +20,7 @@ import scientic_work
 import scientic_func
 import verification_func
 from models import Global_variables
-from models import Project_ship, Element_ship, Turn_ship_build
+from models import Project_ship, Element_ship, Turn_ship_build, Ship
 
 
 def home(request):
@@ -799,7 +799,7 @@ def designingships(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds':turn_ship_builds}
+                  'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds}
         return render(request, "designingships.html", output)
 
 
@@ -840,7 +840,8 @@ def new_ship(request):
             output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                       'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                       'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
-                      'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls, 'turn_ship_builds':turn_ship_builds}
+                      'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
+                      'turn_ship_builds': turn_ship_builds}
 
         if request.POST.get('create_ship_pattern'):
             chosen_hull_id = request.POST.get('chosen_hull')
@@ -984,7 +985,7 @@ def new_ship(request):
             turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
             project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
             output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                      'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds':turn_ship_builds}
+                      'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds}
 
     request.session['userid'] = session_user
     request.session['user_city'] = session_user_city

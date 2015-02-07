@@ -27,6 +27,7 @@ from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehou
 import scientic_func
 import verification_func
 from models import Global_variables
+from models import Project_ship, Element_ship, Turn_ship_build, Ship
 
 
 def check_all_queues(request):
@@ -42,6 +43,7 @@ def check_all_queues(request):
         verification_func.verification_of_resources(user, elapsed_time_seconds, time_update)
     verification_func.check_assembly_line_workpieces(user)
     verification_func.verification_stage_production(user)
+    verification_func.verification_turn_ship_build(user)
 
 
 def rename_factory_pattern(*args):

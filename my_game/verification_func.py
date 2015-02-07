@@ -24,6 +24,7 @@ from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Bas
 from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
 from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehouse
+from models import Project_ship, Element_ship, Turn_ship_build, Ship
 import scientic_func
 from models import Global_variables
 
@@ -261,3 +262,33 @@ def verification_stage_production(request):
                     )
                     warehouse.save()
                 turn_production_delete = Turn_production.objects.filter(id = turn_production.id).delete()
+
+
+def verification_turn_ship_build(request):
+    user = request
+    user_citys = User_city.objects.filter(user = user)
+    for user_city in user_citys:
+        city_id = int(user_city.id)
+        turn_ship_builds = Turn_ship_build.objects.filter(user = user, user_city = user_city.id).order_by('start_time_build')
+        for turn_ship_build in turn_ship_builds:
+            time = timezone.now()
+            time_start = turn_ship_build.start_time_build
+            delta_time = time - time_start
+            new_delta = delta_time.seconds
+            delta_time = turn_ship_build.finish_time_build - turn_ship_build.start_time_build
+            delta = delta_time.seconds
+            if new_delta > delta:
+                dock = Ship.objects.filter(id_project_ship = turn_ship_build.ship_pattern).first()
+                if dock is not None:
+                    new_amount = dock.amount_ship + turn_ship_build.amount
+                    dock = Ship.objects.filter(project_ship_id = turn_ship_build.ship_pattern).update(amount_ship = new_amount)
+                else:
+                    dock = Ship(
+                        user = user,
+                        id_project_ship = turn_ship_build.ship_pattern,
+                        amount_ship = turn_ship_build.amount,
+                        fleet_status = 0,
+                        place_id = city_id
+                    )
+                    dock.save()
+                turn_ship_build_delete = Turn_ship_build.objects.filter(id = turn_ship_build.id).delete()
