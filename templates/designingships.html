@@ -3,6 +3,11 @@
 {% block content %}
     <div id="game_content">
         <div id="block_design_left">
+            {{ message }}
+            <p style="text-align: center"> Очередь сборки корабля </p>
+            {% for turn_ship_build in turn_ship_builds %}
+                <p style="text-align: center">{{ turn_ship_build.finish_time_build }}</p>
+            {% endfor %}
             <h3 style="text-align: center">Project list</h3>
             {% for project_ship in project_ships %}
                 <div id="project_list">
