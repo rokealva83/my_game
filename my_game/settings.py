@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'my_game',
     'my_game.templatetags.my_filter',
+    'my_game.fleet_management',
 )
 
 MIDDLEWARE_CLASSES = (

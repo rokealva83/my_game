@@ -895,7 +895,7 @@ class Ship(models.Model):
     place_id = models.IntegerField()
 
 
-class fleet(models.Model):
+class Fleet(models.Model):
     class Meta():
         db_table = 'fleet'
 

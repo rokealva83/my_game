@@ -20,7 +20,7 @@ import scientic_work
 import scientic_func
 import verification_func
 from models import Global_variables
-from models import Project_ship, Element_ship, Turn_ship_build, Ship
+from models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
 
 
 def home(request):
@@ -1112,8 +1112,10 @@ def space_forces(request):
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
+        user_fleets = Fleet.objects.filter(user=session_user)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys}
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                  'user_fleets': user_fleets}
         return render(request, "space_forces.html", output)

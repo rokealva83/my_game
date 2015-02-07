@@ -3,6 +3,27 @@
 {% block content %}
     <div id="game_content">
         <div id="block_design_left">
+            <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                <input class="scientic" type="submit" value="New fleet" name="create_fleet"/>
+
+                {% for user_fleet in user_fleets %}
+                    <div class="fleet">
+                        <p>{{ user_fleet.name }}</p>
+
+                        <p>
+                            Coordinate {{ user_fleet.x }} : {{ user_fleet.y }} : {{ user_fleet.z }}
+                        </p>
+
+                        <p>
+                            <input class="scientic" type="submit" value="Navy ships" name="navy_ships"/>
+                            <input class="scientic" type="submit" value="The hold of the fleet" name="hold_fleet"/>
+                            <input class="scientic" type="submit" value="Flight plan" name="flight_plan"/>
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+            </form>
 
         </div>
         <div id="block_design_right">
