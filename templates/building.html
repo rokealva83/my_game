@@ -147,7 +147,7 @@
             {% endfor %}
             {% for factory_pattern in factory_patterns %}
                 {% if 10 > factory_pattern.production_class %}
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" action="working">
                         <H4><p align="left">{{ factory_pattern.name }}</p></H4>
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
                         <label for="factory{{ factory_pattern.id }}">Information</label>

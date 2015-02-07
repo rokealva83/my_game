@@ -508,6 +508,7 @@ def choice_build(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         verification_func.check_assembly_line_workpieces(session_user)
+        factory_patterns = {}
         attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                       "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                       "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class",
@@ -635,6 +636,7 @@ def choice_element(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         verification_func.check_assembly_line_workpieces(session_user)
+        verification_func.verification_stage_production(session_user)
         if request.POST.get('hull') is not None:
             attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
