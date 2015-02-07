@@ -38,6 +38,7 @@ def fleet_manage(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
+        ships = {}
         if request.POST.get('create_fleet'):
             name = request.POST.get('fleet_name')
             user_city = User_city.objects.filter(id = session_user_city).first()
@@ -49,6 +50,10 @@ def fleet_manage(request):
                 z = user_city.z
             )
             new_fleet.save()
+
+        if request.POST.get('navy_ships'):
+            ships = Ship.objects.filter(user = session_user, fleet_status = 0, place_id = session_user_city)
+
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -58,5 +63,5 @@ def fleet_manage(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets}
+                  'user_fleets': user_fleets, 'ships': ships}
         return render(request, "space_forces.html", output)

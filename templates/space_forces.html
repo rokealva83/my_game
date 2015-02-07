@@ -4,7 +4,7 @@
     <div id="game_content">
         <div id="block_design_left">
             <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
-                <input type="fleet_name" value="" name="fleet_name" class="scientic_place"
+                <input value="" name="fleet_name" class="scientic_place"
                        placeholder="Fleet name"/>
                 <input class="scientic" type="submit" value="New fleet" name="create_fleet"/>
 
@@ -13,7 +13,7 @@
                         <p>{{ user_fleet.name }}</p>
 
                         <p>
-                            Coordinate {{ user_fleet.x }} : {{ user_fleet.y }} : {{ user_fleet.z }}
+                            Coordinate: {{ user_city.name_city }} - {{ user_city.system_id }} : {{ user_city.planet_id }}({{ user_fleet.x }} : {{ user_fleet.y }} : {{ user_fleet.z }})
                         </p>
 
                         <p>
@@ -25,7 +25,7 @@
                         </p>
 
                         <p>
-                            <input class="scientic" type="submit" value="Delete fleet" name="delete_fleet"/>
+                            <input class="scientic" type="submit" value="Delete fleet" name="delete_fleet" style="margin-top: 5px"/>
                             <input type="hidden" id="user_fleet{{ user_fleet.id }}"
                                    value={{ user_fleet.id }} name="hidden_fleet"/>
                         </p>
@@ -38,6 +38,11 @@
         </div>
         <div id="block_design_right">
             <h3 style="text-align: center">Панель управления флотом </h3>
+            {% if ships %}
+                {% for ship in ships %}
+
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="clear"></div>
     </div>

@@ -279,6 +279,7 @@ def verification_turn_ship_build(request):
             delta = delta_time.seconds
             if new_delta > delta:
                 dock = Ship.objects.filter(id_project_ship = turn_ship_build.ship_pattern).first()
+                create_ship = Project_ship.objects.filter(user = user, id = turn_ship_build.ship_pattern).first()
                 if dock is not None:
                     new_amount = dock.amount_ship + turn_ship_build.amount
                     dock = Ship.objects.filter(project_ship_id = turn_ship_build.ship_pattern).update(amount_ship = new_amount)
@@ -286,6 +287,7 @@ def verification_turn_ship_build(request):
                     dock = Ship(
                         user = user,
                         id_project_ship = turn_ship_build.ship_pattern,
+                        name = create_ship.name,
                         amount_ship = turn_ship_build.amount,
                         fleet_status = 0,
                         place_id = city_id

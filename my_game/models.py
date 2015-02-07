@@ -117,7 +117,7 @@ class User_city(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
-    name_city = models.CharField(max_length=20, default='New Planet')
+    name_city = models.CharField(max_length=20, default='New City')
     city_size_free = models.IntegerField()
     population = models.IntegerField(default=150)
     max_population = models.IntegerField(default=500)
@@ -890,6 +890,7 @@ class Ship(models.Model):
 
     user = models.IntegerField()
     id_project_ship = models.IntegerField()
+    name = models.CharField(max_length=20, default='New ship')
     amount_ship = models.IntegerField()
     fleet_status = models.BooleanField(default=0)
     place_id = models.IntegerField()
