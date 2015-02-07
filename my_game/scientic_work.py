@@ -25,7 +25,7 @@ from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_patter
 from models import Warehouse_factory, Warehouse_element, Warehouse_ship
 import function
 from models import Project_ship, Element_ship, Ship
-import Global_variables
+from models import Global_variables
 
 
 

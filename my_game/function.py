@@ -26,7 +26,7 @@ from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_patter
 from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehouse
 import scientic_func
 import verification_func
-import Global_variables
+from models import Global_variables
 
 
 def check_all_queues(request):

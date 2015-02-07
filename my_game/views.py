@@ -18,7 +18,7 @@ import function
 import scientic_work
 import scientic_func
 import verification_func
-import Global_variables
+from models import Global_variables
 from models import Project_ship, Element_ship, Turn_ship_build
 
 
@@ -45,6 +45,7 @@ def auth(request):
                 warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 user_citys = User_city.objects.filter(user=int(user_name_auth.id))
+                function.check_all_queues(user_name_post)
                 output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys}
                 request.session['userid'] = user_name_auth.id
                 request.session['user_city'] = user_city.id
