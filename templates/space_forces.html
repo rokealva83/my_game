@@ -4,6 +4,8 @@
     <div id="game_content">
         <div id="block_design_left">
             <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                <input type="fleet_name" value="" name="fleet_name" class="scientic_place"
+                       placeholder="Fleet name"/>
                 <input class="scientic" type="submit" value="New fleet" name="create_fleet"/>
 
                 {% for user_fleet in user_fleets %}
@@ -18,6 +20,14 @@
                             <input class="scientic" type="submit" value="Navy ships" name="navy_ships"/>
                             <input class="scientic" type="submit" value="The hold of the fleet" name="hold_fleet"/>
                             <input class="scientic" type="submit" value="Flight plan" name="flight_plan"/>
+                            <input type="hidden" id="user_fleet{{ user_fleet.id }}"
+                                   value={{ user_fleet.id }} name="hidden_fleet"/>
+                        </p>
+
+                        <p>
+                            <input class="scientic" type="submit" value="Delete fleet" name="delete_fleet"/>
+                            <input type="hidden" id="user_fleet{{ user_fleet.id }}"
+                                   value={{ user_fleet.id }} name="hidden_fleet"/>
                         </p>
 
                     </div>
@@ -27,7 +37,7 @@
 
         </div>
         <div id="block_design_right">
-
+            <h3 style="text-align: center">Панель управления флотом </h3>
         </div>
         <div class="clear"></div>
     </div>

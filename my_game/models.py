@@ -904,22 +904,23 @@ class Fleet(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
-    status = models.IntegerField()
-    system_power = models.IntegerField()
-    intersystem_power = models.IntegerField()
-    giper_power = models.IntegerField()
+    status = models.IntegerField(default=0)
+    system_power = models.IntegerField(default=0)
+    intersystem_power = models.IntegerField(default=0)
+    giper_power = models.IntegerField(default=0)
     giper_accuracy = models.FloatField(default=0.9)
-    null_power = models.IntegerField()
+    null_power = models.IntegerField(default=0)
     null_accuracy = models.FloatField(default=0.9)
-    use_power_engine_system = models.IntegerField()
-    use_power_engine_intersystem = models.IntegerField()
-    use_power_engine_giper = models.IntegerField()
-    use_power_engine_null = models.IntegerField()
-    use_power_hull = models.IntegerField()
-    use_power_shield = models.IntegerField()
-    use_power_weapon = models.IntegerField()
-    use_power_module = models.IntegerField()
-    maneuverability = models.FloatField()
+    use_power_engine_system = models.IntegerField(default=0)
+    use_power_engine_intersystem = models.IntegerField(default=0)
+    use_power_engine_giper = models.IntegerField(default=0)
+    use_power_engine_null = models.IntegerField(default=0)
+    use_power_hull = models.IntegerField(default=0)
+    use_power_shield = models.IntegerField(default=0)
+    use_power_weapon = models.IntegerField(default=0)
+    use_power_module = models.IntegerField(default=0)
+    maneuverability = models.FloatField(default=0)
+    hold = models.IntegerField(default=0)
 
 
 class Turn_ship_build(models.Model):
@@ -934,9 +935,9 @@ class Turn_ship_build(models.Model):
     finish_time_build = models.DateTimeField()
 
 
-class Global_variables(models.Model):
+class User_variables(models.Model):
     class Meta():
-        db_table = 'global_variables'
+        db_table = 'user_variables'
 
     registr_internal_currency = models.IntegerField()
     registr_resource1 = models.IntegerField()

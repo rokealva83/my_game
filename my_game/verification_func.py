@@ -26,7 +26,7 @@ from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_patter
 from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehouse
 from models import Project_ship, Element_ship, Turn_ship_build, Ship
 import scientic_func
-from models import Global_variables
+from models import User_variables
 
 
 def check_scientific_verification_queue(request):

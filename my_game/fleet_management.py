@@ -27,7 +27,7 @@ from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehou
 import function
 import scientic_func
 import verification_func
-from models import Global_variables
+from models import User_variables
 from models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
 
 
@@ -39,7 +39,16 @@ def fleet_manage(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         if request.POST.get('create_fleet'):
-            new_fleet = 1
+            name = request.POST.get('fleet_name')
+            user_city = User_city.objects.filter(id = session_user_city).first()
+            new_fleet = Fleet(
+                user = session_user,
+                name = name,
+                x = user_city.x,
+                y = user_city.y,
+                z = user_city.z
+            )
+            new_fleet.save()
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()

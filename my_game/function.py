@@ -26,7 +26,7 @@ from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_patter
 from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehouse
 import scientic_func
 import verification_func
-from models import Global_variables
+from models import User_variables
 from models import Project_ship, Element_ship, Turn_ship_build, Ship
 
 
