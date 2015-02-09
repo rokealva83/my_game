@@ -871,6 +871,7 @@ class Project_ship(models.Model):
     null_accuracy = models.FloatField(default=0.9)
     maneuverability = models.FloatField(default=0)
     time_build = models.IntegerField(default=0)
+    mass = models.IntegerField(default=500)
 
 
 class Element_ship(models.Model):
@@ -922,6 +923,7 @@ class Fleet(models.Model):
     use_power_module = models.IntegerField(default=0)
     maneuverability = models.FloatField(default=0)
     hold = models.IntegerField(default=0)
+    ship_empty_mass = models.IntegerField(default=0)
 
 
 class Turn_ship_build(models.Model):

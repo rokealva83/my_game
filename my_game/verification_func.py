@@ -282,7 +282,7 @@ def verification_turn_ship_build(request):
                 create_ship = Project_ship.objects.filter(user = user, id = turn_ship_build.ship_pattern).first()
                 if dock is not None:
                     new_amount = dock.amount_ship + turn_ship_build.amount
-                    dock = Ship.objects.filter(project_ship_id = turn_ship_build.ship_pattern).update(amount_ship = new_amount)
+                    dock = Ship.objects.filter(id_project_ship = turn_ship_build.ship_pattern).update(amount_ship = new_amount)
                 else:
                     dock = Ship(
                         user = user,
