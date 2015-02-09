@@ -54,31 +54,33 @@
         </div>
         <div id="block_design_right">
             <h3 style="text-align: center">Панель управления флотом </h3>
+            {% if add_ships or ship_fleets%}
 
-            <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
-                {% if add_ships %}
-                    {% for add_ship in add_ships %}
-                        {{ add_ship.name }} ( {{ add_ship.amount_ship }} )
-                        <input value="" name="amount_ship" class="scientic_place"
-                               placeholder="Amount ship"/>
-                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                        <input type="hidden" value={{ add_ship.id }} name="hidden_ship"/>
-                        <input class="scientic" type="submit" value="Добавить" name="add_ship"/>
-                    {% endfor %}
-                {% endif %}
-            </form>
-            <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
-                {% if ship_fleets %}
-                    {% for ship_fleet in ship_fleets %}
-                        {{ ship_fleet.name }} ( {{ ship_fleet.amount_ship }} )
-                        <input value="" name="amount_ship" class="scientic_place"
-                               placeholder="Amount ship"/>
-                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                        <input type="hidden" value={{ ship_fleet.id }} name="hidden_ship"/>
-                        <input class="scientic" type="submit" value="Убрать из флота" name="del_ship"/>
-                    {% endfor %}
-                {% endif %}
-            </form>
+                <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                    {% if add_ships %}
+                        {% for add_ship in add_ships %}
+                            {{ add_ship.name }} ( {{ add_ship.amount_ship }} )
+                            <input value="" name="amount_ship" class="scientic_place"
+                                   placeholder="Amount ship"/>
+                            <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                            <input type="hidden" value={{ add_ship.id }} name="hidden_ship"/>
+                            <input class="scientic" type="submit" value="Добавить" name="add_ship"/>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+                <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                    {% if ship_fleets %}
+                        {% for ship_fleet in ship_fleets %}
+                            {{ ship_fleet.name }} ( {{ ship_fleet.amount_ship }} )
+                            <input value="" name="amount_ship" class="scientic_place"
+                                   placeholder="Amount ship"/>
+                            <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                            <input type="hidden" value={{ ship_fleet.id_project_ship }} name="hidden_del_ship"/>
+                            <input class="scientic" type="submit" value="Убрать из флота" name="del_ship"/>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            {% endif %}
         </div>
         <div class="clear"></div>
     </div>

@@ -40,60 +40,126 @@ def fleet_manage(request):
         function.check_all_queues(session_user)
         add_ships = {}
         fleet_id = 0
-        ship_fleets = Ship.objects.filter(user= session_user, fleet_status = 1)
+        ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         if request.POST.get('create_fleet'):
             name = request.POST.get('fleet_name')
-            user_city = User_city.objects.filter(id = session_user_city).first()
+            user_city = User_city.objects.filter(id=session_user_city).first()
             new_fleet = Fleet(
-                user = session_user,
-                name = name,
-                x = user_city.x,
-                y = user_city.y,
-                z = user_city.z
+                user=session_user,
+                name=name,
+                x=user_city.x,
+                y=user_city.y,
+                z=user_city.z
             )
             new_fleet.save()
 
         if request.POST.get('navy_ships'):
-            add_ships = Ship.objects.filter(user = session_user, fleet_status = 0, place_id = session_user_city)
+            add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             fleet_id = request.POST.get('hidden_fleet')
-
 
         if request.POST.get('add_ship'):
-            amount_ship = request.POST.get('amount_ship')
-            fleet_id = request.POST.get('hidden_fleet')
-            ship_id = request.POST.get('hidden_ship')
-            ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).first()
+            amount_ship = int(request.POST.get('amount_ship'))
+            fleet_id = int(request.POST.get('hidden_fleet'))
+            ship_id = int(request.POST.get('hidden_ship'))
+            ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                       place_id=session_user_city).first()
             if int(ship.amount_ship) >= int(amount_ship):
-                ship_fleet = Ship.objects.filter(id_project_ship = ship.id_project_ship, user= session_user, fleet_status = 1, place_id = fleet_id).first()
+                ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
+                                                 fleet_status=1, place_id=fleet_id).first()
                 if ship_fleet:
                     if int(ship.amount_ship) == int(amount_ship):
                         new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
-                        ship_fleet = Ship.objects.filter(id_project_ship = ship.id_project_ship, user= session_user, fleet_status = 1, place_id = fleet_id).update(amount_ship = new_amount)
-                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).delete()
+                        ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
+                                                         fleet_status=1, place_id=fleet_id).update(
+                            amount_ship=new_amount)
+                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                   place_id=session_user_city).delete()
                     else:
                         new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
-                        ship_fleet = Ship.objects.filter(id_project_ship = ship.id_project_ship, user= session_user, fleet_status = 1, place_id = fleet_id).update(amount_ship = new_amount)
-                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).first()
+                        ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
+                                                         fleet_status=1, place_id=fleet_id).update(
+                            amount_ship=new_amount)
+                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                   place_id=session_user_city).first()
                         new_amount = int(ship.amount_ship) - int(amount_ship)
-                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).update(amount_ship = new_amount)
+                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                   place_id=session_user_city).update(amount_ship=new_amount)
 
                 else:
                     if int(ship.amount_ship) == int(amount_ship):
-                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).update(fleet_status = 1, place_id = fleet_id)
+                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                   place_id=session_user_city).update(fleet_status=1, place_id=fleet_id)
+                        ship = Ship.objects.filter(id=ship_id,).first()
+                        project_ship = Project_ship.objects.filter(id = ship.id_project_ship).first()
+                        fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                            system_power=int(project_ship.system_power) * amount_ship,
+                            intersystem_power=int(project_ship.intersystem_power) * amount_ship,
+                            giper_power=int(project_ship.giper_power) * amount_ship,
+                            giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
+                            null_power=int(project_ship.null_power) * amount_ship,
+                            null_accuracy=int(project_ship.null_accuracy) * amount_ship,
+                            ship_empty_mass=int(project_ship.mass) * amount_ship
+                        )
                     else:
                         ship = Ship(
-                            user = session_user,
-                            id_project_ship = ship.id_project_ship,
-                            amount_ship = amount_ship,
-                            fleet_status = 1,
-                            place_id = fleet_id,
-                            name = ship.name
+                            user=session_user,
+                            id_project_ship=ship.id_project_ship,
+                            amount_ship=amount_ship,
+                            fleet_status=1,
+                            place_id=fleet_id,
+                            name=ship.name
                         )
                         ship.save()
-                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).first()
+                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                   place_id=session_user_city).first()
                         new_amount = int(ship.amount_ship) - int(amount_ship)
-                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).update(amount_ship = new_amount)
-            ship_fleets = Ship.objects.filter(user= session_user, fleet_status = 1)
+                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                   place_id=session_user_city).update(amount_ship=new_amount)
+                        fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                            system_power=ship.system_power * amount_ship,
+                            intersystem_power=ship.intersystem_power * amount_ship,
+                            giper_power=ship.giper_power * amount_ship,
+                            giper_accurary=ship.giper_accurary * amount_ship, null_power=ship.null_power * amount_ship,
+                            null_accuracy=ship.null_accuracy * amount_ship, ship_empty_mass=ship.mass * amount_ship)
+            ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+
+        if request.POST.get('del_ship'):
+            amount_ship = request.POST.get('amount_ship')
+            fleet_id = request.POST.get('hidden_fleet')
+            ship_id = request.POST.get('hidden_del_ship')
+            fleet = Fleet.objects.filter(id=fleet_id).first()
+            user_city = User_city.objects.filter(user=session_user, x=fleet.x, y=fleet.y, z=fleet.z).first()
+            if user_city:
+                ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=user_city.id,
+                                           fleet_status=0).first()
+                if ship:
+                    new_amount = int(ship.amount_ship) + int(amount_ship)
+                    ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=user_city.id,
+                                               fleet_status=0).update(amount_ship=new_amount)
+                    ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                               fleet_status=1).first()
+                    new_amount = int(ship.amount_ship) - int(amount_ship)
+                    if new_amount == 0:
+                        ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                                   fleet_status=1).delete()
+                else:
+                    project_ship = Project_ship.objects.filter(id=ship_id).first()
+
+                    ship = Ship(
+                        user=session_user,
+                        id_project_ship=ship_id,
+                        amount_ship=amount_ship,
+                        fleet_status=0,
+                        place_id=user_city.id,
+                        name=project_ship.name
+                    )
+                    ship.save()
+                    ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                               fleet_status=1).first()
+                    new_amount = int(ship.amount_ship) - int(amount_ship)
+                    if new_amount == 0:
+                        ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                                   fleet_status=1).delete()
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
@@ -104,5 +170,5 @@ def fleet_manage(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets':ship_fleets}
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets}
         return render(request, "space_forces.html", output)
