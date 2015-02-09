@@ -1125,7 +1125,6 @@ def space_forces(request):
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ships = Ship.objects.filter(user = session_user, fleet_status = 0, place_id = session_user_city)
-        planets = Planet.objects.filter()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

@@ -38,8 +38,9 @@ def fleet_manage(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        ships = {}
+        add_ships = {}
         fleet_id = 0
+        ship_fleets = Ship.objects.filter(user= session_user, fleet_status = 1)
         if request.POST.get('create_fleet'):
             name = request.POST.get('fleet_name')
             user_city = User_city.objects.filter(id = session_user_city).first()
@@ -53,7 +54,7 @@ def fleet_manage(request):
             new_fleet.save()
 
         if request.POST.get('navy_ships'):
-            ships = Ship.objects.filter(user = session_user, fleet_status = 0, place_id = session_user_city)
+            add_ships = Ship.objects.filter(user = session_user, fleet_status = 0, place_id = session_user_city)
             fleet_id = request.POST.get('hidden_fleet')
 
 
@@ -61,7 +62,38 @@ def fleet_manage(request):
             amount_ship = request.POST.get('amount_ship')
             fleet_id = request.POST.get('hidden_fleet')
             ship_id = request.POST.get('hidden_ship')
+            ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).first()
+            if int(ship.amount_ship) >= int(amount_ship):
+                ship_fleet = Ship.objects.filter(id_project_ship = ship.id_project_ship, user= session_user, fleet_status = 1, place_id = fleet_id).first()
+                if ship_fleet:
+                    if int(ship.amount_ship) == int(amount_ship):
+                        new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
+                        ship_fleet = Ship.objects.filter(id_project_ship = ship.id_project_ship, user= session_user, fleet_status = 1, place_id = fleet_id).update(amount_ship = new_amount)
+                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).delete()
+                    else:
+                        new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
+                        ship_fleet = Ship.objects.filter(id_project_ship = ship.id_project_ship, user= session_user, fleet_status = 1, place_id = fleet_id).update(amount_ship = new_amount)
+                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).first()
+                        new_amount = int(ship.amount_ship) - int(amount_ship)
+                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).update(amount_ship = new_amount)
 
+                else:
+                    if int(ship.amount_ship) == int(amount_ship):
+                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).update(fleet_status = 1, place_id = fleet_id)
+                    else:
+                        ship = Ship(
+                            user = session_user,
+                            id_project_ship = ship.id_project_ship,
+                            amount_ship = amount_ship,
+                            fleet_status = 1,
+                            place_id = fleet_id,
+                            name = ship.name
+                        )
+                        ship.save()
+                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).first()
+                        new_amount = int(ship.amount_ship) - int(amount_ship)
+                        ship = Ship.objects.filter(id = ship_id, user= session_user, fleet_status = 0, place_id = session_user_city).update(amount_ship = new_amount)
+            ship_fleets = Ship.objects.filter(user= session_user, fleet_status = 1)
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
@@ -72,5 +104,5 @@ def fleet_manage(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'ships': ships, 'fleet_id': fleet_id}
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets':ship_fleets}
         return render(request, "space_forces.html", output)
