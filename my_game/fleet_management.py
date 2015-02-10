@@ -177,9 +177,9 @@ def fleet_manage(request):
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
 
         if request.POST.get('del_ship'):
-            amount_ship = request.POST.get('amount_ship')
-            fleet_id = request.POST.get('hidden_fleet')
-            ship_id = request.POST.get('hidden_del_ship')
+            amount_ship = int(request.POST.get('amount_ship'))
+            fleet_id = int(request.POST.get('hidden_fleet'))
+            ship_id = int(request.POST.get('hidden_del_ship'))
             fleet = Fleet.objects.filter(id=fleet_id).first()
             user_city = User_city.objects.filter(user=session_user, x=fleet.x, y=fleet.y, z=fleet.z).first()
             if user_city:
@@ -195,6 +195,29 @@ def fleet_manage(request):
                     if new_amount == 0:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
                                                    fleet_status=1).delete()
+                    else:
+                        ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                                   fleet_status=1).update(amount_ship = new_amount)
+
+                    fleet = Fleet.objects.filter(user=session_user, id=fleet_id).first()
+                    project_ship = Project_ship.objects.filter(id=ship_id).first()
+
+                    system_power = int(fleet.system_power) - int(project_ship.system_power) * amount_ship
+                    intersystem_power = int(fleet.intersystem_power) - int(project_ship.intersystem_power) * amount_ship
+                    giper_power = int(fleet.giper_power) -int(project_ship.giper_power) * amount_ship
+                    giper_accuracy = int(fleet.giper_accuracy) - int(project_ship.giper_accuracy) * amount_ship
+                    null_power = int(fleet.null_power) - int(project_ship.null_power) * amount_ship
+                    null_accuracy =  + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
+                    ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
+                    fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                        system_power=system_power,
+                        intersystem_power=intersystem_power,
+                        giper_power=giper_power,
+                        giper_accuracy=giper_accuracy,
+                        null_power=null_power,
+                        null_accuracy=null_accuracy,
+                        ship_empty_mass=ship_empty_mass
+                    )
                 else:
                     project_ship = Project_ship.objects.filter(id=ship_id).first()
 
@@ -213,6 +236,31 @@ def fleet_manage(request):
                     if new_amount == 0:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
                                                    fleet_status=1).delete()
+                    else:
+                        ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                                   fleet_status=1).update(amount_ship = new_amount)
+
+                    fleet = Fleet.objects.filter(user=session_user, id=fleet_id).first()
+                    project_ship = Project_ship.objects.filter(id=ship_id).first()
+
+                    system_power = int(fleet.system_power) - int(project_ship.system_power) * amount_ship
+                    intersystem_power = int(fleet.intersystem_power) - int(project_ship.intersystem_power) * amount_ship
+                    giper_power = int(fleet.giper_power) -int(project_ship.giper_power) * amount_ship
+                    giper_accuracy = int(fleet.giper_accuracy) - int(project_ship.giper_accuracy) * amount_ship
+                    null_power = int(fleet.null_power) - int(project_ship.null_power) * amount_ship
+                    null_accuracy =  + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
+                    ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
+                    fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                        system_power=system_power,
+                        intersystem_power=intersystem_power,
+                        giper_power=giper_power,
+                        giper_accuracy=giper_accuracy,
+                        null_power=null_power,
+                        null_accuracy=null_accuracy,
+                        ship_empty_mass=ship_empty_mass
+                    )
+            else:
+                message = 'Флот не над планетой'
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
