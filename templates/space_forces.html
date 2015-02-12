@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Проектирование кораблей{% endblock %}
+{% block title %}ВКС{% endblock %}
 {% block content %}
     <div id="game_content">
         <div id="block_design_left">
@@ -49,12 +49,11 @@
                     </div>
                 </form>
             {% endfor %}
-
-
         </div>
         <div id="block_design_right">
             <h3 style="text-align: center">Панель управления флотом </h3>
-            {% if add_ships or ship_fleets %}
+
+            {% if command == 1 %}
 
                 <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
                     {% if add_ships %}
@@ -83,6 +82,43 @@
                     {% endif %}
                 </form>
             {% endif %}
+        {% if command == 3 %}
+            <form method="post" action="fleet_fly" enctype="multipart/form-data" style="text-align: center">
+                <p>Перелет к планете
+                    <input value="0" name="planet_system" class="coordinate_place"/>
+                    <input value="0" name="planet_planet" class="coordinate_place"/>
+                </p>
+
+                <p>
+                    Использовать гипер
+                    <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+                    Использовать джамп
+                    <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+                </p>
+
+
+                <p> Перелет в координаты
+                    <input value="0" name="coordinate_x" class="coordinate_place"/>
+                    <input value="0" name="coordinate_y" class="coordinate_place"/>
+                    <input value="0" name="coordinate_z" class="coordinate_place"/>
+                </p>
+                <p>
+                    Использовать гипер
+                    <input type="checkbox" name="coordinate_giper" class="coordinate_checkbox">
+                    Использовать джамп
+                    <input type="checkbox" name="coordinate_null" class="coordinate_checkbox">
+                </p>
+                <input class="scientic" type="submit" value="Add command" name="add_command"/>
+
+            </form>
+
+            {% if add_ships or ship_fleets %}
+                <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                    <input value="" name="amount_ship" class="scientic_place"
+                           placeholder="Amount ship"/>
+                </form>
+            {% endif %}
+        {% endif %}
         </div>
         <div class="clear"></div>
     </div>

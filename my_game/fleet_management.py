@@ -56,6 +56,7 @@ def fleet_manage(request):
         if request.POST.get('navy_ships'):
             add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             fleet_id = int(request.POST.get('hidden_fleet'))
+            command = 1
 
         if request.POST.get('add_ship'):
             amount_ship = int(request.POST.get('amount_ship'))
@@ -197,17 +198,17 @@ def fleet_manage(request):
                                                    fleet_status=1).delete()
                     else:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
-                                                   fleet_status=1).update(amount_ship = new_amount)
+                                                   fleet_status=1).update(amount_ship=new_amount)
 
                     fleet = Fleet.objects.filter(user=session_user, id=fleet_id).first()
                     project_ship = Project_ship.objects.filter(id=ship_id).first()
 
                     system_power = int(fleet.system_power) - int(project_ship.system_power) * amount_ship
                     intersystem_power = int(fleet.intersystem_power) - int(project_ship.intersystem_power) * amount_ship
-                    giper_power = int(fleet.giper_power) -int(project_ship.giper_power) * amount_ship
+                    giper_power = int(fleet.giper_power) - int(project_ship.giper_power) * amount_ship
                     giper_accuracy = int(fleet.giper_accuracy) - int(project_ship.giper_accuracy) * amount_ship
                     null_power = int(fleet.null_power) - int(project_ship.null_power) * amount_ship
-                    null_accuracy =  + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
+                    null_accuracy = + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                     ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
                     fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                         system_power=system_power,
@@ -238,17 +239,17 @@ def fleet_manage(request):
                                                    fleet_status=1).delete()
                     else:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
-                                                   fleet_status=1).update(amount_ship = new_amount)
+                                                   fleet_status=1).update(amount_ship=new_amount)
 
                     fleet = Fleet.objects.filter(user=session_user, id=fleet_id).first()
                     project_ship = Project_ship.objects.filter(id=ship_id).first()
 
                     system_power = int(fleet.system_power) - int(project_ship.system_power) * amount_ship
                     intersystem_power = int(fleet.intersystem_power) - int(project_ship.intersystem_power) * amount_ship
-                    giper_power = int(fleet.giper_power) -int(project_ship.giper_power) * amount_ship
+                    giper_power = int(fleet.giper_power) - int(project_ship.giper_power) * amount_ship
                     giper_accuracy = int(fleet.giper_accuracy) - int(project_ship.giper_accuracy) * amount_ship
                     null_power = int(fleet.null_power) - int(project_ship.null_power) * amount_ship
-                    null_accuracy =  + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
+                    null_accuracy = + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                     ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
                     fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                         system_power=system_power,
@@ -262,14 +263,42 @@ def fleet_manage(request):
             else:
                 message = 'Флот не над планетой'
 
+        if request.POST.get('flight_plan'):
+            fleet_id = int(request.POST.get('hidden_fleet'))
+            command = 3
+
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
+        ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets}
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
+                  'command': command}
         return render(request, "space_forces.html", output)
+
+
+def fleet_fly(request):
+    if "live" not in request.session:
+        return render(request, "index.html", {})
+    else:
+        session_user = int(request.session['userid'])
+        session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
+
+        warehouse = Warehouse.objects.filter(user=session_user).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
+        user_fleets = Fleet.objects.filter(user=session_user)
+        ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                  'user_fleets': user_fleets, 'ship_fleets': ship_fleets}
+        return render(request, "trade.html", output)

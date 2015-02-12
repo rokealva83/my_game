@@ -968,3 +968,108 @@ class User_variables(models.Model):
     min_scientic_level = models.IntegerField()
     tax_per_person = models.FloatField()
     koef_price_increace_modern_element = models.FloatField()
+
+
+class Flightplan(models.Model):
+    class Meta():
+        db_table = 'flightplan'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    class_command = models.IntegerField()
+    id_command = models.IntegerField()
+    status = models.IntegerField()
+
+
+class Flightplan_flight(models.Model):
+    class Meta():
+        db_table = 'flightplan_flight'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_command = models.IntegerField()
+    start_x = models.IntegerField()
+    start_y = models.IntegerField()
+    start_z = models.IntegerField()
+    finish_x = models.IntegerField()
+    finish_y = models.IntegerField()
+    finish_z = models.IntegerField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
+
+
+class Flightplan_hold(models.Model):
+    class Meta():
+        db_table = 'flightplan_hold'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_command = models.IntegerField()
+    amount = models.IntegerField()
+    trade_item_number = models.IntegerField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
+
+
+
+class Flightplan_production(models.Model):
+    class Meta():
+        db_table = 'flightplan_production'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_command = models.IntegerField()
+    production_per_second = models.IntegerField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
+
+
+
+class Flightplan_refill(models.Model):
+    class Meta():
+        db_table = 'flightplan_refill'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_command = models.IntegerField()
+    id_fleet_refill = models.IntegerField()
+    amount_fuel = models.IntegerField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
+
+
+
+class Flightplan_repair(models.Model):
+    class Meta():
+        db_table = 'flightplan_repair'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_command = models.IntegerField()
+    repair = models.IntegerField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
+
+
+
+class Flightplan_scan(models.Model):
+    class Meta():
+        db_table = 'flightplan_scan'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_command = models.IntegerField()
+    range_scanning = models.IntegerField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
+
+
+class Flightplan_fight(models.Model):
+    class Meta():
+        db_table = 'flightplan_fight'
+
+    user = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_command = models.IntegerField()
+    id_fleet_attack = models.IntegerField()
+    id_fight = models.IntegerField()

@@ -818,3 +818,26 @@ h1, h2, h3, h4, h5, h6 {
     margin: 7px 0 5px 0;
     padding: 2px 0 7px 0;
 }
+
+.coordinate_place {
+    display: inline-block;
+    width: 50px;
+    height: 22px;
+    margin-top: 2px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    background: #c0c0c0;
+    color: rgb(0, 0, 0);
+}
+
+.coordinate_checkbox {
+    display: inline-block;
+    width: 17px;
+    height: 25px;
+    margin-top: 0px;
+    vertical-align: middle;
+}
