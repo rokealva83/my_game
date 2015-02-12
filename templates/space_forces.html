@@ -82,43 +82,56 @@
                     {% endif %}
                 </form>
             {% endif %}
-        {% if command == 3 %}
-            <form method="post" action="fleet_fly" enctype="multipart/form-data" style="text-align: center">
-                <p>Перелет к планете
-                    <input value="0" name="planet_system" class="coordinate_place"/>
-                    <input value="0" name="planet_planet" class="coordinate_place"/>
-                </p>
+            {% if command == 3 %}
+                {% if flightplans %}
+                    <h2>Полетный лист</h2>
+                    {% for flightplan in flightplans %}
 
-                <p>
-                    Использовать гипер
-                    <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
-                    Использовать джамп
-                    <input type="checkbox" name="planet_null" class="coordinate_checkbox">
-                </p>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" action="fleet_fly" enctype="multipart/form-data" style="text-align: center">
+                    <p>
+                        <input type="checkbox" name="city" class="coordinate_checkbox">
+                        Перелет к планете
+                        <input value="0" name="planet_system" class="coordinate_place"/>
+                        <input value="0" name="planet_planet" class="coordinate_place"/>
+                    </p>
+
+                    <p>
+                        Использовать гипер
+                        <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+                        Использовать джамп
+                        <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+                    </p>
 
 
-                <p> Перелет в координаты
-                    <input value="0" name="coordinate_x" class="coordinate_place"/>
-                    <input value="0" name="coordinate_y" class="coordinate_place"/>
-                    <input value="0" name="coordinate_z" class="coordinate_place"/>
-                </p>
-                <p>
-                    Использовать гипер
-                    <input type="checkbox" name="coordinate_giper" class="coordinate_checkbox">
-                    Использовать джамп
-                    <input type="checkbox" name="coordinate_null" class="coordinate_checkbox">
-                </p>
-                <input class="scientic" type="submit" value="Add command" name="add_command"/>
+                    <p>
+                        <input type="checkbox" name="coordinate" class="coordinate_checkbox">
+                        Перелет в координаты
+                        <input value="0" name="coordinate_x" class="coordinate_place"/>
+                        <input value="0" name="coordinate_y" class="coordinate_place"/>
+                        <input value="0" name="coordinate_z" class="coordinate_place"/>
+                    </p>
 
-            </form>
+                    <p>
+                        Системные координаты
+                        <input type="checkbox" name="coordinate_system" class="coordinate_checkbox">
+                        Межсистемные координаты
+                        <input type="checkbox" name="coordinate_intersystem" class="coordinate_checkbox">
+                    </p>
 
-            {% if add_ships or ship_fleets %}
-                <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
-                    <input value="" name="amount_ship" class="scientic_place"
-                           placeholder="Amount ship"/>
+                    <p>
+                        Использовать гипер
+                        <input type="checkbox" name="coordinate_giper" class="coordinate_checkbox">
+                        Использовать джамп
+                        <input type="checkbox" name="coordinate_null" class="coordinate_checkbox">
+                    </p>
+                    <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                    <input class="scientic" type="submit" value="Add command" name="add_command"/>
+
                 </form>
             {% endif %}
-        {% endif %}
         </div>
         <div class="clear"></div>
     </div>
