@@ -298,10 +298,10 @@ def fleet_fly(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-
+        fleet_id = int(request.POST.get('hidden_fleet'))
+        command = 0
         if request.POST.get('add_command'):
             command = 3
-            fleet_id = int(request.POST.get('hidden_fleet'))
             city = request.POST.get('city')
             if city:
                 planet_system = int(request.POST.get('planet_system'))
@@ -318,9 +318,9 @@ def fleet_fly(request):
                     Yy1 = system.y * 1000 + fleet.y
                     Zz1 = system.z * 1000 + fleet.z
                 else:
-                    Xx1 = fleet.x
-                    Yy1 = fleet.y
-                    Zz1 = fleet.z
+                    Xx1 = fleet.x*1000
+                    Yy1 = fleet.y*1000
+                    Zz1 = fleet.z*1000
 
                 if target_planet:
                     Xx2 = target_system.x * 1000 + target_planet.x
@@ -361,8 +361,6 @@ def fleet_fly(request):
                     else:
                         flight_time = math.sqrt(distance*(fleet.ship_empty_mass + fleet.hold)/fleet.intersystem_power)
 
-
-
             coordinate = request.POST.get('coordinate')
             if coordinate:
                 coordinate_x = request.POST.get('coordinate_x')
@@ -370,9 +368,50 @@ def fleet_fly(request):
                 coordinate_z = request.POST.get('coordinate_z')
                 coordinate_giper = request.POST.get('coordinate_giper')
                 coordinate_null = request.POST.get('coordinate_null')
-                coordinate_system = request.POST.get('')
+                coordinate_system = request.POST.get('coordinate_system')
                 coordinate_intersystem = request.POST.get('coordinate_intersystem')
                 fleet = Fleet.objects.filter(id=fleet_id).first()
+                system = System.objects.filter(id=fleet.system).first()
+                if fleet.planet_status == 1:
+                    Xx1 = system.x * 1000 + fleet.x
+                    Yy1 = system.y * 1000 + fleet.y
+                    Zz1 = system.z * 1000 + fleet.z
+                else:
+                    Xx1 = fleet.x*1000
+                    Yy1 = fleet.y*1000
+                    Zz1 = fleet.z*1000
+
+                if coordinate_intersystem:
+                    distance = math.sqrt((Xx1 - coordinate_x) ** 2 + (Yy1 - coordinate_y) ** 2 + (Zz1 - coordinate_z) ** 2)
+                else:
+                    target_system = System.objects.filter(id = coordinate_system).first()
+                    Xx2 = target_system.x * 1000 + coordinate_x
+                    Yy2 = target_system.y * 1000 + coordinate_y
+                    Zz2 = target_system.z * 1000 + coordinate_z
+                    distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2)** 2)
+
+                if coordinate_giper:
+                    fleet_ships = Ship.objects.filter(place_id = fleet_id, fleet_status = 1)
+                    check = 0
+                    for fleet_ship in fleet_ships:
+                        project_ship = Project_ship.objects.filter(id = fleet_ship.id_project_ship).first()
+                        if project_ship.giper_power == 0:
+                            check = 1
+                    if check == 0:
+                        flight_time = math.sqrt(distance*(fleet.ship_empty_mass + fleet.hold)/fleet.giper_power)
+                    else:
+                        flight_time = math.sqrt(distance*(fleet.ship_empty_mass + fleet.hold)/fleet.intersystem_power)
+                elif coordinate_null:
+                    fleet_ships = Ship.objects.filter(place_id = fleet_id, fleet_status = 1)
+                    check = 0
+                    for fleet_ship in fleet_ships:
+                        project_ship = Project_ship.objects.filter(id = fleet_ship.id_project_ship).first()
+                        if project_ship.giper_power == 0:
+                            check = 1
+                    if check == 0:
+                        flight_time = math.sqrt(distance*(fleet.ship_empty_mass + fleet.hold)/fleet.giper_power)
+                    else:
+                        flight_time = math.sqrt(distance*(fleet.ship_empty_mass + fleet.hold)/fleet.intersystem_power)
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
