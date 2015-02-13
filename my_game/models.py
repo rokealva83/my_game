@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime, timedelta, date, time as dt_time
 
 # Create your models here.
 
@@ -997,8 +998,9 @@ class Flightplan_flight(models.Model):
     finish_x = models.IntegerField()
     finish_y = models.IntegerField()
     finish_z = models.IntegerField()
-    start_time = models.DateTimeField()
-    finish_time = models.DateTimeField()
+    flight_time = models.IntegerField(default=0)
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    finish_time = models.DateTimeField(default=datetime.now, blank=True)
 
 
 class Flightplan_hold(models.Model):
@@ -1010,8 +1012,8 @@ class Flightplan_hold(models.Model):
     id_command = models.IntegerField()
     amount = models.IntegerField()
     trade_item_number = models.IntegerField()
-    start_time = models.DateTimeField()
-    finish_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    finish_time = models.DateTimeField(default=datetime.now, blank=True)
 
 
 class Flightplan_production(models.Model):
@@ -1022,8 +1024,8 @@ class Flightplan_production(models.Model):
     id_fleet = models.IntegerField()
     id_command = models.IntegerField()
     production_per_second = models.IntegerField()
-    start_time = models.DateTimeField()
-    finish_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    finish_time = models.DateTimeField(default=datetime.now, blank=True)
 
 
 class Flightplan_refill(models.Model):
@@ -1035,8 +1037,8 @@ class Flightplan_refill(models.Model):
     id_command = models.IntegerField()
     id_fleet_refill = models.IntegerField()
     amount_fuel = models.IntegerField()
-    start_time = models.DateTimeField()
-    finish_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    finish_time = models.DateTimeField(default=datetime.now, blank=True)
 
 
 class Flightplan_repair(models.Model):
@@ -1047,8 +1049,8 @@ class Flightplan_repair(models.Model):
     id_fleet = models.IntegerField()
     id_command = models.IntegerField()
     repair = models.IntegerField()
-    start_time = models.DateTimeField()
-    finish_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    finish_time = models.DateTimeField(default=datetime.now, blank=True)
 
 
 class Flightplan_scan(models.Model):
@@ -1059,8 +1061,8 @@ class Flightplan_scan(models.Model):
     id_fleet = models.IntegerField()
     id_command = models.IntegerField()
     range_scanning = models.IntegerField()
-    start_time = models.DateTimeField()
-    finish_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    finish_time = models.DateTimeField(default=datetime.now, blank=True)
 
 
 class Flightplan_fight(models.Model):
