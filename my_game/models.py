@@ -1014,7 +1014,6 @@ class Flightplan_hold(models.Model):
     finish_time = models.DateTimeField()
 
 
-
 class Flightplan_production(models.Model):
     class Meta():
         db_table = 'flightplan_production'
@@ -1025,7 +1024,6 @@ class Flightplan_production(models.Model):
     production_per_second = models.IntegerField()
     start_time = models.DateTimeField()
     finish_time = models.DateTimeField()
-
 
 
 class Flightplan_refill(models.Model):
@@ -1041,7 +1039,6 @@ class Flightplan_refill(models.Model):
     finish_time = models.DateTimeField()
 
 
-
 class Flightplan_repair(models.Model):
     class Meta():
         db_table = 'flightplan_repair'
@@ -1052,7 +1049,6 @@ class Flightplan_repair(models.Model):
     repair = models.IntegerField()
     start_time = models.DateTimeField()
     finish_time = models.DateTimeField()
-
 
 
 class Flightplan_scan(models.Model):
