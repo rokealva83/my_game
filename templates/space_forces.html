@@ -84,8 +84,19 @@
             {% endif %}
             {% if command == 3 %}
                 {% if flightplans %}
-                    <h2>Полетный лист</h2>
+                    <h3 style="text-align: center">Полетный лист</h3>
                     {% for flightplan in flightplans %}
+                        {% if flightplan.class_command == 1 %}
+                            {% for flightplan_flight in flightplan_flights %}
+                                {% if flightplan_flight.id_fleetplan == flightplan.id %}
+                                    <div class="fleet" style="text-align: center">
+                                        <p>Перелет в точку {{ flightplan_flight.finish_x }} : {{ flightplan_flight.finish_y }}
+                                            : {{ flightplan_flight.finish_z }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                        {% endif %}
 
                     {% endfor %}
                 {% endif %}

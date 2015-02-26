@@ -43,10 +43,11 @@ def auth(request):
         if user_name_auth is not None:
             if user_name_auth.password == password_post:
                 user = MyUser.objects.filter(user_id=user_name_auth.id).first()
+                user_id = user.pk
                 warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 user_citys = User_city.objects.filter(user=int(user_name_auth.id))
-                function.check_all_queues(user_name_post)
+                function.check_all_queues(user_id)
                 output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys}
                 request.session['userid'] = user_name_auth.id
                 request.session['user_city'] = user_city.id

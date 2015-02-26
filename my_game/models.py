@@ -991,6 +991,7 @@ class Flightplan_flight(models.Model):
 
     user = models.IntegerField()
     id_fleet = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     start_x = models.IntegerField()
     start_y = models.IntegerField()
@@ -1009,6 +1010,7 @@ class Flightplan_hold(models.Model):
 
     user = models.IntegerField()
     id_fleet = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     amount = models.IntegerField()
     trade_item_number = models.IntegerField()
@@ -1022,6 +1024,7 @@ class Flightplan_production(models.Model):
 
     user = models.IntegerField()
     id_fleet = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     production_per_second = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
@@ -1034,6 +1037,7 @@ class Flightplan_refill(models.Model):
 
     user = models.IntegerField()
     id_fleet = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     id_fleet_refill = models.IntegerField()
     amount_fuel = models.IntegerField()
@@ -1047,6 +1051,7 @@ class Flightplan_repair(models.Model):
 
     user = models.IntegerField()
     id_fleet = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     repair = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
@@ -1060,6 +1065,7 @@ class Flightplan_scan(models.Model):
     user = models.IntegerField()
     id_fleet = models.IntegerField()
     id_command = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
     range_scanning = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
     finish_time = models.DateTimeField(default=datetime.now, blank=True)
@@ -1071,6 +1077,7 @@ class Flightplan_fight(models.Model):
 
     user = models.IntegerField()
     id_fleet = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     id_fleet_attack = models.IntegerField()
     id_fight = models.IntegerField()

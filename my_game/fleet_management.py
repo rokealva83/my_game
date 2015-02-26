@@ -390,17 +390,18 @@ def fleet_fly(request):
                     status=0,
                 )
                 flightplan.save()
-
+                id_fleetplan = flightplan.pk
                 flightplan_flight = Flightplan_flight(
                     user=session_user,
                     id_fleet=fleet_id,
+                    id_fleetplan = id_fleetplan,
+                    id_command=id_command,
                     start_x=Xx1,
                     start_y=Yy1,
                     start_z=Zz1,
                     finish_x=int(Xx2),
                     finish_y=int(Yy2),
                     finish_z=int(Zz2),
-                    id_command=id_command,
                     flight_time=flight_time,
                 )
                 flightplan_flight.save()
@@ -489,16 +490,19 @@ def fleet_fly(request):
                     status=0,
                 )
                 flightplan.save()
+                id_fleetplan = flightplan.pk
                 flightplan_flight = Flightplan_flight(
                     user=session_user,
                     id_fleet=fleet_id,
+                    id_fleetplan = id_fleetplan,
+                    id_command=id_command,
                     start_x=Xx1,
                     start_y=Yy1,
                     start_z=Zz1,
                     finish_x=Xx2,
                     finish_y=Yy2,
                     finish_z=Zz2,
-                    id_command=id_command,
+
                     flight_time=flight_time,
                 )
                 flightplan_flight.save()
@@ -509,10 +513,12 @@ def fleet_fly(request):
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        flightplans = Flightplan.objects.filter(id_fleet=fleet_id)
+        flightplan_flights = Flightplan_flight.objects.filter(id_fleet=fleet_id)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'command': command}
+                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights}
         return render(request, "space_forces.html", output)
