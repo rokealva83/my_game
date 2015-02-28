@@ -313,14 +313,22 @@ def fleet_fly(request):
                 fleet = Fleet.objects.filter(id=fleet_id).first()
                 system = System.objects.filter(id=fleet.system).first()
                 # XYZ - координаты звезд  xyz - соординаты планет  XxYyZz - межзвездные координаты планет
-                if fleet.planet_status == 1:
-                    Xx1 = int(system.x) * 1000 + int(fleet.x)
-                    Yy1 = int(system.y) * 1000 + int(fleet.y)
-                    Zz1 = int(system.z) * 1000 + int(fleet.z)
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleet = fleet_id).last()
+                if flightplan_flight:
+                    system = System.objects.filter(id=flightplan_flight.system).first()
+                    Xx1 = flightplan_flight.finish_x
+                    Yy1 = flightplan_flight.finish_y
+                    Zz1 = flightplan_flight.finish_z
                 else:
-                    Xx1 = int(fleet.x) * 1000
-                    Yy1 = int(fleet.y) * 1000
-                    Zz1 = int(fleet.z) * 1000
+                    system = System.objects.filter(id=fleet.system).first()
+                    if fleet.planet_status == 1:
+                        Xx1 = int(system.x) * 1000 + int(fleet.x)
+                        Yy1 = int(system.y) * 1000 + int(fleet.y)
+                        Zz1 = int(system.z) * 1000 + int(fleet.z)
+                    else:
+                        Xx1 = int(fleet.x) * 1000
+                        Yy1 = int(fleet.y) * 1000
+                        Zz1 = int(fleet.z) * 1000
 
                 if target_planet:
                     Xx2 = int(target_system.x) * 1000 + int(target_planet.x)
@@ -421,10 +429,12 @@ def fleet_fly(request):
                 system = System.objects.filter(id=fleet.system).first()
                 flightplan_flight = Flightplan_flight.objects.filter(id_fleet = fleet_id).last()
                 if flightplan_flight:
+                    system = System.objects.filter(id=fleet.system).first()
                     Xx1 = flightplan_flight.finish_x
                     Yy1 = flightplan_flight.finish_y
                     Zz1 = flightplan_flight.finish_z
                 else:
+                    system = System.objects.filter(id=flightplan_flight.system).first()
                     if fleet.planet_status == 1:
                         Xx1 = int(system.x) * 1000 + int(fleet.x)
                         Yy1 = int(system.y) * 1000 + int(fleet.y)

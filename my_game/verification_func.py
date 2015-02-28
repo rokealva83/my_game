@@ -315,6 +315,7 @@ def verification_flight_list(request):
             if flightplan.status == 1:
                 if flightplan.class_command == 1:
                     flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).first()
+                    flightplan_id = int(flightplan.id)
                     time = timezone.now()
                     time_start = flightplan_flight.start_time
                     delta_time = time - time_start
@@ -338,9 +339,13 @@ def verification_flight_list(request):
                         fleet_up = Fleet.objects.filter(id = fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
                                                               planet=flightplan_flight.planet,
                                                               system=flightplan_flight.system)
+
                         old_flightplan_flight = flightplan_flight
+
                         flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
+
                         flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).first()
+
                         if flightplan_flight:
                             finish_time = old_flightplan_flight.start_time + timedelta(
                                 seconds=flightplan_flight.flight_time)
@@ -352,7 +357,7 @@ def verification_flight_list(request):
                                 start_x=start_x, start_y=start_y, start_z=start_z,
                             start_time=old_flightplan_flight.finish_time)
 
-                        flightplan = Flightplan.objects.filter(id_fleet=int(fleet.id)).delete()
+                        flightplan = Flightplan.objects.filter(id = flightplan_id).delete()
             lens = lens + 1
             if lens == flightplan_len:
                 fleet_up = Fleet.objects.filter(id = fleet.id).update(status = 0)
