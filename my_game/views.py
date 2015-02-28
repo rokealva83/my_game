@@ -643,7 +643,7 @@ def choice_element(request):
         if request.POST.get('hull') is not None:
             attributes = ("name", "price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                          "health", "generators", "engines", "weapons", "armor", "shield", "main_weapons", "module",
+                          "health", "generator", "engine", "weapon", "armor", "shield", "main_weapon", "module",
                           "hold_size", "size", "mass", "power_consuption")
             factory_installeds = Factory_installed.objects.filter(user=session_user, production_class=1).order_by(
                 'production_id')
@@ -846,7 +846,7 @@ def new_ship(request):
                       'turn_ship_builds': turn_ship_builds}
 
         if request.POST.get('create_ship_pattern'):
-            chosen_hull_id = request.POST.get('chosen_hull')
+            chosen_hull_id = int(request.POST.get('chosen_hull'))
             chosen_name = request.POST.get('chosen_hull_name')
             chosen_hull = chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
             hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
@@ -1093,6 +1093,7 @@ def work_with_project(request):
 
         if request.POST.get('modificate_pattern'):
             amount_ship = request.POST.get('amount')
+            message = 'На складе не хватает комплектующих'
 
         if request.POST.get('delete_pattern'):
             ship_id = request.POST.get('hidden_ship')

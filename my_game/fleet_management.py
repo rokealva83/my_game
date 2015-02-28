@@ -313,7 +313,7 @@ def fleet_fly(request):
                 fleet = Fleet.objects.filter(id=fleet_id).first()
                 system = System.objects.filter(id=fleet.system).first()
                 # XYZ - координаты звезд  xyz - соординаты планет  XxYyZz - межзвездные координаты планет
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet = fleet_id).last()
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
                 if flightplan_flight:
                     system = System.objects.filter(id=flightplan_flight.system).first()
                     Xx1 = flightplan_flight.finish_x
@@ -360,8 +360,9 @@ def fleet_fly(request):
                                 if project_ship.giper_power == 0:
                                     check = 1
                             if check == 0:
-                                flight_time = math.sqrt(distance * 2 * (int(fleet.ship_empty_mass) + int(fleet.hold)) / int(
-                                    fleet.giper_power)) * 2
+                                flight_time = math.sqrt(
+                                    distance * 2 * (int(fleet.ship_empty_mass) + int(fleet.hold)) / int(
+                                        fleet.giper_power)) * 2
                                 id_command = 3
                             else:
                                 flight_time = math.sqrt(
@@ -376,8 +377,9 @@ def fleet_fly(request):
                                 if project_ship.giper_power == 0:
                                     check = 1
                             if check == 0:
-                                flight_time = math.sqrt(distance / 2 * (int(fleet.ship_empty_mass) + int(fleet.hold)) / int(
-                                    fleet.null_power)) * 2
+                                flight_time = math.sqrt(
+                                    distance / 2 * (int(fleet.ship_empty_mass) + int(fleet.hold)) / int(
+                                        fleet.null_power)) * 2
                                 id_command = 4
                             else:
                                 flight_time = math.sqrt(
@@ -402,7 +404,7 @@ def fleet_fly(request):
                 flightplan_flight = Flightplan_flight(
                     user=session_user,
                     id_fleet=fleet_id,
-                    id_fleetplan = id_fleetplan,
+                    id_fleetplan=id_fleetplan,
                     id_command=id_command,
                     start_x=Xx1,
                     start_y=Yy1,
@@ -411,8 +413,8 @@ def fleet_fly(request):
                     finish_y=int(Yy2),
                     finish_z=int(Zz2),
                     flight_time=flight_time,
-                    planet = planet_planet,
-                    system = planet_system
+                    planet=planet_planet,
+                    system=planet_system
                 )
                 flightplan_flight.save()
 
@@ -427,7 +429,7 @@ def fleet_fly(request):
                 coordinate_intersystem = request.POST.get('coordinate_intersystem')
                 fleet = Fleet.objects.filter(id=fleet_id).first()
                 system = System.objects.filter(id=fleet.system).first()
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet = fleet_id).last()
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
                 if flightplan_flight:
                     system = System.objects.filter(id=fleet.system).first()
                     Xx1 = flightplan_flight.finish_x
@@ -512,7 +514,7 @@ def fleet_fly(request):
                 flightplan_flight = Flightplan_flight(
                     user=session_user,
                     id_fleet=fleet_id,
-                    id_fleetplan = id_fleetplan,
+                    id_fleetplan=id_fleetplan,
                     id_command=id_command,
                     start_x=Xx1,
                     start_y=Yy1,
@@ -521,10 +523,14 @@ def fleet_fly(request):
                     finish_y=Yy2,
                     finish_z=Zz2,
                     flight_time=flight_time,
-                    planet = 0,
-                    system = 0,
+                    planet=0,
+                    system=0,
                 )
                 flightplan_flight.save()
+
+        if request.POST.get('delete_command'):
+            fleet_id = int(request.POST.get('hidden_fleet'))
+            hidden_flightplan_id = int(request.POST.get('hidden_flightplan_id'))
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
@@ -550,19 +556,29 @@ def start_flight(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        fleet_id = int(request.POST.get('hidden_fleet'))
         command = 0
         if request.POST.get('start_flight'):
+            fleet_id = int(request.POST.get('hidden_fleet'))
             flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
             id_flightplan = flightplan.pk
             if flightplan.class_command == 1:
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id, id_command = flightplan.id_command).first()
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id,
+                                                                     id_command=flightplan.id_command).first()
                 start_time = datetime.now()
                 finish_time = start_time + timedelta(seconds=flightplan_flight.flight_time)
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id, id_command = flightplan.id_command).update(start_time = start_time, finish_time = finish_time)
-            flightplan = Flightplan.objects.filter(id = id_flightplan, id_fleet=fleet_id).update(status = 1)
-            fleet = Fleet.objects.filter(id = fleet_id).update(status = True, planet_status = 0)
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id,
+                                                                     id_command=flightplan.id_command).update(
+                    start_time=start_time, finish_time=finish_time)
+
+            flightplan = Flightplan.objects.filter(id=id_flightplan, id_fleet=fleet_id).update(status=1)
+            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
             command = 0
+
+        if request.POST.get('delete_list'):
+            fleet_id = int(request.POST.get('hidden_fleet'))
+            flightplan = Flightplan.objects.filter(id_fleet=fleet_id).delete()
+            flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).delete()
+            command = 3
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
