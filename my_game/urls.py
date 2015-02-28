@@ -31,5 +31,6 @@ urlpatterns = patterns('',
                        url(r'fleet_manage', 'my_game.fleet_management.fleet_manage', name='fleet_manage'),
                        url(r'trade', 'my_game.views.trade', name='trade'),
                        url(r'fleet_fly', 'my_game.fleet_management.fleet_fly', name='fleet_fly'),
+                       url(r'start_flight', 'my_game.fleet_management.start_flight', name='start_flight'),
 
 )

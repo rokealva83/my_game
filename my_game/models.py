@@ -904,9 +904,9 @@ class Fleet(models.Model):
 
     user = models.IntegerField()
     name = models.CharField(max_length=20)
-    x = models.IntegerField()
-    y = models.IntegerField()
-    z = models.IntegerField()
+    x = models.FloatField()
+    y = models.FloatField()
+    z = models.FloatField()
     system = models.IntegerField(default=0)
     planet = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
@@ -1002,6 +1002,8 @@ class Flightplan_flight(models.Model):
     flight_time = models.IntegerField(default=0)
     start_time = models.DateTimeField(default=datetime.now, blank=True)
     finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    system = models.IntegerField(default=0)
+    planet = models.IntegerField(default=0)
 
 
 class Flightplan_hold(models.Model):

@@ -84,21 +84,35 @@
             {% endif %}
             {% if command == 3 %}
                 {% if flightplans %}
-                    <h3 style="text-align: center">Полетный лист</h3>
-                    {% for flightplan in flightplans %}
-                        {% if flightplan.class_command == 1 %}
-                            {% for flightplan_flight in flightplan_flights %}
-                                {% if flightplan_flight.id_fleetplan == flightplan.id %}
-                                    <div class="fleet" style="text-align: center">
-                                        <p>Перелет в точку {{ flightplan_flight.finish_x }} : {{ flightplan_flight.finish_y }}
-                                            : {{ flightplan_flight.finish_z }}</p>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                    <form method="post" action="start_flight" enctype="multipart/form-data"
+                          style="text-align: center;  margin-bottom: 15px; border: 1px solid; border-radius: 7px;">
+                        <h3 style="text-align: center">Полетный лист</h3>
+                        {% for flightplan in flightplans %}
+                            {% if flightplan.class_command == 1 %}
+                                {% for flightplan_flight in flightplan_flights %}
+                                    {% if flightplan_flight.id_fleetplan == flightplan.id %}
+                                        <div class="fleet" style="text-align: center">
+                                            <p>Перелет в точку {{ flightplan_flight.finish_x }}
+                                                : {{ flightplan_flight.finish_y }}
+                                                : {{ flightplan_flight.finish_z }}</p>
 
-                        {% endif %}
+                                            <p>Status:
+                                                {% if flightplan.status == 0 %}
+                                                    stand by
+                                                {% else %}
+                                                    prosecution
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
 
-                    {% endfor %}
+                            {% endif %}
+
+                        {% endfor %}
+                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                        <input class="scientic" type="submit" value="Start flight" name="start_flight"/>
+                    </form>
                 {% endif %}
 
                 <form method="post" action="fleet_fly" enctype="multipart/form-data" style="text-align: center">

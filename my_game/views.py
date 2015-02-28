@@ -47,8 +47,9 @@ def auth(request):
                 warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 user_citys = User_city.objects.filter(user=int(user_name_auth.id))
+                planet = Planet.objects.filter(id = user_city.planet_id).first()
                 function.check_all_queues(user_id)
-                output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys}
+                output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys, 'planet':planet}
                 request.session['userid'] = user_name_auth.id
                 request.session['user_city'] = user_city.id
                 request.session['live'] = True

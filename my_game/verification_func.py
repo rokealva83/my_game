@@ -27,6 +27,9 @@ from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehou
 from models import Project_ship, Element_ship, Turn_ship_build, Ship
 import scientic_func
 from models import User_variables
+from models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
+from  models import Flightplan, Flightplan_flight, Flightplan_hold, Flightplan_production, Flightplan_refill, \
+    Flightplan_repair, Flightplan_scan, Flightplan_fight
 
 
 def check_scientific_verification_queue(request):
@@ -235,10 +238,11 @@ def check_assembly_line_workpieces(request):
 
 def verification_stage_production(request):
     user = request
-    user_citys = User_city.objects.filter(user = user)
+    user_citys = User_city.objects.filter(user=user)
     for user_city in user_citys:
         city_id = user_city.id
-        turn_productions = Turn_production.objects.filter(user = user, user_city = user_city.id).order_by('start_time_production')
+        turn_productions = Turn_production.objects.filter(user=user, user_city=user_city.id).order_by(
+            'start_time_production')
         for turn_production in turn_productions:
             time = timezone.now()
             time_start = turn_production.start_time_production
@@ -247,29 +251,32 @@ def verification_stage_production(request):
             delta_time = turn_production.finish_time_production - turn_production.start_time_production
             delta = delta_time.seconds
             if new_delta > delta:
-                work_factory = Factory_installed.objects.filter(id = turn_production.factory_id).first()
-                warehouse = Warehouse_element.objects.filter(element_id = turn_production.element_id, element_class = work_factory.production_class).first()
+                work_factory = Factory_installed.objects.filter(id=turn_production.factory_id).first()
+                warehouse = Warehouse_element.objects.filter(element_id=turn_production.element_id,
+                                                             element_class=work_factory.production_class).first()
                 if warehouse is not None:
                     new_amount = warehouse.amount + turn_production.amount_element
-                    warehouse = Warehouse_element.objects.filter(element_id = turn_production.element_id).update(amount = new_amount)
+                    warehouse = Warehouse_element.objects.filter(element_id=turn_production.element_id).update(
+                        amount=new_amount)
                 else:
                     warehouse = Warehouse_element(
-                        user = user,
-                        user_city = user_city.id,
-                        element_class = work_factory.production_class,
-                        element_id = turn_production.element_id,
-                        amount = turn_production.amount_element
+                        user=user,
+                        user_city=user_city.id,
+                        element_class=work_factory.production_class,
+                        element_id=turn_production.element_id,
+                        amount=turn_production.amount_element
                     )
                     warehouse.save()
-                turn_production_delete = Turn_production.objects.filter(id = turn_production.id).delete()
+                turn_production_delete = Turn_production.objects.filter(id=turn_production.id).delete()
 
 
 def verification_turn_ship_build(request):
     user = request
-    user_citys = User_city.objects.filter(user = user)
+    user_citys = User_city.objects.filter(user=user)
     for user_city in user_citys:
         city_id = int(user_city.id)
-        turn_ship_builds = Turn_ship_build.objects.filter(user = user, user_city = user_city.id).order_by('start_time_build')
+        turn_ship_builds = Turn_ship_build.objects.filter(user=user, user_city=user_city.id).order_by(
+            'start_time_build')
         for turn_ship_build in turn_ship_builds:
             time = timezone.now()
             time_start = turn_ship_build.start_time_build
@@ -278,19 +285,75 @@ def verification_turn_ship_build(request):
             delta_time = turn_ship_build.finish_time_build - turn_ship_build.start_time_build
             delta = delta_time.seconds
             if new_delta > delta:
-                dock = Ship.objects.filter(id_project_ship = turn_ship_build.ship_pattern).first()
-                create_ship = Project_ship.objects.filter(user = user, id = turn_ship_build.ship_pattern).first()
+                dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).first()
+                create_ship = Project_ship.objects.filter(user=user, id=turn_ship_build.ship_pattern).first()
                 if dock is not None:
                     new_amount = dock.amount_ship + turn_ship_build.amount
-                    dock = Ship.objects.filter(id_project_ship = turn_ship_build.ship_pattern).update(amount_ship = new_amount)
+                    dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).update(
+                        amount_ship=new_amount)
                 else:
                     dock = Ship(
-                        user = user,
-                        id_project_ship = turn_ship_build.ship_pattern,
-                        name = create_ship.name,
-                        amount_ship = turn_ship_build.amount,
-                        fleet_status = 0,
-                        place_id = city_id
+                        user=user,
+                        id_project_ship=turn_ship_build.ship_pattern,
+                        name=create_ship.name,
+                        amount_ship=turn_ship_build.amount,
+                        fleet_status=0,
+                        place_id=city_id
                     )
                     dock.save()
-                turn_ship_build_delete = Turn_ship_build.objects.filter(id = turn_ship_build.id).delete()
+                turn_ship_build_delete = Turn_ship_build.objects.filter(id=turn_ship_build.id).delete()
+
+
+def verification_flight_list(request):
+    user = request
+    fleets = Fleet.objects.filter(user=user)
+    for fleet in fleets:
+        flightplans = Flightplan.objects.filter(id_fleet=fleet.id)
+        flightplan_len = len(flightplans)
+        lens = 0
+        for flightplan in flightplans:
+            if flightplan.status == 1:
+                if flightplan.class_command == 1:
+                    flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).first()
+                    time = timezone.now()
+                    time_start = flightplan_flight.start_time
+                    delta_time = time - time_start
+                    new_delta = delta_time.seconds
+                    delta = flightplan_flight.flight_time
+                    if new_delta > delta:
+                        if flightplan_flight.planet != 0:
+                            planet_status = 1
+                            planet = Planet.objects.filter(system_id=flightplan_flight.system,
+                                                           planet_num=flightplan_flight.planet).first()
+                            x = planet.x
+                            y = planet.y
+                            z = planet.z
+
+                        else:
+                            planet_status = 0
+                            x = flightplan_flight.finish_x / 1000
+                            y = flightplan_flight.finish_y / 1000
+                            z = flightplan_flight.finish_z / 1000
+
+                        fleet_up = Fleet.objects.filter(id = fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
+                                                              planet=flightplan_flight.planet,
+                                                              system=flightplan_flight.system)
+                        old_flightplan_flight = flightplan_flight
+                        flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
+                        flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).first()
+                        if flightplan_flight:
+                            finish_time = old_flightplan_flight.start_time + timedelta(
+                                seconds=flightplan_flight.flight_time)
+
+                            start_x = old_flightplan_flight.finish_x / 1000
+                            start_y = old_flightplan_flight.finish_y / 1000
+                            start_z = old_flightplan_flight.finish_z / 1000
+                            flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).update(
+                                start_x=start_x, start_y=start_y, start_z=start_z,
+                            start_time=old_flightplan_flight.finish_time)
+
+                        flightplan = Flightplan.objects.filter(id_fleet=int(fleet.id)).delete()
+            lens = lens + 1
+            if lens == flightplan_len:
+                fleet_up = Fleet.objects.filter(id = fleet.id).update(status = 0)
+

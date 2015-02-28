@@ -41,6 +41,7 @@ def check_all_queues(request):
     time_update = now_date
     if elapsed_time_seconds > 300:
         verification_func.verification_of_resources(user, elapsed_time_seconds, time_update)
+    verification_func.verification_flight_list(user)
     verification_func.check_assembly_line_workpieces(user)
     verification_func.verification_stage_production(user)
     verification_func.verification_turn_ship_build(user)

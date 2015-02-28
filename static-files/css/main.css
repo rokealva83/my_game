@@ -813,9 +813,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .fleet {
+    text-align: center;
     border: 1px solid #000;
     border-radius: 7px;
-    margin: 7px 0 5px 0;
+    margin: 7px 5px 5px 5px;
     padding: 2px 0 7px 0;
 }
 
