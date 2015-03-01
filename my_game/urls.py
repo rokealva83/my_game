@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from my_game.account import views as account
 from my_game.knowledge import views as knowledge
+from  my_game.civilization import views as civilization
 
 #import my_game.registration.registration
 
@@ -18,10 +19,12 @@ urlpatterns = patterns('',
 
                        url(r'admin/gener/', 'my_game.views.gener'),
                        url(r'admin/gener1', 'my_game.views.generation', name='gen1'),
-
                        url(r'civilization.html', 'my_game.views.auth', name='auth'),
-                       url(r'civilization', 'my_game.views.civilization', name='civilization'),
+
+                       url(r'^civilization', civilization.civilization),
+
                        url(r'warehouse', 'my_game.views.warehouse', name='warehouse'),
+
 
                        url(r'^knowledge', knowledge.knowledge),
                        url(r'^study', knowledge.study),
