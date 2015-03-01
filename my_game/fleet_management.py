@@ -1,36 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
-from django.http.response import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.template.loader import get_template
-from django.template import Context
 import math
-import random
-import sys
-import string
-from datetime import datetime, timedelta, date, time as dt_time
-import time
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.urlresolvers import reverse
-from django.contrib.sessions.models import Session
-from django.utils import timezone
-from models import Galaxy, System, Planet
-from models import MyUser, User_city, Race, User_scientic
-from models import Warehouse
-from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
-    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Turn_building, Turn_assembly_pieces, \
-    Turn_production
-from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from models import Warehouse_factory, Warehouse_element, Warehouse_ship, Warehouse
+from datetime import datetime, timedelta
+
+from django.shortcuts import render
+
+from my_game.models import System, Planet
+from my_game.models import MyUser, User_city
+from my_game.models import Warehouse
 import function
-import scientic_func
-import verification_func
-from models import User_variables
-from models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
-from  models import Flightplan, Flightplan_flight, Flightplan_hold, Flightplan_production, Flightplan_refill, \
-    Flightplan_repair, Flightplan_scan, Flightplan_fight
+from my_game.models import Project_ship, Ship, Fleet
+from  my_game.models import Flightplan, Flightplan_flight
 
 
 def fleet_manage(request):

@@ -2,24 +2,19 @@
 
 import math
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.shortcuts import render
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-from datetime import datetime, timedelta, date, time as dt_time
-from my_game.models import Galaxy, System, Planet, MyUser, User_city, Warehouse, User_scientic, Turn_production, Turn_building, \
+
+from my_game.models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Turn_production, Turn_building, \
     Turn_assembly_pieces
-from my_game.models import Basic_scientic, Turn_scientic, Basic_factory
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
 from my_game.models import Warehouse_factory, Warehouse_element
 import function
-import scientic_work
-import scientic_func
 import verification_func
-from my_game.models import User_variables
 from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
 
 
@@ -236,52 +231,6 @@ def civilization(request):
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'planet': planet}
         return render(request, "civilization.html", output)
-
-
-def scientic(request):
-    if "live" not in request.session:
-        return render(request, "index.html", {})
-    else:
-        session_user = int(request.session['userid'])
-        session_user_city = int(request.session['user_city'])
-        function.check_all_queues(session_user)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
-        user_city = User_city.objects.filter(user=session_user).first()
-        scientic = User_scientic.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
-        turn_scientics = Turn_scientic.objects.filter(user=session_user)
-        user_citys = User_city.objects.filter(user=int(session_user))
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
-        request.session['live'] = True
-        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'user_city': user_city,
-                  'turn_scientics': turn_scientics, 'user_citys': user_citys}
-        return render(request, "scientic.html", output)
-
-
-def scientic_up(request):
-    if "live" not in request.session:
-        return render(request, "index.html", {})
-    else:
-        session_user = int(request.session['userid'])
-        session_user_city = int(request.session['user_city'])
-        function.check_all_queues(session_user)
-        if request.method == "POST":
-            level_up = int(request.POST.get("scient"))
-            scientic = int(request.POST.get("name_scient"))
-            scientic_work.scien_up(session_user, level_up, scientic)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
-        user_city = User_city.objects.filter(user=session_user).first()
-        scientic = User_scientic.objects.filter(user=session_user).first()
-        turn_scientics = Turn_scientic.objects.filter(user=session_user)
-        user_citys = User_city.objects.filter(user=int(session_user))
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
-        request.session['live'] = True
-        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'user_city': user_city,
-                  'turn_scientics': turn_scientics, 'user_citys': user_citys}
-        return render(request, "scientic.html", output)
 
 
 def warehouse(request):

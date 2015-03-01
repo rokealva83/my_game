@@ -6,7 +6,7 @@
     <div id="game_content">
 
             <div class="game_content_up">
-                {{ error }}
+                {{ message }}
                 Очередь исследования
                 {% for turn_scientic in turn_scientics %}
                     <p>{{ turn_scientic.finish_time_science }}
@@ -16,7 +16,7 @@
             </div>
             <div id="game_content_down">
                 <div class="game_content_scientic">
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p> Матиматика</p>
@@ -39,7 +39,7 @@
                     </form>
                 </div>
                 <div class="game_content_scientic">
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p> Физика</p>
@@ -61,7 +61,7 @@
                     </form>
                 </div>
                 <div class="game_content_scientic">
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p> Биология</p>
@@ -84,7 +84,7 @@
                     </form>
                 </div>
                 <div class="game_content_scientic">
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p> Энергетика</p>
@@ -108,7 +108,7 @@
                 </div>
                 <div class="game_content_scientic">
 
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p> Електроника</p>
@@ -131,7 +131,7 @@
                     </form>
                 </div>
                 <div class="game_content_scientic">
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p> Нанотехнологии</p>
@@ -155,7 +155,7 @@
                     </form>
                 </div>
                 <div class="game_content_scientic">
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p> Астрономия</p>
@@ -178,7 +178,7 @@
                     </form>
                 </div>
                 <div class="game_content_scientic">
-                    <form method="post" action="scient"
+                    <form method="post" action=study
                           enctype="multipart/form-data">
                         <div>
                             <p>Логистика</p>

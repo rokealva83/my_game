@@ -1,28 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import math
 import random
-from datetime import datetime
 
-from django.shortcuts import render
-from django.http.response import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-
-from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, User_scientic, Turn_production, Turn_building, \
-    Turn_assembly_pieces
-from models import Basic_scientic, Turn_scientic, Basic_factory
-from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from models import Warehouse_factory, Warehouse_element
-import function
-import scientic_work
-import scientic_func
-from models import User_variables
-from models import Project_ship, Element_ship
-from models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
-    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Turn_building, Turn_assembly_pieces, \
-    Turn_production, Race
+from my_game.models import MyUser, User_scientic
+from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
+from my_game.models import Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
+    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Race
 
 
 def hull_upgrade(request):

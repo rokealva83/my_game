@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from my_game.account import views as account
+from my_game.knowledge import views as knowledge
 
 #import my_game.registration.registration
 
@@ -12,10 +13,6 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^index/', 'my_game.views.home'),
                        url(r'^$', 'my_game.views.home', name='home'),
-
-                       #url(r'^registration.html', 'my_game.views.registr'),
-                       #url(r'regisration', 'my_game.views.registration', name='registration'),
-
                        url(r'^registration.html', account.registration, name='account.registration'),
                        url(r'^index.html', account.add_user, name='account.add_user'),
 
@@ -25,8 +22,10 @@ urlpatterns = patterns('',
                        url(r'civilization.html', 'my_game.views.auth', name='auth'),
                        url(r'civilization', 'my_game.views.civilization', name='civilization'),
                        url(r'warehouse', 'my_game.views.warehouse', name='warehouse'),
-                       url(r'scientic', 'my_game.views.scientic', name='scientic'),
-                       url(r'scient', 'my_game.views.scientic_up', name='scient'),
+
+                       url(r'^knowledge', knowledge.knowledge),
+                       url(r'^study', knowledge.study),
+
                        url(r'building', 'my_game.views.building', name='building'),
                        url(r'choice_build', 'my_game.views.choice_build', name="choice_build"),
                        url(r'working', 'my_game.views.working', name='working'),
