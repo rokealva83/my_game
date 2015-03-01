@@ -1,54 +1,68 @@
 {% load staticfiles %}
-
+{% csrf_token %}
 <!DOCTYPE html>
 <html>
 <head lang="ru">
     <meta http-equiv="content-type" content=text/html; charset="UTF-8">
-    <title>Регистрация пользователя</title>
+    <title>Регистрация</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="{% static 'js/button.js' %}"></script>
 
 </head>
-<body>
-<table cellpadding="0" cellspacing="0" width="65%" align="center">
-    <tr>
-        <td colspan="3" class="header">Мой сайт</td>
-    </tr>
+<body id="inside">
 
-    <tr>
-        <td colspan="3" class="inform_line">Ресурсы</td>
-    </tr>
+<div id="logo" align="center"></div>
+<div id="header_inside"></div>
+<div id="block_content">
+    <div id="left_menu">
+        <form method="post" enctype="multipart/form-data" action="index">
+            <div>
+                <button class="scientic" type="submit" name="index">Index</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="news">
+            <div>
+                <button class="scientic" type="submit" name="news">News</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="about_us">
+            <div>
+                <button class="scientic" type="submit" name="about_us">About_us</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="gallery">
+            <div>
+                <button class="scientic" type="submit" name="gallery">Gallery</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="inform">
+            <div>
+                <button class="scientic" type="submit" name="inform">Infomation</button>
+            </div>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="forum">
+            <div>
+                <button class="scientic" type="submit" name="forum">Forum</button>
+            </div>
+        </form>
 
-    <tr>
-        <td class="left_col">
+    </div>
 
-            <p><a href="http://127.0.0.1:8000/">Главная</a></p>
-
-            <p><a href="http://www.yandex.ru">Новости</a></p>
-
-            <p><a href="http://www.yandex.ru">О игре</a></p>
-
-            <p><a href="http://www.yandex.ru">Галерея</a></p>
-
-            <p><a href="http://www.yandex.ru">Справка</a></p>
-
-            <p><a href="http://www.yandex.ru">Форум</a></p>
-
-
-        </td>
-
-        <td class="center_col">
+    <div id="game_content">
+        <div class="game_content_left" style="text-align: center">
             <h3>
                 Регистрация нового пользователя
             </h3>
 
             <p> Все поля обязательны для заполнения</p>
 
-            <form method="post" action="{% url 'registration' %}"
+            <form method="post" action="add_user"
                   enctype="multipart/form-data">
                 <div>
                     <label for="name">Login</label>
                     <input type="text" value=""
-                           name="name" id="name"
+                           name="name" class="scientic_place"
                            placeholder="login"/>
 
                 </div>
@@ -57,7 +71,7 @@
                 <div>
                     <label for="pass">password</label>
                     <input type="password" value=""
-                           name="pass" id="pass"
+                           name="pass" class="scientic_place"
                            placeholder="password"/>
                 </div>
                 <br>
@@ -66,7 +80,7 @@
                 <div>
                     <label for="mail">E-mail</label>
                     <input type="email" value=""
-                           name="mail" id="mail"
+                           name="mail" class="scientic_place"
                            placeholder="E-mail"/>
                 </div>
 
@@ -74,7 +88,7 @@
 
                 <div>
                     <label for="rac">Race</label>
-                    <select name="rac" id="rac">
+                    <select name="rac" class="scientic">
                         <option value="">Select race</option>
                         <option value="1">Race1</option>
                         <option value="2">Race2</option>
@@ -84,25 +98,29 @@
                     </select>
                 </div>
                 <br>
-                <br>
 
                 <div>
-                    <input type="submit" value="OK" name="add_button"/>
-                    <button type="submit" name="cancel_button" action="cancel">Cancel</button>
+                    <input type="submit" value="OK" name="add_button" class="scientic"/>
+                    <button type="submit" name="cancel_button" action="cancel" class="scientic">Cancel</button>
                 </div>
-                “{% csrf_token %}”
             </form>
 
 
-        </td>
+        </div>
 
-        <td class="right_col">Шо нибуть, когда нибуть напишем</td>
-    </tr>
-    <tr>
-        <td colspan="3" class="footer" align="center">&copy; 2015</td>
-    </tr>
-</table>
+        <div class="game_content_right">Шо нибуть, когда нибуть напишем</div>
+
+        <div class="clear"></div>
+    </div>
+    <div id="footer">
+        <div id="left_footer">&copy; Copyright 2015 <b>CRROTA</b> design</div>
+        <div id="right_footer"> Design by <b>CRROTA</b> Software</div>
+    </div>
+    <!-- end footer -->
+
+
 </body>
+
 </html>
 
 
