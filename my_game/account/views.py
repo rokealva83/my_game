@@ -9,12 +9,14 @@ from django.core.urlresolvers import reverse
 from datetime import datetime
 from my_game.models import Planet
 from my_game.models import MyUser
-from my_game.models import User_city, Warehouse, User_scientic, Basic_scientic, Basic_factory, Factory_pattern, Factory_installed
-
+from my_game.models import User_city, Warehouse, User_scientic, Basic_scientic, Basic_factory, Factory_pattern, \
+    Factory_installed
+from my_game import function
 
 
 def registration(request):
     return render(request, "registration.html", {})
+
 
 def add_user(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
@@ -147,9 +149,33 @@ def add_user(request):
                     use_energy = use_energy + factory_instelled.power_consumption
             user_city = User_city.objects.filter(user=id_user).first()
             free_area = user_city.city_size_free - use_area
-            user_city = User_city.objects.filter(user=id_user).update(use_energy=use_energy, city_size_free = free_area)
+            user_city = User_city.objects.filter(user=id_user).update(use_energy=use_energy, city_size_free=free_area)
 
 
     elif request.POST.get('cancel_button') is not None:
+        return render(request, "index.html", {})
+    return render(request, "index.html", {})
+
+
+def auth(request):
+    if request.method == "POST" and request.POST.get('add_button') is not None:
+        user_name_post = request.POST.get('name')
+        password_post = request.POST.get('pass')
+        user_name_auth = User.objects.filter(username=user_name_post).first()
+        if user_name_auth is not None:
+            if user_name_auth.password == password_post:
+                user = MyUser.objects.filter(user_id=user_name_auth.id).first()
+                user_id = user.pk
+                warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
+                user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
+                user_citys = User_city.objects.filter(user=int(user_name_auth.id))
+                planet = Planet.objects.filter(id=user_city.planet_id).first()
+                function.check_all_queues(user_id)
+                output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                          'planet': planet}
+                request.session['userid'] = user_name_auth.id
+                request.session['user_city'] = user_city.id
+                request.session['live'] = True
+                return render(request, "civilization.html", output)
         return render(request, "index.html", {})
     return render(request, "index.html", {})

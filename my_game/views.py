@@ -26,28 +26,6 @@ def cancel(request):
     return render(request, "index.html", {})
 
 
-def auth(request):
-    if request.method == "POST" and request.POST.get('add_button') is not None:
-        user_name_post = request.POST.get('name')
-        password_post = request.POST.get('pass')
-        user_name_auth = User.objects.filter(username=user_name_post).first()
-        if user_name_auth is not None:
-            if user_name_auth.password == password_post:
-                user = MyUser.objects.filter(user_id=user_name_auth.id).first()
-                user_id = user.pk
-                warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
-                user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
-                user_citys = User_city.objects.filter(user=int(user_name_auth.id))
-                planet = Planet.objects.filter(id = user_city.planet_id).first()
-                function.check_all_queues(user_id)
-                output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys, 'planet':planet}
-                request.session['userid'] = user_name_auth.id
-                request.session['user_city'] = user_city.id
-                request.session['live'] = True
-                return render(request, "civilization.html", output)
-        return render(request, "index.html", {})
-    return render(request, "index.html", {})
-
 
 def building(request):
     if "live" not in request.session:

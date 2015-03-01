@@ -19,12 +19,11 @@ urlpatterns = patterns('',
 
                        url(r'^registration.html', account.registration, name='account.registration'),
                        url(r'^index.html', account.add_user, name='account.add_user'),
+                       url(r'^auth', account.auth, name='account.auth'),
 
                        url(r'^admin/administration', administration.administration),
                        url(r'^admin/generation', administration.generation),
                        url(r'^admin/star_generation', administration.star_generation),
-
-                       url(r'civilization.html', 'my_game.views.auth', name='auth'),
 
                        url(r'^civilization', civilization.civilization),
                        url(r'^warehouse', warehouse.warehouse),
