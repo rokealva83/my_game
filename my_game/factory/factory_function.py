@@ -1,33 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
-
-from django.utils import timezone
-
-from my_game.models import MyUser, User_city
-from my_game.models import Turn_building, Turn_assembly_pieces, \
-    Turn_production
+from my_game.models import MyUser
+from my_game.models import Turn_production
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from my_game.models import Warehouse_factory, Warehouse
-import verification_func
+    Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed
+from my_game.models import Warehouse
 
-
-def check_all_queues(request):
-    user = int(request)
-    verification_func.check_scientific_verification_queue(user)
-    verification_func.verification_phase_of_construction(user)
-    now_date = timezone.now()
-    time_update = MyUser.objects.filter(user_id=user).first().last_time_check
-    elapsed_time_full = now_date - time_update
-    elapsed_time_seconds = elapsed_time_full.seconds
-    time_update = now_date
-    if elapsed_time_seconds > 300:
-        verification_func.verification_of_resources(user, elapsed_time_seconds, time_update)
-    verification_func.verification_flight_list(user)
-    verification_func.check_assembly_line_workpieces(user)
-    verification_func.verification_stage_production(user)
-    verification_func.verification_turn_ship_build(user)
 
 
 def rename_element_pattern(*args):
@@ -35,25 +14,25 @@ def rename_element_pattern(*args):
     session_user_city = args[1]
     pattern_id = args[2]
     element_id = args[3]
-    new_name = args[4]
+    new_names = args[4]
     factory = Factory_installed.objects.filter(id=pattern_id).first()
     production_class = factory.production_class
     if production_class == 1:
-        new_name = Hull_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Hull_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 2:
-        new_name = Armor_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Armor_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 3:
-        new_name = Shield_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Shield_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 4:
-        new_name = Engine_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Engine_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 5:
-        new_name = Generator_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Generator_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 6:
-        new_name = Weapon_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Weapon_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 7:
-        new_name = Shell_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Shell_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 8:
-        new_name = Module_pattern.objects.filter(id=element_id).update(name=new_name)
+        new_name = Module_pattern.objects.filter(id=element_id).update(name=new_names)
         # if production_class == 9:
     # new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
     message = 'Модуль переименован'
@@ -72,6 +51,7 @@ def production_module(*args):
     factory_worker = Factory_installed.objects.filter(id=factory_id).first()
     len_turn_production = len(Turn_production.objects.filter(user=session_user, user_city=session_user_city, \
                                                              factory_id=factory_worker.id))
+    module_which_produces = 0
     if len_turn_production < 1:
         if factory_worker.production_class == 1:
             module_which_produces = Hull_pattern.objects.filter(id=element_id).first()
@@ -114,13 +94,13 @@ def production_module(*args):
             new_mineral3 = warehouse.mineral3 - module_which_produces.price_mineral1 * int(amount_element)
             new_mineral4 = warehouse.mineral4 - module_which_produces.price_mineral1 *int(amount_element)
 
-            warehouse = Warehouse.objects.filter(user=session_user).update(resource1=new_resource1, \
-                                                                           resource2=new_resource2, \
-                                                                           resource3=new_resource3, \
-                                                                           resource4=new_resource4, \
-                                                                           mineral1=new_mineral1, \
-                                                                           mineral2=new_mineral2, \
-                                                                           mineral3=new_mineral3, \
+            warehouse = Warehouse.objects.filter(user=session_user).update(resource1=new_resource1,\
+                                                                           resource2=new_resource2,\
+                                                                           resource3=new_resource3,\
+                                                                           resource4=new_resource4,\
+                                                                           mineral1=new_mineral1,\
+                                                                           mineral2=new_mineral2,\
+                                                                           mineral3=new_mineral3,\
                                                                            mineral4=new_mineral4)
             user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
             turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city,
