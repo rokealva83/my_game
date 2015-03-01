@@ -2,11 +2,11 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from my_game.account import views as account
 from my_game.knowledge import views as knowledge
-from  my_game.civilization import views as civilization
-from  my_game.warehouse import views as warehouse
-from  my_game.administrator import views as administration
+from my_game.civilization import views as civilization
+from my_game.warehouse import views as warehouse
+from my_game.administrator import views as administration
 
-#import my_game.registration.registration
+# import my_game.registration.registration
 
 urlpatterns = patterns('',
                        # Examples:
@@ -16,12 +16,13 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^index/', 'my_game.views.home'),
                        url(r'^$', 'my_game.views.home', name='home'),
+
                        url(r'^registration.html', account.registration, name='account.registration'),
                        url(r'^index.html', account.add_user, name='account.add_user'),
 
                        url(r'^admin/administration', administration.administration),
-                       url(r'administration/generation/', administration.gener),
-                       url(r'administration/generation/', administration.generation),
+                       url(r'^admin/generation', administration.generation),
+                       url(r'^admin/star_generation', administration.star_generation),
 
                        url(r'civilization.html', 'my_game.views.auth', name='auth'),
 

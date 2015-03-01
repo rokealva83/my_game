@@ -13,16 +13,10 @@ def administration(request):
     return render(request, "admin/administation.html", {})
 
 
-def gener(request):
+def generation(request):
     return render(request, "admin/generation.html", {})
 
-def generation(request):
-    t = 2
-    i = 4
-    message = 'а їбать' + t + 'звезд'
-    return render(request, "admin/generation.html", message)
-
-def generation1(request):
+def star_generation(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
         system_id = 1
         r = 5
