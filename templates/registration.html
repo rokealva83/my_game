@@ -57,7 +57,7 @@
 
             <p> Все поля обязательны для заполнения</p>
 
-            <form method="post" action="add_user"
+            <form method="post" action="{% url 'account.add_user' %}"
                   enctype="multipart/form-data">
                 <div>
                     <label for="name">Login</label>

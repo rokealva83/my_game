@@ -9,18 +9,18 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from datetime import datetime, timedelta, date, time as dt_time
-from models import Galaxy, System, Planet, MyUser, User_city, Warehouse, User_scientic, Turn_production, Turn_building, \
+from my_game.models import Galaxy, System, Planet, MyUser, User_city, Warehouse, User_scientic, Turn_production, Turn_building, \
     Turn_assembly_pieces
-from models import Basic_scientic, Turn_scientic, Basic_factory
-from models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
+from my_game.models import Basic_scientic, Turn_scientic, Basic_factory
+from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from models import Warehouse_factory, Warehouse_element
+from my_game.models import Warehouse_factory, Warehouse_element
 import function
 import scientic_work
 import scientic_func
 import verification_func
-from models import User_variables
-from models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
+from my_game.models import User_variables
+from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
 
 
 def home(request):

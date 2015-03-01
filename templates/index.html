@@ -91,27 +91,27 @@
                 <div>
                     <label for="name">Login</label>
                     <input type="text" value=""
-                           name="name" id="name"
+                           name="name" class="scientic_place"
                            placeholder="login"/>
                 </div>
                 <br>
                 <div>
                     <label for="pass">password</label>
                     <input type="password" value=""
-                           name="pass" id="pass"
+                           name="pass" class="scientic_place"
                            placeholder="password"/>
                     <br>
                     <br>
                     <div>
-                        <input type="submit" value="OK" name="add_button"/>
+                        <input type="submit" value="OK" class="scientic" name="add_button"/>
                     </div>
                     <p>Забыли пароль?</p>
                 </div>
             </form>
 
-            <form method="POST" action="registration">
+            <form method="POST" action="{% url 'account.registration' %}">
                 <div>
-                    <button type="submit" name="registration">Регистрация</button>
+                    <button type="submit" class="scientic" name="registration">Регистрация</button>
                     <br>
                     <br>
                 </div>

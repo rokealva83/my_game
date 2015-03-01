@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from my_game.account import views as account
 
+#import my_game.registration.registration
 
 urlpatterns = patterns('',
                        # Examples:
@@ -14,8 +16,8 @@ urlpatterns = patterns('',
                        #url(r'^registration.html', 'my_game.views.registr'),
                        #url(r'regisration', 'my_game.views.registration', name='registration'),
 
-                       url(r'^registration', 'my_game.registration.registration.registration'),
-                       url(r'index.html', 'my_game.registration.registration.add_user'),
+                       url(r'^registration.html', account.registration, name='account.registration'),
+                       url(r'^index.html', account.add_user, name='account.add_user'),
 
                        url(r'admin/gener/', 'my_game.views.gener'),
                        url(r'admin/gener1', 'my_game.views.generation', name='gen1'),
