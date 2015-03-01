@@ -3,6 +3,8 @@ from django.contrib import admin
 from my_game.account import views as account
 from my_game.knowledge import views as knowledge
 from  my_game.civilization import views as civilization
+from  my_game.warehouse import views as warehouse
+from  my_game.administrator import views as administration
 
 #import my_game.registration.registration
 
@@ -17,13 +19,14 @@ urlpatterns = patterns('',
                        url(r'^registration.html', account.registration, name='account.registration'),
                        url(r'^index.html', account.add_user, name='account.add_user'),
 
-                       url(r'admin/gener/', 'my_game.views.gener'),
-                       url(r'admin/gener1', 'my_game.views.generation', name='gen1'),
+                       url(r'^admin/administration', administration.administration),
+                       url(r'administration/generation/', administration.gener),
+                       url(r'administration/generation/', administration.generation),
+
                        url(r'civilization.html', 'my_game.views.auth', name='auth'),
 
                        url(r'^civilization', civilization.civilization),
-
-                       url(r'warehouse', 'my_game.views.warehouse', name='warehouse'),
+                       url(r'^warehouse', warehouse.warehouse),
 
 
                        url(r'^knowledge', knowledge.knowledge),
