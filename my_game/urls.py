@@ -54,9 +54,9 @@ urlpatterns = patterns('',
                        url(r'^work_with_project', work_with_project.work_with_project),
 
                        url(r'^space_forces', space_forces.space_forces),
-                       url(r'fleet_manage', fleet_management.fleet_manage),
-                       url(r'fleet_fly', fleet_flightplan.fleet_flightplan),
-                       url(r'start_flight', start_flight.start_flight),
+                       url(r'^fleet_manage', fleet_management.fleet_manage),
+                       url(r'^fleet_fly', fleet_flightplan.fleet_flightplan),
+                       url(r'^start_flight', start_flight.start_flight),
 
 
                        url(r'trade', 'my_game.views.trade', name='trade'),
