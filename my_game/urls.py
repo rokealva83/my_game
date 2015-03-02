@@ -6,6 +6,10 @@ from my_game.civilization import views as civilization
 from my_game.warehouse import views as warehouse
 from my_game.administrator import views as administration
 from my_game.building import views as building
+from my_game.factory import views as factory
+from my_game.designing_ships import views as design_views
+from my_game.designing_ships import new_ship as new_ship
+from my_game.designing_ships import work_with_project as work_with_project
 
 # import my_game.registration.registration
 
@@ -37,13 +41,13 @@ urlpatterns = patterns('',
                        url(r'^working', building.working),
 
 
-                       url(r'factory', 'my_game.views.factory', name='factory'),
-                       url(r'choice_element', 'my_game.views.choice_element', name='choice_element'),
-                       url(r'production', 'my_game.views.production', name='production'),
+                       url(r'^factory', factory.factory),
+                       url(r'^choice_element', factory.choice_element),
+                       url(r'^production', factory.production),
 
-                       url(r'designingships', 'my_game.views.designingships', name='designingships'),
-                       url(r'new_ship', 'my_game.views.new_ship', name='new_ship'),
-                       url(r'work_with_project', 'my_game.views.work_with_project', name='work_with_project'),
+                       url(r'^designingships', design_views.designingships),
+                       url(r'^new_ship', new_ship.new_ship),
+                       url(r'^work_with_project', work_with_project.work_with_project),
 
                        url(r'space_forces', 'my_game.views.space_forces', name='space_forces'),
                        url(r'fleet_manage', 'my_game.fleet_management.fleet_manage', name='fleet_manage'),
