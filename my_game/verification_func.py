@@ -13,7 +13,7 @@ from my_game.models import Factory_pattern, Factory_installed
 from my_game.models import Warehouse_factory, Warehouse_element, Warehouse
 from knowledge import scientic_func
 from my_game.models import Project_ship, Turn_ship_build, Ship, Fleet
-from  my_game.models import Flightplan, Flightplan_flight
+from my_game.models import Flightplan, Flightplan_flight
 
 
 def check_scientific_verification_queue(request):

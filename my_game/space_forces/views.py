@@ -1,33 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import math
-import random
-from datetime import datetime, timedelta
-
 from django.shortcuts import render
-from django.http.response import HttpResponse
-from django.contrib.auth.models import User
-
-from my_game.models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Turn_production, Turn_building, \
-    Turn_assembly_pieces
-from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from my_game.models import Warehouse_factory, Warehouse_element
-import function
-import verification_func
-from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet
+from my_game.models import MyUser, User_city, Warehouse
+from my_game import function
+from my_game.models import Ship, Fleet
 
 
-def home(request):
-    return render(request, "index.html", {})
-
-
-def cancel(request):
-    return render(request, "index.html", {})
-
-
-
-def trade(request):
+def space_forces(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
@@ -41,9 +20,10 @@ def trade(request):
         user_fleets = Fleet.objects.filter(user=session_user)
         ships = Ship.objects.filter(user = session_user, fleet_status = 0, place_id = session_user_city)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        command = 0
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'ships': ships, 'ship_fleets':ship_fleets}
-        return render(request, "trade.html", output)
+                  'user_fleets': user_fleets, 'ships': ships, 'ship_fleets':ship_fleets, 'command':command}
+        return render(request, "space_forces.html", output)

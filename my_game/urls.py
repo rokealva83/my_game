@@ -10,6 +10,10 @@ from my_game.factory import views as factory
 from my_game.designing_ships import views as design_views
 from my_game.designing_ships import new_ship as new_ship
 from my_game.designing_ships import work_with_project as work_with_project
+from my_game.space_forces import views as space_forces
+from my_game.space_forces import fleet_flightplan as fleet_flightplan
+from my_game.space_forces import fleet_management as fleet_management
+from my_game.space_forces import start_flight as start_flight
 
 # import my_game.registration.registration
 
@@ -49,10 +53,13 @@ urlpatterns = patterns('',
                        url(r'^new_ship', new_ship.new_ship),
                        url(r'^work_with_project', work_with_project.work_with_project),
 
-                       url(r'space_forces', 'my_game.views.space_forces', name='space_forces'),
-                       url(r'fleet_manage', 'my_game.fleet_management.fleet_manage', name='fleet_manage'),
+                       url(r'^space_forces', space_forces.space_forces),
+                       url(r'fleet_manage', fleet_management.fleet_manage),
+                       url(r'fleet_fly', fleet_flightplan.fleet_flightplan),
+                       url(r'start_flight', start_flight.start_flight),
+
+
                        url(r'trade', 'my_game.views.trade', name='trade'),
-                       url(r'fleet_fly', 'my_game.fleet_management.fleet_fly', name='fleet_fly'),
-                       url(r'start_flight', 'my_game.fleet_management.start_flight', name='start_flight'),
+
 
 )

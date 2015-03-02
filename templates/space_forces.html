@@ -84,7 +84,7 @@
             {% endif %}
             {% if command == 3 %}
                 {% if flightplans %}
-                    <form method="post" action="fleet_fly" enctype="multipart/form-data"
+                    <form method="post" action="fleet_flightplan" enctype="multipart/form-data"
                           style="text-align: center;  margin-bottom: 3px; border: 1px solid; border-radius: 7px;">
                         <h3 style="text-align: center">Полетный лист</h3>
                         {% for flightplan in flightplans %}
@@ -126,7 +126,7 @@
                     </form>
                 {% endif %}
 
-                <form method="post" action="fleet_fly" enctype="multipart/form-data"
+                <form method="post" action="fleet_flightplan" enctype="multipart/form-data"
                       style="text-align: center; border: 1px solid; border-radius: 7px;">
                     <h3 style="text-align: center">Список команд</h3>
 
