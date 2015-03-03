@@ -8,6 +8,7 @@ from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engi
 
 from my_game import function
 from my_game.models import Project_ship, Element_ship, Turn_ship_build
+from my_game.designing_ships import verification_project
 
 
 def new_ship(request):
@@ -53,8 +54,15 @@ def new_ship(request):
         if request.POST.get('create_ship_pattern'):
             chosen_hull_id = int(request.POST.get('chosen_hull'))
             chosen_name = request.POST.get('chosen_hull_name')
-            chosen_hull = chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
+            #verification element
+
+            full_request = request.POST
+            myDict = dict(full_request.iterlists())
+            chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
             hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+
+            verification = verification_project.verification(session_user, session_user_city, chosen_hull, chosen_hull_id, myDict)
+
             new_pattern_ship = Project_ship(
                 user=session_user,
                 name=chosen_name,
@@ -65,8 +73,6 @@ def new_ship(request):
             time_build = 300
             hull = Hull_pattern.objects.filter(user = session_user, id = chosen_hull_id).first()
             mass = hull.mass
-            full_request = request.POST
-            myDict = dict(full_request.iterlists())
             choice_armor = myDict.get('choice_armor')
             choice_armor_side = myDict.get('choice_armor_side')
             if choice_armor:

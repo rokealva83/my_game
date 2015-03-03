@@ -32,8 +32,8 @@ def start_flight(request):
                                                                      id_command=flightplan.id_command).update(
                     start_time=start_time, finish_time=finish_time)
 
-            flightplan = Flightplan.objects.filter(id=id_flightplan, id_fleet=fleet_id).update(status=1)
-            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+                flightplan = Flightplan.objects.filter(id=id_flightplan, id_fleet=fleet_id).update(status=1)
+                fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
             command = 0
 
         if request.POST.get('delete_list'):
