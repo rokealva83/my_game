@@ -69,7 +69,7 @@ def upgrade_factory_pattern(*args):
 
 def delete_factory_pattern(*args):
     pattern_id = int(args[0])
-    factory = Factory_installed.objects.filter(factory_pattern_id=pattern_id)
+    factory = Factory_installed.objects.filter(factory_pattern_id=pattern_id).first()
     if factory is not None:
         message = 'Шаблон не может быть удален'
     else:
@@ -152,7 +152,12 @@ def install_factory_unit(*args):
     free_energy = user_city.power - user_city.use_energy
     len_turn_building = len(Turn_building.objects.filter(user=session_user, user_city=session_user_city))
     if len_turn_building < 3:
-        power_consumption = factory_pattern.power_consumption
+
+        if factory_pattern.production_class == 12:
+            power_consumption = 0
+        else:
+            power_consumption = factory_pattern.power_consumption
+
         if factory_pattern.cost_expert_deployment < user_city.population and free_energy > power_consumption:
             last_building = Turn_building.objects.filter(user=session_user, user_city=session_user_city).last()
             if last_building is not None:
@@ -171,7 +176,7 @@ def install_factory_unit(*args):
                 start_time_deployment=start_time,
                 finish_time_deployment=finish_time,
             )
-        turn_building.save()
+            turn_building.save()
         install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).first()
         new_amount = install_factory.amount - 1
         install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).update(amount = new_amount)
