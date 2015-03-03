@@ -23,6 +23,8 @@ class MyUser(models.Model):
     user_luckyness = models.IntegerField()
     last_time_check = models.DateTimeField()
     last_time_scan_scient = models.DateTimeField()
+    premium_account = models.BooleanField(default=0)
+    time_left_premium = models.DateTimeField(default=datetime.now)
 
     def __unicode__(self):
         return self.user_name
@@ -131,6 +133,7 @@ class Race(models.Model):
     class Meta():
         db_table = 'race'
 
+    name = models.CharField(max_length=500, default='Race')
     description = models.CharField(max_length=500)
     engine_system = models.FloatField()
     engine_intersystem = models.FloatField()

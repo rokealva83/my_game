@@ -6,22 +6,46 @@
     <div id="game_content">
         <div class="game_content_left">
             {% load staticfiles %}
-            <img src="{% static "images/Civilization/Planet.jpg" %}" width="226" height="301" align="left" style="margin: 10px">
+            <img src="{% static "images/Civilization/Planet.jpg" %}" width="226" height="301" align="left"
+                 style="margin: 10px">
 
-            <p>Name: {{ user.user_name }}</p>
+            <div>
+                <p>Player: {{ user.user_name }}</p>
+                {% if user.premium_account == 1 %}
+                    <p>Account: PREMIUM </p>
+                    <p>Time left: {{ user.time_left_premium }}</p>
+                {% else %}
+                    <p>Account: BASIC </p>
+                {% endif %}
+                <p>Race: {{ race.name }}</p>
+                {% if user.alliance_id != 0 %}
+                    <p>Alliance: </p>
+                {% endif %}
+                {% if user.union_id != 0 %}
+                    <p>Union: </p>
+                {% endif %}
+            </div>
+<br>
+            <div>
+                <p>Planet number: {{ len_planet }}</p>
+            </div>
+<br>
+            <div>
+                <p>City name: {{ user_city.name_city }}</p>
+                {% if user_city.planet_id == 0 %}
+                    <p>Global coordinates: {{ user_city.x }}:{{ user_city.y }}:{{ user_city.z }}</p>
+                {% else %}
+                    <p>System position: {{ user_city.system_id }}:{{ planet.planet_num }}</p>
+                {% endif %}
+            </div>
 
-            <p>planet_type: {{ user.race_id }}</p>
 
-            <p>E-mail: {{ user.e_mail }}</p>
-
-            <p>Coordinats</p>
-                <p>{{ user_city.system_id}}:{{ planet.planet_num }}</p>
-                <p>{{ user_city.x}}:{{ user_city.y}}:{{ user_city.z}}</p>
         </div>
 
         <div class="game_content_right">
             <h3>
-                CIVILIZATION <VIEWS></VIEWS>
+                CIVILIZATION
+                <VIEWS></VIEWS>
             </h3>
 
             <p>Следует отметить, что мы явно не используем сокращение render_to_response() — мы вручную загружаем
