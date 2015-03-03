@@ -28,6 +28,7 @@ def hull_upgrade(request):
             hull_pattern = Hull_pattern(
                 user=user,
                 basic_id=hull_scient.id,
+                name=hull_scient.name,
                 health=hull_scient.health,
                 generator=hull_scient.generator,
                 engine=hull_scient.engine,
@@ -148,6 +149,7 @@ def armor_upgrade(request):
             armor_pattern = Armor_pattern(
                 user=user,
                 basic_id=armor_scient.id,
+                name=armor_scient.name,
                 health=armor_scient.health,
                 value_energy_resistance=armor_scient.value_energy_resistance * race_koef.armor,
                 value_phisical_resistance=armor_scient.value_phisical_resistance * race_koef.armor,
@@ -224,6 +226,7 @@ def shield_upgrade(request):
             shield_pattern = Shield_pattern(
                 user=user,
                 basic_id=shield_scient.id,
+                name=shield_scient.name,
                 health=shield_scient.health,
                 value_energy_resistance=shield_scient.value_energy_resistance * race_koef.shield,
                 value_phisical_resistance=shield_scient.value_phisical_resistance * race_koef.shield,
@@ -308,6 +311,7 @@ def engine_upgrade(request):
             engine_pattern = Engine_pattern(
                 user=user,
                 basic_id=engine_scient.id,
+                name=engine_scient.name,
                 health=engine_scient.health,
                 system_power=engine_scient.system_power * race_koef.engine_system,
                 intersystem_power=engine_scient.intersystem_power * race_koef.engine_intersystem,
@@ -384,6 +388,7 @@ def generator_upgrade(request):
             generator_pattern = Generator_pattern(
                 user=user,
                 basic_id=generator_scient.id,
+                name=generator_scient.name,
                 health=generator_scient.health,
                 produced_energy=generator_scient.produced_energy * race_koef.generator,
                 fuel_necessary=generator_scient.fuel_necessary,
@@ -460,6 +465,7 @@ def weapon_upgrade(request):
             weapon_pattern = Weapon_pattern(
                 user=user,
                 basic_id=weapon_scient.id,
+                name=weapon_scient.name,
                 health=weapon_scient.health,
                 energy_damage=weapon_scient.energy_damage * weapon,
                 regenerations=weapon_scient.regenerations * weapon,
@@ -553,6 +559,7 @@ def shell_upgrade(request):
             shell_pattern = Shell_pattern(
                 user=user,
                 basic_id=shell_scient.id,
+                name=shell_scient.name,
                 phisical_damage=shell_scient.phisical_damage,
                 speed=shell_scient.speed,
                 mass=shell_scient.mass,
@@ -631,6 +638,7 @@ def module_upgrade(request):
             module_pattern = Module_pattern(
                 user=user,
                 basic_id=module_scient.id,
+                name=module_scient.name,
                 health=module_scient.health,
                 param1=module_scient.param1 * module,
                 param2=module_scient.param2 * module,

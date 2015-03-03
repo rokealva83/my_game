@@ -14,12 +14,14 @@ from my_game.models import Warehouse_factory, Warehouse_element, Warehouse
 from knowledge import scientic_func
 from my_game.models import Project_ship, Turn_ship_build, Ship, Fleet
 from my_game.models import Flightplan, Flightplan_flight
+from my_game.models import User_variables
 
 
 def check_scientific_verification_queue(request):
     user = int(request)
     time = timezone.now()
     turn_scientics = Turn_scientic.objects.filter(user=user)
+    user_variables = User_variables.objects.filter(id = 1).first()
     if turn_scientics:
         for turn_scientic in turn_scientics:
             scin_id = turn_scientic.id
@@ -56,7 +58,7 @@ def check_scientific_verification_queue(request):
     delta = time - table_scan_time
     delta_time = delta.seconds
 
-    if delta_time > 86400:
+    if delta_time > user_variables.time_check_new_technology:
         all_scientic = User_scientic.objects.filter(user=user).first()
         if all_scientic.all_scientic > 10:
             new_technology = random.random()
