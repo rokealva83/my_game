@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for my_game project.
 
@@ -61,6 +63,7 @@ WSGI_APPLICATION = 'my_game.wsgi.application'
 
 DATABASES = {
     'default': {
+        'CHARSET': 'utf8',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'base',
         'USER': 'root',

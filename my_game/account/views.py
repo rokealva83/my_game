@@ -165,7 +165,7 @@ def auth(request):
         if user_name_auth is not None:
             if user_name_auth.password == password_post:
                 user = MyUser.objects.filter(user_id=user_name_auth.id).first()
-                user_id = user.pk
+                user_id = user.user_id
                 warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 user_citys = User_city.objects.filter(user=int(user_name_auth.id))
@@ -177,5 +177,8 @@ def auth(request):
                 request.session['user_city'] = user_city.id
                 request.session['live'] = True
                 return render(request, "civilization.html", output)
-        return render(request, "index.html", {})
+        else:
+            message = 'Неверно введено имя или пароль пользователя'
+            output = {'message': message}
+        return render(request, "index.html", output)
     return render(request, "index.html", {})
