@@ -36,11 +36,13 @@ def scien_up(*args):
     number_scientic = len(Turn_scientic.objects.filter(user=session_user))
     if number_scientic < 3:
         warehouse = Warehouse.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id = session_user).first()
 
         scien = Basic_scientic.objects.get(scientic_id=scientic)
         time_studys = int(scien.time_study)
         if level_up == 1:
             time_study_turn = time_studys
+            cost_study_internal_currency = int(scien.cost_internal_currency)
             cost_study_resource1 = int(scien.cost_resource1)
             cost_study_resource2 = int(scien.cost_resource2)
             cost_study_resource3 = int(scien.cost_resource3)
@@ -51,6 +53,7 @@ def scien_up(*args):
             cost_study_mineral4 = int(scien.cost_mineral4)
         else:
             time_study_turn = int(time_studys * int(math.exp(level_up) / 5))
+            cost_study_internal_currency = int(scien.cost_internal_currency * math.exp(level_up) / 5)
             cost_study_resource1 = int(scien.cost_resource1 * math.exp(level_up) / 5)
             cost_study_resource2 = int(scien.cost_resource2 * math.exp(level_up) / 5)
             cost_study_resource3 = int(scien.cost_resource3 * math.exp(level_up) / 5)
@@ -60,10 +63,12 @@ def scien_up(*args):
             cost_study_mineral3 = int(scien.cost_mineral3 * math.exp(level_up) / 5)
             cost_study_mineral4 = int(scien.cost_mineral4 * math.exp(level_up) / 5)
 
-        if warehouse.resource1 >= cost_study_resource1 and warehouse.resource2 >= cost_study_resource2 and \
+        if user.internal_currency >= cost_study_internal_currency and warehouse.resource1 >= cost_study_resource1 and \
+                        warehouse.resource2 >= cost_study_resource2 and \
                         warehouse.resource3 >= cost_study_resource3 and warehouse.resource4 >= cost_study_resource4 and \
                         warehouse.mineral1 >= cost_study_mineral1 and warehouse.mineral2 >= cost_study_mineral2 and \
                         warehouse.mineral3 >= cost_study_mineral3 and warehouse.mineral4 >= cost_study_mineral4:
+            new_internal_currency = user.internal_currency - cost_study_internal_currency
             new_resource1 = warehouse.resource1 - cost_study_resource1
             new_resource2 = warehouse.resource2 - cost_study_resource2
             new_resource3 = warehouse.resource3 - cost_study_resource3
@@ -80,6 +85,7 @@ def scien_up(*args):
                                                                            mineral2=new_mineral2, \
                                                                            mineral3=new_mineral3, \
                                                                            mineral4=new_mineral4)
+            user = MyUser.objects.filter(user_id = session_user).update(internal_currency = new_internal_currency)
 
             turn_scientic = Turn_scientic.objects.filter(user=session_user).last()
             if turn_scientic:
