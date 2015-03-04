@@ -10,6 +10,9 @@
                 <p style="text-align: center">{{ turn_ship_build.finish_time_build }}</p>
             {% endfor %}
             <h3 style="text-align: center">Project list</h3>
+        <div class="hull">
+
+        </div>
             {% for project_ship in project_ships %}
                 <div id="project_list">
                     <p>
@@ -38,8 +41,16 @@
                     <form method="POST" action="new_ship">
                         <p> Choice hull pattern
                             <select name="choice_pattern" class="scientic">
+                                <option selected disabled>Choise hull</option>
                                 {% for hull in hulls %}
-                                    <option value="{{ hull.id }}"> {{ hull.name }} </option>
+                                    <option value="{{ hull.id }}" data-name="{{ hull.name }}"
+                                            data-health="{{ hull.health }}" data-generator="{{ hull.generator }}"
+                                            data-engine="{{ hull.engine }}" data-weapon="{{ hull.weapon }}"
+                                            data-armor="{{ hull.armor }}" data-shield="{{ hull.shield }}"
+                                            data-module="{{ hull.module }}" data-main_weapon="{{ hull.main_weapon }}"
+                                            data-hold_size="{{ hull.hold_size }}" data-mass="{{ hull.mass }}"
+                                            data-size="{{ hull.size }}"
+                                            data-power_consuption="{{ hull.power_consuption }}"> {{ hull.name }} </option>
                                 {% endfor %}
                             </select>
                             Ship name <input type="ship_name" value="" name="ship_name" class="scientic_place"
@@ -51,7 +62,7 @@
             {% else %}
                 <form method="POST" action="new_ship">
                     <div class="design_tabs">
-                    {{ massage_error }}
+                        {{ massage_error }}
                         <input type="hidden" id="{{ chosen_hull.id }}" value={{ chosen_hull.id }} name="chosen_hull">
                         <input type="hidden" id="{{ chosen_hull.name }}"
                                value={{ chosen_name }} name="chosen_hull_name">
