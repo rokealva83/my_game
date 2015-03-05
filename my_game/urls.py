@@ -14,6 +14,7 @@ from my_game.space_forces import views as space_forces
 from my_game.space_forces import fleet_flightplan as fleet_flightplan
 from my_game.space_forces import fleet_management as fleet_management
 from my_game.space_forces import start_flight as start_flight
+from my_game.space_forces import fleet_hold as fleet_hold
 
 # import my_game.registration.registration
 
@@ -57,6 +58,7 @@ urlpatterns = patterns('',
                        url(r'^fleet_manage', fleet_management.fleet_manage),
                        url(r'^fleet_fly', fleet_flightplan.fleet_flightplan),
                        url(r'^start_flight', start_flight.start_flight),
+                       url(r'^fleet_hold', fleet_hold.fleet_hold),
 
 
                        url(r'trade', 'my_game.views.trade', name='trade'),

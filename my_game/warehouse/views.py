@@ -64,5 +64,5 @@ def warehouse(request):
               'attribute_armors': attribute_armors, 'attribute_shields': attribute_shields,
               'attribute_engines': attribute_engines, 'attribute_generators': attribute_generators,
               'attribute_weapons': attribute_weapons, 'attribute_shells': attribute_shells,
-              'attribute_modules': attribute_modules, }
+              'attribute_modules': attribute_modules }
     return render(request, "warehouse.html", output)

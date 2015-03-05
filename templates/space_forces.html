@@ -22,6 +22,15 @@
                         <p>{{ user_fleet.name }}</p>
 
                         <p>
+                            Status:
+                            {% if user_fleet.status == 0 %}
+                                Waiting
+                            {% else %}
+                                Working
+                            {% endif %}
+                        </p>
+
+                        <p>
                             Coordinate: {{ user_city.name_city }} - ({{ user_fleet.x }} : {{ user_fleet.y }}
                             : {{ user_fleet.z }})
                         </p>
@@ -52,7 +61,6 @@
         </div>
         <div id="block_design_right">
             <h3 style="text-align: center">Панель управления флотом </h3>
-
             {% if command == 1 %}
 
                 <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
@@ -67,7 +75,7 @@
                         {% endfor %}
                     {% endif %}
                 </form>
-                <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                <form method="post" action="fleet_manage" style="text-align: center">
                     {% if ship_fleets %}
                         {% for ship_fleet in ship_fleets %}
                             {% if ship_fleet.fleet_status == 1 and ship_fleet.place_id == fleet_id %}
@@ -80,6 +88,232 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
+                </form>
+            {% endif %}
+            {% if command == 2 %}
+                <form method="post" action="fleet_hold" style="text-align: center">
+                    {% if ship_holds %}
+                        {% for ship_hold in ship_holds %}
+
+                            {{ ship_hold.amount_shipment }}
+                        {% endfor %}
+                        <input class="scientic" type="submit" value="Загрузить" name="unload_allw"/></p>
+                    {% endif %}
+
+
+                    <p>Управление трюмом флота</p>
+
+                    <p> Resource in warehouse
+                        <select name="warehouse_module" class="scientic">
+                            <option selected disabled>Choise resource</option>
+                            <option value="1">Resource 1 ( {{ warehouse.resource1 }} )</option>
+                            <option value="2">Resource 2 ( {{ warehouse.resource2 }} )</option>
+                            <option value="3">Resource 3 ( {{ warehouse.resource3 }} )</option>
+                            <option value="4">Resource 4 ( {{ warehouse.resource4 }} )</option>
+                            <option value="5">Mineral 1 ( {{ warehouse.mineral1 }} )</option>
+                            <option value="6">Mineral 2 ( {{ warehouse.mineral2 }} )</option>
+                            <option value="7">Mineral 3 ( {{ warehouse.mineral3 }} )</option>
+                            <option value="8">Mineral 4 ( {{ warehouse.mineral4 }} )</option>
+                        </select>
+                        <input value="" name="resource_amount" class="scientic_place" placeholder="Resource amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="resource_amount"/></p>
+                    <p>
+                        {% if warehouse_factorys %} Factory in warehouse
+                            <select name="warehouse_hull" class="scientic">
+                                <option selected disabled>Choise factory</option>
+                                {% for warehouse_factory in warehouse_factorys %}
+                                    {% for factory_pattern in factory_patterns %}
+                                        {% if warehouse_factory.factory_id == factory_pattern.id %}
+                                            {% if warehouse_factory.amount > 0 %}
+                                                <option value="{{ warehouse_factory.factory_id }}">{{ factory_pattern.name }}
+                                                    ( {{ warehouse_factory.amount }} )
+                                                </option>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="factory_amount" class="scientic_place" placeholder="Factory amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="factory_amount"/>
+
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Hull in warehouse
+                            <select name="warehouse_hull" class="scientic">
+                                <option selected disabled>Choise hull</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 1 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for hull_pattern in hull_patterns %}
+                                                {% if hull_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ hull_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="hull_amount" class="scientic_place" placeholder="Hull amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="hull_amount"/>
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Armor in warehouse
+                            <select name="warehouse_armor" class="scientic">
+                                <option selected disabled>Choise armor</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 2 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for armor_pattern in armor_patterns %}
+                                                {% if armor_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ armor_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="armor_amount" class="scientic_place" placeholder="Armor amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="armor_amount"/>
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Shield in warehouse
+                            <select name="warehouse_shield" class="scientic">
+                                <option selected disabled>Choise shield</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 3 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for shield_pattern in shield_patterns %}
+                                                {% if shield_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ shield_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="shield_amount" class="scientic_place" placeholder="Shield amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="shield_amount"/>
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Engine in warehouse
+                            <select name="warehouse_engine" class="scientic">
+                                <option selected disabled>Choise engine</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 4 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for engine_pattern in engine_patterns %}
+                                                {% if engine_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ engine_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="engine_amount" class="scientic_place" placeholder="Engine amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="engine_amount"/>
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Generator in warehouse
+                            <select name="warehouse_generator" class="scientic">
+                                <option selected disabled>Choise generator</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 5 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for generator_pattern in generator_patterns %}
+                                                {% if generator_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ generator_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="generator_amount" class="scientic_place" placeholder="Generator amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="generator_amount"/>
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Weapon in warehouse
+                            <select name="warehouse_weapon" class="scientic">
+                                <option selected disabled>Choise weapon</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 6 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for weapon_pattern in weapon_patterns %}
+                                                {% if weapon_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ weapon_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="weapon_amount" class="scientic_place" placeholder="Weapon amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="weapon_amount"/>
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Shell in warehouse
+                            <select name="warehouse_shell" class="scientic">
+                                <option selected disabled>Choise shell</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 7 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for shell_pattern in shell_patterns %}
+                                                {% if shell_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ shell_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="shell_amount" class="scientic_place" placeholder="Shell amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="shell_amount"/>
+                    </p>
+                    <p>
+                        {% if warehouse_elements %} Module in warehouse
+                            <select name="warehouse_module" class="scientic">
+                                <option selected disabled>Choise module</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 8 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for module_pattern in module_patterns %}
+                                                {% if module_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ module_pattern.name }}( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <input value="" name="module_amount" class="scientic_place" placeholder="Module amount"/>
+                        <input class="scientic" type="submit" value="Загрузить" name="module_amount"/>
+                    </p>
                 </form>
             {% endif %}
             {% if command == 3 %}

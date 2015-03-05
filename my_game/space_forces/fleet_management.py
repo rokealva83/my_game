@@ -2,10 +2,12 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
-from my_game.models import Warehouse
-from my_game import function
+from my_game.models import Warehouse, Warehouse_element, Warehouse_factory
 from my_game.models import Project_ship, Ship, Fleet
 from my_game.models import Flightplan, Flightplan_flight
+from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
+from my_game import function
 
 
 def fleet_manage(request):
@@ -18,6 +20,18 @@ def fleet_manage(request):
         add_ships = {}
         flightplans = {}
         flightplan_flights = {}
+        warehouse_factorys = {}
+        warehouse_elements = {}
+        factory_patterns = {}
+        hull_patterns = {}
+        armor_patterns = {}
+        shield_patterns = {}
+        engine_patterns = {}
+        generator_patterns = {}
+        weapon_patterns = {}
+        shell_patterns = {}
+        module_patterns = {}
+
         fleet_id = 0
         command = 0
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
@@ -251,6 +265,26 @@ def fleet_manage(request):
             flightplan_flights = Flightplan_flight.objects.filter(user=session_user, id_fleet=fleet_id)
             command = 3
 
+        if request.POST.get('hold_fleet'):
+            fleet_id = int(request.POST.get('hidden_fleet'))
+            warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
+                                                                  user_city=session_user_city).order_by(
+                'production_class', 'production_id')
+            warehouse_elements = Warehouse_element.objects.filter(user=session_user,
+                                                                  user_city=session_user_city).order_by(
+                'element_class', 'element_id')
+            factory_patterns = Factory_pattern.objects.filter(user=session_user)
+            hull_patterns = Hull_pattern.objects.filter(user=session_user)
+            armor_patterns = Armor_pattern.objects.filter(user=session_user)
+            shield_patterns = Shield_pattern.objects.filter(user=session_user)
+            engine_patterns = Engine_pattern.objects.filter(user=session_user)
+            generator_patterns = Generator_pattern.objects.filter(user=session_user)
+            weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
+            shell_patterns = Shell_pattern.objects.filter(user=session_user)
+            module_patterns = Module_pattern.objects.filter(user=session_user)
+            # device_patterns = Device_pattern.objects.filter(user = session_user)
+            command = 2
+
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -262,5 +296,11 @@ def fleet_manage(request):
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights}
+                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
+                  'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
+                  'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
+                  'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
+                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'module_patterns': module_patterns}
         return render(request, "space_forces.html", output)
