@@ -28,4 +28,4 @@ def fleet_hold(request):
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'ships': ships, 'ship_fleets':ship_fleets, 'command':command}
-        return render(request, "space_forces.html", output)
+        return render(request, "fleet_hold.html", output)
