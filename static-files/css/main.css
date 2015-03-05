@@ -842,3 +842,14 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0px;
     vertical-align: middle;
 }
+
+.hull ul li {
+    display: inline-block;
+    min-height: 100px;
+    outline: 1px solid #000000;
+    width: 15%;
+    text-align:center;
+}
+.hull ul li h4 {
+    margin: 0;
+}

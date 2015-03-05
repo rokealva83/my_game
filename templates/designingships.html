@@ -12,8 +12,52 @@
             <h3 style="text-align: center">Project list</h3>
 
             <div class="hull">
+                <ul>
+                        <li>
+                             <h4>Information</h4>
+
+                        </li>
+                    {% if chosen_hull != None %}
+                        <li>
+                             <h4>Top</h4>
+
+                        </li>
+                        <li>
+                             <h4>Back</h4>
+
+                        </li>
+                        <li>
+                             <h4>Left</h4>
+
+                        </li>
+                        <li>
+                             <h4>Summ.Info</h4>
+
+                        </li>
+                        <li>
+                             <h4>Right</h4>
+
+                        </li>
+                        <li>
+                             <h4>Front</h4>
+
+                        </li>
+                        <li>
+                             <h4>Bottom</h4>
+
+                        </li>
+                        <li>
+                             <h4></h4>
+
+                        </li>
+                    {% endif %}
+                    </ul>
+                </div>
 
             </div>
+        <div class="element">
+
+        </div>
             {% for project_ship in project_ships %}
                 <div id="project_list">
                     <p>
@@ -77,7 +121,7 @@
                                     {% load my_filter %}
                                     {% for i in chosen_hull.armor|add:"0"|create_range %}
                                         <p>
-                                            <select name="choice_armor" class="scientic" id="choice_armor_{{ i }}">
+                                            <select name="choice_armor" class="scientic ttttt" id="choice_armor_{{ i }}">
                                                 <option value="0">Select element</option>
                                                 {% for armor in armors %}
                                                     <option value="{{ armor.id }}"
@@ -90,12 +134,12 @@
                                             </select>
                                             <select name="choice_armor_side" class="scientic" id="choice_armor_side_{{ i }}">
                                                 <option value="0">Choice side</option>
-                                                <option value="1">Front</option>
+                                                <option value="1">Top</option>
                                                 <option value="2">Back</option>
-                                                <option value="3">Top</option>
+                                                <option value="3">Left</option>
                                                 <option value="4">Right</option>
-                                                <option value="5">Bottom</option>
-                                                <option value="6">Left</option>
+                                                <option value="5">Front</option>
+                                                <option value="6">Bottom</option>
                                             </select>
                                         </p>
                                     {% endfor %}
@@ -124,12 +168,12 @@
                                             </select>
                                             <select name="choice_shield_side" class="scientic" id="choice_shield_sid_{{ i }}">
                                                 <option value="0">Choice side</option>
-                                                <option value="1">Front</option>
+                                                <option value="1">Top</option>
                                                 <option value="2">Back</option>
-                                                <option value="3">Top</option>
+                                                <option value="3">Left</option>
                                                 <option value="4">Right</option>
-                                                <option value="5">Bottom</option>
-                                                <option value="6">Left</option>
+                                                <option value="5">Front</option>
+                                                <option value="6">Bottom</option>
                                             </select>
                                         </p>
                                     {% endfor %}
@@ -213,10 +257,10 @@
                                             </select>
                                             <select name="choice_weapon_side" class="scientic" id="choice__weapon_side_{{ i }}">
                                                 <option value="0">Choice side</option>
-                                                <option value="1">Front</option>
-                                                <option value="3">Top</option>
+                                                <option value="1">Top</option>
+                                                <option value="3">Left</option>
                                                 <option value="4">Right</option>
-                                                <option value="6">Left</option>
+                                                <option value="5">Front</option>
                                             </select>
                                         </p>
                                     {% endfor %}
@@ -247,7 +291,7 @@
                                                 {% endfor %}
                                             </select>
                                             <select name="choice_main_weapon_side" class="scientic">
-                                                <option value="3">Top</option>
+                                                <option value="1">Top</option>
                                             </select>
                                         </p>
                                     {% endfor %}
