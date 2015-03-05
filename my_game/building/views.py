@@ -122,7 +122,8 @@ def working(request):
         if request.POST.get('making_factory_unit') is not None:
             amount_factory_unit = request.POST.get('amount_factory')
             pattern_id = request.POST.get('hidden_factory')
-            message = build_function.making_factory_unit(session_user, session_user_city, amount_factory_unit, pattern_id)
+            message = build_function.making_factory_unit(session_user, session_user_city, amount_factory_unit,
+                                                         pattern_id)
 
         if request.POST.get('install_factory_unit') is not None:
             pattern_id = request.POST.get('hidden_factory')
@@ -133,9 +134,11 @@ def working(request):
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message,
-                  'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings}
+                  'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings,
+                  'user_citys': user_citys}
         return render(request, "building.html", output)

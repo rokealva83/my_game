@@ -100,6 +100,7 @@ def work_with_project(request):
         if request.POST.get('modificate_pattern'):
             amount_ship = request.POST.get('amount')
             message = 'На складе не хватает комплектующих'
+            return render(request, "design_new_ship.html", {})
 
         if request.POST.get('delete_pattern'):
             ship_id = request.POST.get('hidden_ship')

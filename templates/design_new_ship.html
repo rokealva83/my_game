@@ -1,0 +1,232 @@
+{% extends "designingships.html" %}
+{% block content_2 %}
+
+    <form method="POST" action="new_ship">
+        <div class="design_tabs">
+            {{ massage_error }}
+            <input type="hidden" id="{{ chosen_hull.id }}" value={{ chosen_hull.id }} name="chosen_hull">
+            <input type="hidden" id="{{ chosen_hull.name }}"
+                   value={{ chosen_name }} name="chosen_hull_name">
+            <ul>
+                <li>
+                    <input type="radio" name="design_tabs-0" checked="checked" id="design_tabs-0-0"/>
+                    <label for="design_tabs-0-0">Armor</label>
+
+                    <div>
+                        <h3>Select armor and side to fit on the body</h3>
+                        {% load my_filter %}
+                        {% for i in chosen_hull.armor|add:"0"|create_range %}
+                            <p>
+                                <select name="choice_armor" class="scientic ttttt" id="choice_armor_{{ i }}">
+                                    <option value="0">Select element</option>
+                                    {% for armor in armors %}
+                                        <option value="{{ armor.id }}"
+                                                data-value_energy_resistance="{{ armor.value_energy_resistance }}"
+                                                data-value_phisical_resistance="{{ armor.value_phisical_resistance }}"
+                                                data-power="{{ armor.power }}"
+                                                data-regeneration="{{ armor.regeneration }}"
+                                                data-mass="{{ armor.mass }}">{{ armor.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="choice_armor_side" class="scientic"
+                                        id="choice_armor_side_{{ i }}">
+                                    <option value="0">Choice side</option>
+                                    <option value="1">Top</option>
+                                    <option value="2">Back</option>
+                                    <option value="3">Left</option>
+                                    <option value="4">Right</option>
+                                    <option value="5">Front</option>
+                                    <option value="6">Bottom</option>
+                                </select>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" name="design_tabs-0" id="design_tabs-0-1"/>
+                    <label for="design_tabs-0-1">Shield</label>
+
+                    <div>
+                        <h3>Select shield and side to fit on the body</h3>
+                        {% load my_filter %}
+                        {% for i in chosen_hull.shield|add:"0"|create_range %}
+                            <p>
+                                <select name="choice_shield" class="scientic" id="choice_shield_{{ i }}">
+                                    <option value="0">Select element</option>
+                                    {% for shield in shields %}
+                                        <option value="{{ shield.id }}" data-value_energy_resistance="
+                                                            {{ shield.value_energy_resistance }}"
+                                                data-value_phisical_resistance="{{ shield.value_phisical_resistance }}"
+                                                data-power="{{ shield.power }}"
+                                                data-regeneration="{{ shield.regeneration }}"
+                                                data-number_of_emitter="{{ shield.number_of_emitter }}"
+                                                data-mass="{{ shield.mass }}"> {{ shield.name }} </option>
+                                    {% endfor %}
+                                </select>
+                                <select name="choice_shield_side" class="scientic"
+                                        id="choice_shield_sid_{{ i }}">
+                                    <option value="0">Choice side</option>
+                                    <option value="1">Top</option>
+                                    <option value="2">Back</option>
+                                    <option value="3">Left</option>
+                                    <option value="4">Right</option>
+                                    <option value="5">Front</option>
+                                    <option value="6">Bottom</option>
+                                </select>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" name="design_tabs-0" id="design_tabs-0-2"/>
+                    <label for="design_tabs-0-2">Engine</label>
+
+                    <div>
+                        <h3>Select engine side to fit on the body</h3>
+                        {% load my_filter %}
+                        {% for i in chosen_hull.engine|add:"0"|create_range %}
+                            <p>
+                                <select name="choice_engine" class="scientic" id="choice_engine_{{ i }}">
+                                    <option value="0">Select element</option>
+                                    {% for engine in engines %}
+                                        <option value="{{ engine.id }}"
+                                                data-system_power="{{ engine.system_power }}"
+                                                data-intersystem_power="{{ engine.intersystem_power }}"
+                                                data-giper_power="{{ engine.giper_power }}"
+                                                data-nullT_power="{{ engine.nullT_power }}"
+                                                data-mass="{{ engine.mass }}"
+                                                data-size="{{ engine.size }}"
+                                                data-power_consuption="{{ engine.power_consuption }}"> {{ engine.name }} </option>
+                                    {% endfor %}
+                                </select>
+                                <select name="choice_engine_side" class="scientic">
+                                    <option value="2">Back</option>
+                                </select>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" name="design_tabs-0" id="design_tabs-0-3"/>
+                    <label for="design_tabs-0-3">Generator</label>
+
+                    <div>
+                        <h3>Select generator side to fit on the body</h3>
+                        {% load my_filter %}
+                        {% for i in chosen_hull.generator|add:"0"|create_range %}
+                            <p>
+                                <select name="choice_generator" class="scientic"
+                                        id="choice_generator_{{ i }}">
+                                    <option value="0">Select element</option>
+                                    {% for generator in generators %}
+                                        <option value="{{ generator.id }}"
+                                                data-produced_energy="{{ generator.produced_energy }}"
+                                                data-fuel_necessary="{{ generator.fuel_necessary }}"
+                                                data-mass="{{ generator.mass }}"
+                                                data-size="{{ generator.size }}"> {{ generator.name }} </option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" name="design_tabs-0" id="design_tabs-0-4"/>
+                    <label for="design_tabs-0-4">Weapon</label>
+
+                    <div>
+                        <h3>Select weapon side to fit on the body</h3>
+                        {% load my_filter %}
+                        {% for i in chosen_hull.weapon|add:"0"|create_range %}
+                            <p>
+                                <select name="choice_weapon" class="scientic" id="choice_weapon_{{ i }}">
+                                    <option value="0">Select element</option>
+                                    {% for weapon in weapons %}
+                                        <option value="{{ weapon.id }}"
+                                                data-energy_damage="{{ weapon.energy_damage }}"
+                                                data-regenerations="{{ weapon.regenerations }}"
+                                                data-number_of_bursts="{{ weapon.number_of_bursts }}"
+                                                data-range="{{ weapon.range }}"
+                                                data-accuracy="{{ weapon.accuracy }}"
+                                                data-mass="{{ weapon.mass }}"
+                                                data-size="{{ weapon.size }}"
+                                                data-power_consuption="{{ weapon.power_consuption }}"> {{ weapon.name }} </option>
+                                    {% endfor %}
+                                </select>
+                                <select name="choice_weapon_side" class="scientic"
+                                        id="choice__weapon_side_{{ i }}">
+                                    <option value="0">Choice side</option>
+                                    <option value="1">Top</option>
+                                    <option value="3">Left</option>
+                                    <option value="4">Right</option>
+                                    <option value="5">Front</option>
+                                </select>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" name="design_tabs-0" id="design_tabs-0-5"/>
+                    <label for="design_tabs-0-5">Main weapon</label>
+
+                    <div>
+                        <h3>Select main weapon side to fit on the body</h3>
+                        {% load my_filter %}
+                        {% for i in chosen_hull.main_weapon|add:"0"|create_range %}
+                            <p>
+                                <select name="choice_main_weapon" class="scientic"
+                                        id="choice_main_weapon_{{ i }}">
+                                    <option value="0">Select element</option>
+                                    {% for main_weapon in main_weapons %}
+                                        <option value="{{ main_weapon.id }}"
+                                                data-energy_damage="{{ weapon.energy_damage }}"
+                                                data-regenerations="{{ weapon.regenerations }}"
+                                                data-number_of_bursts="{{ weapon.number_of_bursts }}"
+                                                data-range="{{ weapon.range }}"
+                                                data-accuracy="{{ weapon.accuracy }}"
+                                                data-mass="{{ weapon.mass }}"
+                                                data-size="{{ weapon.size }}"
+                                                data-power_consuption="{{ weapon.power_consuption }}"> {{ main_weapon.name }} </option>
+                                    {% endfor %}
+                                </select>
+                                <select name="choice_main_weapon_side" class="scientic">
+                                    <option value="1">Top</option>
+                                </select>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" name="design_tabs-0" id="design_tabs-0-6"/>
+                    <label for="design_tabs-0-6">Module</label>
+
+                    <div>
+                        <h3>Select module side to fit on the body</h3>
+                        {% load my_filter %}
+                        {% for i in chosen_hull.module|add:"0"|create_range %}
+                            <p>
+                                <select name="choice_module" class="scientic" id="choice_module_{{ i }}">
+                                    <option value="0">Select element</option>
+                                    {% for module in modules %}
+                                        <option value="{{ module.id }}"
+                                                data-param1="{{ module.param1 }}"
+                                                data-param2="{{ module.param2 }}"
+                                                data-param3="{{ module.param3 }}"
+                                                data-mass="{{ module.mass }}"
+                                                data-size="{{ module.size }}"
+                                                data-power_consuption="{{ module.power_consuption }}"
+                                                > {{ module.name }} </option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <input class="scientic" type="submit" value="OK" name="create_ship_pattern"/>
+            <button class="scientic" type="submit" name="cancel_button" action="cancel">Cancel</button>
+        </div>
+    </form>
+{% endblock %}

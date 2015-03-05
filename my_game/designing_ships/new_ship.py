@@ -50,6 +50,7 @@ def new_ship(request):
                       'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
                       'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
                       'turn_ship_builds': turn_ship_builds}
+            return render(request, "design_new_ship.html", output)
 
         if request.POST.get('create_ship_pattern'):
             chosen_hull_id = int(request.POST.get('chosen_hull'))

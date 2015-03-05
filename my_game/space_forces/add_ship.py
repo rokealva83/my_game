@@ -142,6 +142,7 @@ def add_ship(request):
                             null_power=int(project_ship.null_power) * amount_ship,
                             null_accuracy=int(project_ship.null_accuracy) * amount_ship,
                             ship_empty_mass=int(project_ship.mass) * amount_ship)
+                    message = 'Корабли добавлено во флот'
             else:
                 message = 'Недостаточно корблей'
         else:
