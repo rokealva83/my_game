@@ -931,6 +931,17 @@ class Fleet(models.Model):
     hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
 
+class Hold(models.Model):
+    class Meta():
+        db_table = 'hold'
+
+    fleet_id = models.IntegerField()
+    class_shipment = models.IntegerField()
+    id_shipment = models.IntegerField()
+    amount_shipment = models.IntegerField()
+    mass_shipment = models.IntegerField()
+    size_shipment = models.IntegerField()
+
 
 class Turn_ship_build(models.Model):
     class Meta():
