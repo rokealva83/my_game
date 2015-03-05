@@ -7,7 +7,7 @@ from my_game.models import Project_ship, Ship, Fleet
 from my_game import function
 
 
-def fleet_manage(request):
+def add_ship(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
