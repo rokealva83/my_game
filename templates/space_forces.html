@@ -63,7 +63,7 @@
             <h3 style="text-align: center">Панель управления флотом </h3>
             {% if command == 1 %}
 
-                <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                <form method="post" action="add_ship" enctype="multipart/form-data" style="text-align: center">
                     {% if add_ships %}
                         {% for add_ship in add_ships %}<p></p>
                             {{ add_ship.name }} ( {{ add_ship.amount_ship }} )
@@ -75,7 +75,7 @@
                         {% endfor %}
                     {% endif %}
                 </form>
-                <form method="post" action="fleet_manage" style="text-align: center">
+                <form method="post" action="delete_ship" style="text-align: center">
                     {% if ship_fleets %}
                         {% for ship_fleet in ship_fleets %}
                             {% if ship_fleet.fleet_status == 1 and ship_fleet.place_id == fleet_id %}
