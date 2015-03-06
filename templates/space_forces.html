@@ -3,21 +3,30 @@
 {% block content %}
     <div id="game_content">
         <div id="block_design_left">
-            <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+            <form method="post" action="fleet_manage" style="text-align: center">
                 <input value="" name="fleet_name" class="scientic_place"
                        placeholder="Fleet name"/>
                 <input class="scientic" type="submit" value="New fleet" name="create_fleet"/>
-
-                <p style="margin-top: 6px">
-                    {% if ships %}
-                        {% for ship in ships %}
-                            {{ ship.name }} ( {{ ship.amount_ship }} )
-                        {% endfor %}
-                    {% endif %}
-                </p>
             </form>
+            <form method="post" action="modificate_ship" style="text-align: center">
+                {% if ships %}
+                    {% for ship in ships %}
+                        <p style="margin-top: 6px">
+                            {{ ship.name }} ( {{ ship.amount_ship }} )
+                            <input type="hidden" id="ship_id_{{ ship.id }}"
+                                   value={{ ship.id_project_ship }} name="hidden_ship_id"/>
+                            <input value="" name="amount_ship" class="scientic_place"
+                                   placeholder="Amount ship"/>
+                            <input class="scientic" type="submit" value="Modification" name="modificate_ship"/>
+                            <input class="scientic" type="submit" value="Disassemble" name="disassemble_ship"/>
+                        </p>
+                    {% endfor %}
+                {% endif %}
+
+            </form>
+
             {% for user_fleet in user_fleets %}
-                <form method="post" action="fleet_manage" enctype="multipart/form-data" style="text-align: center">
+                <form method="post" action="fleet_manage" style="text-align: center">
                     <div class="fleet">
                         <p>{{ user_fleet.name }}</p>
 
@@ -63,7 +72,7 @@
             <h3 style="text-align: center">Панель управления флотом </h3>
             {% if command == 1 %}
 
-                <form method="post" action="add_ship" enctype="multipart/form-data" style="text-align: center">
+                <form method="post" action="add_ship" style="text-align: center">
                     {% if add_ships %}
                         {% for add_ship in add_ships %}<p></p>
                             {{ add_ship.name }} ( {{ add_ship.amount_ship }} )

@@ -97,33 +97,9 @@ def work_with_project(request):
                     else:
                         message = 'На складе не хватает комплектующих'
                 else:
-                        message = 'На складе не хватает комплектующих'
+                    message = 'На складе не хватает комплектующих'
 
         hulls = {}
-        if request.POST.get('modificate_pattern'):
-            amount_ship = request.POST.get('amount')
-            chosen_ship_pattern = request.POST.get('hidden_ship')
-            project_ship = Project_ship.objects.filter(id = chosen_ship_pattern).first()
-            chosen_hull_id = project_ship.hull_id
-            chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
-            armors = Armor_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            shields = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            engines = Engine_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            generators = Generator_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            main_weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
-            warehouse = Warehouse.objects.filter(user=session_user).first()
-            user_city = User_city.objects.filter(user=session_user).first()
-            user = MyUser.objects.filter(user_id=session_user).first()
-            user_citys = User_city.objects.filter(user=int(session_user))
-            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                      'chosen_hull': chosen_hull, 'armors': armors,
-                      'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
-                      'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
-                      'turn_ship_builds': turn_ship_builds}
-            return render(request, "modern_pattern_ship.html", output)
 
         if request.POST.get('delete_pattern'):
             ship_id = request.POST.get('hidden_ship')
@@ -141,5 +117,6 @@ def work_with_project(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds, 'message':message}
+                  'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds,
+                  'message': message}
         return render(request, "designingships.html", output)

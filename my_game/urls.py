@@ -10,6 +10,7 @@ from my_game.factory import views as factory
 from my_game.designing_ships import views as design_views
 from my_game.designing_ships import new_ship as new_ship
 from my_game.designing_ships import work_with_project as work_with_project
+from my_game.space_forces import work_with_ship as modificate_ship
 from my_game.space_forces import views as space_forces
 from my_game.space_forces import fleet_flightplan as fleet_flightplan
 from my_game.space_forces import fleet_management as fleet_management
@@ -54,6 +55,9 @@ urlpatterns = patterns('',
 
                        url(r'^designingships', design_views.designingships),
                        url(r'^new_ship', new_ship.new_ship),
+                       url(r'^modificate_ship', modificate_ship.modificate_ship),
+                       url(r'^choise_project', modificate_ship.choise_project),
+                       url(r'^modificate_ship_action', modificate_ship.modificate_ship_action),
                        url(r'^work_with_project', work_with_project.work_with_project),
 
                        url(r'^space_forces', space_forces.space_forces),
@@ -63,7 +67,6 @@ urlpatterns = patterns('',
                        url(r'^fleet_fly', fleet_flightplan.fleet_flightplan),
                        url(r'^start_flight', start_flight.start_flight),
                        url(r'^fleet_hold', fleet_hold.fleet_hold),
-
 
                        url(r'trade', 'my_game.views.trade', name='trade'),
 

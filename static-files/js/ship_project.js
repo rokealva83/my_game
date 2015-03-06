@@ -20,68 +20,149 @@
 
 (function ($) {
     $(document).ready(function () {
-        $('select').change(function () {
-            $(this).find('option:selected').each(function () {
+        //записываем блоки с данными для быстрого обращения
+        var res_block = $('#block_design_left .hull li');
 
-                var name = $(this).text();
+        //Функция определения селектора сторон
+        function checkSide(index) {
+            if (index) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-                var selName = $(this).parent('select').attr('name');
+        //Функция переноса информации по сторонам
+        function setSide(value, id, name) {
+            //Если индекс больше или равен 4, добавляем +1
+            if (value >= 4) {
+                value++;
+            }
+            //Проверяем наличие заголовка и совпадение в нём текста
+            //если нет совпадений по критериям
+            if (res_block.eq(value).find('h5:visible').text() != name && res_block.eq(value).find('h5:visible').length == 0) {
+                //Клонируем заголовок с блока переноса
+                var catTitle = res_block.find('#' + id).siblings('h5').clone();
+                //Вставляем в блок, в который перенос
+                res_block.eq(value).find('h4').after(catTitle);
+            }
+            //Проверяем, есть ли ещё блоки с данными
+            if (res_block.find('#' + id).siblings('div').length == 0) {
+                //Если нет - удаляем заголовок
+                res_block.find('#' + id).siblings('h5').remove();
+                //Вырезаем блок
+                var block = res_block.find('#' + id).detach();
+            } else {
+                //Если есть, то вырезаем только блок
+                var block = res_block.find('#' + id).detach();
+            }
+            //Вставляем блок
+            res_block.eq(value).append(block);
+        }
 
-                var selId = $(this).parent('select').attr('id');
+        //функция вывода информации
+        function whileData(optName, optData, selId, selCat, optInd, optVal, needId, classLabel) {
 
-                var block = $(this).parents('li').find('label').text();
-
-                var res_block = $('#block_design_left');
-
-                if (/side/.test(selName)) {
-
-                    var needId = $(this).parent('select').prev().attr('id');
-                    var ind = $(this).index();
-
-                    if (ind >= 4) {
-                        ind += 1;
-                    }
-                    var flag = true
-
+            //Определение селектора сторон
+            var side = checkSide(optInd);
+            //если не сторона
+            if (!side) {
+                //ищем во всех блоках
+                if (res_block.find('#' + selId).length != 0) {
+                    //Если не в первом, получаем номер блока
+                    var num = res_block.find('#' + selId).parent().index();
                 } else {
-                    var flag = false;
+                    //Если не находим, то добавляем в первый блок
+                    var num = 0;
+                }
+                var mainBlock = res_block.eq(num);
+
+                //Определяем, есть ли заголовок категории
+                if (mainBlock.find('h5').text(selCat).length == 0) {
+                    //Если нет - выводим название категории
+                    mainBlock.find('h4').after('<h5 class="' + classLabel + '">' + selCat + '</h5>');
                 }
 
-                if (flag == true) {
-
-                    var ct = res_block.find('li').find('.' + needId).detach();
-                    res_block.find('li').eq(ind).append(ct);
-
+                //Определяем, есть ли такой блок
+                if (mainBlock.find('#' + selId).length == 0) {
+                    mainBlock.append('<div id="' + selId + '" class="' + classLabel + '"></div>');
                 } else {
+                    //Если есть - очищаем
+                    mainBlock.find('#' + selId).empty();
+                }
 
-                    if (res_block.find('ul li:gt(0)').find('.' + selId).length > 0) {
-                        var mainInfo = res_block.find('li:gt(0)').find('.' + selId).parent();
+                //вывод дата-аттрибутов
+                $.each(optData, function (key, val) {
+                    mainBlock.find('#' + selId).prepend('<p class="' + key + '">' + key + ': <span>' + val + '</span>' + '</p>');
+                });
 
+                //Добавляем название выбранной опции
+                mainBlock.find('#' + selId).prepend('<h6>' + optName + '</h6>');
+            } else {
+                //если сторона, запускаем функцию переноса
+                setSide(optVal, needId, optName);
+            }
+            //Выставляем значения сумм. информации по умолчанию
+            var mass = 0;
+            var power_consuption = 0;
+            var produced_energy = 0;
+            //Собираем информацию по всем блокам
+            res_block.children('div').children('p').each(function () {
+                //Если один из нужных блоков
+                if ($(this).hasClass('mass') || $(this).hasClass('power_consuption') || $(this).hasClass('produced_energy')) {
+                    //Сохраняем и слаживаем значения
+                    if ($(this).hasClass('mass')) {
+                        mass += parseFloat($(this).find('span').text());
+                    } else if ($(this).hasClass('power_consuption')) {
+                        power_consuption += parseFloat($(this).find('span').text());
                     } else {
-
-                        var mainInfo = res_block.find('ul li:first');
+                        produced_energy += parseFloat($(this).find('span').text());
                     }
-
-                    if (mainInfo.children('.' + selId).length == 0) {
-
-                        mainInfo.append('<div class="' + selName + ' ' + selId + '"><h4>' + block + '</h4></div>');
-
-                    } else {
-
-                        $(mainInfo.children('.' + selId)).empty();
-
-                    }
-
-                    mainInfo.find('.' + selId).append('<p><strong>' + name + '</strong></p>');
-
-                    var data = $(this).data();
-
-                    $.each(data, function (key, val) {
-                        mainInfo.find('.' + selId).append(key + ": " + val + "<br>");
-                    });
-
                 }
             });
+            //Передаём данные функции вывода суммю информации
+            summData(mass, power_consuption, produced_energy);
+        }
+
+        //Функция вывода суммарной информации
+        function summData(mass, power_consuption, produced_energy) {
+            //Очищаем блок сумм. информации для каждого пересчёта
+            res_block.eq(4).children('h4').siblings().remove();
+            //Обновляем данные
+            res_block.eq(4).children('h4').after(
+                '<p class="mass">Масса: ' + mass + '</p>' + '<p class="mass">Потребление энергии: ' + power_consuption + '</p>' + '<p class="mass">Производство энергии: ' + produced_energy + '</p>');
+        }
+
+        $(document).on('change', '.design_tabs select', function () {
+            //Получаем информацию и передаём функции вывода
+            var opt = $(this).find('option:selected');
+            var name = opt.text();
+            var id = opt.parent().attr('id');
+            var category = opt.parents('li').find('label').text();
+            var sideInd = $(this).index();
+            var sideVal = parseInt($(this).val());
+            var classLabel = $(this).parents('li').find('label').prev().attr('class');
+            var data = opt.data();
+            if (sideInd) {
+                var needId = $(this).prev().attr('id');
+            } else {
+                var needId = $(this).attr('id');
+            }
+            whileData(name, data, id, category, sideInd, sideVal, needId, classLabel);
         });
+
+        //Функция скрытия по переключению табов
+        function tabs(cl) {
+            //Скрываем всех потомков с данными в блоках, кроме сумм. информации
+            res_block.parent().children(":not('li:eq(4)')").find('h4').siblings().hide();
+            //Отображаем нужные потомки
+            res_block.children('.' + cl).show();
+        }
+
+        $(document).on('click', '.design_tabs label', function () {
+            var classLabel = $(this).prev().attr('class');
+            tabs(classLabel);
+        });
+
     });
 })(jQuery);

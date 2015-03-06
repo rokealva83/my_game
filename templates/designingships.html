@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Проектирование кораблей{% endblock %}
 {% block content %}
-<div id="game_content">
-    <div id="block_design_left">
+    <div id="game_content">
+        <div id="block_design_left">
 
 
             <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
@@ -64,7 +64,6 @@
                         <input type="hidden" id="ship{{ project_ship.id }}"
                                value={{ project_ship.id }} name="hidden_ship">
                         <input class="scientic" type="submit" value="Create" name="create_ship"/>
-                        <input class="scientic" type="submit" value="Modification" name="modificate_pattern"/>
                         <input class="scientic" type="submit" value="Delete pattern" name="delete_pattern"/>
                     </form>
 
@@ -73,50 +72,50 @@
                 </div>
 
             {% endfor %}
-            <p>
-                {% if chosen_hull == None %}
-                    <div class="hull" style="text-align: center">
-                        <ul>
-                            <li>
-                                <h4>Information</h4>
-                            </li>
-                        </ul>
-                    </div>
-                {% endif %}
-            </p>
-            </div>
-            </div>
-            <div id="block_design_right">
 
-                {% if chosen_hull == None %}
-                    <div id="block_design_up">
-                        <form method="POST" action="new_ship">
-                            <p> Choice hull pattern
-                                <select name="choice_pattern" class="scientic">
-                                    <option selected disabled>Choise hull</option>
-                                    {% for hull in hulls %}
-                                        <option value="{{ hull.id }}" data-name="{{ hull.name }}"
-                                                data-health="{{ hull.health }}" data-generator="{{ hull.generator }}"
-                                                data-engine="{{ hull.engine }}" data-weapon="{{ hull.weapon }}"
-                                                data-armor="{{ hull.armor }}" data-shield="{{ hull.shield }}"
-                                                data-module="{{ hull.module }}"
-                                                data-main_weapon="{{ hull.main_weapon }}"
-                                                data-hold_size="{{ hull.hold_size }}" data-mass="{{ hull.mass }}"
-                                                data-size="{{ hull.size }}"
-                                                data-power_consuption="{{ hull.power_consuption }}"> {{ hull.name }} </option>
-                                    {% endfor %}
-                                </select>
-                                Ship name <input type="ship_name" value="" name="ship_name" class="scientic_place"
-                                                 placeholder="Название"/>
-                                <input class="scientic" type="submit" value="Create" name="create_pattern"/>
-                            </p>
-                        </form>
-                    </div>
-                {% else %}
-                    {% block content_2 %}{% endblock %}
-                {% endif %}
-            </div>
-            <div class="clear"></div>
-            </div>
-            <div class="clear"></div>
-        {% endblock %}
+            {% if chosen_hull == None %}<p>
+                <div class="hull" style="text-align: center">
+                    <ul>
+                        <li>
+                            <h4>Information</h4>
+                        </li>
+                    </ul>
+                </div></p>
+            {% endif %}
+
+        </div>
+
+        <div id="block_design_right">
+
+            {% if chosen_hull == None %}
+                <div id="block_design_up">
+                    <form method="POST" action="new_ship">
+                        <p> Choice hull pattern
+                            <select name="choice_pattern" class="scientic">
+                                <option selected disabled>Choise hull</option>
+                                {% for hull in hulls %}
+                                    <option value="{{ hull.id }}" data-name="{{ hull.name }}"
+                                            data-health="{{ hull.health }}" data-generator="{{ hull.generator }}"
+                                            data-engine="{{ hull.engine }}" data-weapon="{{ hull.weapon }}"
+                                            data-armor="{{ hull.armor }}" data-shield="{{ hull.shield }}"
+                                            data-module="{{ hull.module }}"
+                                            data-main_weapon="{{ hull.main_weapon }}"
+                                            data-hold_size="{{ hull.hold_size }}" data-mass="{{ hull.mass }}"
+                                            data-size="{{ hull.size }}"
+                                            data-power_consuption="{{ hull.power_consuption }}"> {{ hull.name }} </option>
+                                {% endfor %}
+                            </select>
+                            Ship name <input type="ship_name" value="" name="ship_name" class="scientic_place"
+                                             placeholder="Название"/>
+                            <input class="scientic" type="submit" value="Create" name="create_pattern"/>
+                        </p>
+                    </form>
+                </div>
+            {% else %}
+                {% block content_2 %}{% endblock %}
+            {% endif %}
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}
