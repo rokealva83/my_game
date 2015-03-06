@@ -189,7 +189,9 @@
                                 <label for="design_tabs-0-2">Engine</label>
 
                                 <div>
-                                    <h3>Select engine side to fit on the body</h3>
+                                    <h3>Compare the parameters of elements</h3>
+
+                                    <h3>Engine element</h3>
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 4 %}
                                             {% for engine in engines %}
@@ -257,7 +259,9 @@
                                 <label for="design_tabs-0-3">Generator</label>
 
                                 <div>
-                                    <h3>Select generator side to fit on the body</h3>
+                                    <h3>Compare the parameters of elements</h3>
+
+                                    <h3>Generator element</h3>
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 5 %}
                                             {% for generator in generators %}
@@ -324,7 +328,9 @@
                                 <label for="design_tabs-0-4">Weapon</label>
 
                                 <div>
-                                    <h3>Select weapon side to fit on the body</h3>
+                                    <h3>Compare the parameters of elements</h3>
+
+                                    <h3>Weapon element</h3>
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 6 %}
                                             {% for weapon in weapons %}
@@ -401,7 +407,9 @@
                                 <label for="design_tabs-0-5">Main weapon</label>
 
                                 <div>
-                                    <h3>Select main weapon side to fit on the body</h3>
+                                    <h3>Compare the parameters of elements</h3>
+
+                                    <h3>Main weapon element</h3>
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 6 %}
                                             {% for weapon in weapons %}
@@ -434,7 +442,7 @@
                                         {% endif %}
                                     {% endfor %}
                                     {% if new_ship_id %}
-                                        <h3>New weapon element</h3>
+                                        <h3>New main weapon element</h3>
 
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 6 %}
@@ -477,7 +485,9 @@
                                 <label for="design_tabs-0-6">Module</label>
 
                                 <div>
-                                    <h3>Select module side to fit on the body</h3>
+                                    <h3>Compare the parameters of elements</h3>
+
+                                    <h3>Module element</h3>
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 8 %}
                                             {% for module in modules %}
