@@ -143,16 +143,8 @@ def action_modificate_ship(request):
                 modificate_ship_element = modificate_ship_elements[i]
                 if modificate_ship_element.position != new_ship_element.position or modificate_ship_element.id_element_pattern != new_ship_element.id_element_pattern:
                     time_build = time_build * 1.15
-                id_element = new_ship_element.id_element_pattern
-                class_element = new_ship_element.class_element
-                amount_element = len(
-                    Element_ship.objects.filter(id_project_ship=new_ship_project.id, class_element=class_element,
-                                                id_element_pattern=id_element)) * int(ship_amount)
-                warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
-                                                                     element_class=class_element,
-                                                                     element_id=id_element).first()
-                warehouse_element_amount = int(warehouse_element.amount)
-                if warehouse_element_amount < amount_element:
+                error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
+                if error == True:
                     message = 'Нехватает комплектующих на складе'
                     output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                               'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
@@ -165,7 +157,6 @@ def action_modificate_ship(request):
                     return render(request, "modificate_ship.html", output)
 
 
-
         elif len_modificate_ship_elements < len_new_ship_elements:
             for i in range(len_modificate_ship_elements):
                 new_ship_element = new_ship_elements[i]
@@ -174,6 +165,32 @@ def action_modificate_ship(request):
                     time_build = time_build * 1.15
                 difference = len_new_ship_elements - len_modificate_ship_elements
                 time_build = time_build * math.pow(1.1, difference)
+                error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
+                if error == True:
+                    message = 'Нехватает комплектующих на складе'
+                    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                              'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
+                              'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
+                              'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
+                              'modificate_ship_elements': modificate_ship_elements,
+                              'modificate_ship_id': modificate_ship_id, 'new_ship_hull': new_ship_hull,
+                              'new_ship_elements': new_ship_elements, 'new_ship_id': new_ship_id,
+                              'ship_amount': ship_amount, 'message': message}
+                    return render(request, "modificate_ship.html", output)
+            for k in range(len_modificate_ship_elements, len_new_ship_elements):
+                new_ship_element = new_ship_elements[k]
+                error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
+                if error == True:
+                    message = 'Нехватает комплектующих на складе'
+                    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                              'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
+                              'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
+                              'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
+                              'modificate_ship_elements': modificate_ship_elements,
+                              'modificate_ship_id': modificate_ship_id, 'new_ship_hull': new_ship_hull,
+                              'new_ship_elements': new_ship_elements, 'new_ship_id': new_ship_id,
+                              'ship_amount': ship_amount, 'message': message}
+                    return render(request, "modificate_ship.html", output)
 
         else:
             for i in range(len_new_ship_elements):
@@ -183,6 +200,7 @@ def action_modificate_ship(request):
                     time_build = time_build * 1.15
                 difference = len_modificate_ship_elements - len_new_ship_elements
                 time_build = time_build * math.pow(1.05, difference)
+
     project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
     turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
     message = 'Модификация началась'
@@ -190,4 +208,25 @@ def action_modificate_ship(request):
               'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds, 'message': message}
     return render(request, "designingships.html", output)
 
+
+def error_function(*args):
+    session_user_city = args[0]
+    new_ship_element = args[1]
+    new_ship_project = args[2]
+    ship_amount = args[3]
+    id_element = new_ship_element.id_element_pattern
+    class_element = new_ship_element.class_element
+    amount_element = len(
+        Element_ship.objects.filter(id_project_ship=new_ship_project.id, class_element=class_element,
+                                    id_element_pattern=id_element)) * int(ship_amount)
+    warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
+                                                         element_class=class_element,
+                                                         element_id=id_element).first()
+    warehouse_element_amount = int(warehouse_element.amount)
+
+    if warehouse_element_amount < amount_element:
+        error = True
+    else:
+        error = False
+    return (error)
 
