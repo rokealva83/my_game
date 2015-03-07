@@ -57,7 +57,7 @@ urlpatterns = patterns('',
                        url(r'^new_ship', new_ship.new_ship),
                        url(r'^modificate_ship', modificate_ship.modificate_ship),
                        url(r'^choise_project', modificate_ship.choise_project),
-                       url(r'^modificate_ship_action', modificate_ship.modificate_ship_action),
+                       url(r'^action_modificate_ship', modificate_ship.action_modificate_ship),
                        url(r'^work_with_project', work_with_project.work_with_project),
 
                        url(r'^space_forces', space_forces.space_forces),
