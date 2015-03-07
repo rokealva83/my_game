@@ -15,6 +15,10 @@
                             {{ ship.name }} ( {{ ship.amount_ship }} )
                             <input type="hidden" id="ship_id_{{ ship.id }}"
                                    value={{ ship.id_project_ship }} name="hidden_ship_id"/>
+
+                            <input type="hidden" id="{{ ship.amount_ship }}"
+                                   value="{{ ship.amount_ship }}" name="hidden_amount_ship"/>
+
                             <input value="" name="amount_ship" class="scientic_place"
                                    placeholder="Amount ship"/>
                             <input class="scientic" type="submit" value="Modification" name="modificate_ship"/>

@@ -12,7 +12,7 @@ from my_game.models import Turn_scientic, Turn_building, Turn_assembly_pieces, \
 from my_game.models import Factory_pattern, Factory_installed
 from my_game.models import Warehouse_factory, Warehouse_element, Warehouse
 from knowledge import scientic_func
-from my_game.models import Project_ship, Turn_ship_build, Ship, Fleet
+from my_game.models import Project_ship, Turn_ship_build, Ship, Fleet, Element_ship
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import User_variables
 
@@ -21,7 +21,7 @@ def check_scientific_verification_queue(request):
     user = int(request)
     time = timezone.now()
     turn_scientics = Turn_scientic.objects.filter(user=user)
-    user_variables = User_variables.objects.filter(id = 1).first()
+    user_variables = User_variables.objects.filter(id=1).first()
     if turn_scientics:
         for turn_scientic in turn_scientics:
             scin_id = turn_scientic.id
@@ -271,23 +271,67 @@ def verification_turn_ship_build(request):
             delta_time = turn_ship_build.finish_time_build - turn_ship_build.start_time_build
             delta = delta_time.seconds
             if new_delta > delta:
-                dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).first()
-                create_ship = Project_ship.objects.filter(user=user, id=turn_ship_build.ship_pattern).first()
-                if dock is not None:
-                    new_amount = dock.amount_ship + turn_ship_build.amount
-                    dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).update(
-                        amount_ship=new_amount)
-                else:
-                    dock = Ship(
-                        user=user,
-                        id_project_ship=turn_ship_build.ship_pattern,
-                        name=create_ship.name,
-                        amount_ship=turn_ship_build.amount,
-                        fleet_status=0,
-                        place_id=city_id
-                    )
-                    dock.save()
-                turn_ship_build_delete = Turn_ship_build.objects.filter(id=turn_ship_build.id).delete()
+                if turn_ship_build.process_id == 1:
+                    dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).first()
+                    create_ship = Project_ship.objects.filter(user=user, id=turn_ship_build.ship_pattern).first()
+                    if dock is not None:
+                        new_amount = dock.amount_ship + turn_ship_build.amount
+                        dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).update(
+                            amount_ship=new_amount)
+                    else:
+                        dock = Ship(
+                            user=user,
+                            id_project_ship=turn_ship_build.ship_pattern,
+                            name=create_ship.name,
+                            amount_ship=turn_ship_build.amount,
+                            fleet_status=0,
+                            place_id=city_id
+                        )
+                        dock.save()
+                    turn_ship_build_delete = Turn_ship_build.objects.filter(id=turn_ship_build.id).delete()
+
+                elif turn_ship_build.process_id == 2:
+                    element_ships = Element_ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern)
+                    for element_ship in element_ships:
+                        warehouse_element = Warehouse_element.objects.filter(element_class=element_ship.class_element,
+                                                                             element_id=element_ship.id_element_pattern).first()
+                        new_amount = warehouse_element.amount + (1 * turn_ship_build.amount)
+                        warehouse_element = Warehouse_element.objects.filter(element_class=element_ship.class_element,
+                                                                             element_id=element_ship.id_element_pattern).update(
+                            amount=new_amount)
+
+                elif turn_ship_build.process_id == 3:
+                    element_ships = Element_ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern)
+                    for element_ship in element_ships:
+                        if element_ship.class_element == 7:
+                            class_element = 6
+                        else:
+                            class_element = element_ship.class_element
+                        warehouse_element = Warehouse_element.objects.filter(element_class=class_element,
+                                                                             element_id=element_ship.id_element_pattern).first()
+
+
+                        new_amount = warehouse_element.amount + (1 * turn_ship_build.amount)
+                        warehouse_element = Warehouse_element.objects.filter(element_class=class_element,
+                                                                             element_id=element_ship.id_element_pattern).update(
+                            amount=new_amount)
+                    dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).first()
+                    create_ship = Project_ship.objects.filter(user=user, id=turn_ship_build.ship_pattern).first()
+                    if dock is not None:
+                        new_amount = dock.amount_ship + turn_ship_build.amount
+                        dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).update(
+                            amount_ship=new_amount)
+                    else:
+                        dock = Ship(
+                            user=user,
+                            id_project_ship=turn_ship_build.ship_pattern,
+                            name=create_ship.name,
+                            amount_ship=turn_ship_build.amount,
+                            fleet_status=0,
+                            place_id=city_id
+                        )
+                        dock.save()
+                    turn_ship_build_delete = Turn_ship_build.objects.filter(id=turn_ship_build.id).delete()
 
 
 def verification_flight_list(request):
@@ -322,9 +366,9 @@ def verification_flight_list(request):
                             y = flightplan_flight.finish_y / 1000
                             z = flightplan_flight.finish_z / 1000
 
-                        fleet_up = Fleet.objects.filter(id = fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
-                                                              planet=flightplan_flight.planet,
-                                                              system=flightplan_flight.system)
+                        fleet_up = Fleet.objects.filter(id=fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
+                                                                            planet=flightplan_flight.planet,
+                                                                            system=flightplan_flight.system)
 
                         old_flightplan_flight = flightplan_flight
 
@@ -341,10 +385,10 @@ def verification_flight_list(request):
                             start_z = old_flightplan_flight.finish_z / 1000
                             flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).update(
                                 start_x=start_x, start_y=start_y, start_z=start_z,
-                            start_time=old_flightplan_flight.finish_time)
+                                start_time=old_flightplan_flight.finish_time)
 
-                        flightplan = Flightplan.objects.filter(id = flightplan_id).delete()
+                        flightplan = Flightplan.objects.filter(id=flightplan_id).delete()
             lens = lens + 1
             if lens == flightplan_len:
-                fleet_up = Fleet.objects.filter(id = fleet.id).update(status = 0)
+                fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
 

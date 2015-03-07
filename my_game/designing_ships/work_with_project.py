@@ -64,7 +64,8 @@ def work_with_project(request):
                             ship_pattern=ship_id,
                             amount=amount_ship,
                             start_time_build=start_time,
-                            finish_time_build=finish_time
+                            finish_time_build=finish_time,
+                            process_id = 1
 
                         )
                         turn_create_ship.save()

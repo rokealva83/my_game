@@ -181,7 +181,7 @@ def new_ship(request):
                             weapon = Weapon_pattern.objects.filter(id=choice_weapon[i]).first()
                             element = Element_ship(
                                 id_project_ship=pattern_ship_id,
-                                class_element=6,
+                                class_element=7,
                                 id_element_pattern=choice_main_weapon[i],
                                 position=choice_main_weapon_side[i],
                                 health=weapon.health

@@ -949,6 +949,7 @@ class Turn_ship_build(models.Model):
 
     user = models.IntegerField()
     user_city = models.IntegerField()
+    process_id = models.IntegerField(default=0)
     ship_pattern = models.IntegerField()
     amount = models.IntegerField()
     start_time_build = models.DateTimeField()
