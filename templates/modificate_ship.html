@@ -412,7 +412,7 @@
 
                                     <h3>Main weapon element</h3>
                                     {% for modificate_ship_element in modificate_ship_elements %}
-                                        {% if modificate_ship_element.class_element == 6 %}
+                                        {% if modificate_ship_element.class_element == 7 %}
                                             {% for weapon in weapons %}
                                                 {% if weapon.id == modificate_ship_element.id_element_pattern %}
                                                     <h3> {{ weapon.name }}
@@ -446,7 +446,7 @@
                                         <h3>New main weapon element</h3>
 
                                         {% for new_ship_element in new_ship_elements %}
-                                            {% if new_ship_element.class_element == 6 %}
+                                            {% if new_ship_element.class_element == 7 %}
                                                 {% for weapon in weapons %}
                                                     {% if weapon.id == new_ship_element.id_element_pattern %}
                                                         <h3> {{ weapon.name }}
