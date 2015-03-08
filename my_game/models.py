@@ -1117,5 +1117,5 @@ class Asteroid_field(models.Model):
     koef_min_2 = models.FloatField(default=0.05)
     koef_min_3 = models.FloatField(default=0.05)
     koef_min_4 = models.FloatField(default=0.05)
-    artifact = models.IntegerField(default=0)
+    artifact = models.IntegerField()
 

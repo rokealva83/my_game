@@ -66,7 +66,7 @@ urlpatterns = patterns('',
                        url(r'^fleet_manage', fleet_management.fleet_manage),
                        url(r'^delete_ship', delete_ship.delete_ship),
                        url(r'^add_ship', add_ship.add_ship),
-                       url(r'^fleet_fly', fleet_flightplan.fleet_flightplan),
+                       url(r'^fleet_flightplan', fleet_flightplan.fleet_flightplan),
                        url(r'^start_flight', start_flight.start_flight),
                        url(r'^fleet_hold', fleet_hold.fleet_hold),
 

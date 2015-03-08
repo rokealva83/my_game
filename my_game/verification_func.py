@@ -362,9 +362,9 @@ def verification_flight_list(request):
 
                         else:
                             planet_status = 0
-                            x = flightplan_flight.finish_x / 1000
-                            y = flightplan_flight.finish_y / 1000
-                            z = flightplan_flight.finish_z / 1000
+                            x = flightplan_flight.finish_x / 1000.0
+                            y = flightplan_flight.finish_y / 1000.0
+                            z = flightplan_flight.finish_z / 1000.0
 
                         fleet_up = Fleet.objects.filter(id=fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
                                                                             planet=flightplan_flight.planet,
@@ -380,9 +380,9 @@ def verification_flight_list(request):
                             finish_time = old_flightplan_flight.start_time + timedelta(
                                 seconds=flightplan_flight.flight_time)
 
-                            start_x = old_flightplan_flight.finish_x / 1000
-                            start_y = old_flightplan_flight.finish_y / 1000
-                            start_z = old_flightplan_flight.finish_z / 1000
+                            start_x = old_flightplan_flight.finish_x
+                            start_y = old_flightplan_flight.finish_y
+                            start_z = old_flightplan_flight.finish_z
                             flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).update(
                                 start_x=start_x, start_y=start_y, start_z=start_z,
                                 start_time=old_flightplan_flight.finish_time)
