@@ -31,6 +31,7 @@ def fleet_manage(request):
         weapon_patterns = {}
         shell_patterns = {}
         module_patterns = {}
+        message = ''
 
         fleet_id = 0
         command = 0
@@ -97,6 +98,16 @@ def fleet_manage(request):
             # device_patterns = Device_pattern.objects.filter(user = session_user)
             command = 2
 
+        if request.POST.get('delete_fleet'):
+            fleet_id = int(request.POST.get('hidden_fleet'))
+            command = 0
+            ship = Ship.objects.filter(fleet_status = 1, place_id = fleet_id).first()
+            if ship:
+                message = 'Во флоте есть корабли'
+            else:
+                fleet = Fleet.objects.filter(id = fleet_id).delete()
+                message = 'Флот удален'
+
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -114,5 +125,5 @@ def fleet_manage(request):
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns}
+                  'module_patterns': module_patterns, 'message': message}
         return render(request, "fleet_hold.html", output)
