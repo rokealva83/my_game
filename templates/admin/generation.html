@@ -35,4 +35,33 @@
         </form>
     </div>
     </div>
+    <div id="block_design_left">
+        <h3>
+            {{ message }}
+        </h3>
+
+
+            <h3>
+            Генерация галактики
+        </h3>
+
+        <p>Выберите количество генерируимых астероидных полей</p>
+
+        <form method="post" action="asteroid_generation">
+            <div>
+                <label for="asteroid">Asteroid</label>
+                <input type="text" value=""
+                       name="asteroid" class="scientic_place"
+                       placeholder="asteroid"/>
+
+            </div>
+            <br>
+
+            <div>
+                <input type="submit" value="OK" class="scientic" name="add_button"/>
+                <button type="submit" class="scientic" name="cancel_button">Cancel</button>
+            </div>
+        </form>
+    </div>
+    </div>
 {% endblock %}

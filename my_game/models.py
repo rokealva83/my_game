@@ -931,6 +931,7 @@ class Fleet(models.Model):
     hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
 
+
 class Hold(models.Model):
     class Meta():
         db_table = 'hold'
@@ -1097,3 +1098,24 @@ class Flightplan_fight(models.Model):
     id_command = models.IntegerField()
     id_fleet_attack = models.IntegerField()
     id_fight = models.IntegerField()
+
+
+class Asteroid_field(models.Model):
+    class Meta():
+        db_table = 'asteroid_field'
+
+    x = models.FloatField()
+    y = models.FloatField()
+    z = models.FloatField()
+    class_asteroid_field = models.IntegerField(default=0)
+    size = models.IntegerField()
+    koef_res_1 = models.FloatField(default=0.15)
+    koef_res_2 = models.FloatField(default=0.15)
+    koef_res_3 = models.FloatField(default=0.15)
+    koef_res_4 = models.FloatField(default=0.15)
+    koef_min_1 = models.FloatField(default=0.05)
+    koef_min_2 = models.FloatField(default=0.05)
+    koef_min_3 = models.FloatField(default=0.05)
+    koef_min_4 = models.FloatField(default=0.05)
+    artifact = models.IntegerField(default=0)
+

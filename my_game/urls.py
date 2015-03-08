@@ -5,6 +5,7 @@ from my_game.knowledge import views as knowledge
 from my_game.civilization import views as civilization
 from my_game.warehouse import views as warehouse
 from my_game.administrator import views as administration
+from my_game.administrator import  asteroid_generation as asteroid_generation
 from my_game.building import views as building
 from my_game.factory import views as factory
 from my_game.designing_ships import views as design_views
@@ -37,6 +38,7 @@ urlpatterns = patterns('',
                        url(r'^admin/administration', administration.administration),
                        url(r'^admin/generation', administration.generation),
                        url(r'^admin/star_generation', administration.star_generation),
+                       url(r'^admin/asteroid_generation', asteroid_generation.asteroid_generation),
 
                        url(r'^civilization', civilization.civilization),
                        url(r'^warehouse', warehouse.warehouse),
