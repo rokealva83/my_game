@@ -54,10 +54,14 @@
         </p>
 
         <p>
-            Использовать гипер
-            <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
-            Использовать джамп
-            <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+            {% if fleet.giper_power != 0 %}
+                Использовать гипер
+                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+            {% endif %}
+            {% if fleet.null_power != 0 %}
+                Использовать джамп
+                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+            {% endif %}
         </p>
 
 

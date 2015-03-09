@@ -106,6 +106,7 @@ def work_with_project(request):
             ship_id = request.POST.get('hidden_ship')
             delete_ship_pattern = Project_ship.objects.filter(id=ship_id).delete()
             delete_ship_element = Element_ship.objects.filter(id_project_ship=ship_id).all().delete()
+            message = 'Проект удален'
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()

@@ -65,18 +65,20 @@ def fleet_manage(request):
             user = MyUser.objects.filter(user_id=session_user).first()
             user_citys = User_city.objects.filter(user=int(session_user))
             user_fleets = Fleet.objects.filter(user=session_user)
+            ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+            fleet = Fleet.objects.filter(id = fleet_id).first()
             output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
-                  'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
-                  'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
-                  'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
-                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns}
+                      'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
+                      'ship_fleets': ship_fleets,'ships': ships, 'fleet': fleet,
+                      'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
+                      'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
+                      'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
+                      'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
+                      'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
+                      'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                      'module_patterns': module_patterns}
             return render(request, "flightplan.html", output)
-
 
         if request.POST.get('hold_fleet'):
             fleet_id = int(request.POST.get('hidden_fleet'))
@@ -101,11 +103,11 @@ def fleet_manage(request):
         if request.POST.get('delete_fleet'):
             fleet_id = int(request.POST.get('hidden_fleet'))
             command = 0
-            ship = Ship.objects.filter(fleet_status = 1, place_id = fleet_id).first()
+            ship = Ship.objects.filter(fleet_status=1, place_id=fleet_id).first()
             if ship:
                 message = 'Во флоте есть корабли'
             else:
-                fleet = Fleet.objects.filter(id = fleet_id).delete()
+                fleet = Fleet.objects.filter(id=fleet_id).delete()
                 message = 'Флот удален'
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
@@ -114,15 +116,16 @@ def fleet_manage(request):
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
-                  'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
-                  'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
-                  'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
+                  'ships': ships, 'command': command, 'flightplans': flightplans,
+                  'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
+                  'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
+                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'message': message}
