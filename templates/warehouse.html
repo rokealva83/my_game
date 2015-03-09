@@ -36,6 +36,7 @@
                             {% for factory_pattern in factory_patterns %}
                                 {% if warehouse_factory.factory_id == factory_pattern.id %}
                                     {% if warehouse_factory.amount > 0 %}
+                                        <p>
                                         <div class="warehouse_inform">
                                             <ul>
                                         <span>{{ factory_pattern.name }}
@@ -295,7 +296,7 @@
 
                 <div>
                     {% for warehouse_element in warehouse_elements %}
-                        {% if warehouse_element.element_class == 5 %}
+                        {% if warehouse_element.element_class == 7 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for shell_pattern in shell_patterns %}
                                     {% if shell_pattern.id == warehouse_element.element_id %}
@@ -331,7 +332,7 @@
 
                 <div>
                     {% for warehouse_element in warehouse_elements %}
-                        {% if warehouse_element.element_class == 5 %}
+                        {% if warehouse_element.element_class == 8 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for module_pattern in module_patterns %}
                                     {% if module_pattern.id == warehouse_element.element_id %}

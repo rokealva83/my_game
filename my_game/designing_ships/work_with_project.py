@@ -57,7 +57,7 @@ def work_with_project(request):
                             start_time = datetime.now()
 
                         ship_pattern = Project_ship.objects.filter(id=ship_id).first()
-                        finish_time = start_time + timedelta(seconds=ship_pattern.time_build)
+                        finish_time = start_time + timedelta(seconds=(ship_pattern.time_build*amount_ship))
                         turn_create_ship = Turn_ship_build(
                             user=session_user,
                             user_city=session_user_city,

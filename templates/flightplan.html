@@ -81,13 +81,22 @@
         </p>
 
         <p>
-            Использовать гипер
-            <input type="checkbox" name="coordinate_giper" class="coordinate_checkbox">
-            Использовать джамп
-            <input type="checkbox" name="coordinate_null" class="coordinate_checkbox">
+            {% if fleet.giper_power != 0 %}
+                Использовать гипер
+                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+            {% endif %}
+            {% if fleet.null_power != 0 %}
+                Использовать джамп
+                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+            {% endif %}
         </p>
         <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
         <input class="scientic" type="submit" value="Add command" name="add_command"/>
+
+        <p>
+
+        </p>
+
 
     </form>
 {% endblock %}
