@@ -929,6 +929,7 @@ class Fleet(models.Model):
     use_power_module = models.IntegerField(default=0)
     maneuverability = models.FloatField(default=0)
     hold = models.IntegerField(default=0)
+    empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
 
 

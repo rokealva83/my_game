@@ -42,7 +42,7 @@ def add_ship(request):
         len_amount_ship_dict = len(amount_ship_dict)
         for i in range(len_amount_ship_dict):
             if int(amount_ship_dict[i]) != 0:
-                amount_ship =int(amount_ship_dict[i])
+                amount_ship = int(amount_ship_dict[i])
                 fleet_id = int(fleet_id_dict[i])
                 ship_id = int(ship_id_dict[i])
 
@@ -54,7 +54,7 @@ def add_ship(request):
                                                  fleet_status=1, place_id=fleet_id).first()
                 ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
                 hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
-                ship_elements = Element_ship.objects.filter(id_project_ship = ship.id_project_ship, class_element = 8)
+                ship_elements = Element_ship.objects.filter(id_project_ship=ship.id_project_ship, class_element=8)
                 for ship_element in ship_elements:
                     element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
                     hold = hold + element_pattern.param1
@@ -89,7 +89,8 @@ def add_ship(request):
                             null_power=null_power,
                             null_accuracy=null_accuracy,
                             ship_empty_mass=ship_empty_mass,
-                            hold = hold
+                            hold=hold,
+                            empty_hold=hold
                         )
                     else:
                         new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
@@ -123,7 +124,8 @@ def add_ship(request):
                             null_power=null_power,
                             null_accuracy=null_accuracy,
                             ship_empty_mass=ship_empty_mass,
-                            hold = hold
+                            hold=hold,
+                            empty_hold=hold
                         )
                         message = 'Корабли добавлено во флот'
                 else:
@@ -141,7 +143,8 @@ def add_ship(request):
                             null_power=int(project_ship.null_power) * amount_ship,
                             null_accuracy=int(project_ship.null_accuracy) * amount_ship,
                             ship_empty_mass=int(project_ship.mass) * amount_ship,
-                            hold = hold * amount_ship
+                            hold=hold * amount_ship,
+                            empty_hold=hold * amount_ship
                         )
                     else:
                         ship = Ship(
@@ -169,7 +172,8 @@ def add_ship(request):
                             null_power=int(project_ship.null_power) * amount_ship,
                             null_accuracy=int(project_ship.null_accuracy) * amount_ship,
                             ship_empty_mass=int(project_ship.mass) * amount_ship,
-                            hold = hold * amount_ship
+                            hold=hold * amount_ship,
+                            empty_hold=hold * amount_ship
                         )
 
                     message = 'Корабли добавлено во флот'

@@ -31,6 +31,7 @@ def fleet_manage(request):
         weapon_patterns = {}
         shell_patterns = {}
         module_patterns = {}
+        ship_holds = {}
         message = ''
 
         fleet_id = 0
@@ -88,22 +89,19 @@ def fleet_manage(request):
             warehouse_elements = Warehouse_element.objects.filter(user=session_user,
                                                                   user_city=session_user_city).order_by(
                 'element_class', 'element_id')
-            command = 2
-            user_city = User_city.objects.filter(user=session_user).first()
-            user = MyUser.objects.filter(user_id=session_user).first()
-            user_citys = User_city.objects.filter(user=int(session_user))
-            user_fleets = Fleet.objects.filter(user=session_user)
-            ship_holds = Hold.objects.filter(fleet_id = fleet_id, user=session_user).first(0)
-            ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-            ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-            warehouse = Warehouse.objects.filter(user=session_user).first()
+            factory_patterns = Factory_pattern.objects.filter(user=session_user)
+            hull_patterns = Hull_pattern.objects.filter(user=session_user)
+            armor_patterns = Armor_pattern.objects.filter(user=session_user)
+            shield_patterns = Shield_pattern.objects.filter(user=session_user)
+            engine_patterns = Engine_pattern.objects.filter(user=session_user)
+            generator_patterns = Generator_pattern.objects.filter(user=session_user)
+            weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
+            shell_patterns = Shell_pattern.objects.filter(user=session_user)
+            module_patterns = Module_pattern.objects.filter(user=session_user)
+            # device_patterns = Device_pattern.objects.filter(user = session_user)
 
-            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'ships': ships, 'command': command, 'flightplans': flightplans,
-                  'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
-                  'warehouse_elements': warehouse_elements, 'message': message, 'ship_holds': ship_holds}
-            return render(request, "fleet_hold.html", output)
+            command = 2
+            ship_holds = Hold.objects.filter(fleet_id = fleet_id).order_by('class_shipment')
 
         if request.POST.get('delete_fleet'):
             fleet_id = int(request.POST.get('hidden_fleet'))
@@ -132,6 +130,5 @@ def fleet_manage(request):
                   'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns, 'message': message}
+                  'module_patterns': module_patterns, 'message': message,  'ship_holds': ship_holds}
         return render(request, "fleet_hold.html", output)

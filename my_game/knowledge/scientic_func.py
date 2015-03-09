@@ -864,6 +864,7 @@ def new_factory_pattern(*args):
         time_production=new_factory.time_production,
         size=new_factory.size,
         mass=new_factory.mass,
+        power_consuption = new_factory.power_consuption
     )
     user_factory.save()
     return ()
