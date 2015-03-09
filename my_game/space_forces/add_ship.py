@@ -3,6 +3,7 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
+from my_game.models import Hull_pattern, Project_ship, Element_ship, Module_pattern
 from my_game.models import Project_ship, Ship, Fleet
 from my_game import function
 
@@ -29,6 +30,8 @@ def add_ship(request):
         shell_patterns = {}
         module_patterns = {}
         command = 0
+        hold = 0
+        message = 'Hui'
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         full_request = request.POST
         myDict = dict(full_request.iterlists())
@@ -49,6 +52,14 @@ def add_ship(request):
             if int(ship.amount_ship) >= int(amount_ship):
                 ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
                                                  fleet_status=1, place_id=fleet_id).first()
+                ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
+                ship_elements = Element_ship.objects.filter(id_project_ship = ship.id_project_ship, class_element = 8)
+                for ship_element in ship_elements:
+                    element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                    hold = hold + element_pattern.param1
+
+                hold = hold + hull_pattern.hold_size
                 if ship_fleet:
                     if int(ship.amount_ship) == int(amount_ship):
                         new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
@@ -69,6 +80,7 @@ def add_ship(request):
                         null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
                         null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
                         ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
+                        hold = hold * amount_ship + int(fleet.hold)
                         fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                             system_power=system_power,
                             intersystem_power=intersystem_power,
@@ -76,7 +88,8 @@ def add_ship(request):
                             giper_accuracy=giper_accuracy,
                             null_power=null_power,
                             null_accuracy=null_accuracy,
-                            ship_empty_mass=ship_empty_mass
+                            ship_empty_mass=ship_empty_mass,
+                            hold = hold
                         )
                     else:
                         new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
@@ -101,6 +114,7 @@ def add_ship(request):
                         null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
                         null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
                         ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
+                        hold = hold * amount_ship + int(fleet.hold)
                         fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                             system_power=system_power,
                             intersystem_power=intersystem_power,
@@ -108,8 +122,10 @@ def add_ship(request):
                             giper_accuracy=giper_accuracy,
                             null_power=null_power,
                             null_accuracy=null_accuracy,
-                            ship_empty_mass=ship_empty_mass
+                            ship_empty_mass=ship_empty_mass,
+                            hold = hold
                         )
+                        message = 'Корабли добавлено во флот'
                 else:
                     if int(ship.amount_ship) == int(amount_ship):
                         ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
@@ -124,7 +140,8 @@ def add_ship(request):
                             giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
                             null_power=int(project_ship.null_power) * amount_ship,
                             null_accuracy=int(project_ship.null_accuracy) * amount_ship,
-                            ship_empty_mass=int(project_ship.mass) * amount_ship
+                            ship_empty_mass=int(project_ship.mass) * amount_ship,
+                            hold = hold * amount_ship
                         )
                     else:
                         ship = Ship(
@@ -151,7 +168,10 @@ def add_ship(request):
                             giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
                             null_power=int(project_ship.null_power) * amount_ship,
                             null_accuracy=int(project_ship.null_accuracy) * amount_ship,
-                            ship_empty_mass=int(project_ship.mass) * amount_ship)
+                            ship_empty_mass=int(project_ship.mass) * amount_ship,
+                            hold = hold * amount_ship
+                        )
+
                     message = 'Корабли добавлено во флот'
             else:
                 message = 'Недостаточно корблей'

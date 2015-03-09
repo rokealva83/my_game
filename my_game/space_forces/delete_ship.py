@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
+from my_game.models import Hull_pattern, Element_ship, Module_pattern
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game.models import Project_ship, Ship, Fleet
@@ -30,6 +31,7 @@ def delete_ship(request):
         shell_patterns = {}
         module_patterns = {}
         command = 0
+        hold = 0
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         amount_ship = int(request.POST.get('amount_ship'))
         fleet_id = int(request.POST.get('hidden_fleet'))
@@ -39,6 +41,15 @@ def delete_ship(request):
         if user_city:
             ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=user_city.id,
                                        fleet_status=0).first()
+            ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
+            hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
+            ship_elements = Element_ship.objects.filter(id_project_ship = ship.id_project_ship, class_element = 8)
+            for ship_element in ship_elements:
+                element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                hold = hold + element_pattern.param1
+
+            hold = hold + hull_pattern.hold_size
+
             if ship:
                 new_amount = int(ship.amount_ship) + int(amount_ship)
                 ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=user_city.id,
@@ -61,8 +72,9 @@ def delete_ship(request):
                 giper_power = int(fleet.giper_power) - int(project_ship.giper_power) * amount_ship
                 giper_accuracy = int(fleet.giper_accuracy) - int(project_ship.giper_accuracy) * amount_ship
                 null_power = int(fleet.null_power) - int(project_ship.null_power) * amount_ship
-                null_accuracy = + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
+                null_accuracy = int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                 ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
+                hold = int(fleet.hold) - hold * amount_ship
                 fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                     system_power=system_power,
                     intersystem_power=intersystem_power,
@@ -70,7 +82,8 @@ def delete_ship(request):
                     giper_accuracy=giper_accuracy,
                     null_power=null_power,
                     null_accuracy=null_accuracy,
-                    ship_empty_mass=ship_empty_mass
+                    ship_empty_mass=ship_empty_mass,
+                    hold = hold
                 )
             else:
                 project_ship = Project_ship.objects.filter(id=ship_id).first()
@@ -104,6 +117,7 @@ def delete_ship(request):
                 null_power = int(fleet.null_power) - int(project_ship.null_power) * amount_ship
                 null_accuracy = + int(fleet.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                 ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
+                hold = int(fleet.hold) - hold * amount_ship
                 fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                     system_power=system_power,
                     intersystem_power=intersystem_power,
@@ -111,7 +125,8 @@ def delete_ship(request):
                     giper_accuracy=giper_accuracy,
                     null_power=null_power,
                     null_accuracy=null_accuracy,
-                    ship_empty_mass=ship_empty_mass
+                    ship_empty_mass=ship_empty_mass,
+                    hold = hold
                 )
         else:
             message = 'Флот не над планетой'
