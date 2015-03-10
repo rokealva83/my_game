@@ -29,7 +29,7 @@ def add_ship(request):
         weapon_patterns = {}
         shell_patterns = {}
         module_patterns = {}
-        command = 0
+        command = 1
         hold = 0
         message = 'Hui'
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
@@ -48,162 +48,182 @@ def add_ship(request):
 
         ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
                                    place_id=session_user_city).first()
-        if amount_ship > 0:
-            if int(ship.amount_ship) >= int(amount_ship):
-                ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
-                                                 fleet_status=1, place_id=fleet_id).first()
-                ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
-                hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
-                ship_elements = Element_ship.objects.filter(id_project_ship=ship.id_project_ship, class_element=8)
-                for ship_element in ship_elements:
-                    element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
-                    hold = hold + element_pattern.param1
+        fleet = Fleet.objects.filter(id=fleet_id).first()
+        if fleet.status == 0 and fleet.planet == session_user_city:
+            if amount_ship > 0:
+                if int(ship.amount_ship) >= int(amount_ship):
+                    ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
+                                                     fleet_status=1, place_id=fleet_id).first()
+                    ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                    hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
+                    ship_elements = Element_ship.objects.filter(id_project_ship=ship.id_project_ship, class_element=8)
+                    for ship_element in ship_elements:
+                        element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                        hold = hold + element_pattern.param1
 
-                hold = hold + hull_pattern.hold_size
-                if ship_fleet:
-                    if int(ship.amount_ship) == int(amount_ship):
-                        new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
-                        ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
-                                                         fleet_status=1, place_id=fleet_id).update(
-                            amount_ship=new_amount)
-                        delete_ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
-                                                          place_id=session_user_city).delete()
-                        ship = Ship.objects.filter(place_id=fleet_id, fleet_status=1, user=session_user).first()
-                        project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
-                        fleet = Fleet.objects.filter(id=fleet_id).first()
+                    hold = hold + hull_pattern.hold_size
+                    if ship_fleet:
+                        if int(ship.amount_ship) == int(amount_ship):
+                            new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
+                            ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
+                                                             fleet_status=1, place_id=fleet_id).update(
+                                amount_ship=new_amount)
+                            delete_ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                              place_id=session_user_city).delete()
 
-                        system_power = int(project_ship.system_power) * amount_ship + int(fleet.system_power)
-                        intersystem_power = int(
-                            project_ship.intersystem_power) * amount_ship + int(fleet.intersystem_power)
-                        giper_power = int(project_ship.giper_power) * amount_ship + int(fleet.giper_power)
-                        giper_accuracy = int(project_ship.giper_accuracy) * amount_ship + int(fleet.giper_accuracy)
-                        null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
-                        null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
-                        ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
-                        hold_empty = hold * amount_ship + int(fleet.empty_hold)
-                        hold = hold * amount_ship + int(fleet.hold)
-                        fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
-                            system_power=system_power,
-                            intersystem_power=intersystem_power,
-                            giper_power=giper_power,
-                            giper_accuracy=giper_accuracy,
-                            null_power=null_power,
-                            null_accuracy=null_accuracy,
-                            ship_empty_mass=ship_empty_mass,
-                            hold=hold,
-                            empty_hold=hold_empty
-                        )
+                            ship = Ship.objects.filter(place_id=fleet_id, fleet_status=1, user=session_user).first()
+                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            system_power = int(project_ship.system_power) * amount_ship + int(fleet.system_power)
+                            intersystem_power = int(
+                                project_ship.intersystem_power) * amount_ship + int(fleet.intersystem_power)
+                            giper_power = int(project_ship.giper_power) * amount_ship + int(fleet.giper_power)
+                            giper_accuracy = int(project_ship.giper_accuracy) * amount_ship + int(fleet.giper_accuracy)
+                            null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
+                            null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
+                            ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
+                            hold_empty = hold * amount_ship + int(fleet.empty_hold)
+                            hold = hold * amount_ship + int(fleet.hold)
+                            fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                                system_power=system_power,
+                                intersystem_power=intersystem_power,
+                                giper_power=giper_power,
+                                giper_accuracy=giper_accuracy,
+                                null_power=null_power,
+                                null_accuracy=null_accuracy,
+                                ship_empty_mass=ship_empty_mass,
+                                hold=hold,
+                                empty_hold=hold_empty
+                            )
+                        else:
+                            new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
+                            ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
+                                                             fleet_status=1, place_id=fleet_id).update(
+                                amount_ship=new_amount)
+                            ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                       place_id=session_user_city).first()
+                            new_amount = int(ship.amount_ship) - int(amount_ship)
+                            update_ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                              place_id=session_user_city).update(amount_ship=new_amount)
+
+                            ship = Ship.objects.filter(place_id=fleet_id, fleet_status=1, user=session_user).first()
+                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            system_power = int(project_ship.system_power) * amount_ship + int(fleet.system_power)
+                            intersystem_power = int(
+                                project_ship.intersystem_power) * amount_ship + int(fleet.intersystem_power)
+                            giper_power = int(project_ship.giper_power) * amount_ship + int(fleet.giper_power)
+                            giper_accuracy = int(project_ship.giper_accuracy) * amount_ship + int(fleet.giper_accuracy)
+                            null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
+                            null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
+                            ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
+                            hold_empty = hold * amount_ship + int(fleet.empty_hold)
+                            hold = hold * amount_ship + int(fleet.hold)
+                            fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                                system_power=system_power,
+                                intersystem_power=intersystem_power,
+                                giper_power=giper_power,
+                                giper_accuracy=giper_accuracy,
+                                null_power=null_power,
+                                null_accuracy=null_accuracy,
+                                ship_empty_mass=ship_empty_mass,
+                                hold=hold,
+                                empty_hold=hold_empty
+                            )
+                            message = 'Корабли добавлено во флот'
                     else:
-                        new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
-                        ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
-                                                         fleet_status=1, place_id=fleet_id).update(
-                            amount_ship=new_amount)
-                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
-                                                   place_id=session_user_city).first()
-                        new_amount = int(ship.amount_ship) - int(amount_ship)
-                        update_ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
-                                                          place_id=session_user_city).update(amount_ship=new_amount)
+                        if int(ship.amount_ship) == int(amount_ship):
+                            ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                       place_id=session_user_city).update(fleet_status=1,
+                                                                                          place_id=fleet_id)
+                            ship = Ship.objects.filter(id=ship_id).first()
+                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
+                            if ship_in_fleet:
+                                hold_empty = fleet.empty_hold + hold * amount_ship
+                                hold = fleet.hold + hold * amount_ship
+                                ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
+                                system_power = fleet.system_power + int(project_ship.system_power) * amount_ship
+                                intersystem_power = fleet.intersystem_power + int(
+                                    project_ship.intersystem_power) * amount_ship
+                                giper_power = fleet.giper_power + int(project_ship.giper_power) * amount_ship
+                                null_power = fleet.null_power + int(project_ship.null_power) * amount_ship
+                            else:
+                                hold_empty = hold * amount_ship
+                                hold = hold * amount_ship
+                                ship_empty_mass = project_ship.mass * amount_ship
+                                system_power = int(project_ship.system_power) * amount_ship
+                                intersystem_power = int(project_ship.intersystem_power) * amount_ship
+                                giper_power = int(project_ship.giper_power) * amount_ship
+                                null_power = int(project_ship.null_power) * amount_ship
 
-                        ship = Ship.objects.filter(place_id=fleet_id, fleet_status=1, user=session_user).first()
-                        project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
-                        fleet = Fleet.objects.filter(id=fleet_id).first()
+                            fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                                system_power=system_power,
+                                intersystem_power=intersystem_power,
+                                giper_power=project_ship.giper_power,
+                                giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
+                                null_power=project_ship.null_power,
+                                null_accuracy=int(project_ship.null_accuracy) * amount_ship,
+                                ship_empty_mass=ship_empty_mass,
+                                hold=hold,
+                                empty_hold=hold_empty
+                            )
+                        else:
+                            ship = Ship(
+                                user=session_user,
+                                id_project_ship=ship.id_project_ship,
+                                amount_ship=amount_ship,
+                                fleet_status=1,
+                                place_id=fleet_id,
+                                name=ship.name
+                            )
+                            ship.save()
+                            ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                       place_id=session_user_city).first()
+                            new_amount = int(ship.amount_ship) - int(amount_ship)
+                            ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                       place_id=session_user_city).update(amount_ship=new_amount)
+                            ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
+                                                       place_id=session_user_city).first()
+                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
 
-                        system_power = int(project_ship.system_power) * amount_ship + int(fleet.system_power)
-                        intersystem_power = int(
-                            project_ship.intersystem_power) * amount_ship + int(fleet.intersystem_power)
-                        giper_power = int(project_ship.giper_power) * amount_ship + int(fleet.giper_power)
-                        giper_accuracy = int(project_ship.giper_accuracy) * amount_ship + int(fleet.giper_accuracy)
-                        null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
-                        null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
-                        ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
-                        hold_empty = hold * amount_ship + int(fleet.empty_hold)
-                        hold = hold * amount_ship + int(fleet.hold)
-                        fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
-                            system_power=system_power,
-                            intersystem_power=intersystem_power,
-                            giper_power=giper_power,
-                            giper_accuracy=giper_accuracy,
-                            null_power=null_power,
-                            null_accuracy=null_accuracy,
-                            ship_empty_mass=ship_empty_mass,
-                            hold=hold,
-                            empty_hold=hold_empty
-                        )
+                            if ship_in_fleet:
+                                hold_empty = fleet.empty_hold + hold * amount_ship
+                                hold = fleet.hold + hold * amount_ship
+                                ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
+                                system_power = fleet.system_power + int(project_ship.system_power) * amount_ship
+                                intersystem_power = fleet.intersystem_power + int(
+                                    project_ship.intersystem_power) * amount_ship
+                                giper_power = fleet.giper_power + int(project_ship.giper_power) * amount_ship
+                                null_power = fleet.null_power + int(project_ship.null_power) * amount_ship
+                            else:
+                                hold_empty = hold * amount_ship
+                                hold = hold * amount_ship
+                                ship_empty_mass = project_ship.mass * amount_ship
+                                system_power = int(project_ship.system_power) * amount_ship
+                                intersystem_power = int(project_ship.intersystem_power) * amount_ship
+                                giper_power = int(project_ship.giper_power) * amount_ship
+                                null_power = int(project_ship.null_power) * amount_ship
+
+                            fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
+                                system_power=system_power,
+                                intersystem_power=intersystem_power,
+                                giper_power=giper_power,
+                                giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
+                                null_power=null_power,
+                                null_accuracy=int(project_ship.null_accuracy) * amount_ship,
+                                ship_empty_mass=ship_empty_mass,
+                                hold=hold,
+                                empty_hold=hold_empty
+                            )
+
                         message = 'Корабли добавлено во флот'
                 else:
-                    if int(ship.amount_ship) == int(amount_ship):
-                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
-                                                   place_id=session_user_city).update(fleet_status=1,
-                                                                                      place_id=fleet_id)
-                        ship = Ship.objects.filter(id=ship_id).first()
-                        project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
-                        fleet = Fleet.objects.filter(id = fleet_id).first()
-                        ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
-                        if ship_in_fleet:
-                            hold_empty = fleet.empty_hold + hold * amount_ship
-                            hold = fleet.hold + hold * amount_ship
-                            ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
-                        else:
-                            hold_empty = hold * amount_ship
-                            hold = hold * amount_ship
-                            ship_empty_mass = project_ship.mass * amount_ship
-
-                        fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
-                            system_power=int(project_ship.system_power) * amount_ship,
-                            intersystem_power=int(project_ship.intersystem_power) * amount_ship,
-                            giper_power=int(project_ship.giper_power) * amount_ship,
-                            giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
-                            null_power=int(project_ship.null_power) * amount_ship,
-                            null_accuracy=int(project_ship.null_accuracy) * amount_ship,
-                            ship_empty_mass=ship_empty_mass,
-                            hold=hold,
-                            empty_hold=hold_empty
-                        )
-                    else:
-                        ship = Ship(
-                            user=session_user,
-                            id_project_ship=ship.id_project_ship,
-                            amount_ship=amount_ship,
-                            fleet_status=1,
-                            place_id=fleet_id,
-                            name=ship.name
-                        )
-                        ship.save()
-                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
-                                                   place_id=session_user_city).first()
-                        new_amount = int(ship.amount_ship) - int(amount_ship)
-                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
-                                                   place_id=session_user_city).update(amount_ship=new_amount)
-                        ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
-                                                   place_id=session_user_city).first()
-                        project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
-                        fleet = Fleet.objects.filter(id = fleet_id).first()
-                        ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
-                        if ship_in_fleet:
-                            hold_empty = fleet.empty_hold + hold * amount_ship
-                            hold = fleet.hold + hold * amount_ship
-                            ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
-                        else:
-                            hold_empty = hold * amount_ship
-                            hold = hold * amount_ship
-                            ship_empty_mass = project_ship.mass * amount_ship
-                        fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
-                            system_power=int(project_ship.system_power) * amount_ship,
-                            intersystem_power=int(project_ship.intersystem_power) * amount_ship,
-                            giper_power=int(project_ship.giper_power) * amount_ship,
-                            giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
-                            null_power=int(project_ship.null_power) * amount_ship,
-                            null_accuracy=int(project_ship.null_accuracy) * amount_ship,
-                            ship_empty_mass=ship_empty_mass,
-                            hold=hold,
-                            empty_hold=hold_empty
-                        )
-
-                    message = 'Корабли добавлено во флот'
+                    message = 'Недостаточно корблей'
             else:
-                message = 'Недостаточно корблей'
+                message = 'Неверное количество кораблей'
         else:
-            message = 'Неверное количество кораблей'
+            message = 'Флот не над планетой'
+
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
@@ -211,12 +231,15 @@ def add_ship(request):
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
+        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
+        add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
+                  'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
                   'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
                   'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,

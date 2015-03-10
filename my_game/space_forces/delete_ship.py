@@ -60,7 +60,7 @@ def delete_ship(request):
                     hold = hold + element_pattern.param1
                 hold = hold + hull_pattern.hold_size
 
-                ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=session_user_city,
                                            fleet_status=0).first()
                 if ship:
                     new_amount = int(ship.amount_ship) + int(amount_ship)
@@ -153,16 +153,19 @@ def delete_ship(request):
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
+        add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
+                  'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
                   'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
                   'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns}
+                  'module_patterns': module_patterns, 'message': message}
         return render(request, "space_forces.html", output)
