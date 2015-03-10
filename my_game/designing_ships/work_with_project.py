@@ -27,7 +27,7 @@ def work_with_project(request):
                 warehouse_hull = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
                                                                   element_class=1,
                                                                   element_id=ship_pattern.hull_id).first()
-                if warehouse_hull.amount >= amount_ship:
+                if warehouse_hull is not None and warehouse_hull.amount >= amount_ship:
                     error = 0
                     for i in range(2, 8):
                         element_ships = Element_ship.objects.filter(id_project_ship=ship_id, class_element=i).order_by(
@@ -40,12 +40,19 @@ def work_with_project(request):
                                     number_element = len(
                                         Element_ship.objects.filter(id_project_ship=ship_id, class_element=i,
                                                                     id_element_pattern=id_element))
+                                    j = i
+                                    if i == 7:
+                                        j = 6
+
+
                                     warehouse_element = Warehouse_element.objects.filter(user=session_user,
                                                                                          user_city=session_user_city,
-                                                                                         element_class=i,
+                                                                                         element_class=j,
                                                                                          element_id=id_element).first()
                                     if warehouse_element <= number_element * amount_ship:
                                         error = error + 1
+                                        error_class = element_ship.class_element
+                                        error_id = element_ship.id_element_pattern
                                     work_element_id = id_element
 
                     if error == 0:
@@ -80,7 +87,10 @@ def work_with_project(request):
 
                         element_ships = Element_ship.objects.filter(id_project_ship=ship_id).order_by('class_element')
                         for element_ship in element_ships:
-                            class_element = element_ship.class_element
+                            if element_ship.class_element != 7:
+                                class_element = element_ship.class_element
+                            else:
+                                class_element = 6
                             id_element = element_ship.id_element_pattern
                             warehouse_element = Warehouse_element.objects.filter(user=session_user,
                                                                                  user_city=session_user_city,

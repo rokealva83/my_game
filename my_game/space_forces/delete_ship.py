@@ -50,17 +50,18 @@ def delete_ship(request):
         user_city = User_city.objects.filter(user=session_user, x=fleet.x, y=fleet.y, z=fleet.z).first()
         if user_city:
             if fleet.hold == fleet.empty_hold:
-                ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=user_city.id,
-                                           fleet_status=0).first()
+                ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                           fleet_status=1).first()
                 ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
                 hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
                 ship_elements = Element_ship.objects.filter(id_project_ship = ship.id_project_ship, class_element = 8)
                 for ship_element in ship_elements:
                     element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
                     hold = hold + element_pattern.param1
-
                 hold = hold + hull_pattern.hold_size
 
+                ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
+                                           fleet_status=0).first()
                 if ship:
                     new_amount = int(ship.amount_ship) + int(amount_ship)
                     ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=user_city.id,
