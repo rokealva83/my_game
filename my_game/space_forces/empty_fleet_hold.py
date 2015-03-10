@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship
@@ -51,264 +53,267 @@ def empty_fleet_hold(request):
         fleet_id_dict = myDict.get('hidden_fleet')
         fleet_id = int(fleet_id_dict[0])
         fleet = Fleet.objects.filter(id=fleet_id).first()
-        command = 2
-        ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
-        add_shipment = 0
-
-        resource_amount = myDict.get('amount_resource1')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 1
-            class_shipment = 0
-            size = int(resource_amount[0])
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        resource_amount = myDict.get('amount_resource2')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 2
-            class_shipment = 0
-            size = int(resource_amount[0])
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        resource_amount = myDict.get('amount_resource3')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 3
-            class_shipment = 0
-            size = int(resource_amount[0])
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        resource_amount = myDict.get('amount_resource4')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 4
-            class_shipment = 0
-            size = int(resource_amount[0])
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        resource_amount = myDict.get('amount_mineral1')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 5
-            class_shipment = 0
-            size = int(resource_amount[0])
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        resource_amount = myDict.get('amount_mineral2')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 6
-            class_shipment = 0
-            size = int(resource_amount[0])
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        resource_amount = myDict.get('amount_mineral3')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 7
-            class_shipment = 0
-            size = int(resource_amount[0])
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        resource_amount = myDict.get('amount_mineral4')
-        if resource_amount is not None and resource_amount[0] != 0:
-            id_shipment = 8
-            class_shipment = 0
-            size = int(resource_amount[0])
-
-            amount_shipment = int(resource_amount[0])
-            mass_shipment = int(resource_amount[0])
-            unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                      mass_shipment, size)
-
-        amount_factory = myDict.get('amount_factory')
-        if amount_factory is not None:
-            id_shipment_fac = myDict.get('hidden_factory')
-            len_factory_amount = len(amount_factory)
-            for i in range(len_factory_amount):
-                factory_amount = int(amount_factory[i])
-                if factory_amount != 0:
-                    id_shipment = int(id_shipment_fac[i])
-                    class_shipment = 10
-                    factory = Factory_pattern.objects.filter(id=id_shipment).first()
-                    size = int(factory.size) * factory_amount
-                    amount_shipment = factory_amount
-                    mass_shipment = int(factory.mass) * factory_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_hull = myDict.get('amount_hull')
-        if amount_hull is not None:
-            id_shipment_hull = myDict.get('hidden_hull')
-            len_hull_amount = len(amount_hull)
-            for i in range(len_hull_amount):
-                hull_amount = int(amount_hull[i])
-                if hull_amount != 0:
-                    id_shipment = int(id_shipment_hull[i])
-                    class_shipment = 1
-                    hull = Hull_pattern.objects.filter(id=id_shipment).first()
-                    size = int(hull.size) * hull_amount
-                    amount_shipment = hull_amount
-                    mass_shipment = int(hull.mass) * hull_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_armor = myDict.get('amount_armor')
-        if amount_armor is not None:
-            id_shipment_arm = myDict.get('hidden_armor')
-            len_armor_amount = len(amount_armor)
-            for i in range(len_armor_amount):
-                armor_amount = int(amount_armor[0])
-                if armor_amount != 0:
-                    id_shipment = int(id_shipment_arm[i])
-                    class_shipment = 2
-                    armor = Armor_pattern.objects.filter(id=id_shipment).first()
-                    size = 15 * armor_amount
-                    amount_shipment = armor_amount
-                    mass_shipment = int(armor.mass) * armor_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_shield = myDict.get('amount_shield')
-        if amount_shield is not None:
-            id_shipment_shield = myDict.get('hidden_shield')
-            len_shield_amount = len(amount_shield)
-            for i in range(len_shield_amount):
-                shield_amount = int(amount_shield[i])
-                if shield_amount != 0:
-                    id_shipment = int(id_shipment_shield[i])
-                    class_shipment = 3
-                    shield = Shield_pattern.objects.filter(id=id_shipment).first()
-                    size = int(shield.size) * shield_amount
-                    amount_shipment = shield_amount
-                    mass_shipment = int(shield.mass) * shield_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_engine = myDict.get('amount_engine')
-        if amount_engine is not None:
-            id_shipment_eng = myDict.get('hidden_engine')
-            len_engine_amount = len(amount_engine)
-            for i in range(len_engine_amount):
-                engine_amount = int(amount_engine[i])
-                if engine_amount != 0:
-                    id_shipment = int(id_shipment_eng[i])
-                    class_shipment = 4
-                    engine = Engine_pattern.objects.filter(id=id_shipment).first()
-                    size = int(engine.size) * engine_amount
-                    amount_shipment = engine_amount
-                    mass_shipment = int(engine.mass) * engine_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_generator = myDict.get('amount_generator')
-        if amount_generator is not None:
-            id_shipment_gen = myDict.get('hidden_generator')
-            len_generator_amount = len(amount_generator)
-            for i in range(len_generator_amount):
-                generator_amount = int(amount_generator[i])
-                if generator_amount != 0:
-                    id_shipment = int(id_shipment_gen[i])
-                    class_shipment = 5
-                    generator = Generator_pattern.objects.filter(id=id_shipment).first()
-                    size = int(generator.size) * generator_amount
-                    amount_shipment = generator_amount
-                    mass_shipment = int(generator.mass) * generator_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_weapon = myDict.get('amount_weapon')
-        if amount_weapon is not None:
-            id_shipment_weap = myDict.get('hidden_weapon')
-            len_weapon_amount = len(amount_weapon)
-            for i in range(len_weapon_amount):
-                weapon_amount = int(amount_weapon[i])
-                if weapon_amount != 0:
-                    id_shipment = int(id_shipment_weap[i])
-                    class_shipment = 6
-                    weapon = Weapon_pattern.objects.filter(id=id_shipment).first()
-                    size = int(weapon.size) * weapon_amount
-                    amount_shipment = weapon_amount
-                    mass_shipment = int(weapon.mass) * weapon_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_shell = myDict.get('amount_shell')
-        if amount_shell is not None:
-            id_shipment_shell = myDict.get('hidden_shell')
-            len_shell_amount = len(amount_shell)
-            for i in range(len_shell_amount):
-                shell_amount = int(amount_shell[i])
-                if shell_amount != 0:
-                    id_shipment = int(id_shipment_shell[i])
-                    class_shipment = 7
-                    shell = Shell_pattern.objects.filter(id=id_shipment).first()
-                    size = int(shell.size) * shell_amount
-                    amount_shipment = shell_amount
-                    mass_shipment = int(shell.mass) * shell_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-        amount_module = myDict.get('amount_module')
-        if amount_module is not None:
-            id_shipment_mod = myDict.get('hidden_module')
-            len_module_amount = len(amount_module)
-            for i in range(len_module_amount):
-                module_amount = int(amount_module[i])
-                if module_amount != 0:
-                    id_shipment = int(id_shipment_mod[i])
-                    class_shipment = 8
-                    module = Module_pattern.objects.filter(id=id_shipment).first()
-                    size = int(module.size) * module_amount
-                    amount_shipment = module_amount
-                    mass_shipment = int(module.mass) * module_amount
-                    unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
-                              mass_shipment, size)
-
-            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
-            user_city = User_city.objects.filter(user=session_user).first()
-            user = MyUser.objects.filter(user_id=session_user).first()
-            user_citys = User_city.objects.filter(user=int(session_user))
-            user_fleets = Fleet.objects.filter(user=session_user)
-            ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-            ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-            warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
-                                                                  user_city=session_user_city).order_by(
-                'production_class', 'production_id')
-            warehouse_elements = Warehouse_element.objects.filter(user=session_user,
-                                                                  user_city=session_user_city).order_by(
-                'element_class', 'element_id')
-
+        if fleet.planet_status == 1:
             command = 2
-            request.session['userid'] = session_user
-            request.session['user_city'] = session_user_city
-            request.session['live'] = True
-            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                      'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
-                      'ship_fleets': ship_fleets,
-                      'ships': ships, 'command': command, 'flightplans': flightplans,
-                      'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
-                      'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
-                      'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
-                      'shield_patterns': shield_patterns,
-                      'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                      'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
-            return render(request, "fleet_hold.html", output)
+            ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
+            add_shipment = 0
+
+            resource_amount = myDict.get('amount_resource1')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 1
+                class_shipment = 0
+                size = int(resource_amount[0])
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            resource_amount = myDict.get('amount_resource2')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 2
+                class_shipment = 0
+                size = int(resource_amount[0])
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            resource_amount = myDict.get('amount_resource3')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 3
+                class_shipment = 0
+                size = int(resource_amount[0])
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            resource_amount = myDict.get('amount_resource4')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 4
+                class_shipment = 0
+                size = int(resource_amount[0])
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            resource_amount = myDict.get('amount_mineral1')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 5
+                class_shipment = 0
+                size = int(resource_amount[0])
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            resource_amount = myDict.get('amount_mineral2')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 6
+                class_shipment = 0
+                size = int(resource_amount[0])
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            resource_amount = myDict.get('amount_mineral3')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 7
+                class_shipment = 0
+                size = int(resource_amount[0])
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            resource_amount = myDict.get('amount_mineral4')
+            if resource_amount is not None and resource_amount[0] != 0:
+                id_shipment = 8
+                class_shipment = 0
+                size = int(resource_amount[0])
+
+                amount_shipment = int(resource_amount[0])
+                mass_shipment = int(resource_amount[0])
+                unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                          mass_shipment, size)
+
+            amount_factory = myDict.get('amount_factory')
+            if amount_factory is not None:
+                id_shipment_fac = myDict.get('hidden_factory')
+                len_factory_amount = len(amount_factory)
+                for i in range(len_factory_amount):
+                    factory_amount = int(amount_factory[i])
+                    if factory_amount != 0:
+                        id_shipment = int(id_shipment_fac[i])
+                        class_shipment = 10
+                        factory = Factory_pattern.objects.filter(id=id_shipment).first()
+                        size = int(factory.size) * factory_amount
+                        amount_shipment = factory_amount
+                        mass_shipment = int(factory.mass) * factory_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_hull = myDict.get('amount_hull')
+            if amount_hull is not None:
+                id_shipment_hull = myDict.get('hidden_hull')
+                len_hull_amount = len(amount_hull)
+                for i in range(len_hull_amount):
+                    hull_amount = int(amount_hull[i])
+                    if hull_amount != 0:
+                        id_shipment = int(id_shipment_hull[i])
+                        class_shipment = 1
+                        hull = Hull_pattern.objects.filter(id=id_shipment).first()
+                        size = int(hull.size) * hull_amount
+                        amount_shipment = hull_amount
+                        mass_shipment = int(hull.mass) * hull_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_armor = myDict.get('amount_armor')
+            if amount_armor is not None:
+                id_shipment_arm = myDict.get('hidden_armor')
+                len_armor_amount = len(amount_armor)
+                for i in range(len_armor_amount):
+                    armor_amount = int(amount_armor[0])
+                    if armor_amount != 0:
+                        id_shipment = int(id_shipment_arm[i])
+                        class_shipment = 2
+                        armor = Armor_pattern.objects.filter(id=id_shipment).first()
+                        size = 15 * armor_amount
+                        amount_shipment = armor_amount
+                        mass_shipment = int(armor.mass) * armor_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_shield = myDict.get('amount_shield')
+            if amount_shield is not None:
+                id_shipment_shield = myDict.get('hidden_shield')
+                len_shield_amount = len(amount_shield)
+                for i in range(len_shield_amount):
+                    shield_amount = int(amount_shield[i])
+                    if shield_amount != 0:
+                        id_shipment = int(id_shipment_shield[i])
+                        class_shipment = 3
+                        shield = Shield_pattern.objects.filter(id=id_shipment).first()
+                        size = int(shield.size) * shield_amount
+                        amount_shipment = shield_amount
+                        mass_shipment = int(shield.mass) * shield_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_engine = myDict.get('amount_engine')
+            if amount_engine is not None:
+                id_shipment_eng = myDict.get('hidden_engine')
+                len_engine_amount = len(amount_engine)
+                for i in range(len_engine_amount):
+                    engine_amount = int(amount_engine[i])
+                    if engine_amount != 0:
+                        id_shipment = int(id_shipment_eng[i])
+                        class_shipment = 4
+                        engine = Engine_pattern.objects.filter(id=id_shipment).first()
+                        size = int(engine.size) * engine_amount
+                        amount_shipment = engine_amount
+                        mass_shipment = int(engine.mass) * engine_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_generator = myDict.get('amount_generator')
+            if amount_generator is not None:
+                id_shipment_gen = myDict.get('hidden_generator')
+                len_generator_amount = len(amount_generator)
+                for i in range(len_generator_amount):
+                    generator_amount = int(amount_generator[i])
+                    if generator_amount != 0:
+                        id_shipment = int(id_shipment_gen[i])
+                        class_shipment = 5
+                        generator = Generator_pattern.objects.filter(id=id_shipment).first()
+                        size = int(generator.size) * generator_amount
+                        amount_shipment = generator_amount
+                        mass_shipment = int(generator.mass) * generator_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_weapon = myDict.get('amount_weapon')
+            if amount_weapon is not None:
+                id_shipment_weap = myDict.get('hidden_weapon')
+                len_weapon_amount = len(amount_weapon)
+                for i in range(len_weapon_amount):
+                    weapon_amount = int(amount_weapon[i])
+                    if weapon_amount != 0:
+                        id_shipment = int(id_shipment_weap[i])
+                        class_shipment = 6
+                        weapon = Weapon_pattern.objects.filter(id=id_shipment).first()
+                        size = int(weapon.size) * weapon_amount
+                        amount_shipment = weapon_amount
+                        mass_shipment = int(weapon.mass) * weapon_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_shell = myDict.get('amount_shell')
+            if amount_shell is not None:
+                id_shipment_shell = myDict.get('hidden_shell')
+                len_shell_amount = len(amount_shell)
+                for i in range(len_shell_amount):
+                    shell_amount = int(amount_shell[i])
+                    if shell_amount != 0:
+                        id_shipment = int(id_shipment_shell[i])
+                        class_shipment = 7
+                        shell = Shell_pattern.objects.filter(id=id_shipment).first()
+                        size = int(shell.size) * shell_amount
+                        amount_shipment = shell_amount
+                        mass_shipment = int(shell.mass) * shell_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+
+            amount_module = myDict.get('amount_module')
+            if amount_module is not None:
+                id_shipment_mod = myDict.get('hidden_module')
+                len_module_amount = len(amount_module)
+                for i in range(len_module_amount):
+                    module_amount = int(amount_module[i])
+                    if module_amount != 0:
+                        id_shipment = int(id_shipment_mod[i])
+                        class_shipment = 8
+                        module = Module_pattern.objects.filter(id=id_shipment).first()
+                        size = int(module.size) * module_amount
+                        amount_shipment = module_amount
+                        mass_shipment = int(module.mass) * module_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                                  mass_shipment, size)
+        else:
+            message = 'Флот не над планетой'
+
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
+        user_fleets = Fleet.objects.filter(user=session_user)
+        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
+        ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
+                                                              user_city=session_user_city).order_by(
+            'production_class', 'production_id')
+        warehouse_elements = Warehouse_element.objects.filter(user=session_user,
+                                                              user_city=session_user_city).order_by(
+            'element_class', 'element_id')
+
+        command = 2
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
+                  'ship_fleets': ship_fleets,
+                  'ships': ships, 'command': command, 'flightplans': flightplans,
+                  'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
+                  'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
+                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
+                  'shield_patterns': shield_patterns,
+                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
+                  'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
+        return render(request, "fleet_hold.html", output)
 
 
 def unloading(*args):
