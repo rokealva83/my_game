@@ -33,9 +33,19 @@ def delete_ship(request):
         command = 0
         hold = 0
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-        amount_ship = int(request.POST.get('amount_ship'))
-        fleet_id = int(request.POST.get('hidden_fleet'))
-        ship_id = int(request.POST.get('hidden_del_ship'))
+
+        full_request = request.POST
+        myDict = dict(full_request.iterlists())
+        amount_ship_dict = myDict.get('amount_ship')
+        fleet_id_dict = myDict.get('hidden_fleet')
+        ship_id_dict = myDict.get('hidden_del_ship')
+        len_amount_ship_dict = len(amount_ship_dict)
+        for i in range(len_amount_ship_dict):
+            if int(amount_ship_dict[i]) != 0:
+                amount_ship = int(amount_ship_dict[i])
+                fleet_id = int(fleet_id_dict[i])
+                ship_id = int(ship_id_dict[i])
+
         fleet = Fleet.objects.filter(id=fleet_id).first()
         user_city = User_city.objects.filter(user=session_user, x=fleet.x, y=fleet.y, z=fleet.z).first()
         if user_city:

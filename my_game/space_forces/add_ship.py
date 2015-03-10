@@ -80,6 +80,7 @@ def add_ship(request):
                         null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
                         null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
                         ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
+                        hold_empty = hold * amount_ship + int(fleet.empty_hold)
                         hold = hold * amount_ship + int(fleet.hold)
                         fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                             system_power=system_power,
@@ -90,7 +91,7 @@ def add_ship(request):
                             null_accuracy=null_accuracy,
                             ship_empty_mass=ship_empty_mass,
                             hold=hold,
-                            empty_hold=hold
+                            empty_hold=hold_empty
                         )
                     else:
                         new_amount = int(ship_fleet.amount_ship) + int(amount_ship)
@@ -115,6 +116,7 @@ def add_ship(request):
                         null_power = int(project_ship.null_power) * amount_ship + int(fleet.null_power)
                         null_accuracy = int(project_ship.null_accuracy) * amount_ship + int(fleet.null_accuracy)
                         ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
+                        hold_empty = hold * amount_ship + int(fleet.empty_hold)
                         hold = hold * amount_ship + int(fleet.hold)
                         fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                             system_power=system_power,
@@ -125,7 +127,7 @@ def add_ship(request):
                             null_accuracy=null_accuracy,
                             ship_empty_mass=ship_empty_mass,
                             hold=hold,
-                            empty_hold=hold
+                            empty_hold=hold_empty
                         )
                         message = 'Корабли добавлено во флот'
                 else:
@@ -135,6 +137,17 @@ def add_ship(request):
                                                                                       place_id=fleet_id)
                         ship = Ship.objects.filter(id=ship_id).first()
                         project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                        fleet = Fleet.objects.filter(id = fleet_id).first()
+                        ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
+                        if ship_in_fleet:
+                            hold_empty = fleet.empty_hold + hold * amount_ship
+                            hold = fleet.hold + hold * amount_ship
+                            ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
+                        else:
+                            hold_empty = hold * amount_ship
+                            hold = hold * amount_ship
+                            ship_empty_mass = project_ship.mass * amount_ship
+
                         fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                             system_power=int(project_ship.system_power) * amount_ship,
                             intersystem_power=int(project_ship.intersystem_power) * amount_ship,
@@ -142,9 +155,9 @@ def add_ship(request):
                             giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
                             null_power=int(project_ship.null_power) * amount_ship,
                             null_accuracy=int(project_ship.null_accuracy) * amount_ship,
-                            ship_empty_mass=int(project_ship.mass) * amount_ship,
-                            hold=hold * amount_ship,
-                            empty_hold=hold * amount_ship
+                            ship_empty_mass=ship_empty_mass,
+                            hold=hold,
+                            empty_hold=hold_empty
                         )
                     else:
                         ship = Ship(
@@ -164,6 +177,16 @@ def add_ship(request):
                         ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
                                                    place_id=session_user_city).first()
                         project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                        fleet = Fleet.objects.filter(id = fleet_id).first()
+                        ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
+                        if ship_in_fleet:
+                            hold_empty = fleet.empty_hold + hold * amount_ship
+                            hold = fleet.hold + hold * amount_ship
+                            ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
+                        else:
+                            hold_empty = hold * amount_ship
+                            hold = hold * amount_ship
+                            ship_empty_mass = project_ship.mass * amount_ship
                         fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                             system_power=int(project_ship.system_power) * amount_ship,
                             intersystem_power=int(project_ship.intersystem_power) * amount_ship,
@@ -171,9 +194,9 @@ def add_ship(request):
                             giper_accuracy=int(project_ship.giper_accuracy) * amount_ship,
                             null_power=int(project_ship.null_power) * amount_ship,
                             null_accuracy=int(project_ship.null_accuracy) * amount_ship,
-                            ship_empty_mass=int(project_ship.mass) * amount_ship,
-                            hold=hold * amount_ship,
-                            empty_hold=hold * amount_ship
+                            ship_empty_mass=ship_empty_mass,
+                            hold=hold,
+                            empty_hold=hold_empty
                         )
 
                     message = 'Корабли добавлено во флот'
