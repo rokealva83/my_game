@@ -932,6 +932,15 @@ class Fleet(models.Model):
     empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
 
+class Fleet_parametr(models.Model):
+    class Meta():
+        db_table = 'fleet_parametr'
+
+    fleet_id = models.IntegerField()
+    passive_scan = models.IntegerField(default=0)
+    active_scan = models.IntegerField(default=0)
+    giper_scan = models.IntegerField(default=0)
+
 
 class Hold(models.Model):
     class Meta():

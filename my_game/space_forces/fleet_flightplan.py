@@ -2,11 +2,11 @@
 
 import math
 from django.shortcuts import render
-from my_game.models import System, Planet
+from my_game.models import System, Planet, Asteroid_field
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game import function
-from my_game.models import Project_ship, Ship, Fleet
+from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr
 from  my_game.models import Flightplan, Flightplan_flight
 
 
@@ -64,7 +64,6 @@ def fleet_flightplan(request):
                         distance - int(target_system.system_size) * 1000) / distance
 
                 distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2) ** 2)
-
 
                 if fleet.system != 0:
                     System.objects.filter(id=fleet.system).first()
@@ -295,15 +294,60 @@ def fleet_flightplan(request):
                 )
                 flightplan_flight.save()
 
+            scan = request.POST.get('scan')
+            if scan:
+                method_scan = int(request.POST.get('scaning'))
+                fleet = Fleet.objects.filter(id=fleet_id).first()
+                fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).first()
+                system = System.objects.filter(id=fleet.system).first()
+                if fleet.planet_status == 1:
+                    fleet_x = (int(system.x) * 1000 + int(fleet.x)) / 1000.0
+                    fleet_y = (int(system.y) * 1000 + int(fleet.y)) / 1000.0
+                    fleet_z = (int(system.z) * 1000 + int(fleet.z)) / 1000.0
+                else:
+                    fleet_x = int(fleet.x)
+                    fleet_y = int(fleet.y)
+                    fleet_z = int(fleet.z)
+
+                if method_scan == 1:
+                    delta = fleet_parametr.passive_scan
+                    max_x = fleet_x + delta
+                    min_x = fleet_x - delta
+                    max_y = fleet_y + delta
+                    min_y = fleet_y - delta
+                    max_z = fleet_z + delta
+                    min_z = fleet_z - delta
+                    systems = System.objects.filter()
+                    asteroid_fields = Asteroid_field.objects.filter()
+                    s = 0
+                    for system in systems:
+                        if min_x < system.x < max_x and min_y < system.y < max_y and min_z < system.z < max_z:
+                            system_x = system.x
+                            system_y = system.y
+                            system_z = system.z
+                            s = s + 1
+                    a = 0
+                    size = 0
+                    for asteroid_field in asteroid_fields:
+                        if min_x < asteroid_field.x < max_x and min_y < asteroid_field.y < max_y and min_z < asteroid_field.z < max_z:
+                            system_x = asteroid_field.x
+                            system_y = asteroid_field.y
+                            system_z = asteroid_field.z
+                            a = a + 1
+                            size = size + asteroid_field.size
+
+                            # elif method_scan == 2:
+
+                            #elif method_scan == 3:
+
         if request.POST.get('delete_command'):
             command = 3
             fleet_id = int(request.POST.get('hidden_fleet'))
             hidden_flightplan_id = int(request.POST.get('hidden_flightplan_id'))
-            flightplan = Flightplan.objects.filter(id = hidden_flightplan_id).first()
+            flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).first()
             if flightplan.class_command == 1:
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan = flightplan.id).delete()
-            flightplan = Flightplan.objects.filter(id = hidden_flightplan_id).delete()
-
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
+            flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).delete()
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()

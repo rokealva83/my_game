@@ -90,12 +90,29 @@
                 <input type="checkbox" name="planet_null" class="coordinate_checkbox">
             {% endif %}
         </p>
-        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-        <input class="scientic" type="submit" value="Add command" name="add_command"/>
 
         <p>
-
+            {% if fleet_parametr.passive_scan != 0 or fleet_parametr.active_scan != 0 or fleet_parametr.giper_scan != 0 %}
+                <input type="checkbox" name="scan" class="coordinate_checkbox">
+                Сканирование окружения
+                <select name="scaning" class="scientic">
+                    <option selected disabled>Scanning method</option>
+                    {% if fleet_parametr.passive_scan != 0 %}
+                        <option value="1">Passive scan( {{ fleet_parametr.passive_scan }} )</option>
+                    {% endif %}
+                    {% if fleet_parametr.active_scan != 0 %}
+                        <option value="2">Active scan( {{ fleet_parametr.active_scan }} )</option>
+                    {% endif %}
+                    {% if fleet_parametr.giper_scan != 0 %}
+                        <option value="3">Giper scan( {{ fleet_parametr.giper_scan }} )</option>
+                    {% endif %}
+                </select>
+            {% endif %}
         </p>
+
+
+        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+        <input class="scientic" type="submit" value="Add command" name="add_command"/>
 
 
     </form>

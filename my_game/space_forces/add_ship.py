@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game.models import Hull_pattern, Project_ship, Element_ship, Module_pattern
-from my_game.models import Project_ship, Ship, Fleet
+from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr
 from my_game import function
 
 
@@ -31,6 +31,9 @@ def add_ship(request):
         module_patterns = {}
         command = 1
         hold = 0
+        passive_scan = 0
+        active_scan = 0
+        giper_scan = 0
         message = 'Hui'
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         full_request = request.POST
@@ -58,8 +61,20 @@ def add_ship(request):
                     hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
                     ship_elements = Element_ship.objects.filter(id_project_ship=ship.id_project_ship, class_element=8)
                     for ship_element in ship_elements:
-                        element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
-                        hold = hold + element_pattern.param1
+                        element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                        module_class=2).first()
+                        if element_pattern:
+                            hold = hold + element_pattern.param1
+
+                        element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                        module_class=6).first()
+                        if element_pattern:
+                            if element_pattern.param1 != 0:
+                                passive_scan = element_pattern.param1
+                            if element_pattern.param2 != 0:
+                                active_scan = element_pattern.param2
+                            if element_pattern.param3 != 0:
+                                giper_scan = element_pattern.param3
 
                     hold = hold + hull_pattern.hold_size
                     if ship_fleet:
@@ -166,6 +181,9 @@ def add_ship(request):
                                 hold=hold,
                                 empty_hold=hold_empty
                             )
+
+                            fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).update(
+                                passive_scan=passive_scan, active_scan=active_scan, giper_scan=giper_scan)
                         else:
                             ship = Ship(
                                 user=session_user,
@@ -215,6 +233,8 @@ def add_ship(request):
                                 hold=hold,
                                 empty_hold=hold_empty
                             )
+                            fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).update(
+                                passive_scan=passive_scan, active_scan=active_scan, giper_scan=giper_scan)
 
                         message = 'Корабли добавлено во флот'
                 else:

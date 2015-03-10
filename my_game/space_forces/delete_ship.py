@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import Hull_pattern, Element_ship, Module_pattern
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
-from my_game.models import Project_ship, Ship, Fleet
+from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr
 
 from my_game import function
 
@@ -33,6 +33,7 @@ def delete_ship(request):
         command = 0
         hold = 0
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        message = 'Корабль уже не приписан к флоту'
 
         full_request = request.POST
         myDict = dict(full_request.iterlists())
@@ -47,6 +48,12 @@ def delete_ship(request):
                 ship_id = int(ship_id_dict[i])
 
         fleet = Fleet.objects.filter(id=fleet_id).first()
+
+        fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).first()
+        passive_scan = fleet_parametr.passive_scan
+        active_scan = fleet_parametr.active_scan
+        giper_scan = fleet_parametr.giper_scan
+
         user_city = User_city.objects.filter(user=session_user, x=fleet.x, y=fleet.y, z=fleet.z).first()
         if user_city:
             if fleet.hold == fleet.empty_hold:
@@ -54,10 +61,23 @@ def delete_ship(request):
                                            fleet_status=1).first()
                 ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
                 hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
-                ship_elements = Element_ship.objects.filter(id_project_ship = ship.id_project_ship, class_element = 8)
+                ship_elements = Element_ship.objects.filter(id_project_ship=ship.id_project_ship, class_element=8)
                 for ship_element in ship_elements:
-                    element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern).first()
-                    hold = hold + element_pattern.param1
+                    element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                    module_class=2).first()
+                    if element_pattern:
+                        hold = hold + element_pattern.param1
+
+                    element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                    module_class=6).first()
+                    if element_pattern:
+                        if int(element_pattern.param1) != 0:
+                            passive_scan = 0
+                        if int(element_pattern.param2) != 0:
+                            active_scan = 0
+                        if int(element_pattern.param3) != 0:
+                            giper_scan = 0
+
                 hold = hold + hull_pattern.hold_size
 
                 ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=session_user_city,
@@ -72,6 +92,8 @@ def delete_ship(request):
                     if new_amount == 0:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
                                                    fleet_status=1).delete()
+                        fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).update(
+                            passive_scan=passive_scan, active_scan=active_scan, giper_scan=giper_scan)
                     else:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
                                                    fleet_status=1).update(amount_ship=new_amount)
@@ -95,8 +117,8 @@ def delete_ship(request):
                         null_power=null_power,
                         null_accuracy=null_accuracy,
                         ship_empty_mass=ship_empty_mass,
-                        hold = hold,
-                        empty_hold = hold
+                        hold=hold,
+                        empty_hold=hold
                     )
                 else:
                     project_ship = Project_ship.objects.filter(id=ship_id).first()
@@ -116,6 +138,8 @@ def delete_ship(request):
                     if new_amount == 0:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
                                                    fleet_status=1).delete()
+                        fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).update(
+                            passive_scan=passive_scan, active_scan=active_scan, giper_scan=giper_scan)
                     else:
                         ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet_id,
                                                    fleet_status=1).update(amount_ship=new_amount)
@@ -139,8 +163,8 @@ def delete_ship(request):
                         null_power=null_power,
                         null_accuracy=null_accuracy,
                         ship_empty_mass=ship_empty_mass,
-                        hold = hold,
-                        empty_hold = hold
+                        hold=hold,
+                        empty_hold=hold
                     )
             else:
                 message = 'Трюмы не пусты'

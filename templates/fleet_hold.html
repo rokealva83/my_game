@@ -3,6 +3,8 @@
     <form method="post" action="empty_fleet_hold" style="text-align: center">
     <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
 
+    <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
+
         {% if ship_holds %}
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 0 %}
@@ -175,7 +177,7 @@
                                 {% if warehouse_factory.amount > 0 %}
                                     <option value="{{ warehouse_factory.factory_id }}">{{ factory_pattern.name }}
                                         ( {{ warehouse_factory.amount }} )
-                                    </option>
+                                    c
                                 {% endif %}
                             {% endif %}
                         {% endfor %}

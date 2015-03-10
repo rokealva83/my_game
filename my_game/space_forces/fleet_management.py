@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory
-from my_game.models import Project_ship, Ship, Fleet, Hold
+from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
@@ -50,6 +50,11 @@ def fleet_manage(request):
                 planet=user_city.planet_id
             )
             new_fleet.save()
+            fleet_id = new_fleet.pk
+            fleet_parametr = Fleet_parametr(
+                fleet_id = fleet_id
+            )
+            fleet_parametr.save()
 
         if request.POST.get('navy_ships'):
             add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
@@ -69,6 +74,7 @@ def fleet_manage(request):
             ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
             fleet = Fleet.objects.filter(id = fleet_id).first()
+            fleet_parametr = Fleet_parametr.objects.filter(fleet_id = fleet_id).first()
             output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
                       'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                       'ship_fleets': ship_fleets,'ships': ships, 'fleet': fleet,
@@ -78,7 +84,7 @@ def fleet_manage(request):
                       'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                       'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                       'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                      'module_patterns': module_patterns}
+                      'module_patterns': module_patterns, 'fleet_parametr': fleet_parametr}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):
@@ -111,6 +117,7 @@ def fleet_manage(request):
                 message = 'Во флоте есть корабли'
             else:
                 fleet = Fleet.objects.filter(id=fleet_id).delete()
+                fleet_parametr = Fleet_parametr.objects.filter(fleet_id = fleet_id).delete()
                 message = 'Флот удален'
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
