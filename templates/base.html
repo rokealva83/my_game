@@ -6,6 +6,9 @@
     <meta http-equiv="content-type" content=text/html; charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-modal.css' %}">
+
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript" src="{% static 'js/button.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/ship_project.js' %}"></script>
@@ -53,77 +56,77 @@
 </div>
 <div id="block_content">
     <div id="left_menu">
-        <form method="post" enctype="multipart/form-data" action="civilization" style="margin-top: 6px">
+        <form method="post" action="civilization" style="margin-top: 6px">
             <div>
                 <button class="menu_button" type="submit" name="civilization">Цивилизация</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="warehouse">
+        <form method="post" action="warehouse">
             <div>
                 <button class="menu_button" type="submit" name="warehouse">Склад</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="knowledge">
+        <form method="post" action="knowledge">
             <div>
                 <button class="menu_button" type="submit" name="knowledge">Исследования</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="building">
+        <form method="post" action="building">
             <div>
                 <button class="menu_button" type="submit" name="building">Строительство</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="factory">
+        <form method="post" action="factory">
             <div>
                 <button class="menu_button" type="submit" name="factory">Производство</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="economik">
+        <form method="post" action="economik">
             <div>
                 <button class="menu_button" type="submit" name="economics">Економика</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="designingships">
+        <form method="post" action="designingships">
             <div>
                 <button class="menu_button" type="submit" name="designingships">Проектирование</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="space_forces">
+        <form method="post" action="space_forces">
             <div>
                 <button class="menu_button" type="submit" name="MSF">ВКС</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="star_map">
+        <form method="post" action="star_map">
             <div>
                 <button class="menu_button" type="submit" name="starmap">Звездна карта</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="trade">
+        <form method="post" action="trade">
             <div>
                 <button class="menu_button" type="submit" name="trade">Торговля</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="alliance">
+        <form method="post" action="alliance">
             <div>
                 <button class="menu_button" type="submit" name="alliance">Альянс</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="diplomacy">
+        <form method="post" action="diplomacy">
             <div>
                 <button class="menu_button" type="submit" name="diplomacy">Дипломатия</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="quest">
+        <form method="post" action="quest">
             <div>
                 <button class="menu_button" type="submit" name="quest">Квесты</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="forum">
+        <form method="post" action="forum">
             <div>
                 <button class="menu_button" type="submit" name="forum">Форум</button>
             </div>
         </form>
-        <form method="post" enctype="multipart/form-data" action="exit">
+        <form method="post" action="exit">
             <div>
                 <button class="menu_button" type="submit" name="exit">Выход</button>
             </div>

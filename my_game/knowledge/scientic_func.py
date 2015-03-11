@@ -55,7 +55,7 @@ def hull_upgrade(request):
             new_factory_pattern(user, 1, hull_scient.id)
 
     else:
-        studied_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id)
+        studied_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id, bought_template = 0)
         len_studied_hull = len(studied_hull)
         if len_studied_hull < 2:
             u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
@@ -172,7 +172,7 @@ def armor_upgrade(request):
             armor_pattern.save()
             new_factory_pattern(user, 2, armor_scient.id)
     else:
-        studied_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id)
+        studied_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id, bought_template = 0)
         len_studied_armor = len(studied_armor)
         if len_studied_armor < 2:
             u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
@@ -254,7 +254,7 @@ def shield_upgrade(request):
             shield_pattern.save()
             new_factory_pattern(user, 3, shield_scient.id)
     else:
-        studied_shield = Shell_pattern.objects.filter(user=user, basic_id=shield_scient.id)
+        studied_shield = Shell_pattern.objects.filter(user=user, basic_id=shield_scient.id, bought_template = 0)
         len_studied_shield = len(studied_shield)
         if len_studied_shield < 2:
             shield_atribute = ['health', 'value_energy_resistance', 'value_phisical_resistance', 'regeneration', \
@@ -342,7 +342,7 @@ def engine_upgrade(request):
             engine_pattern.save()
             new_factory_pattern(user, 4, engine_scient.id)
     else:
-        studied_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id)
+        studied_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id, bought_template = 0)
         len_studied_engine = len(studied_engine)
         if len_studied_engine < 2:
             u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
@@ -419,7 +419,7 @@ def generator_upgrade(request):
             generator_pattern.save()
             new_factory_pattern(user, 5, generator_scient.id)
     else:
-        studied_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id)
+        studied_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id, bought_template = 0)
         len_studied_generator = len(studied_generator)
         if len_studied_generator < 2:
             generator_atribute = ['health', 'produced_energy', 'fuel_necessary', 'mass', 'size']
@@ -505,7 +505,7 @@ def weapon_upgrade(request):
             new_factory_pattern(user, 6, weapon_scient.id)
 
     else:
-        studied_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id)
+        studied_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id, bought_template = 0)
         len_studied_weapon = len(studied_weapon)
         if len_studied_weapon < 2:
             u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
@@ -595,7 +595,7 @@ def shell_upgrade(request):
             shell_pattern.save()
             new_factory_pattern(user, 7, shell_scient.id)
     else:
-        studied_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id)
+        studied_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id, bought_template = 0)
         len_studied_shell = len(studied_shell)
         if len_studied_shell < 2:
             shell_atribute = ['phisical_damage', 'speed', 'mass', 'size']
@@ -681,7 +681,7 @@ def module_upgrade(request):
             module_pattern.save()
             new_factory_pattern(user, 8, module_scient.id)
     else:
-        studied_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id)
+        studied_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id, bought_template = 0)
         len_studied_module = len(studied_module)
         if len_studied_module < 2:
             module_atribute = ['health', 'param1', 'param2', 'param3', 'mass', 'size', 'power_consuption']
@@ -864,7 +864,7 @@ def new_factory_pattern(*args):
         time_production=new_factory.time_production,
         size=new_factory.size,
         mass=new_factory.mass,
-        power_consuption = new_factory.power_consuption
+        power_consumption = new_factory.power_consumption
     )
     user_factory.save()
     return ()

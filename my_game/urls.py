@@ -20,6 +20,7 @@ from my_game.space_forces import add_ship as add_ship
 from my_game.space_forces import start_flight as start_flight
 from my_game.space_forces import fleet_hold as fleet_hold
 from my_game.space_forces import empty_fleet_hold as empty_fleet_hold
+from my_game.trade import views as trade
 
 # import my_game.registration.registration
 
@@ -72,7 +73,7 @@ urlpatterns = patterns('',
                        url(r'^fleet_hold', fleet_hold.fleet_hold),
                        url(r'^empty_fleet_hold', empty_fleet_hold.empty_fleet_hold),
 
-                       url(r'trade', 'my_game.views.trade', name='trade'),
-
+                       url(r'^trade', trade.trade),
+                       url(r'^new_trade_space', trade.new_trade_space),
 
 )

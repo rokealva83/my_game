@@ -2,10 +2,135 @@
 {% block title %}ВКС{% endblock %}
 {% block content %}
     <div id="game_content">
-        <div id="block_design_left">
+        <div id="block_trade">
 
-        </div>
-        <div id="block_design_right">
+            <div style="text-align: center;">
+
+                <p style="text-align: right; margin-right: 5px"><a href="#trade_space" class="trade_space">Торговое
+                    пространство</a></p>
+                <p style="text-align: right; color: rgb(152, 32, 32); font-size: 14px">{{ message }}</p>
+
+                <p style="text-align: right; margin-right: 5px"><a href="#trade_add_element" class="trade_add_element">Добавить
+                    товар на продажу</a>
+                    <a href="trade_buy_element" class="trade_buy_element">Купеленый товар</a></p>
+                <a href="buy" class="trade_buy">Купить</a>
+            </div>
+
+
+            <!-- Модальное окно 1 -->
+            <a class="overlay" id="trade_space"></a>
+
+            <div class="popup">
+                <form method="post" action="trade">
+                    <h3>Выбрать торговое пространство</h3>
+
+                <input type="hidden" id="trade_space_id" value={{ trade_space_id }} name="trade_space_id"/>
+
+                    <select name="trade_space_id" class="scientic">
+                        <option value="0">Выберите пространство</option>
+                        {% for trade_space in trade_spaces %}
+                            <option value="{{ trade_space.id }}">{{ trade_space.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <h4>Код доступа</h4>
+                    <input type="password" value=""
+                           name="password" class="scientic_place" placeholder="password"/>
+
+                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+
+                    <p style="text-align: right; margin-right: 5px; margin-top: 15px"><a href="#new_trade_space"
+                                                                                         class="trade_space">Создать
+                        торговое пространство</a></p>
+                    <a class="close" title="Закрыть" href="#close"></a>
+                </form>
+            </div>
+
+
+            <a class="overlay" id="new_trade_space"></a>
+
+            <div class="popup">
+                <form method="post" action="new_trade_space">
+                    <h3>Создать пространство</h3>
+                    <input type="hidden" id=trade_space_id
+                                           value="{{ trade_space_id }}" name="trade_space_id">
+                    <h4>Название</h4>
+                    <input type="text" value=""
+                           name="name" class="scientic_place" placeholder="name"/>
+
+                    <h4>Код доступа</h4>
+                    <input type="password" value=""
+                           name="pass" class="scientic_place" placeholder="password"/>
+
+
+                    <h4>Налог от продаж</h4>
+                    <select name="tax" class="scientic">
+                        <option value="0">Выберите налог</option>
+                        <option value="1">1%</option>
+                        <option value="2">2%</option>
+                        <option value="3">3%</option>
+                        <option value="4">4%</option>
+                        <option value="5">5%</option>
+                    </select>
+
+                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+
+                    <a class="close" title="Закрыть" href="#close"></a>
+                </form>
+            </div>
+
+            <!-- Модальное окно 2 -->
+            <a href="#x" class="overlay" id="trade_add_element"></a>
+
+            <div class="popup">
+                <img src="http://dbmast.ru/img/afroseo.jpg" width="150" height="158"
+                     style="float:left;margin:5px 10px 5px 0; "/>
+
+                <h3>Доброго дня или ночи!</h3>
+                Блог еще слишком молод, но цели и стратегии его развития, а так же понимание того, что предстоит
+                сделать, прочно нарисовались на горизонте. Пока идет планомерное вгрызание в сообщество блогеров, так
+                сказать, отвоевывание места под солнцем.
+                В дальнейшем пожалуй и сумею определиться с действительным предназначением и полезностью данного
+                ресурса.<br/>
+                Если Вы пришли сюда не по воле случая, а в поисках ответов на вопрос: &laquo;Как сделать сайт лучше&raquo;,
+                то убежден, Вы найдете много полезной и интересной информации.<br>
+                При написании статей, использовались как свои наработки и расхлестанные мысли, так и работы сторонних
+                авторов. Ни какого плагиата, <em>&laquo;Боже упаси!&raquo;</em>, все авторские права соблюдены.<br>
+                <font style="color: #008000;"> <em>Каждая перепечатанная статья имеет подпись и ссылку на источник
+                    информации.</em></font><br>
+                По всем вопросам пишите мне через <a href="http://dbmast.ru/kontakt">контактную форму</a>, или
+                оставляйте вопросы в комментариях к записям, постараюсь ни один вопрос не оставить без ответа.<br>
+                Комментарии премодерируются, а так же фильтруются спаморезкой Akismet. Большая просьба не использовать
+                комментарии для продвижения своих сплогов, так как все равно внешние ссылки в комментариях закрыты и для
+                гугла и для яндекса.
+                <h3 style="text-align: center;"><font style="color: #808000;">Вместе все у нас получится.</font></h3>
+
+                <div style="text-align: right;">
+                    <span style="color: #808000;"><em>Моим ребятам 1ммг Имам Сахиб 1986-1989 гг.</em></span>
+                </div>
+                <a class="close" title="Закрыть" href="#close"></a>
+            </div>
+
+
+            <!-- Модальное окно 3 -->
+            <a href="#x" class="overlay" id="win3"></a>
+
+            <div class="popup">
+                <iframe width="480" height="360" src="http://www.youtube.com/embed/1IrR7l9pGF0" frameborder="0"
+                        allowfullscreen></iframe>
+                <a class="close" title="Закрыть" href="demo.html" onclick="demo.html(); return false;"></a>
+            </div>
+
+
+            <!-- Модальное окно 4 -->
+            <a href="#x" class="overlay" id="win4"></a>
+
+            <div class="popup">
+                <h2>Гиперреализм</h2>
+                <img class="is-image" src="img/realism_lrg3.jpg" alt="Гиперреализм"/>
+                <a class="close" title="Закрыть" href="#close"></a>
+            </div>
+
+
         </div>
         <div class="clear"></div>
     </div>

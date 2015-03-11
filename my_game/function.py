@@ -1,15 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
-
 from django.utils import timezone
-
-from my_game.models import MyUser, User_city
-from my_game.models import Turn_building, Turn_assembly_pieces, \
-    Turn_production
-from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from my_game.models import Warehouse_factory, Warehouse
+from my_game.models import MyUser
 import verification_func
 
 

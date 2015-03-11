@@ -133,7 +133,7 @@ class Race(models.Model):
     class Meta():
         db_table = 'race'
 
-    name = models.CharField(max_length=500, default='Race')
+    name = models.CharField(max_length=50, default='Race')
     description = models.CharField(max_length=500)
     engine_system = models.FloatField()
     engine_intersystem = models.FloatField()
@@ -518,6 +518,7 @@ class Factory_pattern(models.Model):
     size = models.IntegerField()
     mass = models.IntegerField()
     power_consumption = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Hull_pattern(models.Model):
@@ -548,6 +549,7 @@ class Hull_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Engine_pattern(models.Model):
@@ -574,6 +576,7 @@ class Engine_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Generator_pattern(models.Model):
@@ -597,6 +600,7 @@ class Generator_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Shield_pattern(models.Model):
@@ -623,6 +627,7 @@ class Shield_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Weapon_pattern(models.Model):
@@ -651,6 +656,7 @@ class Weapon_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Armor_pattern(models.Model):
@@ -675,6 +681,7 @@ class Armor_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Shell_pattern(models.Model):
@@ -697,6 +704,7 @@ class Shell_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Module_pattern(models.Model):
@@ -723,6 +731,7 @@ class Module_pattern(models.Model):
     price_mineral2 = models.IntegerField(default=0)
     price_mineral3 = models.IntegerField(default=0)
     price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Factory_installed(models.Model):
@@ -932,6 +941,7 @@ class Fleet(models.Model):
     empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
 
+
 class Fleet_parametr(models.Model):
     class Meta():
         db_table = 'fleet_parametr'
@@ -1128,4 +1138,49 @@ class Asteroid_field(models.Model):
     koef_min_3 = models.FloatField(default=0.05)
     koef_min_4 = models.FloatField(default=0.05)
     artifact = models.IntegerField()
+
+
+class Trade_element(models.Model):
+    class Meta():
+        db_table = 'trade_element'
+
+    name = models.CharField(max_length=50)
+    user = models.IntegerField()
+    buyer = models.IntegerField(default=0)
+    trade_space = models.IntegerField(default=0)
+    class_element = models.IntegerField()
+    id_element = models.IntegerField()
+    amount = models.IntegerField()
+    min_amount = models.IntegerField()
+    cost_element = models.IntegerField()
+    diplomacy = models.IntegerField(default=0)
+    x = models.IntegerField()
+    y = models.IntegerField()
+    z = models.IntegerField()
+
+
+class Trade_space(models.Model):
+    class Meta():
+        db_table = 'trade_space'
+
+    name = models.CharField(max_length=50)
+    user = models.IntegerField()
+    password = models.CharField(max_length=50)
+    tax = models.IntegerField()
+
+
+class mail(models.Model):
+    class Meta():
+        db_table = 'mail'
+
+    user = models.IntegerField()
+    recipient = models.IntegerField()
+    time = models.DateTimeField(default=datetime.now, blank=True)
+    status = models.IntegerField()
+    category = models.IntegerField()
+    login_recipient = models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
+    message = models.CharField(max_length=1000)
+
+
 
