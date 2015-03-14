@@ -1152,6 +1152,7 @@ class Trade_element(models.Model):
     id_element = models.IntegerField()
     amount = models.IntegerField()
     min_amount = models.IntegerField()
+    cost = models.IntegerField(default=0)
     cost_element = models.IntegerField()
     diplomacy = models.IntegerField(default=0)
     x = models.IntegerField()
