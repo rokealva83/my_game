@@ -75,5 +75,6 @@ urlpatterns = patterns('',
 
                        url(r'^trade', trade.trade),
                        url(r'^new_trade_space', trade.new_trade_space),
+                       url(r'^add_trade_element', trade.add_trade_element),
 
 )

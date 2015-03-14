@@ -8,11 +8,14 @@
 
                 <p style="text-align: right; margin-right: 5px"><a href="#trade_space" class="trade_space">Торговое
                     пространство</a></p>
+
                 <p style="text-align: right; color: rgb(152, 32, 32); font-size: 14px">{{ message }}</p>
 
-                <p style="text-align: right; margin-right: 5px"><a href="#trade_add_element" class="trade_add_element">Добавить
+                <p style="text-align: right; margin-right: 5px">
+                    <a href="#trade_add_element" class="trade_add_element">Добавить
                     товар на продажу</a>
-                    <a href="trade_buy_element" class="trade_buy_element">Купеленый товар</a></p>
+                    <a href="#trade_element" class="trade_element">Торговые ставки</a>
+                    <a href="#trade_buy_element" class="trade_buy_element">Купеленый товар</a></p>
                 <a href="buy" class="trade_buy">Купить</a>
             </div>
 
@@ -20,11 +23,11 @@
             <!-- Модальное окно 1 -->
             <a class="overlay" id="trade_space"></a>
 
-            <div class="popup">
+            <div class="popup_space">
                 <form method="post" action="trade">
                     <h3>Выбрать торговое пространство</h3>
 
-                <input type="hidden" id="trade_space_id" value={{ trade_space_id }} name="trade_space_id"/>
+                    <input type="hidden" id="trade_space_id" value={{ trade_space_id }} name="trade_space_id"/>
 
                     <select name="trade_space_id" class="scientic">
                         <option value="0">Выберите пространство</option>
@@ -48,11 +51,11 @@
 
             <a class="overlay" id="new_trade_space"></a>
 
-            <div class="popup">
+            <div class="popup_space">
                 <form method="post" action="new_trade_space">
                     <h3>Создать пространство</h3>
                     <input type="hidden" id=trade_space_id
-                                           value="{{ trade_space_id }}" name="trade_space_id">
+                           value="{{ trade_space_id }}" name="trade_space_id">
                     <h4>Название</h4>
                     <input type="text" value=""
                            name="name" class="scientic_place" placeholder="name"/>
@@ -79,34 +82,215 @@
             </div>
 
             <!-- Модальное окно 2 -->
-            <a href="#x" class="overlay" id="trade_add_element"></a>
+            <a class="overlay" id="trade_add_element"></a>
 
-            <div class="popup">
-                <img src="http://dbmast.ru/img/afroseo.jpg" width="150" height="158"
-                     style="float:left;margin:5px 10px 5px 0; "/>
+            <div class="popup_add">
 
-                <h3>Доброго дня или ночи!</h3>
-                Блог еще слишком молод, но цели и стратегии его развития, а так же понимание того, что предстоит
-                сделать, прочно нарисовались на горизонте. Пока идет планомерное вгрызание в сообщество блогеров, так
-                сказать, отвоевывание места под солнцем.
-                В дальнейшем пожалуй и сумею определиться с действительным предназначением и полезностью данного
-                ресурса.<br/>
-                Если Вы пришли сюда не по воле случая, а в поисках ответов на вопрос: &laquo;Как сделать сайт лучше&raquo;,
-                то убежден, Вы найдете много полезной и интересной информации.<br>
-                При написании статей, использовались как свои наработки и расхлестанные мысли, так и работы сторонних
-                авторов. Ни какого плагиата, <em>&laquo;Боже упаси!&raquo;</em>, все авторские права соблюдены.<br>
-                <font style="color: #008000;"> <em>Каждая перепечатанная статья имеет подпись и ссылку на источник
-                    информации.</em></font><br>
-                По всем вопросам пишите мне через <a href="http://dbmast.ru/kontakt">контактную форму</a>, или
-                оставляйте вопросы в комментариях к записям, постараюсь ни один вопрос не оставить без ответа.<br>
-                Комментарии премодерируются, а так же фильтруются спаморезкой Akismet. Большая просьба не использовать
-                комментарии для продвижения своих сплогов, так как все равно внешние ссылки в комментариях закрыты и для
-                гугла и для яндекса.
-                <h3 style="text-align: center;"><font style="color: #808000;">Вместе все у нас получится.</font></h3>
+                <h3>Добавить товар на продажу</h3>
 
-                <div style="text-align: right;">
-                    <span style="color: #808000;"><em>Моим ребятам 1ммг Имам Сахиб 1986-1989 гг.</em></span>
-                </div>
+                <form method="post" action="add_trade_element">
+                <input type="hidden" id="trade_space_id" value={{ trade_space_id }} name="trade_space_id"/>
+                    <p>Название
+                        <select name="name" class="scientic">
+                            <option selected disabled>Товар</option>
+                            <optgroup label="Resource">
+                                <option value="1; 0">Resource 1 ( {{ warehouse.resource1 }} )</option>
+                                <option value="2; 0">Resource 2 ( {{ warehouse.resource2 }} )</option>
+                                <option value="3; 0">Resource 3 ( {{ warehouse.resource3 }} )</option>
+                                <option value="4; 0">Resource 4 ( {{ warehouse.resource4 }} )</option>
+                                <option value="5; 0">Mineral 1 ( {{ warehouse.mineral1 }} )</option>
+                                <option value="6; 0">Mineral 2 ( {{ warehouse.mineral2 }} )</option>
+                                <option value="7; 0">Mineral 3 ( {{ warehouse.mineral3 }} )</option>
+                                <option value="8; 0">Mineral 4 ( {{ warehouse.mineral4 }} )</option>
+                            </optgroup>
+                            <optgroup label="Factory">
+                                {% if warehouse_factorys %}
+                                    {% for warehouse_factory in warehouse_factorys %}
+                                        {% for factory_pattern in factory_patterns %}
+                                            {% if warehouse_factory.factory_id == factory_pattern.id %}
+                                                {% if warehouse_factory.amount > 0 %}
+                                                    <option value="{{ warehouse_factory.id }}; 10"
+                                                            >{{ factory_pattern.name }}
+                                                        ( {{ warehouse_factory.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            </optgroup>
+                            <optgroup label="Hull">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 1 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for hull_pattern in hull_patterns %}
+                                                {% if hull_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ hull_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Armor">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 2 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for armor_pattern in armor_patterns %}
+                                                {% if armor_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ armor_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Shield">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 3 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for shield_pattern in shield_patterns %}
+                                                {% if shield_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ shield_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Engine">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 4 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for engine_pattern in engine_patterns %}
+                                                {% if engine_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ engine_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Generator">
+
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 5 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for generator_pattern in generator_patterns %}
+                                                {% if generator_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ generator_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Weapon">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 6 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for weapon_pattern in weapon_patterns %}
+                                                {% if weapon_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ weapon_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Shell">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 7 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for shell_pattern in shell_patterns %}
+                                                {% if shell_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ shell_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Module">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 8 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for module_pattern in module_patterns %}
+                                                {% if module_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ module_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                        </optgroup>
+                            <optgroup label="Ship">
+                                {% for ship in ships %}
+                                        {% if ship.amount_ship > 0 %}
+                                            {% for project_ship in project_ships %}
+                                                {% if project_ship.id == ship.id_project_ship %}
+                                                    <option value="{{ ship.id_project_ship }}; 11">{{ project_ship.name }}
+                                                        ( {{ ship.amount_ship }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </p>
+
+                    <p>Количество <input type="text" value=""
+                                         name="amount" class="scientic_place" placeholder="Количество"/></p>
+
+                    <p>Цена всей партии <input type="text" value=""
+                                              name="price" class="scientic_place" placeholder="Цена всей партии"/></p>
+
+                    <p>Цена единицы <input type="text" value=""
+                                          name="unit_price" class="scientic_place" placeholder="Цена единицы"/></p>
+
+                    <p>Минимальная партия <input type="text" value=""
+                                                 name="minimum_lot" class="scientic_place" placeholder="Минимальная партия"/></p>
+
+
+                    <p>Личная ставка <input type="text" value="Empty"
+                                            name="personal_rate" class="scientic_place" placeholder="Личная ставка"/></p>
+
+                    <p>Уведомить <input type="checkbox" name="notify"/></p>
+
+                    <p>Запрет продаж <select name="ban" class="scientic">
+                        <option value="0">-3</option>
+                        <option value="1">-2</option>
+                        <option value="2">-1</option>
+                        <option selected value="3">0</option>
+                        <option value="4">1</option>
+                        <option value="5">2</option>
+                        <option value="6">3</option>
+                    </select></p>
+
+
+                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+
+                </form>
+
+
                 <a class="close" title="Закрыть" href="#close"></a>
             </div>
 
@@ -115,9 +299,7 @@
             <a href="#x" class="overlay" id="win3"></a>
 
             <div class="popup">
-                <iframe width="480" height="360" src="http://www.youtube.com/embed/1IrR7l9pGF0" frameborder="0"
-                        allowfullscreen></iframe>
-                <a class="close" title="Закрыть" href="demo.html" onclick="demo.html(); return false;"></a>
+
             </div>
 
 
@@ -125,9 +307,7 @@
             <a href="#x" class="overlay" id="win4"></a>
 
             <div class="popup">
-                <h2>Гиперреализм</h2>
-                <img class="is-image" src="img/realism_lrg3.jpg" alt="Гиперреализм"/>
-                <a class="close" title="Закрыть" href="#close"></a>
+
             </div>
 
 

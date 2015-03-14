@@ -903,6 +903,22 @@ h1, h2, h3, h4, h5, h6 {
     color: rgb(0, 0, 0);
 }
 
+.trade_element {
+    display: inline-block;
+    width: 150px;
+    height: 22px;
+    margin-top: 2px;
+    line-height: 22px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(0, 0, 0);
+}
 
 .trade_buy_element {
     display: inline-block;
