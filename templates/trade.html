@@ -319,6 +319,8 @@
                     {% for trade_element in trade_elements %}
                         <tr>
                             <form method="post" action="del_trade" value="{{ trade_element.id }}">
+                                <input type="hidden" id=trade_space_id
+                                       value="{{ trade_space_id }}" name="trade_space_id">
                                 <td>{{ trade_element.name }}</td>
                                 {% for trade_space in trade_spaces %}
                                     {% if trade_space.id == trade_element.trade_space %}

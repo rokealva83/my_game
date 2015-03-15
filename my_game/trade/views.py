@@ -183,31 +183,78 @@ def add_trade_element(request):
         ban = int(ban[0])
 
         if class_element == 0:
+            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
             if id_warehouse_element == 1:
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
                 if warehouse.resource1 >= amount:
                     name = 'Resource 1'
                     new_amount = warehouse.resource1 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        resource1=new_amount)
                 else:
                     message = 'Не верное количество товара'
 
             elif id_warehouse_element == 2:
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
                 if warehouse.resource2 >= amount:
                     name = 'Resource 2'
+                    new_amount = warehouse.resource2 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        resource2=new_amount)
+                else:
+                    message = 'Не верное количество товара'
 
             elif id_warehouse_element == 3:
-                name = 'Resource 3'
+                if warehouse.resource3 >= amount:
+                    name = 'Resource 3'
+                    new_amount = warehouse.resource3 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        resource3=new_amount)
+                else:
+                    message = 'Не верное количество товара'
+
             elif id_warehouse_element == 4:
-                name = 'Resource 4'
+                if warehouse.resource4 >= amount:
+                    name = 'Resource 4'
+                    new_amount = warehouse.resource4 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        resource4=new_amount)
+                else:
+                    message = 'Не верное количество товара'
+
             elif id_warehouse_element == 5:
-                name = 'Mineral 1'
+                if warehouse.mineral1 >= amount:
+                    name = 'Mineral1'
+                    new_amount = warehouse.mineral1 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        mineral1=new_amount)
+                else:
+                    message = 'Не верное количество товара'
+
             elif id_warehouse_element == 6:
-                name = 'Mineral 2'
+                if warehouse.mineral2 >= amount:
+                    name = 'Mineral 2'
+                    new_amount = warehouse.mineral2 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        mineral2=new_amount)
+                else:
+                    message = 'Не верное количество товара'
+
             elif id_warehouse_element == 7:
-                name = 'Mineral 3'
+                if warehouse.mineral3 >= amount:
+                    name = 'Mineral 3'
+                    new_amount = warehouse.mineral3 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        mineral3=new_amount)
+                else:
+                    message = 'Не верное количество товара'
+
             elif id_warehouse_element == 8:
-                name = 'Mineral 4'
+                if warehouse.mineral4 >= amount:
+                    name = 'Mineral 4'
+                    new_amount = warehouse.mineral4 - amount
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                        mineral4=new_amount)
+                else:
+                    message = 'Не верное количество товара'
 
         elif class_element == 1:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -216,6 +263,8 @@ def add_trade_element(request):
                 basic_hull = Basic_hull.objects.filter(id=hull.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_hull.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = hull.id
 
         elif class_element == 2:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -224,6 +273,8 @@ def add_trade_element(request):
                 basic_armor = Basic_armor.objects.filter(id=armor.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_armor.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = armor.id
 
         elif class_element == 3:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -232,6 +283,8 @@ def add_trade_element(request):
                 basic_shield = Basic_shield.objects.filter(id=shield.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_shield.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = shield.id
 
         elif class_element == 4:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -240,6 +293,8 @@ def add_trade_element(request):
                 basic_engine = Basic_engine.objects.filter(id=engine.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_engine.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = engine.id
 
         elif class_element == 5:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -248,6 +303,8 @@ def add_trade_element(request):
                 basic_generator = Basic_generator.objects.filter(id=generator.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_generator.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = generator.id
 
         elif class_element == 6:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -256,6 +313,8 @@ def add_trade_element(request):
                 basic_weapon = Basic_weapon.objects.filter(id=weapon.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_weapon.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = weapon.id
 
         elif class_element == 7:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -264,6 +323,8 @@ def add_trade_element(request):
                 basic_shell = Basic_shell.objects.filter(id=shell.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_shell.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = shell.id
 
         elif class_element == 8:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -272,14 +333,18 @@ def add_trade_element(request):
                 basic_module = Basic_module.objects.filter(id=module.basic_id).first()
                 new_amount = warehouse_element.amount - amount
                 name = basic_module.name
+                warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = module.id
 
         elif class_element == 10:
-            factory_element = Warehouse_factory.objects.filter(id=id_warehouse_element).first()
-            if factory_element.amount >= amount:
-                factory = Factory_pattern.objects.filter(id=factory_element.factory_id).first()
+            warehouse_factory = Warehouse_factory.objects.filter(id=id_warehouse_element).first()
+            if warehouse_factory.amount >= amount:
+                factory = Factory_pattern.objects.filter(id=warehouse_factory.factory_id).first()
                 basic_factory = Basic_factory.objects.filter(id=factory.basic_id).first()
-                new_amount = factory_element.amount - amount
+                new_amount = warehouse_factory.amount - amount
                 name = basic_factory.name
+                warehouse_factory = Warehouse_factory.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+                id_element = factory.id
 
         elif class_element == 11:
             ship = Ship.objects.filter(id=id_warehouse_element).first()
@@ -287,6 +352,8 @@ def add_trade_element(request):
                 project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
                 new_amount = ship.amount_ship - amount
                 name = project_ship.name
+                ship = Ship.objects.filter(id=id_warehouse_element).update(amount_ship=new_amount)
+                id_element = ship.id_project_ship
 
         user_city = User_city.objects.filter(id=session_user_city).first()
         trade_element = Trade_element(
@@ -295,7 +362,7 @@ def add_trade_element(request):
             buyer=id_personal,
             trade_space=trade_space_id,
             class_element=class_element,
-            id_element=id_warehouse_element,
+            id_element=id_element,
             amount=amount,
             min_amount=minimum_lot,
             cost=price,
@@ -353,16 +420,113 @@ def del_trade(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
 
         full_request = request.POST
         myDict = dict(full_request.iterlists())
-
         trade_space_id = myDict.get('trade_space_id')
         trade_space_id = int(trade_space_id[0])
+        id_element = myDict.get('trade_del')
+        id_element = int(id_element[0])
 
-        wwww = request.path
+        trade_element = Trade_element.objects.filter(id=id_element).first()
+        if trade_element.class_element == 0:
+            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
+            if trade_element.id_element == 1:
+                new_amount = warehouse.resource1 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    resource1=new_amount)
 
-        function.check_all_queues(session_user)
+            if trade_element.id_element == 2:
+                new_amount = warehouse.resource2 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    resource2=new_amount)
+            if trade_element.id_element == 3:
+                new_amount = warehouse.resource3 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    resource3=new_amount)
+            if trade_element.id_element == 4:
+                new_amount = warehouse.resource4 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    resource4=new_amount)
+            if trade_element.id_element == 5:
+                new_amount = warehouse.mineral1 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    mineral1=new_amount)
+            if trade_element.id_element == 6:
+                new_amount = warehouse.mineral2 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    mineral2=new_amount)
+            if trade_element.id_element == 7:
+                new_amount = warehouse.mineral3 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    mineral3=new_amount)
+            if trade_element.id_element == 8:
+                new_amount = warehouse.mineral4 + trade_element.amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                    mineral4=new_amount)
+        elif 0 < trade_element.class_element < 9:
+            warehouse_element = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
+                                                                 element_class=trade_element.class_element,
+                                                                 element_id=trade_element.id_element).first()
+            if warehouse_element:
+                new_amount = warehouse_element.amount + trade_element.amount
+                warehouse_element = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
+                                                                     element_class=trade_element.class_element,
+                                                                     element_id=trade_element.id_element).update(
+                    amount=new_amount)
+            else:
+                warehouse_element = Warehouse_element(
+                    user=session_user,
+                    user_city=session_user_city,
+                    element_class=trade_element.class_element,
+                    element_id=trade_element.id_element
+                )
+                warehouse_element.save()
+
+        elif trade_element.class_element == 10:
+            warehouse_factory = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+                                                                 factory_id=trade_element.id_element).first()
+            if warehouse_factory:
+                new_amount = warehouse_factory.amount + trade_element.amount
+                warehouse_factory = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+                                                                     factory_id=trade_element.id_element).update(
+                    amount=new_amount)
+            else:
+                factory_pattern = Factory_pattern.objects.filter(id=trade_element.id_element).first()
+                warehouse_factory = Warehouse_factory(
+                    user=session_user,
+                    user_city=session_user_city,
+                    factory_id=trade_element.id_element,
+                    production_class=factory_pattern.production_class,
+                    production_id=factory_pattern.production_id,
+                    time_production=factory_pattern.time_production,
+                    amount=trade_element.amount,
+                    size=factory_pattern.size,
+                    mass=factory_pattern.mass,
+                    power_consumption=factory_pattern.power_consumption
+                )
+                warehouse_factory.save()
+
+        elif trade_element.class_element == 11:
+            ship = Ship.objects.filter(user=session_user, place_id=session_user_city, id_ship_project=id_element,
+                                       fleet_status=0).first()
+            if ship:
+                new_amount = ship.amount_ship + trade_element.amount
+                ship = Ship.objects.filter(user=session_user, place_id=session_user_city, id_ship_project=id_element,
+                                           fleet_status=0).update(amount_ship=new_amount)
+            else:
+                project_ship = Project_ship.objects.filter(id = id_element).first()
+                ship = Ship(
+                    user = session_user,
+                    id_project_ship = id_element,
+                    amount_ship = trade_element.amount,
+                    fleet_status = 0,
+                    place_id = session_user_city,
+                    name = project_ship.name
+                )
+                ship.save()
+        trade_element = Trade_element.objects.filter(id=id_element).delete()
 
         warehouse = Warehouse.objects.filter(user=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
@@ -387,8 +551,6 @@ def del_trade(request):
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
         trade_spaces = Trade_space.objects.filter()
-
-
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
