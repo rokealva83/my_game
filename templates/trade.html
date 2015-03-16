@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}ВКС{% endblock %}
+{% block title %}Торговля{% endblock %}
 {% block content %}
     <div id="game_content">
         <div id="block_trade">
@@ -48,7 +48,7 @@
                 </form>
             </div>
 
-
+            <!-- Модальное окно 2 -->
             <a class="overlay" id="new_trade_space"></a>
 
             <div class="popup_space">
@@ -81,7 +81,7 @@
                 </form>
             </div>
 
-            <!-- Модальное окно 2 -->
+            <!-- Модальное окно 3 -->
             <a class="overlay" id="trade_add_element"></a>
 
             <div class="popup_add">
@@ -298,13 +298,13 @@
             </div>
 
 
-            <!-- Модальное окно 3 -->
+            <!-- Модальное окно 4 -->
             <a class="overlay" id="trade_element"></a>
 
             <div class="popup_trade">
 
                 <table border="1" align="center">
-                    <caption>Таблица размеров обуви</caption>
+                    <caption>Торговые ставки</caption>
                     <tr>
                         <td>Товар</td>
                         <td>Пространство</td>
@@ -313,7 +313,7 @@
                         <td>Минимальная партия</td>
                         <td>Цена партии</td>
                         <td>Ставка</td>
-                        <td></td>
+
                     </tr>
 
                     {% for trade_element in trade_elements %}
@@ -356,13 +356,61 @@
             </div>
 
 
-            <!-- Модальное окно 4 -->
+            <!-- Модальное окно 5 -->
             <a href="#x" class="overlay" id="win4"></a>
 
             <div class="popup">
 
             </div>
+            <div style="border: 1px solid #000000; border-radius: 7px; margin: 3px 0 5px 0">
+                <p align="center">Пространство: {{ trade_space.name }}</p>
+                <table border="1" align="center" style="margin-bottom: 7px">
+                    <caption>Торговые ставки</caption>
+                    <tr align="center">
+                        <td style="width: 250px">Товар</td>
+                        <td style="width: 100px">Количество</td>
+                        <td style="width: 150px">Цена за все</td>
+                        <td style="width: 150px">Минимальная партия</td>
+                        <td style="width: 150px">Цена партии</td>
+                        <td style="width: 175px">Количество товара</td>
+                        <td style="width: 175px">Способ доставки</td>
+                        <td style="width: 150px">Покупка</td>
+                    </tr>
+                    {% for trade_element in trade_elements %}
+                        <tr align="center">
+                            <form method="post" action="buy_trade" value="{{ trade_element.id }}">
+                                <input type="hidden" id=trade_space_id
+                                       value="{{ trade_space_id }}" name="trade_space_id">
+                                <td>{{ trade_element.name }}</td>
+                                <td>{{ trade_element.amount }}</td>
+                                <td>{{ trade_element.cost }} кредитов</td>
+                                <td>{{ trade_element.min_amount }}</td>
+                                <td>{{ trade_element.cost_element }} кредитов</td>
+                                <td><input type="text" value=""
+                                           name="amount" class="scientic_place" placeholder="Покупка"/></td>
+                                <td>
+                                    <p>
+                                        <select name="methot" class="scientic">
+                                            <option disabled value="0">Способ доставки</option>
+                                            <option value="1">Телепортация</option>
+                                            <option value="2">Флотом покупателя</option>
+                                            <option value="3">Флотом продавца</option>
+                                        </select>
+                                    </p>
+                                    <p>Отложить <input type="checkbox" name="set_aside"/></p>
 
+                                </td>
+                                <td><input href="trade_del/{{ trade_element.id }}" style="margin:0 2px 0 2px"
+                                           type="submit" value="Купить" class="trade_del"/>
+
+                                    <input type="hidden" id="trade_buy" value={{ trade_element.id }} name="trade_buy"/>
+                                </td>
+
+                            </form>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
 
         </div>
         <div class="clear"></div>

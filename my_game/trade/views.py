@@ -40,11 +40,9 @@ def trade(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
         trade_spaces = Trade_space.objects.filter()
-        trade_elements = Trade_element.objects.filter()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
-
         trade_id = request.POST.get('trade_space_id')
         if trade_id is not None:
             password = request.POST.get('password')
@@ -52,8 +50,11 @@ def trade(request):
             trade_pass = trade_space.password
             if password == trade_space.password:
                 message = 'Правильный пароль'
+                trade_space_id = trade_id
+                trade_elements = Trade_element.objects.filter(trade_space= trade_space_id)
             else:
                 message = 'Неправильный пароль'
+                trade_elements = Trade_element.objects.filter(trade_space= 1)
 
             request.session['userid'] = session_user
             request.session['user_city'] = session_user_city
@@ -68,6 +69,8 @@ def trade(request):
                       'trade_space_id': trade_space_id, 'project_ships': project_ships, 'ships': ships,
                       'trade_elements': trade_elements, 'users': users, 'message': message}
             return render(request, "trade.html", output)
+        trade_space = Trade_space.objects.filter(id=trade_space_id).first()
+        trade_elements = Trade_element.objects.filter(trade_space= trade_space_id)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -79,7 +82,8 @@ def trade(request):
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users}
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
+                  'trade_space': trade_space}
         return render(request, "trade.html", output)
 
 
@@ -120,11 +124,12 @@ def new_trade_space(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
         trade_spaces = Trade_space.objects.filter()
-        trade_elements = Trade_element.objects.filter()
+        trade_elements = Trade_element.objects.filter(trade_space= trade_space_id)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
         trade_spaces = Trade_space.objects.filter()
+        trade_space = Trade_space.objects.filter(id=trade_space_id).first()
 
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
@@ -136,5 +141,5 @@ def new_trade_space(request):
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users}
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users, 'trade_space': trade_space}
         return render(request, "trade.html", output)
