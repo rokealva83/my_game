@@ -18,14 +18,14 @@ def building(request):
         function.check_all_queues(session_user)
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city,
                   'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings,
                   'user_citys': user_citys}
         return render(request, "building.html", output)
@@ -80,7 +80,7 @@ def choice_build(request):
         # factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by('production_id')
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city)
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -88,7 +88,7 @@ def choice_build(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'factory_patterns': factory_patterns,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'factory_patterns': factory_patterns,
                   'attributes': attributes, 'turn_assembly_piecess': turn_assembly_piecess,
                   'turn_buildings': turn_buildings, 'warehouse_elements': warehouse_elements, 'user_citys': user_citys}
 
@@ -131,14 +131,14 @@ def working(request):
 
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'message': message,
                   'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings,
                   'user_citys': user_citys}
         return render(request, "building.html", output)

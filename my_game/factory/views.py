@@ -17,14 +17,14 @@ def factory(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys}
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys}
         return render(request, "factory.html", output)
 
 
@@ -117,7 +117,7 @@ def choice_element(request):
         # 'production_id')
         # element_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
@@ -125,7 +125,7 @@ def choice_element(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city,
                   'factory_installeds': factory_installeds, 'element_patterns': element_patterns,
                   'attributes': attributes, 'turn_productions': turn_productions, 'user_citys': user_citys}
         return render(request, "factory.html", output)
@@ -171,13 +171,13 @@ def production(request):
                 message = 'Фабрика удалена'
 
         turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'message': message,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'message': message,
                   'turn_productions': turn_productions, 'user_citys': user_citys}
         return render(request, "factory.html", output)

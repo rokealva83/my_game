@@ -47,7 +47,7 @@ def production_module(*args):
     amount_element = args[4]
 
     user = MyUser.objects.filter(user_id=session_user).first()
-    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
+    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
     factory_worker = Factory_installed.objects.filter(id=factory_id).first()
     len_turn_production = len(Turn_production.objects.filter(user=session_user, user_city=session_user_city, \
                                                              factory_id=factory_worker.id))
@@ -74,34 +74,63 @@ def production_module(*args):
 
 
 
+        for warehouse in warehouses:
+            if warehouse.id_resource == 1:
+                resource1 = warehouse.amount
+            elif warehouse.id_resource == 2:
+                resource2 = warehouse.amount
+            elif warehouse.id_resource == 3:
+                resource3 = warehouse.amount
+            elif warehouse.id_resource == 4:
+                resource4 = warehouse.amount
+            elif warehouse.id_resource == 5:
+                mineral1 = warehouse.amount
+            elif warehouse.id_resource == 6:
+                mineral2 = warehouse.amount
+            elif warehouse.id_resource == 7:
+                mineral3 = warehouse.amount
+            elif warehouse.id_resource == 8:
+                mineral4 = warehouse.amount
+
         if user.internal_currency >= module_which_produces.price_internal_currency * int(amount_element) and \
-                        warehouse.resource1 >= module_which_produces.price_resource1 * int(amount_element) and \
-                        warehouse.resource2 >= module_which_produces.price_resource2 * int(amount_element) and \
-                        warehouse.resource3 >= module_which_produces.price_resource3 * int(amount_element) and \
-                        warehouse.resource4 >= module_which_produces.price_resource4 * int(amount_element) and \
-                        warehouse.mineral1 >= module_which_produces.price_mineral1 * int(amount_element) and \
-                        warehouse.mineral2 >= module_which_produces.price_mineral2 * int(amount_element) and \
-                        warehouse.mineral3 >= module_which_produces.price_mineral3 * int(amount_element) and \
-                        warehouse.mineral4 >= module_which_produces.price_mineral4 * int(amount_element):
+                        resource1 >= module_which_produces.price_resource1 * int(amount_element) and \
+                        resource2 >= module_which_produces.price_resource2 * int(amount_element) and \
+                        resource3 >= module_which_produces.price_resource3 * int(amount_element) and \
+                        resource4 >= module_which_produces.price_resource4 * int(amount_element) and \
+                        mineral1 >= module_which_produces.price_mineral1 * int(amount_element) and \
+                        mineral2 >= module_which_produces.price_mineral2 * int(amount_element) and \
+                        mineral3 >= module_which_produces.price_mineral3 * int(amount_element) and \
+                        mineral4 >= module_which_produces.price_mineral4 * int(amount_element):
 
             new_internal_currency = user.internal_currency - module_which_produces.price_internal_currency * int(amount_element)
-            new_resource1 = warehouse.resource1 - module_which_produces.price_resource1 * int(amount_element)
-            new_resource2 = warehouse.resource2 - module_which_produces.price_resource1 * int(amount_element)
-            new_resource3 = warehouse.resource3 - module_which_produces.price_resource1 * int(amount_element)
-            new_resource4 = warehouse.resource4 - module_which_produces.price_resource1 * int(amount_element)
-            new_mineral1 = warehouse.mineral1 - module_which_produces.price_mineral1 * int(amount_element)
-            new_mineral2 = warehouse.mineral2 - module_which_produces.price_mineral1 * int(amount_element)
-            new_mineral3 = warehouse.mineral3 - module_which_produces.price_mineral1 * int(amount_element)
-            new_mineral4 = warehouse.mineral4 - module_which_produces.price_mineral1 *int(amount_element)
+            new_resource1 = resource1 - module_which_produces.price_resource1 * int(amount_element)
+            new_resource2 = resource2 - module_which_produces.price_resource1 * int(amount_element)
+            new_resource3 = resource3 - module_which_produces.price_resource1 * int(amount_element)
+            new_resource4 = resource4 - module_which_produces.price_resource1 * int(amount_element)
+            new_mineral1 = mineral1 - module_which_produces.price_mineral1 * int(amount_element)
+            new_mineral2 = mineral2 - module_which_produces.price_mineral1 * int(amount_element)
+            new_mineral3 = mineral3 - module_which_produces.price_mineral1 * int(amount_element)
+            new_mineral4 = mineral4 - module_which_produces.price_mineral1 *int(amount_element)
 
-            warehouse = Warehouse.objects.filter(user=session_user).update(resource1=new_resource1,\
-                                                                           resource2=new_resource2,\
-                                                                           resource3=new_resource3,\
-                                                                           resource4=new_resource4,\
-                                                                           mineral1=new_mineral1,\
-                                                                           mineral2=new_mineral2,\
-                                                                           mineral3=new_mineral3,\
-                                                                           mineral4=new_mineral4)
+            for warehouse in warehouses:
+                if warehouse.id_resource == 1:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource1=new_resource1)
+                elif warehouse.id_resource == 2:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource2=new_resource2)
+                elif warehouse.id_resource == 3:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource3=new_resource3)
+                elif warehouse.id_resource == 4:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource4=new_resource4)
+                elif warehouse.id_resource == 5:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral1=new_mineral1)
+                elif warehouse.id_resource == 6:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral2=new_mineral2)
+                elif warehouse.id_resource == 7:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral3=new_mineral3)
+                elif warehouse.id_resource == 8:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral4=new_mineral4)
+
+
             user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
             turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city,
                                                               factory_id=factory_id).last()

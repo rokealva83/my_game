@@ -28,40 +28,13 @@ def del_trade(request):
 
         trade_element = Trade_element.objects.filter(id=id_element).first()
         if trade_element.class_element == 0:
-            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
-            if trade_element.id_element == 1:
-                new_amount = warehouse.resource1 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    resource1=new_amount)
+            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                 id_resource=id_element).first()
 
-            if trade_element.id_element == 2:
-                new_amount = warehouse.resource2 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    resource2=new_amount)
-            if trade_element.id_element == 3:
-                new_amount = warehouse.resource3 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    resource3=new_amount)
-            if trade_element.id_element == 4:
-                new_amount = warehouse.resource4 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    resource4=new_amount)
-            if trade_element.id_element == 5:
-                new_amount = warehouse.mineral1 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    mineral1=new_amount)
-            if trade_element.id_element == 6:
-                new_amount = warehouse.mineral2 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    mineral2=new_amount)
-            if trade_element.id_element == 7:
-                new_amount = warehouse.mineral3 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    mineral3=new_amount)
-            if trade_element.id_element == 8:
-                new_amount = warehouse.mineral4 + trade_element.amount
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    mineral4=new_amount)
+            new_amount = warehouse.amount + trade_element.amount
+            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                 id_resource=id_element).update(amount=new_amount)
+
         elif 0 < trade_element.class_element < 9:
             warehouse_element = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
                                                                  element_class=trade_element.class_element,
@@ -113,19 +86,19 @@ def del_trade(request):
                 ship = Ship.objects.filter(user=session_user, place_id=session_user_city, id_ship_project=id_element,
                                            fleet_status=0).update(amount_ship=new_amount)
             else:
-                project_ship = Project_ship.objects.filter(id = id_element).first()
+                project_ship = Project_ship.objects.filter(id=id_element).first()
                 ship = Ship(
-                    user = session_user,
-                    id_project_ship = id_element,
-                    amount_ship = trade_element.amount,
-                    fleet_status = 0,
-                    place_id = session_user_city,
-                    name = project_ship.name
+                    user=session_user,
+                    id_project_ship=id_element,
+                    amount_ship=trade_element.amount,
+                    fleet_status=0,
+                    place_id=session_user_city,
+                    name=project_ship.name
                 )
                 ship.save()
         trade_element = Trade_element.objects.filter(id=id_element).delete()
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -142,7 +115,7 @@ def del_trade(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
-        trade_elements = Trade_element.objects.filter(trade_space= trade_space_id)
+        trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
@@ -151,12 +124,13 @@ def del_trade(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users, 'trade_space': trade_space}
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
+                  'trade_space': trade_space}
         return render(request, "trade.html", output)

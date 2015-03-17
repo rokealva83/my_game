@@ -171,7 +171,7 @@ def delete_ship(request):
         else:
             message = 'Флот не над планетой'
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -182,7 +182,7 @@ def delete_ship(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                   'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
                   'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,

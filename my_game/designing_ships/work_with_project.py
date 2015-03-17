@@ -44,7 +44,6 @@ def work_with_project(request):
                                     if i == 7:
                                         j = 6
 
-
                                     warehouse_element = Warehouse_element.objects.filter(user=session_user,
                                                                                          user_city=session_user_city,
                                                                                          element_class=j,
@@ -64,7 +63,7 @@ def work_with_project(request):
                             start_time = datetime.now()
 
                         ship_pattern = Project_ship.objects.filter(id=ship_id).first()
-                        finish_time = start_time + timedelta(seconds=(ship_pattern.time_build*amount_ship))
+                        finish_time = start_time + timedelta(seconds=(ship_pattern.time_build * amount_ship))
                         turn_create_ship = Turn_ship_build(
                             user=session_user,
                             user_city=session_user_city,
@@ -72,7 +71,7 @@ def work_with_project(request):
                             amount=amount_ship,
                             start_time_build=start_time,
                             finish_time_build=finish_time,
-                            process_id = 1
+                            process_id=1
 
                         )
                         turn_create_ship.save()
@@ -118,7 +117,7 @@ def work_with_project(request):
             delete_ship_element = Element_ship.objects.filter(id_project_ship=ship_id).all().delete()
             message = 'Проект удален'
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -128,7 +127,7 @@ def work_with_project(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds,
                   'message': message}
         return render(request, "designingships.html", output)

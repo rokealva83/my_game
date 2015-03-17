@@ -5,9 +5,8 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
-from my_game.models import Warehouse_factory, Warehouse_element
+from my_game.models import Warehouse_factory, Warehouse_element, Basic_resource
 from my_game import function
-
 
 
 def warehouse(request):
@@ -17,7 +16,8 @@ def warehouse(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        basic_resources = Basic_resource.objects.filter()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -54,15 +54,15 @@ def warehouse(request):
     request.session['userid'] = session_user
     request.session['user_city'] = session_user_city
     request.session['live'] = True
-    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-              'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
+    output = {'user': user, 'warehouses': warehouses, 'basic_resources': basic_resources, 'user_city': user_city,
+              'user_citys': user_citys, 'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
               'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
-              'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
-              'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-              'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
+              'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
+              'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
+              'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
               'attribute_factorys': attribute_factorys, 'attribute_hulls': attribute_hulls,
               'attribute_armors': attribute_armors, 'attribute_shields': attribute_shields,
               'attribute_engines': attribute_engines, 'attribute_generators': attribute_generators,
               'attribute_weapons': attribute_weapons, 'attribute_shells': attribute_shells,
-              'attribute_modules': attribute_modules }
+              'attribute_modules': attribute_modules}
     return render(request, "warehouse.html", output)

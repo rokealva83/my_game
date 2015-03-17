@@ -14,7 +14,7 @@ def knowledge(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         scientic = User_scientic.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -23,7 +23,7 @@ def knowledge(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'user_city': user_city,
+        output = {'user': user, 'scientic': scientic, 'warehouses': warehouses, 'user_city': user_city,
                   'turn_scientics': turn_scientics, 'user_citys': user_citys}
         return render(request, "scientic.html", output)
 
@@ -38,8 +38,8 @@ def study(request):
         if request.method == "POST":
             level_up = int(request.POST.get("scient"))
             scientic = int(request.POST.get("name_scient"))
-            scientic_work.scien_up(session_user, level_up, scientic)
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+            scientic_work.scien_up(session_user, level_up, scientic, session_user_city)
+        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
         user = MyUser.objects.filter(user_id=session_user).first()
         user_city = User_city.objects.filter(user=session_user).first()
         scientic = User_scientic.objects.filter(user=session_user).first()
@@ -48,6 +48,6 @@ def study(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'scientic': scientic, 'warehouse': warehouse, 'user_city': user_city,
+        output = {'user': user, 'scientic': scientic, 'warehouses': warehouses, 'user_city': user_city,
                   'turn_scientics': turn_scientics, 'user_citys': user_citys}
         return render(request, "scientic.html", output)

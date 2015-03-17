@@ -31,18 +31,37 @@
     <div class="inform_panel"><p>Валюта </p>
 
         <p>{{ user.internal_currency }}</p></div>
-    <div class="inform_panel"><p>Ресурс 1 </p>
+    {% for warehouse in warehouses %}
+        {% if warehouse.id_resource == 1 %}
+            <div class="inform_panel"><p>Ресурс 1 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
 
-        <p>{{ warehouse.resource1 }}</p></div>
-    <div class="inform_panel"><p>Ресурс 2 </p>
 
-        <p> {{ warehouse.resource2 }}</p></div>
-    <div class="inform_panel"><p>Ресурс 3 </p>
+        {% if warehouse.id_resource == 2 %}
+            <div class="inform_panel"><p>Ресурс 2 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
 
-        <p> {{ warehouse.resource3 }}</p></div>
-    <div class="inform_panel"><p>Ресурс 4 </p>
 
-        <p> {{ warehouse.resource4 }}</p></div>
+
+        {% if warehouse.id_resource == 3 %}
+            <div class="inform_panel"><p>Ресурс 3 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
+
+
+
+        {% if warehouse.id_resource == 4 %}
+            <div class="inform_panel"><p>Ресурс 4 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
+
+    {% endfor %}
     <div class="inform_panel"><p>Население:</p>
 
         <p>{{ user_city.population }} / {{ user_city.max_population }}</p></div>

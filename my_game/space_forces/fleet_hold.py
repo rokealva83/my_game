@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
-from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship
+from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship, Basic_resource
 from my_game import function
 from my_game.models import Project_ship, Ship, Fleet, Hold
 from my_game.models import Flightplan, Flightplan_flight
@@ -34,6 +34,7 @@ def fleet_hold(request):
         module_patterns = {}
         ship_holds = {}
         message = ''
+        add_shipment = 0
 
         factory_patterns = Factory_pattern.objects.filter(user=session_user)
         hull_patterns = Hull_pattern.objects.filter(user=session_user)
@@ -178,70 +179,15 @@ def fleet_hold(request):
                     add_shipment = 1
 
             if add_shipment != 0:
-                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
                 if class_shipment == 0:
-
-                    if id_shipment == 1:
-                        if warehouse.resource1 >= amount_shipment:
-                            new_resource1 = warehouse.resource1 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                resource1=new_resource1)
-                        else:
-                            error = 1
-
-                    elif id_shipment == 2:
-                        if warehouse.resource2 >= amount_shipment:
-                            new_resource2 = warehouse.resource2 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                resource2=new_resource2)
-                        else:
-                            error = 1
-
-                    elif id_shipment == 3:
-                        if warehouse.resource3 >= amount_shipment:
-                            new_resource3 = warehouse.resource3 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                resource3=new_resource3)
-                        else:
-                            error = 1
-
-                    elif id_shipment == 4:
-                        if warehouse.resource4 >= amount_shipment:
-                            new_resource4 = warehouse.resource4 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                resource4=new_resource4)
-                        else:
-                            error = 1
-
-                    elif id_shipment == 5:
-                        if warehouse.mineral1 >= amount_shipment:
-                            new_mineral1 = warehouse.mineral1 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                mineral1=new_mineral1)
-                        else:
-                            error = 1
-
-                    elif id_shipment == 6:
-                        if warehouse.mineral2 >= amount_shipment:
-                            new_mineral2 = warehouse.mineral2 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                mineral2=new_mineral2)
-                        else:
-                            error = 1
-                    elif id_shipment == 7:
-                        if warehouse.mineral3 >= amount_shipment:
-                            new_mineral3 = warehouse.mineral3 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                mineral3=new_mineral3)
-                        else:
-                            error = 1
-                    elif id_shipment == 8:
-                        if warehouse.mineral4 >= amount_shipment:
-                            new_mineral4 = warehouse.mineral4 - amount_shipment
-                            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                                mineral4=new_mineral4)
-                        else:
-                            error = 1
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=id_shipment).first()
+                    if warehouse.amount >= amount_shipment:
+                        new_amount = warehouse.amount - amount_shipment
+                        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                             id_resource=id_shipment).update(amount=new_amount)
+                    else:
+                        error = 1
 
                 elif class_shipment == 10:
                     warehouse_factory = Warehouse_factory.objects.filter(user_city=session_user_city,
@@ -293,33 +239,38 @@ def fleet_hold(request):
                                                                      empty_hold=new_empty_hold)
                 else:
                     message = 'LAG'
+            else:
+                message = 'LAG'
         else:
             message = 'Флот не над планетой'
 
-            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
-            user_city = User_city.objects.filter(user=session_user).first()
-            user = MyUser.objects.filter(user_id=session_user).first()
-            user_citys = User_city.objects.filter(user=int(session_user))
-            user_fleets = Fleet.objects.filter(user=session_user)
-            ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-            ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-            warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
-                                                                  user_city=session_user_city).order_by(
-                'production_class', 'production_id')
-            warehouse_elements = Warehouse_element.objects.filter(user=session_user,
-                                                                  user_city=session_user_city).order_by(
-                'element_class', 'element_id')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
+        basic_resources = Basic_resource.objects.filter()
+        user_city = User_city.objects.filter(user=session_user).first()
+        user = MyUser.objects.filter(user_id=session_user).first()
+        user_citys = User_city.objects.filter(user=int(session_user))
+        user_fleets = Fleet.objects.filter(user=session_user)
+        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
+        ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
+                                                              user_city=session_user_city).order_by(
+            'production_class', 'production_id')
+        warehouse_elements = Warehouse_element.objects.filter(user=session_user,
+                                                              user_city=session_user_city).order_by(
+            'element_class', 'element_id')
 
-            command = 2
-            request.session['userid'] = session_user
-            request.session['user_city'] = session_user_city
-            request.session['live'] = True
-            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
+        command = 2
+        request.session['userid'] = session_user
+        request.session['user_city'] = session_user_city
+        request.session['live'] = True
+        output = {'user': user, 'warehouses': warehouses, 'basic_resources':basic_resources, 'user_city': user_city, 'user_citys': user_citys,
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
+                  'ship_fleets': ship_fleets,
                   'ships': ships, 'command': command, 'flightplans': flightplans,
                   'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
                   'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
-                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
+                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
+                  'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'module_patterns': module_patterns, 'message': message,  'ship_holds': ship_holds}
-            return render(request, "fleet_hold.html", output)
+                  'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
+        return render(request, "fleet_hold.html", output)

@@ -150,16 +150,18 @@ def verification_of_resources(*args):
         attributes = ['resource1', 'resource2', 'resource3', 'resource4', 'mineral1', 'mineral2', 'mineral3',
                       'mineral4']
         prod_id = 1
-        warehouse = Warehouse.objects.filter(user=user, user_city=city_id).first()
         for attribute in attributes:
             check_factorys = check_user_factory_resourse_city.filter(production_id=prod_id)
             resourse = 0
+
             for check_factory in check_factorys:
                 resourse = resourse + elapsed_time_seconds / check_factory.time_production
-            new_resourse = getattr(warehouse, attribute) + resourse
+            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource = prod_id).first()
+            new_resourse = warehouse.amount + resourse
+            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource = prod_id).update(amount = new_resourse)
             prod_id = prod_id + 1
-            setattr(warehouse, attribute, new_resourse)
-            warehouse.save()
+
+
         population = 0
         population_buildings = Factory_installed.objects.filter(user=user, user_city=city_id, production_class=10)
         for population_building in population_buildings:

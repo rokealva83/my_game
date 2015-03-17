@@ -84,39 +84,67 @@ def making_factory_unit(*args):
     amount_factory_unit = int(args[2])
     pattern_id = int(args[3])
     user = MyUser.objects.filter(user_id=session_user).first()
-    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
+    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
     factory_pattern_making = Factory_pattern.objects.filter(id=pattern_id).first()
     turn_assembly_pieces = len(Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city))
 
     if turn_assembly_pieces < 3:
+        for warehouse in warehouses:
+            if warehouse.id_resource == 1:
+                resource1 = warehouse.amount
+            elif warehouse.id_resource == 2:
+                resource2 = warehouse.amount
+            elif warehouse.id_resource == 3:
+                resource3 = warehouse.amount
+            elif warehouse.id_resource == 4:
+                resource4 = warehouse.amount
+            elif warehouse.id_resource == 5:
+                mineral1 = warehouse.amount
+            elif warehouse.id_resource == 6:
+                mineral2 = warehouse.amount
+            elif warehouse.id_resource == 7:
+                mineral3 = warehouse.amount
+            elif warehouse.id_resource == 8:
+                mineral4 = warehouse.amount
+
         if user.internal_currency >= factory_pattern_making.price_internal_currency and \
-                        warehouse.resource1 >= factory_pattern_making.price_resource1 and \
-                        warehouse.resource2 >= factory_pattern_making.price_resource2 and \
-                        warehouse.resource3 >= factory_pattern_making.price_resource3 and \
-                        warehouse.resource4 >= factory_pattern_making.price_resource4 and \
-                        warehouse.mineral1 >= factory_pattern_making.price_mineral1 and \
-                        warehouse.mineral2 >= factory_pattern_making.price_mineral2 and \
-                        warehouse.mineral3 >= factory_pattern_making.price_mineral3 and \
-                        warehouse.mineral4 >= factory_pattern_making.price_mineral4:
+                        resource1 >= factory_pattern_making.price_resource1 and \
+                        resource2 >= factory_pattern_making.price_resource2 and \
+                        resource3 >= factory_pattern_making.price_resource3 and \
+                        resource4 >= factory_pattern_making.price_resource4 and \
+                        mineral1 >= factory_pattern_making.price_mineral1 and \
+                        mineral2 >= factory_pattern_making.price_mineral2 and \
+                        mineral3 >= factory_pattern_making.price_mineral3 and \
+                        mineral4 >= factory_pattern_making.price_mineral4:
 
             new_internal_currency = user.internal_currency - factory_pattern_making.price_internal_currency
-            new_resource1 = warehouse.resource1 - factory_pattern_making.price_resource1
-            new_resource2 = warehouse.resource2 - factory_pattern_making.price_resource1
-            new_resource3 = warehouse.resource3 - factory_pattern_making.price_resource1
-            new_resource4 = warehouse.resource4 - factory_pattern_making.price_resource1
-            new_mineral1 = warehouse.mineral1 - factory_pattern_making.price_mineral1
-            new_mineral2 = warehouse.mineral2 - factory_pattern_making.price_mineral1
-            new_mineral3 = warehouse.mineral3 - factory_pattern_making.price_mineral1
-            new_mineral4 = warehouse.mineral4 - factory_pattern_making.price_mineral1
+            new_resource1 = resource1 - factory_pattern_making.price_resource1
+            new_resource2 = resource2 - factory_pattern_making.price_resource1
+            new_resource3 = resource3 - factory_pattern_making.price_resource1
+            new_resource4 = resource4 - factory_pattern_making.price_resource1
+            new_mineral1 = mineral1 - factory_pattern_making.price_mineral1
+            new_mineral2 = mineral2 - factory_pattern_making.price_mineral1
+            new_mineral3 = mineral3 - factory_pattern_making.price_mineral1
+            new_mineral4 = mineral4 - factory_pattern_making.price_mineral1
 
-            warehouse = Warehouse.objects.filter(user=session_user).update(resource1=new_resource1, \
-                                                                           resource2=new_resource2, \
-                                                                           resource3=new_resource3, \
-                                                                           resource4=new_resource4, \
-                                                                           mineral1=new_mineral1, \
-                                                                           mineral2=new_mineral2, \
-                                                                           mineral3=new_mineral3, \
-                                                                           mineral4=new_mineral4)
+            for warehouse in warehouses:
+                if warehouse.id_resource == 1:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource1=new_resource1)
+                elif warehouse.id_resource == 2:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource2=new_resource2)
+                elif warehouse.id_resource == 3:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource3=new_resource3)
+                elif warehouse.id_resource == 4:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource4=new_resource4)
+                elif warehouse.id_resource == 5:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral1=new_mineral1)
+                elif warehouse.id_resource == 6:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral2=new_mineral2)
+                elif warehouse.id_resource == 7:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral3=new_mineral3)
+                elif warehouse.id_resource == 8:
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral4=new_mineral4)
+
             user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
             turn_assembly_piece = Turn_assembly_pieces.objects.filter(user=session_user,
                                                                       user_city=session_user_city).last()

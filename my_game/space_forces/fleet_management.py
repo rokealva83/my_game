@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
-from my_game.models import Warehouse, Warehouse_element, Warehouse_factory
+from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource
 from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
@@ -52,7 +52,7 @@ def fleet_manage(request):
             new_fleet.save()
             fleet_id = new_fleet.pk
             fleet_parametr = Fleet_parametr(
-                fleet_id = fleet_id
+                fleet_id=fleet_id
             )
             fleet_parametr.save()
 
@@ -66,18 +66,19 @@ def fleet_manage(request):
             flightplans = Flightplan.objects.filter(user=session_user, id_fleet=fleet_id)
             flightplan_flights = Flightplan_flight.objects.filter(user=session_user, id_fleet=fleet_id)
             command = 3
-            warehouse = Warehouse.objects.filter(user=session_user).first()
+            warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
+                'id_resource')
             user_city = User_city.objects.filter(user=session_user).first()
             user = MyUser.objects.filter(user_id=session_user).first()
             user_citys = User_city.objects.filter(user=int(session_user))
             user_fleets = Fleet.objects.filter(user=session_user)
             ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-            fleet = Fleet.objects.filter(id = fleet_id).first()
-            fleet_parametr = Fleet_parametr.objects.filter(fleet_id = fleet_id).first()
-            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+            fleet = Fleet.objects.filter(id=fleet_id).first()
+            fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).first()
+            output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                       'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
-                      'ship_fleets': ship_fleets,'ships': ships, 'fleet': fleet,
+                      'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
                       'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
                       'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
                       'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
@@ -107,7 +108,7 @@ def fleet_manage(request):
             # device_patterns = Device_pattern.objects.filter(user = session_user)
 
             command = 2
-            ship_holds = Hold.objects.filter(fleet_id = fleet_id).order_by('class_shipment')
+            ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
 
         if request.POST.get('delete_fleet'):
             fleet_id = int(request.POST.get('hidden_fleet'))
@@ -117,10 +118,11 @@ def fleet_manage(request):
                 message = 'Во флоте есть корабли'
             else:
                 fleet = Fleet.objects.filter(id=fleet_id).delete()
-                fleet_parametr = Fleet_parametr.objects.filter(fleet_id = fleet_id).delete()
+                fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).delete()
                 message = 'Флот удален'
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        basic_resources = Basic_resource.objects.filter()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -130,12 +132,14 @@ def fleet_manage(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'basic_resources': basic_resources, 'user_city': user_city,
+                  'user_citys': user_citys,
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
                   'ships': ships, 'command': command, 'flightplans': flightplans,
                   'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
                   'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'module_patterns': module_patterns, 'message': message,  'ship_holds': ship_holds}
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
         return render(request, "fleet_hold.html", output)

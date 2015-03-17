@@ -95,14 +95,18 @@
                         <select name="name" class="scientic">
                             <option selected disabled>Товар</option>
                             <optgroup label="Resource">
-                                <option value="1; 0">Resource 1 ( {{ warehouse.resource1 }} )</option>
-                                <option value="2; 0">Resource 2 ( {{ warehouse.resource2 }} )</option>
-                                <option value="3; 0">Resource 3 ( {{ warehouse.resource3 }} )</option>
-                                <option value="4; 0">Resource 4 ( {{ warehouse.resource4 }} )</option>
-                                <option value="5; 0">Mineral 1 ( {{ warehouse.mineral1 }} )</option>
-                                <option value="6; 0">Mineral 2 ( {{ warehouse.mineral2 }} )</option>
-                                <option value="7; 0">Mineral 3 ( {{ warehouse.mineral3 }} )</option>
-                                <option value="8; 0">Mineral 4 ( {{ warehouse.mineral4 }} )</option>
+                                {% for warehouse in warehouses %}
+                                    {% if warehouse.amount > 0 %}
+                                        {% for basic_resource in basic_resources %}
+                                            {% if basic_resource.id == warehouse.id_resource %}
+                                                <option value="{{ warehouse.id_resource }}; 0">{{ basic_resource.name }}
+                                                    ( {{ warehouse.amount }} )
+                                                </option>
+
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
                             </optgroup>
                             <optgroup label="Factory">
                                 {% if warehouse_factorys %}

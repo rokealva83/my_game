@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from datetime import datetime
 from my_game.models import Planet
+from my_game.models import User_variables
 from my_game.models import MyUser
 from my_game.models import User_city, Warehouse, User_scientic, Basic_scientic, Basic_factory, Factory_pattern, \
     Factory_installed
@@ -28,7 +29,7 @@ def add_user(request):
         if us_name is not None or mai is not None:
             return HttpResponse()
         else:
-
+            user_variables = User_variables.objects.filter(id = 1).first()
             user = User(
                 username=request.POST.get('name'),
                 password=request.POST.get('pass'),
@@ -49,7 +50,7 @@ def add_user(request):
                 race_id=request.POST.get('rac'),
                 alliance_id=0,
                 union_id=0,
-                internal_currency=1000,
+                internal_currency=user_variables.registr_internal_currency,
                 e_mail=ma,
                 referal_code=request.POST.get('name'),
                 user_luckyness=user_lucky,
@@ -71,12 +72,6 @@ def add_user(request):
             )
             scientic.save()
             planeta = Planet.objects.filter(planet_type=int(request.POST.get('rac')), planet_free=1).first()
-            warehouse = Warehouse(
-                user=id_user,
-            )
-            warehouse.save()
-            warehouse_id = warehouse.pk
-
             user_city = User_city(
                 user=id_user,
                 system_id=planeta.system_id,
@@ -92,7 +87,22 @@ def add_user(request):
             busy_id = planeta.id
             planet = Planet.objects.filter(pk=busy_id).update(planet_free=0)
             user_city = User_city.objects.filter(user=id_user).first()
-            warehouse = Warehouse.objects.filter(user=id_user).update(user_city=user_city.id)
+
+
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 1,
+                amount = user_variables.registr_resource1
+            )
+            warehouse.save()
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 2,
+                amount = user_variables.registr_resource2
+            )
+            warehouse.save()
 
             basic_factorys = Basic_factory.objects.all()
             for basic_factory in basic_factorys:
@@ -166,12 +176,13 @@ def auth(request):
             if user_name_auth.password == password_post:
                 user = MyUser.objects.filter(user_id=user_name_auth.id).first()
                 user_id = user.user_id
-                warehouse = Warehouse.objects.filter(user=int(user_name_auth.id)).first()
+                user_city = User_city.objects.filter(user = user_id).first()
+                warehouses = Warehouse.objects.filter(user=user_id, user_city = user_city.id).order_by('id_resource')
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 user_citys = User_city.objects.filter(user=int(user_name_auth.id))
                 planet = Planet.objects.filter(id=user_city.planet_id).first()
                 function.check_all_queues(user_id)
-                output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                           'planet': planet}
                 request.session['userid'] = user_name_auth.id
                 request.session['user_city'] = user_city.id

@@ -28,7 +28,7 @@ def new_ship(request):
         chosen_hull = {}
         hulls = {}
         choice_armor = []
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -45,7 +45,7 @@ def new_ship(request):
             main_weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
             modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
             turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
-            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+            output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                       'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                       'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
                       'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
@@ -73,7 +73,7 @@ def new_ship(request):
                 )
                 new_pattern_ship.save()
                 pattern_ship_id = new_pattern_ship.pk
-                user_variables = User_variables.objects.filter(id = 1).first()
+                user_variables = User_variables.objects.filter(id=1).first()
                 time_build = user_variables.basic_time_build_ship
                 hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
                 mass = hull.mass
@@ -209,13 +209,13 @@ def new_ship(request):
                 ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(time_build=time_build, mass=mass)
                 turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
                 project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
-                output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                           'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds}
             else:
                 message_error = 'Ошибка создания проекта'
                 turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
                 project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
-                output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                           'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                           'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
                           'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,

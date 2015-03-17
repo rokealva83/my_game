@@ -8,21 +8,14 @@
             <p>City name: {{ user_city.name_city }}</p>
 
             <h3><p style="text-align: center">Warehouse</p></h3>
-            <p>resource 1: {{ warehouse.resource1 }}</p>
+            {% for warehouse in warehouses %}
+                {% for basic_resource in basic_resources %}
+                    {% if basic_resource.id == warehouse.id_resource %}
+                        <p>{{ basic_resource.name }}: {{ warehouse.amount }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
 
-            <p>resource 2: {{ warehouse.resource2 }}</p>
-
-            <p>resource 3: {{ warehouse.resource3 }}</p>
-
-            <p>resource 4: {{ warehouse.resource4 }}</p>
-
-            <p>mineral 1: {{ warehouse.mineral1 }}</p>
-
-            <p>mineral 2: {{ warehouse.mineral2 }}</p>
-
-            <p>mineral 3: {{ warehouse.mineral3 }}</p>
-
-            <p>mineral 4: {{ warehouse.mineral4 }}</p>
 
             <div>
                 <input class="toggle-box" id="Warehouse_factory" type="checkbox" align="left">
@@ -77,7 +70,7 @@
                                     {% if hull_pattern.id == warehouse_element.element_id %}
 
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ hull_pattern.name }}
                                                         <i>
                                                             {% for attribute_hull in attribute_hulls %}
@@ -91,8 +84,8 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -114,7 +107,7 @@
                                     {% if armor_pattern.id == warehouse_element.element_id %}
 
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ armor_pattern.name }}
                                                         <i>
                                                             {% for attribute_armor in attribute_armors %}
@@ -128,10 +121,10 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
 
-                                            </p>
+                                        </p>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -153,7 +146,7 @@
                                     {% if shield_pattern.id == warehouse_element.element_id %}
 
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ shield_pattern.name }}
                                                         <i>
                                                             {% for attribute_shield in attribute_shields %}
@@ -167,8 +160,8 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
 
                                     {% endif %}
                                 {% endfor %}
@@ -191,7 +184,7 @@
                                     {% if engine_pattern.id == warehouse_element.element_id %}
 
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ engine_pattern.name }}
                                                         <i>
                                                             {% for attribute_engine in attribute_engines %}
@@ -205,8 +198,8 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
 
 
                                     {% endif %}
@@ -229,7 +222,7 @@
                                 {% for generator_pattern in generator_patterns %}
                                     {% if generator_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ generator_pattern.name }}
                                                         <i>
                                                             {% for attribute_generator in attribute_generators %}
@@ -243,8 +236,8 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -265,7 +258,7 @@
                                 {% for weapon_pattern in weapon_patterns %}
                                     {% if weapon_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ weapon_pattern.name }}
                                                         <i>
                                                             {% for attribute_weapon in attribute_weapons %}
@@ -279,8 +272,8 @@
 
                                                         </i> - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -301,7 +294,7 @@
                                 {% for shell_pattern in shell_patterns %}
                                     {% if shell_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ shell_pattern.name }}
                                                         <i>
                                                             {% for attribute_shell in attribute_shells %}
@@ -315,8 +308,8 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -337,7 +330,7 @@
                                 {% for module_pattern in module_patterns %}
                                     {% if module_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                                <ul>
+                                            <ul>
                                                     <span>{{ module_pattern.name }}
                                                         <i>
                                                             {% for attribute_module in attribute_modules %}
@@ -352,8 +345,8 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                                </ul>
-                                            </div>
+                                            </ul>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}

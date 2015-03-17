@@ -38,11 +38,11 @@ def modificate_ship(request):
     modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
     ship_patterns = Project_ship.objects.filter(user=session_user)
-    warehouse = Warehouse.objects.filter(user=session_user).first()
+    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
     user_city = User_city.objects.filter(user=session_user).first()
     user = MyUser.objects.filter(user_id=session_user).first()
     user_citys = User_city.objects.filter(user=int(session_user))
-    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys, 'armors': armors,
+    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys, 'armors': armors,
               'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
               'main_weapons': main_weapons, 'modules': modules, 'turn_ship_builds': turn_ship_builds,
               'modificate_ship_hull': modificate_ship_hull, 'modificate_ship_elements': modificate_ship_elements,
@@ -82,11 +82,11 @@ def choise_project(request):
     modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
     hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-    warehouse = Warehouse.objects.filter(user=session_user).first()
+    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
     user_city = User_city.objects.filter(user=session_user).first()
     user = MyUser.objects.filter(user_id=session_user).first()
     user_citys = User_city.objects.filter(user=int(session_user))
-    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys, 'armors': armors,
+    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys, 'armors': armors,
               'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
               'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls, 'turn_ship_builds': turn_ship_builds,
               'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -116,7 +116,7 @@ def action_modificate_ship(request):
     main_weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-    warehouse = Warehouse.objects.filter(user=session_user).first()
+    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
     user_city = User_city.objects.filter(user=session_user).first()
     user = MyUser.objects.filter(user_id=session_user).first()
     user_citys = User_city.objects.filter(user=int(session_user))
@@ -132,7 +132,7 @@ def action_modificate_ship(request):
 
     if new_ship_id is None:
         message = 'Нехватает кораблей в ангаре'
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'armors': armors,
                   'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
                   'main_weapons': main_weapons, 'modules': modules, 'turn_ship_builds': turn_ship_builds,
@@ -146,7 +146,7 @@ def action_modificate_ship(request):
 
     if ship_amount > hidden_amount_ship:
         message = 'Нехватает кораблей в ангаре'
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
                   'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
                   'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -161,7 +161,7 @@ def action_modificate_ship(request):
                                                              element_id=new_ship_hull_id).first()
         if warehouse_element.amount <= ship_amount:
             message = 'Нехватает комплектующих на складе'
-            output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+            output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                       'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
                       'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
                       'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -193,7 +193,7 @@ def action_modificate_ship(request):
                 error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
                 if error == True:
                     message = 'Нехватает комплектующих на складе'
-                    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                               'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
                               'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
                               'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -215,7 +215,7 @@ def action_modificate_ship(request):
                 error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
                 if error == True:
                     message = 'Нехватает комплектующих на складе'
-                    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                               'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
                               'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
                               'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -229,7 +229,7 @@ def action_modificate_ship(request):
                 error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
                 if error == True:
                     message = 'Нехватает комплектующих на складе'
-                    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                               'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
                               'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
                               'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -250,7 +250,7 @@ def action_modificate_ship(request):
                 error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
                 if error == True:
                     message = 'Нехватает комплектующих на складе'
-                    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+                    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                               'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators,
                               'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
                               'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -294,7 +294,7 @@ def action_modificate_ship(request):
     project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
     turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
     message = 'Модификация началась'
-    output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
               'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds, 'message': message}
     return render(request, "designingships.html", output)
 

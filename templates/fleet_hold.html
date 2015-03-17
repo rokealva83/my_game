@@ -1,47 +1,23 @@
 {% extends "space_forces.html" %}
 {% block content_1 %}
     <form method="post" action="empty_fleet_hold" style="text-align: center">
-    <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
+        <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
 
-    <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
+        <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
 
         {% if ship_holds %}
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 0 %}
-                    {% if ship_hold.id_shipment == 1 %}
-                        <p>Resource 1 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
+                        {% for basic_resource in basic_resources %}
+                             {% if basic_resource.id == ship_hold.id_shipment %}
+                                  <p>{{ basic_resource.name }} ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
                             / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_resource1" class="scientic_place"></p>
-                    {% elif ship_hold.id_shipment == 2 %}
-                        <p>Resource 2 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
-                            / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_resource2" class="scientic_place"></p>
-                    {% elif ship_hold.id_shipment == 3 %}
-                        <p>Resource 3 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
-                            / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_resource3" class="scientic_place"></p>
-                    {% elif ship_hold.id_shipment == 4 %}
-                        <p>Resource 4 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
-                            / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_resource4" class="scientic_place"></p>
-                    {% elif ship_hold.id_shipment == 5 %}
-                        <p>Mineral 1 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
-                            / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_mineral1" class="scientic_place"></p>
-                    {% elif ship_hold.id_shipment == 6 %}
-                        <p>Mineral 2 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
-                            / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_mineral2" class="scientic_place"></p>
-                    {% elif ship_hold.id_shipment == 7 %}
-                        <p>Mineral 3 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
-                            / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_mineral3" class="scientic_place"></p>
-                    {% elif ship_hold.id_shipment == 8 %}
-                        <p>Mineral 4 ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
-                            / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_mineral4" class="scientic_place"></p>
-                    {% endif %}
+                            <input value="0" name="amount_resource{{ ship_hold.id_shipment }}" class="scientic_place"></p>
+                            {% endif %}
+                        {% endfor %}
+
                 {% endif %}
+
 
                 {% if ship_hold.class_shipment == 10 %}
                     {% for factory_pattern in factory_patterns %}
@@ -105,7 +81,8 @@
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
                                 <input value="0" name="amount_generator" class="scientic_place"></p>
-                            <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_generator"/>
+                            <input type="hidden" id="fleet_id"
+                                   value={{ ship_hold.id_shipment }} name="hidden_generator"/>
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -156,14 +133,18 @@
             Resource in warehouse
             <select name="warehouse_resource" class="scientic">
                 <option selected disabled>Choise resource</option>
-                <option value="1">Resource 1 ( {{ warehouse.resource1 }} )</option>
-                <option value="2">Resource 2 ( {{ warehouse.resource2 }} )</option>
-                <option value="3">Resource 3 ( {{ warehouse.resource3 }} )</option>
-                <option value="4">Resource 4 ( {{ warehouse.resource4 }} )</option>
-                <option value="5">Mineral 1 ( {{ warehouse.mineral1 }} )</option>
-                <option value="6">Mineral 2 ( {{ warehouse.mineral2 }} )</option>
-                <option value="7">Mineral 3 ( {{ warehouse.mineral3 }} )</option>
-                <option value="8">Mineral 4 ( {{ warehouse.mineral4 }} )</option>
+                {% for warehouse in warehouses %}
+                    {% if warehouse.amount > 0 %}
+                        {% for basic_resource in basic_resources %}
+                            {% if basic_resource.id == warehouse.id_resource %}
+                                <option value="{{ warehouse.id_resource }}">{{ basic_resource.name }}
+                                    ( {{ warehouse.amount }} )
+                                </option>
+
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
             </select>
             <input value="0" name="resource_amount" class="scientic_place" placeholder="Resource amount"/>
         </div>
@@ -176,7 +157,7 @@
                             {% if warehouse_factory.factory_id == factory_pattern.id %}
                                 {% if warehouse_factory.amount > 0 %}
                                     <option value="{{ warehouse_factory.factory_id }}">{{ factory_pattern.name }}
-                                        ( {{ warehouse_factory.amount }} )
+                                    ( {{ warehouse_factory.amount }} )
                                     c
                                 {% endif %}
                             {% endif %}

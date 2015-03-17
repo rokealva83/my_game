@@ -6,7 +6,7 @@ from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engi
     Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern
 from my_game.models import Basic_armor, Basic_factory, Basic_engine, Basic_generator, Basic_hull, Basic_module, \
     Basic_shell, Basic_shield, Basic_weapon
-from my_game.models import Warehouse_element, Warehouse_factory
+from my_game.models import Warehouse_element, Warehouse_factory, Basic_resource
 from my_game import function
 from my_game.models import Project_ship, Ship
 from my_game.models import Trade_element, Trade_space
@@ -55,78 +55,16 @@ def add_trade_element(request):
         ban = int(ban[0])
 
         if class_element == 0:
-            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
-            if id_warehouse_element == 1:
-                if warehouse.resource1 >= amount:
-                    name = 'Resource 1'
-                    new_amount = warehouse.resource1 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        resource1=new_amount)
-                else:
-                    message = 'Не верное количество товара'
-
-            elif id_warehouse_element == 2:
-                if warehouse.resource2 >= amount:
-                    name = 'Resource 2'
-                    new_amount = warehouse.resource2 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        resource2=new_amount)
-                else:
-                    message = 'Не верное количество товара'
-
-            elif id_warehouse_element == 3:
-                if warehouse.resource3 >= amount:
-                    name = 'Resource 3'
-                    new_amount = warehouse.resource3 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        resource3=new_amount)
-                else:
-                    message = 'Не верное количество товара'
-
-            elif id_warehouse_element == 4:
-                if warehouse.resource4 >= amount:
-                    name = 'Resource 4'
-                    new_amount = warehouse.resource4 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        resource4=new_amount)
-                else:
-                    message = 'Не верное количество товара'
-
-            elif id_warehouse_element == 5:
-                if warehouse.mineral1 >= amount:
-                    name = 'Mineral1'
-                    new_amount = warehouse.mineral1 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        mineral1=new_amount)
-                else:
-                    message = 'Не верное количество товара'
-
-            elif id_warehouse_element == 6:
-                if warehouse.mineral2 >= amount:
-                    name = 'Mineral 2'
-                    new_amount = warehouse.mineral2 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        mineral2=new_amount)
-                else:
-                    message = 'Не верное количество товара'
-
-            elif id_warehouse_element == 7:
-                if warehouse.mineral3 >= amount:
-                    name = 'Mineral 3'
-                    new_amount = warehouse.mineral3 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        mineral3=new_amount)
-                else:
-                    message = 'Не верное количество товара'
-
-            elif id_warehouse_element == 8:
-                if warehouse.mineral4 >= amount:
-                    name = 'Mineral 4'
-                    new_amount = warehouse.mineral4 - amount
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                        mineral4=new_amount)
-                else:
-                    message = 'Не верное количество товара'
+            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                 id_resource=id_warehouse_element).first()
+            resource = Basic_resource.objects.filter(id=id_warehouse_element).first()
+            if warehouse.amount >= amount:
+                name = resource.name
+                new_amount = warehouse.amount - amount
+                warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                     id_resource=id_warehouse_element).update(amount=new_amount)
+            else:
+                message = 'Не верное количество товара'
 
         elif class_element == 1:
             warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
@@ -249,7 +187,7 @@ def add_trade_element(request):
         function.check_all_queues(session_user)
         trade_space_id = request.POST.get('trade_space_id')
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -269,18 +207,19 @@ def add_trade_element(request):
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
-        trade_elements = Trade_element.objects.filter(trade_space= trade_space_id)
+        trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
         trade_spaces = Trade_space.objects.filter()
         trade_space = Trade_space.objects.filter(id=trade_space_id).first()
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users, 'trade_space': trade_space}
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
+                  'trade_space': trade_space}
         return render(request, "trade.html", output)

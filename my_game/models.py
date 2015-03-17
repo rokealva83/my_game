@@ -1216,3 +1216,11 @@ class Building_installed(models.Model):
     size = models.IntegerField()
     mass = models.IntegerField()
     power_consumption = models.IntegerField(default=0)
+
+
+
+class Basic_resource(models.Model):
+    class Meta():
+        db_table = 'basic_resource'
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=1000)

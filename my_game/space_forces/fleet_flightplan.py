@@ -349,7 +349,7 @@ def fleet_flightplan(request):
                 flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
             flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).delete()
 
-        warehouse = Warehouse.objects.filter(user=session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
@@ -360,7 +360,7 @@ def fleet_flightplan(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouse': warehouse, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
                   'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights}
         return render(request, "flightplan.html", output)
