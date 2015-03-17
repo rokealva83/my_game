@@ -25,3 +25,15 @@ def buy_trade(request):
         trade_space_id = int(trade_space_id[0])
         id_element = myDict.get('trade_buy')
         id_element = int(id_element[0])
+        amount = myDict.get('amount')
+        amount = int(amount[0])
+        set_aside = myDict.get('set_aside')
+        method = myDict.get('method')
+        method = int(method[0])
+
+        trade_element = Trade_element.objects.filter(id = id_element).first()
+        price_element = trade_element.amount/trade_element.cost * amount
+        user = MyUser.objects.filter(user_id = session_user).first()
+        if user.foreigh_currency >= price_element:
+            r = 2
+
