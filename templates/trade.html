@@ -6,8 +6,11 @@
 
             <div style="text-align: center;">
 
-                <p style="text-align: right; margin-right: 5px"><a href="#trade_space" class="trade_space">Торговое
-                    пространство</a></p>
+                <p style="text-align: right; margin-right: 5px">
+                    <a href="#create_trade_fleet" class="create_trade_fleet">Создать торговый флот</a>
+                    <a href="#trade_space" class="trade_space">Торговое
+                        пространство</a>
+                </p>
 
                 <p style="text-align: right; color: rgb(152, 32, 32); font-size: 14px">{{ message }}</p>
 
@@ -16,7 +19,7 @@
                         товар на продажу</a>
                     <a href="#trade_element" class="trade_element">Торговые ставки</a>
                     <a href="#trade_buy_element" class="trade_buy_element">Купеленый товар</a></p>
-                <a href="buy" class="trade_buy">Купить</a>
+
             </div>
 
 
@@ -348,7 +351,8 @@
                                 <td><input href="trade_del/{{ user_trade_element.id }}" style="margin:0 2px 0 2px"
                                            type="submit"
                                            value="Снять" class="trade_del 1212"/>
-                                    <input type="hidden" id="trade_del" value={{ user_trade_element.id }} name="trade_del"/>
+                                    <input type="hidden" id="trade_del"
+                                           value={{ user_trade_element.id }} name="trade_del"/>
                                 </td>
                             </form>
                         </tr>
@@ -361,11 +365,29 @@
 
 
             <!-- Модальное окно 5 -->
-            <a href="#x" class="overlay" id="win4"></a>
+            <a href="#x" class="overlay" id="create_trade_fleet"></a>
 
-            <div class="popup">
+            <div class="popup_create_trade_fleet">
+
+                <form method="post" action="create_trade_fleet" style="text-align: center">
+                    <input type="hidden" id=trade_space_id
+                           value="{{ trade_space_id }}" name="trade_space_id">
+
+                    <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
+                    {% if ships %}
+                        {% for ship in ships %}<p>
+                            {{ ship.name }} ( {{ ship.amount_ship }} )
+                            <input value="0" name="amount_ship" class="scientic_place"
+                                   placeholder="Amount ship"/>
+                            <input type="hidden" value={{ ship.id }} name="hidden_ship"/>
+                            <input class="scientic" type="submit" value="Добавить" name="add_ship"/></p>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+
 
             </div>
+
             <div style="border: 1px solid #000000; border-radius: 7px; margin: 3px 0 5px 0">
                 <p align="center">Пространство: {{ trade_space.name }}</p>
                 <table border="1" align="center" style="margin-bottom: 7px">
