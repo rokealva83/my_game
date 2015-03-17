@@ -29,11 +29,11 @@ def del_trade(request):
         trade_element = Trade_element.objects.filter(id=id_element).first()
         if trade_element.class_element == 0:
             warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                 id_resource=id_element).first()
+                                                 id_resource=trade_element.id_element).first()
 
             new_amount = warehouse.amount + trade_element.amount
             warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                 id_resource=id_element).update(amount=new_amount)
+                                                 id_resource=trade_element.id_element).update(amount=new_amount)
 
         elif 0 < trade_element.class_element < 9:
             warehouse_element = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
@@ -116,6 +116,7 @@ def del_trade(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
         trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
+        user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user = session_user)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
@@ -131,6 +132,6 @@ def del_trade(request):
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
-                  'trade_space': trade_space}
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements,
+                  'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space}
         return render(request, "trade.html", output)

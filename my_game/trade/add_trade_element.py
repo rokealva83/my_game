@@ -63,6 +63,7 @@ def add_trade_element(request):
                 new_amount = warehouse.amount - amount
                 warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                      id_resource=id_warehouse_element).update(amount=new_amount)
+                id_element = id_warehouse_element
             else:
                 message = 'Не верное количество товара'
 
@@ -208,6 +209,7 @@ def add_trade_element(request):
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
         trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
+        user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user = session_user)
         trade_spaces = Trade_space.objects.filter()
         trade_space = Trade_space.objects.filter(id=trade_space_id).first()
         request.session['userid'] = session_user
@@ -221,5 +223,5 @@ def add_trade_element(request):
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
                   'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
-                  'trade_space': trade_space}
+                  'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space}
         return render(request, "trade.html", output)

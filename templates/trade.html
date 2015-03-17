@@ -320,35 +320,35 @@
 
                     </tr>
 
-                    {% for trade_element in trade_elements %}
+                    {% for user_trade_element in user_trade_elements %}
                         <tr>
-                            <form method="post" action="del_trade" value="{{ trade_element.id }}">
+                            <form method="post" action="del_trade" value="{{ user_trade_element.id }}">
                                 <input type="hidden" id=trade_space_id
                                        value="{{ trade_space_id }}" name="trade_space_id">
-                                <td>{{ trade_element.name }}</td>
+                                <td>{{ user_trade_element.name }}</td>
                                 {% for trade_space in trade_spaces %}
-                                    {% if trade_space.id == trade_element.trade_space %}
+                                    {% if trade_space.id == user_trade_element.trade_space %}
 
                                         <td>{{ trade_space.name }}</td>
                                     {% endif %}
                                 {% endfor %}
-                                <td>{{ trade_element.amount }}</td>
-                                <td>{{ trade_element.cost }}</td>
-                                <td>{{ trade_element.min_amount }}</td>
-                                <td>{{ trade_element.cost_element }}</td>
-                                {% if trade_element.buyer == 0 %}
+                                <td>{{ user_trade_element.amount }}</td>
+                                <td>{{ user_trade_element.cost }}</td>
+                                <td>{{ user_trade_element.min_amount }}</td>
+                                <td>{{ user_trade_element.cost_element }}</td>
+                                {% if user_trade_element.buyer == 0 %}
                                     <td>Общая ставка</td>
                                 {% else %}
                                     {% for user in users %}
-                                        {% if user.user_id == trade_element.buyer %}
+                                        {% if user.user_id == user_trade_element.buyer %}
                                             <td>{{ user.user_name }}</td>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
-                                <td><input href="trade_del/{{ trade_element.id }}" style="margin:0 2px 0 2px"
+                                <td><input href="trade_del/{{ user_trade_element.id }}" style="margin:0 2px 0 2px"
                                            type="submit"
                                            value="Снять" class="trade_del 1212"/>
-                                    <input type="hidden" id="trade_del" value={{ trade_element.id }} name="trade_del"/>
+                                    <input type="hidden" id="trade_del" value={{ user_trade_element.id }} name="trade_del"/>
                                 </td>
                             </form>
                         </tr>
