@@ -429,6 +429,7 @@
                         <td style="width: 150px">Покупка</td>
                     </tr>
                     {% for trade_element in trade_elements %}
+                        {% if trade_element.user != user.user_id %}
                         <tr align="center">
                             <form method="post" action="buy_trade" value="{{ trade_element.id }}">
                                 <input type="hidden" id=trade_space_id
@@ -442,8 +443,8 @@
                                            name="amount" class="scientic_place" placeholder="Покупка"/></td>
                                 <td>
                                     <p>
-                                        <select name="methot" class="scientic">
-                                            <option disabled selected value="0">Способ доставки</option>
+                                        <select name="method" class="scientic">
+                                            <option value="0">Способ доставки</option>
                                             <option value="1">Телепортация</option>
                                             <option value="2">Флотом покупателя</option>
                                             <option value="3">Флотом продавца</option>
@@ -460,6 +461,7 @@
 
                             </form>
                         </tr>
+                        {% endif %}
                     {% endfor %}
                 </table>
             </div>

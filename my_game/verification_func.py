@@ -9,7 +9,7 @@ from my_game.models import Planet
 from my_game.models import MyUser, User_city, User_scientic
 from my_game.models import Turn_scientic, Turn_building, Turn_assembly_pieces, \
     Turn_production
-from my_game.models import Factory_pattern, Factory_installed
+from my_game.models import Factory_pattern, Factory_installed, Building_pattern, Building_installed
 from my_game.models import Warehouse_factory, Warehouse_element, Warehouse
 from knowledge import scientic_func
 from my_game.models import Project_ship, Turn_ship_build, Ship, Fleet, Element_ship
@@ -105,22 +105,40 @@ def verification_phase_of_construction(request):
             elapsed_time_seconds = elapsed_time.seconds
             time_update = turn_building.finish_time_deployment
             verification_of_resources(user, elapsed_time_seconds, time_update)
-            factory_pattern = Factory_pattern.objects.filter(id=turn_building.factory_id).first()
-
-            factory_installed = Factory_installed(
-                user=user,
-                user_city=user_city.id,
-                factory_pattern_id=turn_building.factory_id,
-                name=factory_pattern.name,
-                time_deployment=factory_pattern.time_deployment,
-                production_class=factory_pattern.production_class,
-                production_id=factory_pattern.production_id,
-                time_production=factory_pattern.time_production,
-                size=factory_pattern.size,
-                mass=factory_pattern.mass,
-                power_consumption=factory_pattern.power_consumption,
-            )
-            factory_installed.save()
+            if turn_building.class_id < 13:
+                factory_pattern = Factory_pattern.objects.filter(id=turn_building.factory_id).first()
+                factory_installed = Factory_installed(
+                    user=user,
+                    user_city=user_city.id,
+                    factory_pattern_id=turn_building.factory_id,
+                    name=factory_pattern.name,
+                    time_deployment=factory_pattern.time_deployment,
+                    production_class=factory_pattern.production_class,
+                    production_id=factory_pattern.production_id,
+                    time_production=factory_pattern.time_production,
+                    size=factory_pattern.size,
+                    mass=factory_pattern.mass,
+                    power_consumption=factory_pattern.power_consumption,
+                )
+                factory_installed.save()
+            else:
+                factory_pattern = Building_pattern.objects.filter(id=turn_building.factory_id).first()
+                factory_installed = Building_installed(
+                    user=user,
+                    user_city=user_city.id,
+                    building_pattern_id=turn_building.factory_id,
+                    name=factory_pattern.name,
+                    time_deployment=factory_pattern.time_deployment,
+                    production_class=factory_pattern.production_class,
+                    production_id=factory_pattern.production_id,
+                    time_production=factory_pattern.time_production,
+                    warehouse=0,
+                    max_warehouse=factory_pattern.max_warehouse,
+                    size=factory_pattern.size,
+                    mass=factory_pattern.mass,
+                    power_consumption=factory_pattern.power_consumption,
+                )
+                factory_installed.save()
             if factory_pattern.production_class == 12:
                 new_power = user_city.power + factory_installed.power_consumption
                 user_city = User_city.objects.filter(id=user_city.id).update(power=new_power)
@@ -156,11 +174,11 @@ def verification_of_resources(*args):
 
             for check_factory in check_factorys:
                 resourse = resourse + elapsed_time_seconds / check_factory.time_production
-            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource = prod_id).first()
+            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource=prod_id).first()
             new_resourse = warehouse.amount + resourse
-            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource = prod_id).update(amount = new_resourse)
+            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource=prod_id).update(
+                amount=new_resourse)
             prod_id = prod_id + 1
-
 
         population = 0
         population_buildings = Factory_installed.objects.filter(user=user, user_city=city_id, production_class=10)
@@ -181,6 +199,19 @@ def verification_of_resources(*args):
         new_internal_currency = MyUser.objects.get(user_id=user).internal_currency + increase_internal_currency
         money = MyUser.objects.filter(user_id=user).update(internal_currency=new_internal_currency)
 
+        trade_building = Building_installed.objects.filter(user=user, user_city=city_id, production_class=13).first()
+        if trade_building:
+            if trade_building.max_warehouse > trade_building.warehouse:
+                energy = elapsed_time_seconds/trade_building.time_production
+                stock_energy = trade_building.warehouse
+                new_energy = stock_energy + energy
+                if new_energy > trade_building.max_warehouse:
+                    new_energy = trade_building.max_warehouse
+                trade_building = Building_installed.objects.filter(user=user, user_city=city_id, production_class=13).update(warehouse = new_energy)
+
+
+
+
     last_time_update = time_update
     last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,
                                      0)
@@ -200,14 +231,17 @@ def check_assembly_line_workpieces(request):
         delta_time = turn_assembly_pieces.finish_time_assembly - turn_assembly_pieces.start_time_assembly
         delta = delta_time.seconds
         user_city = User_city.objects.filter(user=user, id=turn_assembly_pieces.user_city).first()
-        warehouse_factory = Warehouse_factory.objects.filter(factory_id=turn_assembly_pieces.pattern_id).first()
+        warehouse_factory = Warehouse_factory.objects.filter(factory_id=turn_assembly_pieces.pattern_id,
+                                                             production_class=turn_assembly_pieces.class_id).first()
         if new_delta > delta:
             if warehouse_factory is not None:
                 amount_assembly = turn_assembly_pieces.amount_assembly + warehouse_factory.amount
-                warehouse_factory = Warehouse_factory.objects.filter(factory_id=turn_assembly_pieces.pattern_id).update(
+                warehouse_factory = Warehouse_factory.objects.filter(factory_id=turn_assembly_pieces.pattern_id,
+                                                                     production_class=turn_assembly_pieces.class_id).update(
                     amount=amount_assembly)
             else:
-                factory_pattern = Factory_pattern.objects.filter(id=turn_assembly_pieces.pattern_id).first()
+                factory_pattern = Building_pattern.objects.filter(id=turn_assembly_pieces.pattern_id,
+                                                                  production_class=turn_assembly_pieces.class_id).first()
                 new_factory = Warehouse_factory(
                     user=turn_assembly_pieces.user,
                     user_city=turn_assembly_pieces.user_city,
@@ -311,7 +345,6 @@ def verification_turn_ship_build(request):
                         warehouse_element = Warehouse_element.objects.filter(element_class=class_element,
                                                                              element_id=element_ship.id_element_pattern).first()
 
-
                         new_amount = warehouse_element.amount + (1 * turn_ship_build.amount)
                         warehouse_element = Warehouse_element.objects.filter(element_class=class_element,
                                                                              element_id=element_ship.id_element_pattern).update(
@@ -375,7 +408,6 @@ def verification_flight_list(request):
                         flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
                         flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).first()
 
-
                         if flightplan_flight:
                             finish_time = old_flightplan_flight.start_time + timedelta(
                                 seconds=flightplan_flight.flight_time)
@@ -392,7 +424,7 @@ def verification_flight_list(request):
             if lens == flightplan_len:
                 fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
             else:
-                flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first().update(status = 1)
+                flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first().update(status=1)
 
 
 

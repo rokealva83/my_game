@@ -94,7 +94,6 @@ class Warehouse(models.Model):
     amount = models.IntegerField(default=125000)
 
 
-
 class User_city(models.Model):
     class Meta():
         db_table = 'user_city'
@@ -805,6 +804,7 @@ class Turn_building(models.Model):
     user = models.IntegerField()
     user_city = models.IntegerField(default=0)
     factory_id = models.IntegerField(default=0)
+    class_id = models.IntegerField(default=0)
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
     z = models.IntegerField(default=0)
@@ -849,6 +849,7 @@ class Turn_assembly_pieces(models.Model):
     user = models.IntegerField()
     user_city = models.IntegerField()
     pattern_id = models.IntegerField()
+    class_id = models.IntegerField(default=0)
     amount_assembly = models.IntegerField(default=0)
     start_time_assembly = models.DateTimeField()
     finish_time_assembly = models.DateTimeField()
@@ -1179,7 +1180,8 @@ class Basic_building(models.Model):
     production_class = models.IntegerField()
     production_id = models.IntegerField()
     time_production = models.IntegerField()
-    warehouse = models.IntegerField()
+    warehouse = models.IntegerField(default=0)
+    max_warehouse = models.IntegerField(default=500)
     price_internal_currency = models.IntegerField(default=25)
     price_resource1 = models.IntegerField(default=0)
     price_resource2 = models.IntegerField(default=0)
@@ -1199,6 +1201,34 @@ class Basic_building(models.Model):
     def __unicode__(self):
         return self.name
 
+class Building_pattern(models.Model):
+    class Meta():
+        db_table = 'building_pattern'
+
+    user = models.IntegerField()
+    name = models.CharField(max_length=50)
+    basic_id = models.IntegerField(default=1)
+    production_class = models.IntegerField()
+    production_id = models.IntegerField()
+    time_production = models.IntegerField()
+    warehouse = models.IntegerField(default=0)
+    max_warehouse = models.IntegerField(default=500)
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
+    cost_expert_deployment = models.IntegerField(default=10)
+    assembly_workpiece = models.IntegerField(default=10)
+    time_deployment = models.IntegerField()
+    size = models.IntegerField()
+    mass = models.IntegerField()
+    power_consumption = models.IntegerField(default=0)
+
 
 class Building_installed(models.Model):
     class Meta():
@@ -1213,14 +1243,34 @@ class Building_installed(models.Model):
     production_id = models.IntegerField()
     time_production = models.IntegerField()
     warehouse = models.IntegerField()
+    max_warehouse = models.IntegerField(default=500)
     size = models.IntegerField()
     mass = models.IntegerField()
     power_consumption = models.IntegerField(default=0)
 
 
-
 class Basic_resource(models.Model):
     class Meta():
         db_table = 'basic_resource'
+
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
+
+
+class Delivery_queue(models.Model):
+    class Meta():
+        db_table = 'delivery_queue'
+
+    user = models.IntegerField()
+    user_city = models.IntegerField()
+    name = models.CharField(max_length=50, default='new')
+    class_element = models.IntegerField()
+    id_element = models.IntegerField()
+    amount = models.IntegerField()
+    method = models.IntegerField()
+    status = models.IntegerField()
+    x = models.IntegerField()
+    y = models.IntegerField()
+    z = models.IntegerField()
+
+

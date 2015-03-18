@@ -2,21 +2,29 @@
 
 from datetime import datetime, timedelta
 from my_game.models import MyUser, User_city, Warehouse, Turn_building, Turn_assembly_pieces
-from my_game.models import Factory_pattern, Factory_installed
+from my_game.models import Factory_pattern, Factory_installed, Building_pattern, Building_installed
 from my_game.models import Warehouse_factory
 
 
 def rename_factory_pattern(*args):
     new_name = args[0]
     pattern_id = args[1]
-    name_factory = Factory_pattern.objects.filter(id=pattern_id).update(name=new_name)
+    class_id = args[2]
+    if class_id < 13:
+        name_factory = Factory_pattern.objects.filter(id=pattern_id).update(name=new_name)
+    else:
+        name_factory = Building_pattern.objects.filter(id=pattern_id).update(name=new_name)
     message = 'Шаблон переименован'
     return (message)
 
 
 def upgrade_factory_pattern(*args):
     pattern_id = int(args[2])
-    old_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
+    class_id = int(args[3])
+    if class_id < 13:
+        old_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
+    else:
+        old_pattern = Building_pattern.objects.filter(id=pattern_id).first()
     number = int(args[0])
     if old_pattern.production_class == 12:
         speed = 1
@@ -30,35 +38,67 @@ def upgrade_factory_pattern(*args):
 
     if number == 1:
         koef_number = 1
+    elif old_pattern.production_class == 13:
+        koef_number = int(number)
     else:
         koef_number = int(number) * 1.6
 
-    old_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
-    new_pattern = Factory_pattern(
-        user=old_pattern.user,
-        basic_id=old_pattern.basic_id,
-        name=old_pattern.name,
-        price_internal_currency=old_pattern.price_internal_currency * koef_speed * koef_number,
-        price_resource1=old_pattern.price_resource1 * koef_speed * koef_number,
-        price_resource2=old_pattern.price_resource2 * koef_speed * koef_number,
-        price_resource3=old_pattern.price_resource3 * koef_speed * koef_number,
-        price_resource4=old_pattern.price_resource4 * koef_speed * koef_number,
-        price_mineral1=old_pattern.price_mineral1 * koef_speed * koef_number,
-        price_mineral2=old_pattern.price_mineral2 * koef_speed * koef_number,
-        price_mineral3=old_pattern.price_mineral3 * koef_speed * koef_number,
-        price_mineral4=old_pattern.price_mineral4 * koef_speed * koef_number,
-        cost_expert_deployment=old_pattern.cost_expert_deployment * koef_speed * koef_number,
-        assembly_workpiece=old_pattern.assembly_workpiece * koef_speed * koef_number,
-        time_deployment=old_pattern.time_deployment * koef_speed * koef_number,
-        production_class=old_pattern.production_class,
-        production_id=old_pattern.production_id,
-        time_production=old_pattern.time_production / (speed * number),
-        size=old_pattern.size * koef_speed * koef_number / 3,
-        mass=old_pattern.mass * koef_speed * koef_number / 3,
-        power_consumption=old_pattern.power_consumption * koef_speed * koef_number / 3,
-    )
-    new_pattern.save()
-    new_pattern_id = new_pattern.pk
+    if class_id < 13:
+        new_pattern = Factory_pattern(
+            user=old_pattern.user,
+            basic_id=old_pattern.basic_id,
+            name=old_pattern.name,
+            price_internal_currency=old_pattern.price_internal_currency * koef_speed * koef_number,
+            price_resource1=old_pattern.price_resource1 * koef_speed * koef_number,
+            price_resource2=old_pattern.price_resource2 * koef_speed * koef_number,
+            price_resource3=old_pattern.price_resource3 * koef_speed * koef_number,
+            price_resource4=old_pattern.price_resource4 * koef_speed * koef_number,
+            price_mineral1=old_pattern.price_mineral1 * koef_speed * koef_number,
+            price_mineral2=old_pattern.price_mineral2 * koef_speed * koef_number,
+            price_mineral3=old_pattern.price_mineral3 * koef_speed * koef_number,
+            price_mineral4=old_pattern.price_mineral4 * koef_speed * koef_number,
+            cost_expert_deployment=old_pattern.cost_expert_deployment * koef_speed * koef_number,
+            assembly_workpiece=old_pattern.assembly_workpiece * koef_speed * koef_number,
+            time_deployment=old_pattern.time_deployment * koef_speed * koef_number,
+            production_class=old_pattern.production_class,
+            production_id=old_pattern.production_id,
+            time_production=old_pattern.time_production / (speed * number),
+            size=old_pattern.size * koef_speed * koef_number / 3,
+            mass=old_pattern.mass * koef_speed * koef_number / 3,
+            power_consumption=old_pattern.power_consumption * koef_speed * koef_number / 3,
+        )
+        new_pattern.save()
+        new_pattern_id = new_pattern.pk
+    else:
+        new_pattern = Building_pattern(
+
+            user=old_pattern.user,
+            basic_id=old_pattern.basic_id,
+            name=old_pattern.name,
+            price_internal_currency=old_pattern.price_internal_currency * koef_speed * koef_number,
+            price_resource1=old_pattern.price_resource1 * koef_speed * koef_number,
+            price_resource2=old_pattern.price_resource2 * koef_speed * koef_number,
+            price_resource3=old_pattern.price_resource3 * koef_speed * koef_number,
+            price_resource4=old_pattern.price_resource4 * koef_speed * koef_number,
+            price_mineral1=old_pattern.price_mineral1 * koef_speed * koef_number,
+            price_mineral2=old_pattern.price_mineral2 * koef_speed * koef_number,
+            price_mineral3=old_pattern.price_mineral3 * koef_speed * koef_number,
+            price_mineral4=old_pattern.price_mineral4 * koef_speed * koef_number,
+            cost_expert_deployment=old_pattern.cost_expert_deployment * koef_speed * koef_number,
+            assembly_workpiece=old_pattern.assembly_workpiece * koef_speed * koef_number,
+            time_deployment=old_pattern.time_deployment * koef_speed * koef_number,
+            production_class=old_pattern.production_class,
+            production_id=old_pattern.production_id,
+            time_production=old_pattern.time_production / speed,
+            size=old_pattern.size * koef_speed * koef_number / 3,
+            mass=old_pattern.mass * koef_speed * koef_number / 3,
+            power_consumption=old_pattern.power_consumption * koef_speed * koef_number / 3,
+            max_warehouse=old_pattern.max_warehouse * koef_number,
+            warehouse=old_pattern.warehouse * koef_number,
+        )
+        new_pattern.save()
+        new_pattern_id = new_pattern.pk
+
     if new_pattern.production_class == 12:
         old_pattern_power = old_pattern.power_consumption
         new_power_consumption = old_pattern_power * number
@@ -69,11 +109,16 @@ def upgrade_factory_pattern(*args):
 
 def delete_factory_pattern(*args):
     pattern_id = int(args[0])
+    class_id = int(args[1])
     factory = Factory_installed.objects.filter(factory_pattern_id=pattern_id).first()
     if factory is not None:
         message = 'Шаблон не может быть удален'
     else:
-        delete_pattern = Factory_pattern.objects.filter(id=pattern_id).delete()
+        if class_id < 13:
+            delete_pattern = Factory_pattern.objects.filter(id=pattern_id).delete()
+        else:
+            delete_pattern = Building_pattern.objects.filter(id=pattern_id).delete()
+
         message = 'Шаблон удален'
     return (message)
 
@@ -83,9 +128,13 @@ def making_factory_unit(*args):
     session_user_city = int(args[1])
     amount_factory_unit = int(args[2])
     pattern_id = int(args[3])
+    class_id = int(args[4])
     user = MyUser.objects.filter(user_id=session_user).first()
-    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
-    factory_pattern_making = Factory_pattern.objects.filter(id=pattern_id).first()
+    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+    if class_id < 13:
+        factory_pattern_making = Factory_pattern.objects.filter(id=pattern_id).first()
+    else:
+        factory_pattern_making = Building_pattern.objects.filter(id=pattern_id).first()
     turn_assembly_pieces = len(Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city))
 
     if turn_assembly_pieces < 3:
@@ -129,21 +178,29 @@ def making_factory_unit(*args):
 
             for warehouse in warehouses:
                 if warehouse.id_resource == 1:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource1=new_resource1)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=1).update(amount=new_resource1)
                 elif warehouse.id_resource == 2:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource2=new_resource2)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=2).update(amount=new_resource2)
                 elif warehouse.id_resource == 3:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource3=new_resource3)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=3).update(amount=new_resource3)
                 elif warehouse.id_resource == 4:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(resource4=new_resource4)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=4).update(amount=new_resource4)
                 elif warehouse.id_resource == 5:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral1=new_mineral1)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=5).update(amount=new_mineral1)
                 elif warehouse.id_resource == 6:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral2=new_mineral2)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=6).update(amount=new_mineral2)
                 elif warehouse.id_resource == 7:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral3=new_mineral3)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=7).update(amount=new_mineral3)
                 elif warehouse.id_resource == 8:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city).update(mineral4=new_mineral4)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=8).update(amount=new_mineral4)
 
             user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
             turn_assembly_piece = Turn_assembly_pieces.objects.filter(user=session_user,
@@ -158,6 +215,7 @@ def making_factory_unit(*args):
                 user=session_user,
                 user_city=session_user_city,
                 pattern_id=pattern_id,
+                class_id=class_id,
                 start_time_assembly=start_making,
                 finish_time_assembly=finish_making,
                 amount_assembly=amount_factory_unit
@@ -175,8 +233,12 @@ def install_factory_unit(*args):
     session_user = args[0]
     session_user_city = args[1]
     pattern_id = args[2]
+    class_id = int(args[3])
     user_city = User_city.objects.filter(id=session_user_city).first()
-    factory_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
+    if class_id < 13:
+        factory_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
+    else:
+        factory_pattern = Building_pattern.objects.filter(id=pattern_id).first()
     free_energy = user_city.power - user_city.use_energy
     len_turn_building = len(Turn_building.objects.filter(user=session_user, user_city=session_user_city))
     if len_turn_building < 3:
@@ -198,6 +260,7 @@ def install_factory_unit(*args):
                 user=session_user,
                 user_city=session_user_city,
                 factory_id=pattern_id,
+                class_id=class_id,
                 x=user_city.x,
                 y=user_city.y,
                 z=user_city.z,
@@ -205,14 +268,18 @@ def install_factory_unit(*args):
                 finish_time_deployment=finish_time,
             )
             turn_building.save()
-        install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).first()
-        new_amount = install_factory.amount - 1
-        install_factory = Warehouse_factory.objects.filter(user = session_user, factory_id = pattern_id).update(amount = new_amount)
-        if factory_pattern.production_class != 10:
-            user_city = User_city.objects.filter(user=session_user, id = session_user_city).first()
-            new_population = user_city.population - factory_pattern.cost_expert_deployment
-            user_city = User_city.objects.filter(id=user_city.id).update(population=new_population)
-        message = 'Развертывание начато'
+            install_factory = Warehouse_factory.objects.filter(user=session_user, factory_id=pattern_id,
+                                                               production_class=class_id).first()
+            new_amount = install_factory.amount - 1
+            install_factory = Warehouse_factory.objects.filter(user=session_user, factory_id=pattern_id,
+                                                               production_class=class_id).update(amount=new_amount)
+            if factory_pattern.production_class != 10:
+                user_city = User_city.objects.filter(user=session_user, id=session_user_city).first()
+                new_population = user_city.population - factory_pattern.cost_expert_deployment
+                user_city = User_city.objects.filter(id=user_city.id).update(population=new_population)
+            message = 'Развертывание начато'
+        else:
+            message = 'Нехватает инженеров или энергии'
     else:
         message = 'Очередь заполнена'
     return (message)
