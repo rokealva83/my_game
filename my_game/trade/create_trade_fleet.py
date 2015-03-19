@@ -1,21 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
-from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse, Basic_resource
-from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern
-from my_game.models import Basic_armor, Basic_factory, Basic_engine, Basic_generator, Basic_hull, Basic_module, \
-    Basic_shell, Basic_shield, Basic_weapon, Basic_scientic
-from my_game.models import Warehouse_element, Warehouse_factory
-from my_game import function
-from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship
-from my_game.models import Trade_element, Trade_space
 
+from my_game.models import Basic_resource
+from my_game.models import Shield_pattern, Generator_pattern, Engine_pattern, Armor_pattern, Weapon_pattern, \
+    Shell_pattern, Factory_pattern
+from my_game.models import Warehouse_element, Warehouse_factory
+from my_game.models import Trade_element, Trade_space, Building_installed, Delivery_queue
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
-from my_game.models import Hull_pattern, Project_ship, Element_ship, Module_pattern
+from my_game.models import Hull_pattern, Element_ship, Module_pattern
 from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr
 from my_game import function
 
@@ -63,10 +57,10 @@ def create_trade_fleet(request):
                                    place_id=session_user_city).first()
 
         if int(ship.amount_ship) >= int(amount_ship):
-            user_city = User_city.objects.filter(id = session_user_city).first()
+            user_city = User_city.objects.filter(id=session_user_city).first()
             fleet = Fleet(
-                user = session_user,
-                name = 'Trade',
+                user=session_user,
+                name='Trade',
                 x=user_city.x,
                 y=user_city.y,
                 z=user_city.z,
@@ -95,7 +89,6 @@ def create_trade_fleet(request):
                         giper_scan = element_pattern.param3
 
             hold = hold + hull_pattern.hold_size
-
 
             if int(ship.amount_ship) == int(amount_ship):
                 ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
@@ -215,18 +208,22 @@ def create_trade_fleet(request):
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
         trade_elements = Trade_element.objects.filter(trade_space=1)
-        user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user = session_user)
-
+        user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user=session_user)
+        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+                                                           production_class=13).first()
+        delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'basic_resources': basic_resources,
-                      'user_city': user_city, 'user_citys': user_citys, 'warehouse_factorys': warehouse_factorys,
-                      'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
-                      'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
-                      'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
-                      'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
-                      'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
-                      'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id, 'project_ships': project_ships,
-                      'ships': ships, 'trade_elements': trade_elements, 'user_trade_elements':user_trade_elements,'users': users, 'message': message}
+                  'user_city': user_city, 'user_citys': user_citys, 'warehouse_factorys': warehouse_factorys,
+                  'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
+                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
+                  'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
+                  'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
+                  'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
+                  'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id, 'project_ships': project_ships,
+                  'ships': ships, 'trade_elements': trade_elements, 'user_trade_elements': user_trade_elements,
+                  'users': users, 'message': message, 'trade_building': trade_building,
+                  'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)

@@ -9,7 +9,7 @@ from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engi
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
 from my_game.models import Project_ship, Ship
-from my_game.models import Trade_element, Trade_space, Delivery_queue
+from my_game.models import Trade_element, Trade_space, Delivery_queue, Building_installed
 
 
 def buy_trade(request):
@@ -19,6 +19,7 @@ def buy_trade(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
+        message = ''
 
         full_request = request.POST
         myDict = dict(full_request.iterlists())
@@ -32,15 +33,15 @@ def buy_trade(request):
         method = myDict.get('method')
         method = int(method[0])
 
-        if amount>0:
-            trade_element = Trade_element.objects.filter(id = id_element).first()
+        if amount > 0:
+            trade_element = Trade_element.objects.filter(id=id_element).first()
             if amount == trade_element.amount:
                 price_element = trade_element.cost
             elif trade_element.amount > amount:
-                min_amount = trade_element.min_amount*1.0
-                delta = amount/min_amount
+                min_amount = trade_element.min_amount * 1.0
+                delta = amount / min_amount
                 delta = math.ceil(delta)
-                amount = min_amount*delta
+                amount = min_amount * delta
                 if amount == trade_element.amount:
                     price_element = trade_element.cost
                 else:
@@ -50,37 +51,42 @@ def buy_trade(request):
                 amount = trade_element.amount
                 price_element = trade_element.cost
 
-            user = MyUser.objects.filter(user_id = session_user).first()
+            user = MyUser.objects.filter(user_id=session_user).first()
             if user.foreigh_currency >= price_element:
                 foreigh_currency = user.foreigh_currency
                 new_foreigh_currency = foreigh_currency - price_element
-                user = MyUser.objects.filter(user_id = session_user).update(foreigh_currency = new_foreigh_currency)
-                seller = MyUser.objects.filter(user_id = trade_element.user).first()
+                user = MyUser.objects.filter(user_id=session_user).update(foreigh_currency=new_foreigh_currency)
+                seller = MyUser.objects.filter(user_id=trade_element.user).first()
                 foreigh_currency = seller.foreigh_currency
                 new_foreigh_currency = foreigh_currency + price_element
-                seller = MyUser.objects.filter(user_id = user).update(foreigh_currency = new_foreigh_currency)
+                seller = MyUser.objects.filter(user_id=trade_element.user).update(foreigh_currency=new_foreigh_currency)
+                price_koef = amount / trade_element.amount
+                new_price = trade_element.cost * price_koef
+                trade_element = Trade_element.objects.filter(id=id_element).update(cost=new_price)
+
+                trade_element = Trade_element.objects.filter(id=id_element).first()
                 if set_aside:
                     delivery_queue = Delivery_queue(
-                        user = session_user,
-                        user_city = session_user_city,
-                        name = trade_element.name,
-                        class_element = trade_element.class_element,
-                        id_element = trade_element.id_element,
-                        amount = amount,
-                        method = 0,
-                        status = 0,
-                        x = trade_element.x,
-                        y = trade_element.y,
-                        z = trade_element.z
+                        user=session_user,
+                        user_city=session_user_city,
+                        name=trade_element.name,
+                        class_element=trade_element.class_element,
+                        id_element=trade_element.id_element,
+                        amount=amount,
+                        method=0,
+                        status=0,
+                        x=trade_element.x,
+                        y=trade_element.y,
+                        z=trade_element.z
                     )
                     delivery_queue.save()
 
                     new_amount = trade_element.amount - amount
                     if new_amount == 0:
-                        trade_element = Trade_element.objects.filter(id = id_element).delete()
+                        trade_element = Trade_element.objects.filter(id=id_element).delete()
 
                     else:
-                        trade_element = Trade_element.objects.filter(id = id_element).update(amount = new_amount)
+                        trade_element = Trade_element.objects.filter(id=id_element).update(amount=new_amount)
                     message = 'Товар поставлено в очередь на доставку'
 
                 else:
@@ -113,7 +119,10 @@ def buy_trade(request):
         users = MyUser.objects.filter()
         trade_space = Trade_space.objects.filter(id=trade_space_id).first()
         trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
-        user_trade_elements = Trade_element.objects.filter(user = session_user)
+        user_trade_elements = Trade_element.objects.filter(user=session_user)
+        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+                                                           production_class=13).first()
+        delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -126,8 +135,9 @@ def buy_trade(request):
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users, 'user_trade_elements':user_trade_elements,
-                  'trade_space': trade_space, 'message': message}
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
+                  'user_trade_elements': user_trade_elements, 'trade_space': trade_space, 'message': message,
+                  'trade_building': trade_building, 'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)
 
 

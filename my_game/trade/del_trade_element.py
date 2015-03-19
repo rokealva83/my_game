@@ -8,7 +8,7 @@ from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engi
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
 from my_game.models import Project_ship, Ship
-from my_game.models import Trade_element, Trade_space
+from my_game.models import Trade_element, Trade_space, Building_installed, Delivery_queue
 
 
 def del_trade(request):
@@ -122,6 +122,9 @@ def del_trade(request):
         users = MyUser.objects.filter()
         trade_spaces = Trade_space.objects.filter()
         trade_space = Trade_space.objects.filter(id=trade_space_id).first()
+        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+                                                           production_class=13).first()
+        delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -133,5 +136,5 @@ def del_trade(request):
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
                   'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements,
-                  'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space}
+                  'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space, 'trade_building': trade_building, 'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)

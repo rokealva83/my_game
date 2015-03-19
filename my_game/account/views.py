@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from datetime import datetime
 from my_game.models import Planet
 from my_game.models import User_variables
-from my_game.models import MyUser
+from my_game.models import MyUser, Race
 from my_game.models import User_city, Warehouse, User_scientic, Basic_scientic, Basic_factory, Factory_pattern, \
     Factory_installed
 from my_game import function
@@ -181,9 +181,12 @@ def auth(request):
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 user_citys = User_city.objects.filter(user=int(user_name_auth.id))
                 planet = Planet.objects.filter(id=user_city.planet_id).first()
+                race = Race.objects.filter(id=user.race_id).first()
+                planets = Planet.objects.filter(id=user_city.planet_id)
+                len_planet= len(planets)
                 function.check_all_queues(user_id)
-                output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                          'planet': planet}
+                output = {'user': user,'race':race, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+                      'planet': planet, 'len_planet': len_planet}
                 request.session['userid'] = user_name_auth.id
                 request.session['user_city'] = user_city.id
                 request.session['live'] = True
