@@ -420,7 +420,9 @@
             <div class="popup_trade_buy_element">
 
                 <table border="1" align="center" style="margin-bottom: 7px">
-                    <caption>Торговые ставки</caption>
+                    <h3 style="text-align: right; margin:0 10px 5px 0">Наличие энергии в
+                        накопителях: {{ trade_building.warehouse }}</h3>
+                    <caption>Купленный товар</caption>
                     <tr align="center">
                         <td style="width: 250px">Товар</td>
                         <td style="width: 100px">Количество</td>
@@ -435,11 +437,12 @@
                                        value="{{ trade_space_id }}" name="trade_space_id">
                                 <td>{{ delivery_queue.name }}</td>
                                 <td>{{ delivery_queue.amount }}</td>
-                                <td>{% if delivery_queue.status == 0 %}
+                                <td><p>{% if delivery_queue.status == 0 %}
                                     Ожидание
                                 {% else %}
                                     Доставка
                                 {% endif %}
+                                </p>
                                 </td>
                                 <td>
                                     <p>
@@ -451,16 +454,64 @@
                                         </select>
                                     </p>
                                 </td>
-                                <td><input href="trade_del/{{ delivery_queue.id }}" style="margin:0 2px 0 2px"
-                                           type="submit" value="Доставить" class="trade_del"/>
+                                <td><input href="deliver/{{ delivery_queue.id }}" style="margin:0 2px 0 2px"
+                                           type="submit" value="Доставить" class="deliver"/>
 
-                                    <input type="hidden" id="trade_buy" value={{ delivery_queue.id }} name="deliver"/>
+                                    <input type="hidden" id="deliver" value={{ delivery_queue.id }} name="deliver"/>
                                 </td>
 
                             </form>
                         </tr>
                     {% endfor %}
                 </table>
+
+                <table border="1" align="center" style="margin-bottom: 7px">
+                    <caption>Ставки для вас</caption>
+                    <tr align="center">
+                        <td style="width: 250px">Товар</td>
+                        <td style="width: 100px">Количество</td>
+                         <td style="width: 150px">Цена за все</td>
+                        <td style="width: 175px">Способ доставки</td>
+                        <td style="width: 150px">Покупка</td>
+                    </tr>
+                    {% for trade_element in trade_elements %}
+                        {% if trade_element.buyer == user.user_id %}
+                            <tr align="center">
+                                <form method="post" action="buy_trade" value="{{ trade_element.id }}">
+                                    <input type="hidden" id=trade_space_id
+                                           value="{{ trade_space_id }}" name="trade_space_id">
+                                    <td>{{ trade_element.name }}</td>
+                                    <td>{{ trade_element.amount }}
+                                        <input type="hidden" value="{{ trade_element.amount }}"
+                                               name="amount"></td>
+                                    <td>{{ trade_element.cost }} кредитов</td>
+
+                                    <td>
+                                        <p>
+                                            <select name="method" class="scientic">
+                                                <option value="0">Способ доставки</option>
+                                                <option value="1">Телепортация</option>
+                                                <option value="2">Флотом покупателя</option>
+                                                <option value="3">Флотом продавца</option>
+                                            </select>
+                                        </p>
+                                        <p>Отложить <input type="checkbox" checked name="set_aside"/></p>
+
+                                    </td>
+                                    <td><input href="trade_del/{{ trade_element.id }}" style="margin:0 2px 0 2px"
+                                               type="submit" value="Купить" class="trade_del"/>
+
+                                        <input type="hidden" id="trade_buy"
+                                               value={{ trade_element.id }} name="trade_buy"/>
+                                    </td>
+
+                                </form>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+
+
                 <a class="close" title="Закрыть" href="#close"></a>
             </div>
 

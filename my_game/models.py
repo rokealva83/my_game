@@ -1145,6 +1145,10 @@ class Trade_element(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
+    user_city = models.IntegerField(default=1)
+    planet = models.IntegerField(default=1)
+    mass_element = models.IntegerField(default=0)
+    size_element = models.IntegerField(default=0)
 
 
 class Trade_space(models.Model):
@@ -1200,6 +1204,7 @@ class Basic_building(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class Building_pattern(models.Model):
     class Meta():
@@ -1272,5 +1277,43 @@ class Delivery_queue(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
+    mass_element = models.IntegerField(default=0)
+    size_element = models.IntegerField(default=0)
 
 
+class Trade_teleport(models.Model):
+    class Meta():
+        db_table = 'trade_teleport'
+
+    user = models.IntegerField()
+    user_city = models.IntegerField()
+    name = models.CharField(max_length=50, default='new')
+    class_element = models.IntegerField()
+    id_element = models.IntegerField()
+    amount = models.IntegerField()
+    start_teleport = models.DateTimeField()
+    finish_teleport = models.DateTimeField()
+
+
+class Trade_flight(models.Model):
+    class Meta():
+        db_table = 'trade_flight'
+
+    user = models.IntegerField()
+    user_city = models.IntegerField()
+    id_fleet = models.IntegerField()
+    id_flight = models.IntegerField()
+    name = models.CharField(max_length=50)
+    class_element = models.IntegerField()
+    id_element = models.IntegerField()
+    amount = models.IntegerField()
+    start_x = models.IntegerField()
+    start_y = models.IntegerField()
+    start_z = models.IntegerField()
+    finish_x = models.IntegerField()
+    finish_y = models.IntegerField()
+    finish_z = models.IntegerField()
+    flight_time = models.IntegerField(default=0)
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    planet = models.IntegerField(default=0)
