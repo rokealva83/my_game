@@ -51,12 +51,6 @@ def buy_trade(request):
                     min_cost = trade_element.cost_element
                     price_element = delta * min_cost
 
-                    a = trade_element.amount / trade_element.min_amount
-                    b = trade_element.cost / a
-                    c = b * delta
-                    d = trade_element.cost - c
-
-
                     new_price = trade_element.cost - trade_element.cost / (
                     trade_element.amount / trade_element.min_amount) * delta
 
@@ -160,6 +154,45 @@ def buy_trade(request):
                             size_element = trade_element.size_element
 
 
+                    elif method == 3:
+                        user_city = User_city.objects.filter(id=session_user_city).first()
+                        fleet = Fleet.objects.filter(user=trade_element.user, name='Trade', status=0,
+                                                     planet=trade_element.user_city).first()
+                        if fleet:
+                            id_fleet = fleet.id
+
+                            fleet_empty_hold = fleet.empty_hold * 1.0
+                            lot = int(fleet_empty_hold / trade_element.size_element)
+                            quantity_goods = amount * trade_element.size_element / fleet_empty_hold
+                            number_shipments = int(math.ceil(quantity_goods))
+                            lot_amount = amount
+
+                            for i in range(number_shipments):
+
+                                if lot_amount < lot:
+                                    lot = lot_amount
+
+                                flight_record_sheet_loading_holds(session_user, session_user_city, id_fleet,
+                                                                  trade_element, lot)
+
+                                lot_amount = lot_amount - lot
+
+                                flight_record_sheet_flight(session_user, session_user_city, user_city, id_fleet,
+                                                           trade_element, lot, fleet, lot_amount, distance)
+
+                                flight_record_sheet_unloading_holds(session_user, session_user_city,user_city, id_fleet,
+                                                                  trade_element, lot)
+
+                                flight_record_sheet_flight(session_user, session_user_city, user_city, id_fleet,
+                                                           trade_element, 0, fleet, 0, distance)
+                            new_amount = trade_element.amount - amount
+                            trade_element = Trade_element.objects.filter(id=id_element).update(amount=new_amount)
+
+                        else:
+                            size_element = trade_element.size_element
+
+
+
 
 
         else:
@@ -237,12 +270,20 @@ def flight_record_sheet_flight(*args):
     start_time = finish_time
     finish_time = start_time + timedelta(seconds=flight_time)
 
-    start_x = int(trade_element.x)
-    start_y = int(trade_element.y)
-    start_z = int(trade_element.z)
-    finish_x = int(user_city.x)
-    finish_y = int(user_city.y)
-    finish_z = int(user_city.z)
+    if lot == 0:
+        start_x = int(user_city.x)
+        start_y = int(user_city.y)
+        start_z = int(user_city.z)
+        finish_x = int(trade_element.x)
+        finish_y = int(trade_element.y)
+        finish_z = int(trade_element.z)
+    else:
+        start_x = int(trade_element.x)
+        start_y = int(trade_element.y)
+        start_z = int(trade_element.z)
+        finish_x = int(user_city.x)
+        finish_y = int(user_city.y)
+        finish_z = int(user_city.z)
 
     trade_flight = Trade_flight(
         user=session_user,
