@@ -26,6 +26,7 @@ from my_game.trade import del_trade_element as del_trade_element
 from my_game.trade import buy_trade_element as buy_trade_element
 from my_game.trade import create_trade_fleet as create_trade_fleet
 from my_game.trade import buy_credit as buy_credit
+from my_game.trade import delivery as delivery
 
 # import my_game.registration.registration
 
@@ -85,5 +86,6 @@ urlpatterns = patterns('',
                        url(r'^buy_trade', buy_trade_element.buy_trade),
                        url(r'^create_trade_fleet', create_trade_fleet.create_trade_fleet),
                        url(r'^buy_credit', buy_credit.buy_credit),
+                       url(r'^delivery', delivery.delivery),
 
 )

@@ -432,7 +432,7 @@
                     </tr>
                     {% for delivery_queue in delivery_queues %}
                         <tr align="center">
-                            <form method="post" action="deliver" value="{{ trade_element.id }}">
+                            <form method="post" action="delivery" value="{{ trade_element.id }}">
                                 <input type="hidden" id=trade_space_id
                                        value="{{ trade_space_id }}" name="trade_space_id">
                                 <td>{{ delivery_queue.name }}</td>
