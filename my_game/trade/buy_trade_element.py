@@ -104,23 +104,24 @@ def buy_trade(request):
                     if method == 1:
                         mass_element = trade_element.mass_element
                         mass = amount * mass_element
-                        energy = mass * distance / 20000
-                        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=13).first()
+                        energy = math.sqrt(mass * distance / 20000)
+                        trade_building = Building_installed.objects.filter(user=session_user,
+                                                                           user_city=session_user_city,
+                                                                           production_class=13).first()
                         if trade_building.warehouse >= energy:
-                            time = mass * energy / 20000 * distance
+                            time = math.sqrt(mass * distance * energy / 10000)
                             start_time = datetime.now()
                             finish_time = start_time + timedelta(seconds=time)
 
                             trade_teleport = Trade_teleport(
-                                user = session_user,
-                                user_city = session_user_city,
-                                name = trade_element.name,
-                                class_element = trade_element.class_element,
-                                id_element = trade_element.id_element,
-                                amount = amount,
-                                start_teleport = start_time,
-                                finish_teleport = finish_time
+                                user=session_user,
+                                user_city=session_user_city,
+                                name=trade_element.name,
+                                class_element=trade_element.class_element,
+                                id_element=trade_element.id_element,
+                                amount=amount,
+                                start_teleport=start_time,
+                                finish_teleport=finish_time
                             )
                             trade_teleport.save()
                             new_amount = trade_element.amount - amount
@@ -128,6 +129,11 @@ def buy_trade(request):
                                 trade_element = Trade_element.objects.filter(id=id_element).delete()
                             else:
                                 trade_element = Trade_element.objects.filter(id=id_element).update(amount=new_amount)
+                            new_energy = trade_building.warehouse - energy
+                            trade_building = Building_installed.objects.filter(user=session_user,
+                                                                               user_city=session_user_city,
+                                                                               production_class=13).update(
+                                warehouse=new_energy)
                         else:
                             message = 'Нехватает энергии'
 

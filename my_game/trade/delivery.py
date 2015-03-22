@@ -32,7 +32,7 @@ def delivery(request):
         method = int(method[0])
         id_element = myDict.get('deliver')
         id_element = int(id_element[0])
-        delivery_element = Delivery_queue.objects.filter(id = id_element).first()
+        delivery_element = Delivery_queue.objects.filter(id=id_element).first()
         amount = delivery_element.amount
         user_city = User_city.objects.filter(id=session_user_city).first()
         planet = Planet.objects.filter(x=user_city.x, y=user_city.y, z=user_city.z).first()
@@ -54,24 +54,28 @@ def delivery(request):
         if method == 1:
             mass_element = delivery_element.mass_element
             mass = amount * mass_element
-            energy = mass * distance / 20000
+            energy = math.sqrt(mass * distance / 20000)
             trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
-                                   production_class=13).first()
+                                                               production_class=13).first()
             if trade_building.warehouse >= energy:
-                time = mass * energy / 20000 * distance
+                time = math.sqrt(mass * distance * energy / 10000)
                 start_time = datetime.now()
                 finish_time = start_time + timedelta(seconds=time)
                 trade_teleport = Trade_teleport(
-                    user = session_user,
-                    user_city = session_user_city,
-                    name = delivery_element.name,
-                    class_element = delivery_element.class_element,
-                    id_element = delivery_element.id_element,
-                    amount = amount,
-                    start_teleport = start_time,
-                    finish_teleport = finish_time
+                    user=session_user,
+                    user_city=session_user_city,
+                    name=delivery_element.name,
+                    class_element=delivery_element.class_element,
+                    id_element=delivery_element.id_element,
+                    amount=amount,
+                    start_teleport=start_time,
+                    finish_teleport=finish_time
                 )
                 trade_teleport.save()
+                delivery_element = Delivery_queue.objects.filter(id=id_element).delete()
+                new_energy = trade_building.warehouse - energy
+                trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+                                                                   production_class=13).update(warehouse=new_energy)
             else:
                 message = 'Нехватает энергии'
             time = mass * energy / 20000 * distance
@@ -94,20 +98,24 @@ def delivery(request):
                         lot = lot_amount
 
                     trade_function.flight_record_sheet_flight(session_user, session_user_city, user_city, id_fleet,
-                                               delivery_element, 0, fleet, 0, distance)
+                                                              delivery_element, 0, fleet, 0, distance)
 
                     trade_function.flight_record_sheet_loading_holds(session_user, session_user_city, id_fleet,
-                                                      delivery_element, lot)
+                                                                     delivery_element, lot)
 
                     lot_amount = lot_amount - lot
 
                     trade_function.flight_record_sheet_flight(session_user, session_user_city, user_city, id_fleet,
-                                               delivery_element, lot, fleet, lot_amount, distance)
+                                                              delivery_element, lot, fleet, lot_amount, distance)
 
-                    trade_function.flight_record_sheet_unloading_holds(session_user, session_user_city,user_city, id_fleet,
-                                                      delivery_element, lot)
+                    trade_function.flight_record_sheet_unloading_holds(session_user, session_user_city, user_city,
+                                                                       id_fleet,
+                                                                       delivery_element, lot)
                 new_amount = delivery_element.amount - amount
-                delivery_element = delivery_element.objects.filter(id=id_element).update(amount=new_amount)
+                if new_amount == 0:
+                    delivery_element = Delivery_queue.objects.filter(id=id_element).delete()
+                else:
+                    delivery_element = Delivery_queue.objects.filter(id=id_element).update(amount=new_amount)
 
             else:
                 message = 'Ваши флота все заняты.'
@@ -132,18 +140,19 @@ def delivery(request):
                     lot_amount = lot_amount - lot
 
                     trade_function.flight_record_sheet_loading_holds(session_user, session_user_city, id_fleet,
-                                                      delivery_element, lot)
+                                                                     delivery_element, lot)
 
                     trade_function.flight_record_sheet_flight(session_user, session_user_city, user_city, id_fleet,
-                                               delivery_element, lot, fleet, lot_amount, distance)
+                                                              delivery_element, lot, fleet, lot_amount, distance)
 
-                    trade_function.flight_record_sheet_unloading_holds(session_user, session_user_city,user_city, id_fleet,
-                                                      delivery_element, lot)
+                    trade_function.flight_record_sheet_unloading_holds(session_user, session_user_city, user_city,
+                                                                       id_fleet,
+                                                                       delivery_element, lot)
 
                     trade_function.flight_record_sheet_flight(session_user, session_user_city, user_city, id_fleet,
-                                               delivery_element, 0, fleet, 0, distance)
+                                                              delivery_element, 0, fleet, 0, distance)
                 new_amount = delivery_element.amount - amount
-                delivery_element = delivery_element.objects.filter(id=id_element).update(amount=new_amount)
+                delivery_element = Delivery_queue.objects.filter(id=id_element).update(amount=new_amount)
 
             else:
                 message = 'Флота продавца все заняты.'
@@ -187,7 +196,7 @@ def delivery(request):
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'delivery_elements': trade_elements, 'users': users,
-                  'user_delivery_elements': user_trade_elements, 'trade_space': trade_space, 'message': message,
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
+                  'user_trade_elements': user_trade_elements, 'trade_space': trade_space, 'message': message,
                   'trade_building': trade_building, 'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)

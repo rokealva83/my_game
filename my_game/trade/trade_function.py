@@ -3,8 +3,7 @@
 
 from datetime import datetime, timedelta
 import math
-from my_game.models import Trade_flight
-
+from my_game.models import Trade_flight, User_city
 
 
 def flight_record_sheet_flight(*args):
@@ -60,7 +59,7 @@ def flight_record_sheet_flight(*args):
         flight_time=flight_time,
         start_time=start_time,
         finish_time=finish_time,
-        planet=trade_element.planet,
+        planet=user_city.planet_id,
     )
     trade_flight.save()
 
@@ -79,7 +78,7 @@ def flight_record_sheet_loading_holds(*args):
     else:
         start_time = datetime.now()
     finish_time = start_time + timedelta(seconds=flight_time)
-
+    user_city = User_city.objects.filter(id=session_user_city).first()
     trade_flight = Trade_flight(
         user=session_user,
         user_city=session_user_city,
@@ -98,7 +97,7 @@ def flight_record_sheet_loading_holds(*args):
         flight_time=flight_time,
         start_time=start_time,
         finish_time=finish_time,
-        planet=trade_element.planet,
+        planet=user_city.planet_id,
     )
     trade_flight.save()
 
