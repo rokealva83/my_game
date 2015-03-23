@@ -11,7 +11,7 @@ from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
 from my_game.trade import trade_function
 from my_game.models import Project_ship, Ship, Fleet
-from my_game.models import Trade_space, Delivery_queue, Building_installed, Trade_teleport, Trade_element
+from my_game.models import Trade_space, Delivery_queue, Building_installed, Trade_teleport, Trade_element, Trade_flight
 
 
 def delivery(request):
@@ -116,6 +116,9 @@ def delivery(request):
                     delivery_element = Delivery_queue.objects.filter(id=id_element).delete()
                 else:
                     delivery_element = Delivery_queue.objects.filter(id=id_element).update(amount=new_amount)
+                fleet = Fleet.objects.filter(id=id_fleet).update(status=1, planet_status=0, planet=0, system=0)
+                trade_fligth = Trade_flight.objects.filter(id_fleet=id_fleet).first()
+                trade_fligth = Trade_flight.objects.filter(id=trade_fligth.id).update(status=1)
 
             else:
                 message = 'Ваши флота все заняты.'
@@ -153,6 +156,9 @@ def delivery(request):
                                                               delivery_element, 0, fleet, 0, distance)
                 new_amount = delivery_element.amount - amount
                 delivery_element = Delivery_queue.objects.filter(id=id_element).update(amount=new_amount)
+                fleet = Fleet.objects.filter(id=id_fleet).update(status=1, planet_status=0, planet=0, system=0)
+                trade_fligth = Trade_flight.objects.filter(id_fleet=id_fleet).first()
+                trade_fligth = Trade_flight.objects.filter(id=trade_fligth.id).update(status=1)
 
             else:
                 message = 'Флота продавца все заняты.'

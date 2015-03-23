@@ -168,6 +168,9 @@ def buy_trade(request):
                                                                                    trade_element, lot)
                             new_amount = trade_element.amount - amount
                             trade_element = Trade_element.objects.filter(id=id_element).update(amount=new_amount)
+                            fleet = Fleet.objects.filter(id = id_fleet).update(status = 1, planet_status = 0, planet = 0, system = 0)
+                            trade_fligth = Trade_flight.objects.filter(id_fleet = id_fleet).first()
+                            trade_fligth = Trade_flight.objects.filter(id = trade_fligth.id).update(status = 1)
                         else:
                             delivery_queue = Delivery_queue(
                                 user=session_user,
@@ -221,6 +224,9 @@ def buy_trade(request):
                                                                           trade_element, 0, fleet, 0, distance)
                             new_amount = trade_element.amount - amount
                             trade_element = Trade_element.objects.filter(id=id_element).update(amount=new_amount)
+                            fleet = Fleet.objects.filter(id = id_fleet).update(status = 1, planet_status = 0, planet = 0, system = 0)
+                            trade_fligth = Trade_flight.objects.filter(id_fleet = id_fleet).first()
+                            trade_fligth = Trade_flight.objects.filter(id = trade_fligth.id).update(status = 1)
                         else:
                             delivery_queue = Delivery_queue(
                                 user=session_user,

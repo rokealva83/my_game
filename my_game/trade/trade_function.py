@@ -2,6 +2,7 @@
 
 
 from datetime import datetime, timedelta
+from django.utils import timezone
 import math
 from my_game.models import Trade_flight, User_city
 
@@ -17,15 +18,14 @@ def flight_record_sheet_flight(*args):
     lot_amount = args[7]
     distance = args[8]
     mass_element = trade_element.mass_element
+    size_element = trade_element.size_element
     mass = lot * mass_element + fleet.ship_empty_mass
     trade_flight = Trade_flight.objects.filter(id_fleet=id_fleet).last()
     flight_time = math.sqrt(distance / 2 * mass / int(fleet.intersystem_power)) * 2
     if trade_flight:
         start_time = trade_flight.finish_time
     else:
-        start_time = datetime.now()
-    finish_time = start_time + timedelta(seconds=flight_time)
-    start_time = finish_time
+        start_time = timezone.now()
     finish_time = start_time + timedelta(seconds=flight_time)
     if lot == 0:
         start_x = int(user_city.x)
@@ -50,6 +50,8 @@ def flight_record_sheet_flight(*args):
         class_element=trade_element.class_element,
         id_element=trade_element.id_element,
         amount=lot,
+        mass = mass_element*lot,
+        size = size_element*lot,
         start_x=start_x,
         start_y=start_y,
         start_z=start_z,
@@ -73,10 +75,12 @@ def flight_record_sheet_loading_holds(*args):
 
     flight_time = 300
     trade_flight = Trade_flight.objects.filter(id_fleet=id_fleet).last()
+    mass_element = trade_element.mass_element
+    size_element = trade_element.size_element
     if trade_flight:
         start_time = trade_flight.finish_time
     else:
-        start_time = datetime.now()
+        start_time = timezone.now()
     finish_time = start_time + timedelta(seconds=flight_time)
     user_city = User_city.objects.filter(id=session_user_city).first()
     trade_flight = Trade_flight(
@@ -88,6 +92,8 @@ def flight_record_sheet_loading_holds(*args):
         class_element=trade_element.class_element,
         id_element=trade_element.id_element,
         amount=lot,
+        mass = mass_element*lot,
+        size = size_element*lot,
         start_x=trade_element.x,
         start_y=trade_element.y,
         start_z=trade_element.z,
@@ -115,8 +121,6 @@ def flight_record_sheet_unloading_holds(*args):
         start_time = trade_flight.finish_time
     else:
         start_time = datetime.now()
-    finish_time = start_time + timedelta(seconds=flight_time)
-    start_time = finish_time
     finish_time = start_time + timedelta(seconds=flight_time)
     trade_flight = Trade_flight(
         user=session_user,

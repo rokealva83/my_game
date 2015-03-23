@@ -304,22 +304,34 @@ def fleet_flightplan(request):
                     min_z = fleet_z - delta
                     systems = System.objects.filter()
                     asteroid_fields = Asteroid_field.objects.filter()
-                    s = 0
+                    mail = 'Координаты систем:' + '\n'
                     for system in systems:
-                        if min_x < system.x < max_x and min_y < system.y < max_y and min_z < system.z < max_z:
+                        if min_x <= system.x <= max_x and min_y <= system.y <= max_y and min_z <= system.z <= max_z:
                             system_x = system.x
                             system_y = system.y
                             system_z = system.z
-                            s = s + 1
-                    a = 0
+                            distance = round(math.sqrt(
+                                (fleet_x - system_x) ** 2 + (fleet_y - system_y) ** 2 + (fleet_z - system_z) ** 2), 3)
+                            if distance <= delta and distance != 0:
+                                line = str(system_x) + ':' + str(system_y) + ':' + str(system_z) + ' Растояние:' + str(
+                                    distance) + ' св.' + ' \n'
+                                mail = mail + line
+
                     size = 0
+                    ast_mail = '\n'+ 'Координаты астероидных полей:' + '\n'
                     for asteroid_field in asteroid_fields:
-                        if min_x < asteroid_field.x < max_x and min_y < asteroid_field.y < max_y and min_z < asteroid_field.z < max_z:
+                        if min_x <= asteroid_field.x <= max_x and min_y <= asteroid_field.y <= max_y and min_z <= asteroid_field.z <= max_z:
                             system_x = asteroid_field.x
                             system_y = asteroid_field.y
                             system_z = asteroid_field.z
-                            a = a + 1
+                            asteroid_size = asteroid_field.size
                             size = size + asteroid_field.size
+                            distance = round(math.sqrt(
+                                (fleet_x - system_x) ** 2 + (fleet_y - system_y) ** 2 + (fleet_z - system_z) ** 2), 3)
+                            if distance <= delta:
+                                line = str(system_x) + ' : ' + str(system_y) + ' : ' + str(system_z) + ' (' + str(
+                                    asteroid_size) + ') ' + ' Растояние:' + str(distance) + ' св.' + '\n'
+                                ast_mail = ast_mail + line
 
                             # elif method_scan == 2:
 
@@ -347,5 +359,6 @@ def fleet_flightplan(request):
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights}
-        return render(request, "flightplan.html", output)
+                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
+                  'mail': mail, 'ast_mail': ast_mail}
+        return render(request, "test.html", output)
