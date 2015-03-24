@@ -181,6 +181,8 @@ def create_trade_fleet(request):
                 fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).update(
                     passive_scan=passive_scan, active_scan=active_scan, giper_scan=giper_scan)
 
+
+
             message = 'Корабли добавлено во флот'
         else:
             message = 'Недостаточно корблей'

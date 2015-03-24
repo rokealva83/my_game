@@ -233,9 +233,9 @@ def add_trade_element(request):
             z = int(system.z) * 1000 + int(user_city.z)
         else:
             planet = 0
-            x = (user_city.x) * 1000
-            y = (user_city.y) * 1000
-            z = (user_city.z) * 1000
+            x = int(user_city.x) * 1000
+            y = int(user_city.y) * 1000
+            z = int(user_city.z) * 1000
 
         trade_element = Trade_element(
             name=name,
@@ -298,7 +298,7 @@ def add_trade_element(request):
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements,
                   'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space,
                   'trade_building': trade_building, 'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)

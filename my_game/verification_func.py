@@ -457,12 +457,15 @@ def verification_trade(request):
                     new_delta = delta_time.seconds
                     delta = trade_flight.flight_time
                     if new_delta > delta:
-                        hold = Hold.objects.filter(fleet_id=fleet.id).first()
-                        hold = Hold.objects.filter(id=hold.id).update(class_shipment=trade_flight.class_element,
-                                                                      id_shipment=trade_flight.id_element,
-                                                                      amount_shipment=trade_flight.amount,
-                                                                      mass_shipment=trade_flight.mass,
-                                                                      size_shipment=trade_flight.size)
+                        hold = Hold(
+                            fleet_id=trade_flight.id_fleet,
+                            class_shipment=trade_flight.class_element,
+                            id_shipment=trade_flight.id_element,
+                            amount_shipment=trade_flight.amount,
+                            mass_shipment=trade_flight.mass,
+                            size_shipment=trade_flight.size
+                        )
+                        hold.save()
 
                         new_mass = fleet.ship_empty_mass + trade_flight.mass
                         empty_hold = fleet.empty_hold - trade_flight.size
@@ -545,12 +548,7 @@ def verification_trade(request):
                                     power_consuption=factory_rattern.power_consuption,
                                 )
 
-                        hold = Hold.objects.filter(fleet_id=fleet.id).update(class_shipment=0,
-                                                                             id_shipment=0,
-                                                                             amount_shipment=0,
-                                                                             mass_shipment=0,
-                                                                             size_shipment=0)
-
+                        hold = Hold.objects.filter(fleet_id=fleet.id).delete()
                         new_mass = fleet.ship_empty_mass - trade_flight.mass
                         empty_hold = fleet.empty_hold + trade_flight.size
                         fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=empty_hold,
