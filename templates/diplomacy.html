@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Дипломатия{% endblock %}
+
+{% block content %}
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static 'js/diplomacy.js' %}" xmlns="http://www.w3.org/1999/html"></script>
+    <div id="diplomacy">
+
+        <!-- Модальное окно 1 -->
+        <a class="overlay" id="new_mail"></a>
+
+        <div class="popup_new_mail">
+            <form method="post" action="send_mail">
+                <h3>Новое сообщение</h3>
+
+
+                <h4>Адресат</h4>
+                <input type="text" value="" name="message_target" class="message_target"/>
+
+                <h4>Заголовок</h4>
+                <input type="text" value="" name="title" class="message_title"/>
+
+                <h4>Текс сообщения</h4>
+                <textarea type="text" value="" name="message" class="message_place"></textarea>
+
+                <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+
+
+                <a class="close" title="Закрыть" href="#close"></a>
+            </form>
+        </div>
+
+
+        <div style="text-align: left">
+            <a href="#new_mail" class="new_mail">Написать письмо</a>
+        </div>
+        <div class="mail_body">
+            <form action="remove" method="post">
+                <input class="mail-box" type="checkbox" id="1" align="left">
+                <label class="mail_category" id="slowdown" for="1">
+                    <h4><a class="view">
+                        <img class="view" src="{% static "images/mail/plus_n.png" %}"></a>
+                        Личные
+                        <div style="float: right">
+                            <input type="image" class="remove" name="remove_all" value="1"
+                                   src={% static "images/mail/remove.png" %}>
+                            </a>
+                        </div>
+                    </h4>
+                </label>
+
+                <div>
+                    {% for mail in mails %}
+                        {% if mail.category == 1 %}
+
+                            <input class="mail-box" type="checkbox" id="mail{{ mail.id }}" align="left">
+                            <label class="mail_title" id="slowdown" for="mail{{ mail.id }}">
+
+                                <p>
+                                    <a class="view">
+                                        <img class="view" src="{% static "images/mail/plus_o.png" %}">
+                                    </a>
+                                    <i>Отправитель:</i> <a href="{{ mail.login_recipient }}"
+                                                           style="text-decoration: none; color: #000000"><b>{{ mail.login_recipient }}</b></a>
+                                    <i>Тема:</i> <b>{{ mail.title }}</b> <i>Время:</i> ({{ mail.time }})
+
+                                    {% if mail.status == 1 %}
+                                        <b><font style="color: lawngreen">(Новое)</font> </b>{% endif %}
+
+                                <div style="float: right; margin-top: -20px">
+
+                                    <a href="answer" name="{{ mail.id }}" class="answer">
+                                        <img class="answer" src="{% static "images/mail/answer.png" %}"></a>
+                                    <a href="forward" name="{{ mail.id }}" class="forward">
+                                        <img class="forward" src="{% static "images/mail/forward.png" %}"></a>
+
+                                    <input type="image" class="remove" name="remove" value="{{ mail.id }}"
+                                           src={% static "images/mail/remove.png" %}>
+                                </div>
+                                </p>
+
+                            </label>
+
+                            <div class="mail_text">
+                                <p>{{ mail.message }}</p>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </form>
+
+            <form action="remove" method="post">
+                <input class="mail-box" type="checkbox" id="2" align="left">
+                <label class="mail_category" id="slowdown" for="2">
+                    <h4><a class="view">
+                        <img class="view" src="{% static "images/mail/plus_n.png" %}"></a>
+                        Альянс
+                        <div style="float: right">
+                            <input type="image" class="remove" name="remove_all" value="2"
+                                   src={% static "images/mail/remove.png" %}>
+                            </a>
+                        </div>
+                    </h4>
+                </label>
+
+                <div>
+                    {% for mail in mails %}
+                        {% if mail.category == 2 %}
+
+                            <input class="mail-box" type="checkbox" id="mail{{ mail.id }}" align="left">
+                            <label class="mail_title" id="slowdown" for="mail{{ mail.id }}">
+
+                                <p>
+                                    <a class="view">
+                                        <img class="view" src="{% static "images/mail/plus_o.png" %}">
+                                    </a>
+                                    <i>Отправитель:</i> <a href="{{ mail.login_recipient }}"
+                                                           style="text-decoration: none; color: #000000"><b>{{ mail.login_recipient }}</b></a>
+                                    <i>Тема:</i> <b>{{ mail.title }}</b> <i>Время:</i> ({{ mail.time }})
+
+                                    {% if mail.status == 1 %}
+                                        <b><font style="color: lawngreen">(Новое)</font> </b>{% endif %}
+
+                                <div style="float: right; margin-top: -20px">
+
+                                    <a href="answer" name="{{ mail.id }}" class="answer">
+                                        <img class="answer" src="{% static "images/mail/answer.png" %}"></a>
+                                    <a href="forward" name="{{ mail.id }}" class="forward">
+                                        <img class="forward" src="{% static "images/mail/forward.png" %}"></a>
+
+                                    <input type="image" class="remove" name="remove" value="{{ mail.id }}"
+                                           src={% static "images/mail/remove.png" %}>
+                                </div>
+                                </p>
+
+                            </label>
+
+                            <div class="mail_text">
+                                <p>{{ mail.message }}</p>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </form>
+
+            <form action="remove" method="post">
+                <input class="mail-box" type="checkbox" id="3" align="left">
+                <label class="mail_category" id="slowdown" for="3">
+                    <h4><a class="view">
+                        <img class="view" src="{% static "images/mail/plus_n.png" %}"></a>
+                        Союз
+                        <div style="float: right">
+                            <input type="image" class="remove" name="remove_all" value="3"
+                                   src={% static "images/mail/remove.png" %}>
+                            </a>
+                        </div>
+                    </h4>
+                </label>
+
+                <div>
+                    {% for mail in mails %}
+                        {% if mail.category == 3 %}
+
+                            <input class="mail-box" type="checkbox" id="mail{{ mail.id }}" align="left">
+                            <label class="mail_title" id="slowdown" for="mail{{ mail.id }}">
+
+                                <p>
+                                    <a class="view">
+                                        <img class="view" src="{% static "images/mail/plus_o.png" %}">
+                                    </a>
+                                    <i>Отправитель:</i> <a href="{{ mail.login_recipient }}"
+                                                           style="text-decoration: none; color: #000000"><b>{{ mail.login_recipient }}</b></a>
+                                    <i>Тема:</i> <b>{{ mail.title }}</b> <i>Время:</i> ({{ mail.time }})
+
+                                    {% if mail.status == 1 %}
+                                        <b><font style="color: lawngreen">(Новое)</font> </b>{% endif %}
+
+                                <div style="float: right; margin-top: -20px">
+
+                                    <a href="answer" name="{{ mail.id }}" class="answer">
+                                        <img class="answer" src="{% static "images/mail/answer.png" %}"></a>
+                                    <a href="forward" name="{{ mail.id }}" class="forward">
+                                        <img class="forward" src="{% static "images/mail/forward.png" %}"></a>
+
+                                    <input type="image" class="remove" name="remove" value="{{ mail.id }}"
+                                           src={% static "images/mail/remove.png" %}>
+                                </div>
+                                </p>
+
+                            </label>
+
+                            <div class="mail_text">
+                                <p>{{ mail.message }}</p>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </form>
+
+            <form action="remove" method="post">
+                <input class="mail-box" type="checkbox" id="4" align="left">
+                <label class="mail_category" id="slowdown" for="4">
+                    <h4><a class="view">
+                        <img class="view" src="{% static "images/mail/plus_n.png" %}"></a>
+                        Системные
+                        <div style="float: right">
+                            <input type="image" class="remove" name="remove_all" value="4"
+                                   src={% static "images/mail/remove.png" %}>
+                            </a>
+                        </div>
+                    </h4>
+                </label>
+
+                <div>
+                    {% for mail in mails %}
+                        {% if mail.category == 4 %}
+
+                            <input class="mail-box" type="checkbox" id="mail{{ mail.id }}" align="left">
+                            <label class="mail_title" id="slowdown" for="mail{{ mail.id }}">
+
+                                <p>
+                                    <a class="view">
+                                        <img class="view" src="{% static "images/mail/plus_o.png" %}">
+                                    </a>
+                                    <i>Отправитель:</i> <a href="{{ mail.login_recipient }}"
+                                                           style="text-decoration: none; color: #000000"><b>{{ mail.login_recipient }}</b></a>
+                                    <i>Тема:</i> <b>{{ mail.title }}</b> <i>Время:</i> ({{ mail.time }})
+
+                                    {% if mail.status == 1 %}
+                                        <b><font style="color: lawngreen">(Новое)</font> </b>{% endif %}
+
+                                <div style="float: right; margin-top: -20px">
+
+                                    <a href="answer" name="{{ mail.id }}" class="answer">
+                                        <img class="answer" src="{% static "images/mail/answer.png" %}"></a>
+                                    <a href="forward" name="{{ mail.id }}" class="forward">
+                                        <img class="forward" src="{% static "images/mail/forward.png" %}"></a>
+
+                                    <input type="image" class="remove" name="remove" value="{{ mail.id }}"
+                                           src={% static "images/mail/remove.png" %}>
+                                </div>
+                                </p>
+
+                            </label>
+
+                            <div class="mail_text">
+                                <p>{{ mail.message }}</p>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </form>
+
+            <form action="remove" method="post">
+                <input class="mail-box" type="checkbox" id="5" align="left">
+                <label class="mail_category" id="slowdown" for="5">
+                    <h4><a class="view">
+                        <img class="view" src="{% static "images/mail/plus_n.png" %}"></a>
+                        Администрация
+                        <div style="float: right">
+                            <input type="image" class="remove" name="remove_all" value="5"
+                                   src={% static "images/mail/remove.png" %}>
+                            </a>
+                        </div>
+                    </h4>
+                </label>
+
+                <div>
+                    {% for mail in mails %}
+                        {% if mail.category == 5 %}
+
+                            <input class="mail-box" type="checkbox" id="mail{{ mail.id }}" align="left">
+                            <label class="mail_title" id="slowdown" for="mail{{ mail.id }}">
+
+                                <p>
+                                    <a class="view">
+                                        <img class="view" src="{% static "images/mail/plus_o.png" %}">
+                                    </a>
+                                    <i>Отправитель:</i> <a href="{{ mail.login_recipient }}"
+                                                           style="text-decoration: none; color: #000000"><b>{{ mail.login_recipient }}</b></a>
+                                    <i>Тема:</i> <b>{{ mail.title }}</b> <i>Время:</i> ({{ mail.time }})
+
+                                    {% if mail.status == 1 %}
+                                        <b><font style="color: lawngreen">(Новое)</font> </b>{% endif %}
+
+                                <div style="float: right; margin-top: -20px">
+
+                                    <a href="answer" name="{{ mail.id }}" class="answer">
+                                        <img class="answer" src="{% static "images/mail/answer.png" %}"></a>
+                                    <a href="forward" name="{{ mail.id }}" class="forward">
+                                        <img class="forward" src="{% static "images/mail/forward.png" %}"></a>
+
+                                    <input type="image" class="remove" name="remove" value="{{ mail.id }}"
+                                           src={% static "images/mail/remove.png" %}>
+                                </div>
+                                </p>
+
+                            </label>
+
+                            <div class="mail_text">
+                                <p>{{ mail.message }}</p>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="clear"></div>
+
+
+{% endblock %}

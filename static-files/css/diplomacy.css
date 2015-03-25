@@ -1,0 +1,167 @@
+/* Diplomacy Styles */
+
+#diplomacy {
+    background-color: #616161;
+    float: left;
+    opacity: 0.8;
+    width: 1400px;
+    height: 600px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 7px;
+    margin: 5px 0px 5px 5px;
+    border: 1px solid #000000
+}
+
+.mail_body {
+    border: 1px solid #000000;
+    border-radius: 7px;
+    margin: 8px 7px 5px 7px;
+    padding-bottom: 7px;
+}
+
+.mail_category {
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 7px;
+    margin: 4px 4px 0px 4px;
+    border: 1px solid #000000
+}
+
+.mail_category h4 {
+    text-align: left;
+    vertical-align: middle;
+    margin: 1px 2px 1px 10px;
+    padding: 2px 5px 0 0;
+}
+
+.mail_title {
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 7px;
+    margin: 0px 4px 0px 12px;
+    border: 1px solid #000000;
+    border-top: none;
+    padding: 2px 5px 0 0;
+}
+
+.mail_title p {
+    text-align: left;
+    border-radius: 7px;
+    margin: 0px 4px 0px 5px
+}
+
+.mail_text {
+    text-align: left;
+    vertical-align: middle;
+    margin: 0px 11px 0 18px;
+    border: 1px solid #000000;
+    border-radius: 0px;
+    border-top: none;
+}
+
+.mail_text p {
+    text-align: left;
+    margin: 0px 8px 0 8px;
+
+}
+
+.mail-box {
+    display: none;
+}
+
+.mail-box + label {
+    cursor: pointer;
+    display: block;
+    font-weight: normal;
+    line-height: 21px;
+    color: #000000;
+}
+
+.mail-box + label + div {
+    display: none;
+}
+
+.mail-box:checked + label + div {
+    display: block;
+}
+
+.new_mail{
+    display: inline-block;
+    width: 160px;
+    height: 25px;
+    margin: 7px 0 0 15px;
+    line-height: 25px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(0, 0, 0);
+}
+
+
+.popup_new_mail h4{
+    text-align: left;
+    vertical-align: middle;
+    margin: 1px 2px 1px 10px;
+    padding: 2px 5px 0 0;
+}
+
+.message_target{
+    display: inline-block;
+    width: 880px;
+    height: 22px;
+    margin-top: 2px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: left;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    background: #c0c0c0;
+    color: rgb(0, 0, 0);
+}
+
+.message_title{
+    display: inline-block;
+    width: 880px;
+    height: 22px;
+    margin-top: 2px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: left;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    background: #c0c0c0;
+    color: rgb(0, 0, 0);
+}
+
+.message_place{
+    display: inline-block;
+    width: 880px;
+    height: 300px;
+    margin-top: 2px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: left;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    background: #c0c0c0;
+    color: rgb(0, 0, 0);
+    line-height: inherit;
+}
+
+.bot{
+    width: 23px;
+    height: 18px;
+    background: url(../images/mail/answer.png)no-repeat fixed center;
+
+
+
+}

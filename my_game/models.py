@@ -1161,7 +1161,7 @@ class Trade_space(models.Model):
     tax = models.IntegerField()
 
 
-class mail(models.Model):
+class Mail(models.Model):
     class Meta():
         db_table = 'mail'
 

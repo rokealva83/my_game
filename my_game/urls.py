@@ -27,6 +27,11 @@ from my_game.trade import buy_trade_element as buy_trade_element
 from my_game.trade import create_trade_fleet as create_trade_fleet
 from my_game.trade import buy_credit as buy_credit
 from my_game.trade import delivery as delivery
+from my_game.diplomacy import views as diplomacy
+from my_game.diplomacy import send_mail as send_mail
+from my_game.diplomacy import remove_mail as remove
+
+
 
 # import my_game.registration.registration
 
@@ -88,4 +93,8 @@ urlpatterns = patterns('',
                        url(r'^buy_credit', buy_credit.buy_credit),
                        url(r'^delivery', delivery.delivery),
 
+                       url(r'^diplomacy', diplomacy.diplomacy),
+                       url(r'^send_mail', send_mail.send_mail),
+                       url(r'^remove', remove.remove_mail),
+                       url(r'^remove_all', remove.remove_mail),
 )
