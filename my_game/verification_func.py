@@ -62,7 +62,7 @@ def check_scientific_verification_queue(request):
     if delta_time > user_variables.time_check_new_technology:
         all_scientic = User_scientic.objects.filter(user=user).first()
         if all_scientic.all_scientic > 10:
-            new_technology = random.random()
+            new_technology = 0.9 #random.random()
 
             if 0 <= new_technology < 0.125:
                 scientic_func.hull_upgrade(user)
@@ -239,7 +239,11 @@ def check_assembly_line_workpieces(request):
                                                                      production_class=turn_assembly_pieces.class_id).update(
                     amount=amount_assembly)
             else:
-                factory_pattern = Building_pattern.objects.filter(id=turn_assembly_pieces.pattern_id,
+                if turn_assembly_pieces.class_id < 10:
+                    factory_pattern = Factory_pattern.objects.filter(id=turn_assembly_pieces.pattern_id,
+                                                                  production_class=turn_assembly_pieces.class_id).first()
+                else:
+                    factory_pattern = Building_pattern.objects.filter(id=turn_assembly_pieces.pattern_id,
                                                                   production_class=turn_assembly_pieces.class_id).first()
                 new_factory = Warehouse_factory(
                     user=turn_assembly_pieces.user,
@@ -419,6 +423,10 @@ def verification_flight_list(request):
                                 start_time=old_flightplan_flight.finish_time)
 
                         flightplan = Flightplan.objects.filter(id=flightplan_id).delete()
+                elif flightplan.class_command == 6:
+                    a = 1
+
+
             lens = lens + 1
             if lens == flightplan_len:
                 fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)

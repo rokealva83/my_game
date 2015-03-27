@@ -29,7 +29,7 @@ def work_with_project(request):
                                                                   element_id=ship_pattern.hull_id).first()
                 if warehouse_hull is not None and warehouse_hull.amount >= amount_ship:
                     error = 0
-                    for i in range(2, 8):
+                    for i in range(2, 9):
                         element_ships = Element_ship.objects.filter(id_project_ship=ship_id, class_element=i).order_by(
                             'id_element_pattern')
                         work_element_id = 0
@@ -91,6 +91,12 @@ def work_with_project(request):
                             else:
                                 class_element = 6
                             id_element = element_ship.id_element_pattern
+
+                            user=int(session_user)
+                            user_city=int(session_user_city)
+                            element_class=int(class_element)
+                            element_id=int(id_element)
+
                             warehouse_element = Warehouse_element.objects.filter(user=session_user,
                                                                                  user_city=session_user_city,
                                                                                  element_class=class_element,
@@ -108,6 +114,8 @@ def work_with_project(request):
                         message = 'На складе не хватает комплектующих'
                 else:
                     message = 'На складе не хватает комплектующих'
+            else:
+                message = 'Очередь занята'
 
         hulls = {}
 

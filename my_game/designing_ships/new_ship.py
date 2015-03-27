@@ -116,6 +116,10 @@ def new_ship(request):
                 intersystem_power = 0
                 giper_power = 0
                 null_power = 0
+                system_fuel = 0
+                intersystem_fuel = 0
+                giper_energy = 0
+                null_energy = 0
                 if choice_engine:
                     for i in range(chosen_hull.engine):
                         if int(choice_engine[i]) != 0:
@@ -132,15 +136,26 @@ def new_ship(request):
                             intersystem_power = intersystem_power + engine.intersystem_power
                             giper_power = giper_power + engine.giper_power
                             null_power = null_power + engine.nullT_power
+                            system_fuel = system_fuel + engine.power_consuption
+                            intersystem_power = intersystem_fuel + engine.power_consuption
+                            giper_energy = giper_energy + engine.power_consuption
+                            null_energy = null_energy + engine.power_consuption
                             time_build = time_build * 1.1
                             mass = mass + engine.mass
 
                 ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(system_power=system_power,
                                                                                       intersystem_power=intersystem_power,
                                                                                       giper_power=giper_power,
-                                                                                      null_power=null_power)
+                                                                                      null_power=null_power,
+                                                                                      system_fuel=system_fuel,
+                                                                                      intersystem_fuel=intersystem_fuel,
+                                                                                      giper_energy=giper_energy,
+                                                                                      null_energy=null_energy)
 
+                generator_fuel = 0
+                generator_energy = 0
                 choice_generator = myDict.get('choice_generator')
+
                 if choice_generator:
                     for i in range(chosen_hull.generator):
                         if int(choice_generator[i]) != 0:
@@ -155,6 +170,10 @@ def new_ship(request):
                             element.save()
                             time_build = time_build * 1.1
                             mass = mass + generator.mass
+                            generator_fuel = generator_fuel + generator.fuel_necessary
+                            generator_energy = generator_energy + generator.produced_energy
+                            ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(
+                                generator_fuel=generator_fuel, generator_energy=generator_energy)
 
                 choice_weapon = myDict.get('choice_weapon')
                 choice_weapon_side = myDict.get('choice_weapon_side')

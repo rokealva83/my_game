@@ -9,7 +9,7 @@ from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engi
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
 from my_game.trade import trade_function
-from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr
+from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan
 from my_game.models import Trade_element, Trade_space, Delivery_queue, Building_installed, Trade_flight, Trade_teleport
 
 

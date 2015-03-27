@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource
-from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr
+from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
@@ -51,10 +51,16 @@ def fleet_manage(request):
             )
             new_fleet.save()
             fleet_id = new_fleet.pk
-            fleet_parametr = Fleet_parametr(
-                fleet_id=fleet_id
+
+            fleet_energy = Fleet_energy_power(
+                fleet_id = fleet_id
             )
-            fleet_parametr.save()
+            fleet_energy.save()
+
+            fleet_engine = Fleet_engine(
+                fleet_id = fleet_id
+            )
+            fleet_engine.save()
 
         if request.POST.get('navy_ships'):
             add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
@@ -75,7 +81,7 @@ def fleet_manage(request):
             ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
             fleet = Fleet.objects.filter(id=fleet_id).first()
-            fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).first()
+            fleet_parametr = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id).first()
             output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                       'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                       'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
@@ -118,7 +124,9 @@ def fleet_manage(request):
                 message = 'Во флоте есть корабли'
             else:
                 fleet = Fleet.objects.filter(id=fleet_id).delete()
-                fleet_parametr = Fleet_parametr.objects.filter(fleet_id=fleet_id).delete()
+                fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id).delete()
+                fleet_energy = Fleet_energy_power.objects.filter(fleet_id=fleet_id).delete()
+                fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).delete()
                 message = 'Флот удален'
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')

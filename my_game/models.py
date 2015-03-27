@@ -863,14 +863,21 @@ class Project_ship(models.Model):
     name = models.CharField(max_length=20)
     hull_id = models.IntegerField()
     system_power = models.IntegerField(default=0)
+    system_fuel = models.IntegerField(default=0)
     intersystem_power = models.IntegerField(default=0)
+    intersystem_fuel = models.IntegerField(default=0)
     giper_power = models.IntegerField(default=0)
+    giper_energy = models.IntegerField(default=0)
     giper_accuracy = models.FloatField(default=0.9)
     null_power = models.IntegerField(default=0)
+    null_energy = models.IntegerField(default=0)
     null_accuracy = models.FloatField(default=0.9)
+    generator_fuel = models.IntegerField(default=0)
+    generator_energy = models.IntegerField(default=0)
     maneuverability = models.FloatField(default=0)
     time_build = models.IntegerField(default=0)
     mass = models.IntegerField(default=500)
+
 
 
 class Element_ship(models.Model):
@@ -909,34 +916,46 @@ class Fleet(models.Model):
     planet = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
     planet_status = models.BooleanField(default=1)
-    system_power = models.IntegerField(default=0)
-    intersystem_power = models.IntegerField(default=0)
-    giper_power = models.IntegerField(default=0)
-    giper_accuracy = models.FloatField(default=0.9)
-    null_power = models.IntegerField(default=0)
-    null_accuracy = models.FloatField(default=0.9)
-    use_power_engine_system = models.IntegerField(default=0)
-    use_power_engine_intersystem = models.IntegerField(default=0)
-    use_power_engine_giper = models.IntegerField(default=0)
-    use_power_engine_null = models.IntegerField(default=0)
-    use_power_hull = models.IntegerField(default=0)
-    use_power_shield = models.IntegerField(default=0)
-    use_power_weapon = models.IntegerField(default=0)
-    use_power_module = models.IntegerField(default=0)
-    maneuverability = models.FloatField(default=0)
     hold = models.IntegerField(default=0)
     empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
 
 
-class Fleet_parametr(models.Model):
+class Fleet_engine(models.Model):
     class Meta():
-        db_table = 'fleet_parametr'
+        db_table = 'fleet_engine'
 
     fleet_id = models.IntegerField()
-    passive_scan = models.IntegerField(default=0)
-    active_scan = models.IntegerField(default=0)
-    giper_scan = models.IntegerField(default=0)
+    system_power = models.IntegerField(default=0)
+    intersystem_power = models.IntegerField(default=0)
+    giper_power = models.IntegerField(default=0)
+    giper_accuracy = models.FloatField(default=0)
+    null_power = models.IntegerField(default=0)
+    null_accuracy = models.FloatField(default=0)
+    maneuverability = models.FloatField(default=0)
+
+
+class Fleet_energy_power(models.Model):
+    class Meta():
+        db_table = 'fleet_energy_power'
+
+    fleet_id = models.IntegerField()
+    use_energy = models.IntegerField(default=0)
+    use_fuel_system = models.IntegerField(default=0)
+    use_fuel_intersystem = models.IntegerField(default=0)
+    use_energy_giper = models.IntegerField(default=0)
+    use_energy_null = models.IntegerField(default=0)
+    produce_energy = models.IntegerField(default=0)
+    use_fuel_generator = models.IntegerField(default=0)
+
+class Fleet_parametr_scan(models.Model):
+    class Meta():
+        db_table = 'fleet_parametr_scan'
+
+    fleet_id = models.IntegerField()
+    method_scanning = models.IntegerField(default=0)
+    time_scanning = models.IntegerField(default=0)
+    range_scanning = models.IntegerField(default=0)
 
 
 class Hold(models.Model):
@@ -1092,7 +1111,7 @@ class Flightplan_scan(models.Model):
     id_fleetplan = models.IntegerField(default=0)
     range_scanning = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    time_scanning = models.IntegerField(default=0)
 
 
 class Flightplan_fight(models.Model):

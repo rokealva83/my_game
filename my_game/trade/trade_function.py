@@ -4,7 +4,7 @@
 from datetime import datetime, timedelta
 from django.utils import timezone
 import math
-from my_game.models import Trade_flight, User_city
+from my_game.models import Trade_flight, User_city, Fleet_engine
 
 
 def flight_record_sheet_flight(*args):
@@ -21,7 +21,9 @@ def flight_record_sheet_flight(*args):
     size_element = trade_element.size_element
     mass = lot * mass_element + fleet.ship_empty_mass
     trade_flight = Trade_flight.objects.filter(id_fleet=id_fleet).last()
-    flight_time = math.sqrt(distance / 2 * mass / int(fleet.intersystem_power)) * 2
+    fleet_engine = Fleet_engine.objects.filter(fleet_id = id_fleet).first()
+
+    flight_time = math.sqrt(distance / 2 * mass / int(fleet_engine.intersystem_power)) * 2
     if trade_flight:
         start_time = trade_flight.finish_time
     else:

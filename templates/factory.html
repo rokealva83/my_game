@@ -33,9 +33,10 @@
                     <form method="post" action="production" enctype="multipart/form-data">
                         <H4><p align="left">{{ factory_installed.name }}</p></H4>
                         {% if turn_productions %}
-                            <p> Очередь строительства </p>
+
                             {% for turn_production in turn_productions %}
                                 {% if turn_production.factory_id == factory_installed.id %}
+                                    <p> Очередь строительства </p>
                                     <p>{{ turn_production.finish_time_production }}</p>
                                 {% endif %}
                             {% endfor %}
