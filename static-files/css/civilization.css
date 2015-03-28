@@ -1,0 +1,38 @@
+/* Civilization Styles */
+
+
+.left_civilization {
+    height: 700px;
+    width: 534px;
+    collapse: 4px;
+    float: left;
+}
+
+.planet_image {
+    width: 226px;
+    height: 301px;
+    margin: 5px;
+    float: left;
+}
+
+.player_info{
+    margin: 5px 0 0 7px;
+    float: left;
+}
+
+.civilization_right{
+    height: 694px;
+    width: 490px;
+    background-color: #575757;
+    padding: 3px;
+    margin-top: 4px;
+    float: left;
+    border-radius: 7px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+
+}
+
+.civilization_right p{
+    margin-left: 3px;
+}

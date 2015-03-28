@@ -92,20 +92,23 @@
         </p>
 
         <p>
-            {% if fleet_parametr.passive_scan != 0 or fleet_parametr.active_scan != 0 or fleet_parametr.giper_scan != 0 %}
+
+            {% if fleet_parametr_scans %}
                 <input type="checkbox" name="scan" class="coordinate_checkbox">
                 Сканирование окружения
                 <select name="scaning" class="scientic">
                     <option selected disabled>Scanning method</option>
-                    {% if fleet_parametr.passive_scan != 0 %}
-                        <option value="1">Passive scan( {{ fleet_parametr.passive_scan }} )</option>
-                    {% endif %}
-                    {% if fleet_parametr.active_scan != 0 %}
-                        <option value="2">Active scan( {{ fleet_parametr.active_scan }} )</option>
-                    {% endif %}
-                    {% if fleet_parametr.giper_scan != 0 %}
-                        <option value="3">Giper scan( {{ fleet_parametr.giper_scan }} )</option>
-                    {% endif %}
+                    {% for fleet_parametr_scan in fleet_parametr_scans %}
+                        {% if fleet_parametr_scan.method_scanning == 1 %}
+                            <option value="1">Passive scan( {{ fleet_parametr_scan.range_scanning }} )</option>
+                        {% endif %}
+                        {% if fleet_parametr_scan.method_scanning == 2 %}
+                            <option value="2">Active scan( {{ fleet_parametr_scan.range_scanning }} )</option>
+                        {% endif %}
+                        {% if fleet_parametr_scan.method_scanning == 3 %}
+                            <option value="3">Giper scan( {{ fleet_parametr_scan.range_scanning }} )</option>
+                        {% endif %}
+                    {% endfor %}
                 </select>
             {% endif %}
         </p>

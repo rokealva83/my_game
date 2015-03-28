@@ -1,0 +1,169 @@
+{% load staticfiles %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="content-type" content=text/html; charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/window_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/diplomacy.css' %}">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="{% static 'js/button.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/ship_project.js' %}"></script>
+
+
+</head>
+<body id="inside">
+
+<div id="logo" align="center"></div>
+<div id="header_inside"></div>
+<div id="inform">
+    <div class="inform_panel_city"><p>Поселение:</p>
+
+        <p>{% for user_city in user_citys %}
+            <select name="city" id="city">
+                <option value="{{ user_city.id }}">{{ user_city.name_city }}</option>
+            </select>
+        {% endfor %}</p>
+    </div>
+    <div class="inform_panel"><p>Валюта </p>
+
+        <p>{{ user.internal_currency }}</p></div>
+    {% for warehouse in warehouses %}
+        {% if warehouse.id_resource == 1 %}
+            <div class="inform_panel"><p>Ресурс 1 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
+
+
+        {% if warehouse.id_resource == 2 %}
+            <div class="inform_panel"><p>Ресурс 2 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
+
+
+
+        {% if warehouse.id_resource == 3 %}
+            <div class="inform_panel"><p>Ресурс 3 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
+
+
+
+        {% if warehouse.id_resource == 4 %}
+            <div class="inform_panel"><p>Ресурс 4 </p>
+            <p>{{ warehouse.amount }}</p>
+            </div>
+        {% endif %}
+
+    {% endfor %}
+    <div class="inform_panel"><p>Население:</p>
+
+        <p>{{ user_city.population }} / {{ user_city.max_population }}</p></div>
+    <div class="inform_panel"><p>Энергия
+
+        <p>{{ user_city.use_energy }}/{{ user_city.power }}</p></div>
+    <div class="inform_panel"><p>Кредиты: {{ user.foreigh_currency }}</p>
+
+        <p>Ваучеры: {{ user.real_currency }}</p></div>
+
+</div>
+<div id="block_content">
+    <div id="left_menu">
+        <form method="post" action="civilization" style="margin-top: 6px">
+            <div>
+                <button class="menu_button" type="submit" name="civilization">Цивилизация</button>
+            </div>
+        </form>
+        <form method="post" action="warehouse">
+            <div>
+                <button class="menu_button" type="submit" name="warehouse">Склад</button>
+            </div>
+        </form>
+        <form method="post" action="knowledge">
+            <div>
+                <button class="menu_button" type="submit" name="knowledge">Исследования</button>
+            </div>
+        </form>
+        <form method="post" action="building">
+            <div>
+                <button class="menu_button" type="submit" name="building">Строительство</button>
+            </div>
+        </form>
+        <form method="post" action="factory">
+            <div>
+                <button class="menu_button" type="submit" name="factory">Производство</button>
+            </div>
+        </form>
+        <form method="post" action="economik">
+            <div>
+                <button class="menu_button" type="submit" name="economics">Економика</button>
+            </div>
+        </form>
+        <form method="post" action="designingships">
+            <div>
+                <button class="menu_button" type="submit" name="designingships">Проектирование</button>
+            </div>
+        </form>
+        <form method="post" action="space_forces">
+            <div>
+                <button class="menu_button" type="submit" name="MSF">ВКС</button>
+            </div>
+        </form>
+        <form method="post" action="star_map">
+            <div>
+                <button class="menu_button" type="submit" name="starmap">Звездна карта</button>
+            </div>
+        </form>
+        <form method="post" action="trade">
+            <div>
+                <button class="menu_button" type="submit" name="trade">Торговля</button>
+            </div>
+        </form>
+        <form method="post" action="alliance">
+            <div>
+                <button class="menu_button" type="submit" name="alliance">Альянс</button>
+            </div>
+        </form>
+        <form method="post" action="diplomacy">
+            <div>
+                <button class="menu_button" type="submit" name="diplomacy">Дипломатия</button>
+            </div>
+        </form>
+        <form method="post" action="quest">
+            <div>
+                <button class="menu_button" type="submit" name="quest">Квесты</button>
+            </div>
+        </form>
+        <form method="post" action="forum">
+            <div>
+                <button class="menu_button" type="submit" name="forum">Форум</button>
+            </div>
+        </form>
+        <form method="post" action="exit">
+            <div>
+                <button class="menu_button" type="submit" name="exit">Выход</button>
+            </div>
+        </form>
+    </div>
+
+    {% block content %}{% endblock %}
+
+
+</div>
+<div class="clear"></div>
+<div id="footer">
+    <div id="left_footer">&copy; Copyright 2015 <b>CRROTA</b> design</div>
+    <div id="right_footer"> Design by <b>CRROTA</b> Software</div>
+</div>
+<!-- end footer -->
+
+</body>
+
+</html>
