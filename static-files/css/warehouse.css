@@ -1,0 +1,87 @@
+/* Warehouse Styles */
+
+h3{
+    margin: 3px;
+}
+p{
+    margin-left: 3px;
+}
+
+.right_warehouse_block{
+    min-height: 700px;
+    width: 490px;
+    background-color: #575757;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-bottom: 4px;
+    float: left;
+    border-radius: 7px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+
+}
+
+.left_warehouse_block {
+    min-height: 700px;
+    width: 534px;
+    collapse: 4px;
+    float: left;
+    margin-top: 4px;
+    margin-left: 4px;
+    border-radius: 7px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+}
+
+
+.warehouse_inform span {
+    background: transparent;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    position: relative;
+    text-decoration: none;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.warehouse_inform span i {
+    visibility: hidden;
+    border: 1px solid #444;
+    bottom: 60px;
+    left: 40%;
+    margin-left: -60px;
+    opacity: 1;
+    padding: 10px;
+    position: absolute;
+    width: 200px;
+    z-index: 99;
+
+    background-image: -webkit-linear-gradient(#757575, #757575);
+    background-image: -moz-linear-gradient(#757575, #757575);
+    background-image: -ms-linear-gradient(#757575, #757575);
+    background-image: -o-linear-gradient(#757575, #757575);
+    background-image: linear-gradient(#757575, #757575);
+    background-color: #eee;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.warehouse_inform span:hover i {
+    bottom: 10px;
+    opacity: 0.95;
+    visibility: visible;
+}

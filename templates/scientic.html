@@ -1,215 +1,178 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 {% block title %}Наука{% endblock %}
 
 {% block content %}
-    <div id="game_content">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/scientic.css' %}">
 
-            <div class="game_content_up">
-                {{ message }}
-                Очередь исследования
-                {% for turn_scientic in turn_scientics %}
-                    <p>{{ turn_scientic.finish_time_science }}
+    <div class="turn_scientic">
+        {{ message }}
+        Очередь исследования
+        {% for turn_scientic in turn_scientics %}
+            <p>{{ turn_scientic.finish_time_science }}
 
-                    </p>
-                {% endfor %}
-            </div>
-            <div id="game_content_down">
-                <div class="game_content_scientic">
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p> Матиматика</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Математика" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="1" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Математика" name="add_button"/>
-                            </p>
-
-                            <p>Математика: {{ scientic.mathematics_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <div class="game_content_scientic">
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p> Физика</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Физика" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="2" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Физика" name="add_button"/></p>
-
-                            <p>Физика: {{ scientic.phisics_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <div class="game_content_scientic">
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p> Биология</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Биология" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="3" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Биология" name="add_button"/>
-                            </p>
-
-                            <p>Биология: {{ scientic.biologic_chimics_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <div class="game_content_scientic">
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p> Энергетика</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Энергетика" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="4" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Энергетика" name="add_button"/>
-                            </p>
-
-                            <p>Энергетика: {{ scientic.energetics_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <div class="game_content_scientic">
-
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p> Електроника</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Електроника" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="5" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Електроника" name="add_button"/>
-                            </p>
-
-                            <p>Електроника: {{ scientic.radionics_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <div class="game_content_scientic">
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p> Нанотехнологии</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Нанотехнологии" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="6" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Нанотехнологии"
-                                      name="add_button"/>
-                            </p>
-
-                            <p>Нанотехнологии: {{ scientic.nanotech_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <div class="game_content_scientic">
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p> Астрономия</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Астрономия" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="7" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Астрономия" name="add_button"/>
-                            </p>
-
-                            <p>Астрономия: {{ scientic.astronomy_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <div class="game_content_scientic">
-                    <form method="post" action=study
-                          enctype="multipart/form-data">
-                        <div>
-                            <p>Логистика</p>
-
-                            <p>
-                                <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
-                                     alt="Логистика" width="136" height="176"/></p>
-
-                            <p><label for="scient"></label>
-                                <input type="text" class="scientic_place" value=""
-                                       name="scient" id="scient"
-                                       placeholder="Up"/>
-                                <input type="hidden" value="8" name="name_scient"></p>
-
-                            <p><input id="scient" class="scientic" type="submit" value="Логистика" name="add_button"/>
-                            </p>
-
-                            <p>Логистика: {{ scientic.logistic_up }}</p>
-                        </div>
-                    </form>
-                </div>
-                <br>
-
-
-                <p style="text-align:center; font-size: 18px; color: #000000; clear: both">Сумарное развитие
-                    науки: {{ scientic.all_scientic }}</p>
-
-
-            </div>
+            </p>
+        {% endfor %}
     </div>
-    <div class="clear"></div>
+
+    <div class="block_scientic">
+        <div class="scientic_knowledge">
+            <form method="post" action=study>
+                <div>
+                    <p> Матиматика</p>
+                    <p><img src="{% static "images/scientic/Math.jpg" %}" style="margin: 1px"></p>
+                    <p>
+                        <input type="text" class="scientic_place" value="" name="scient" placeholder="Up mathematics"/>
+                        <input type="hidden" value="1" name="name_scient"></p>
+                    <p><input class="scientic" type="submit" value="Математика"/></p>
+                    <p>Математика: {{ scientic.mathematics_up }}</p>
+                </div>
+            </form>
+        </div>
+        <div class="scientic_knowledge">
+            <form method="post" action=study>
+                <div>
+                    <p> Физика</p>
+                    <p><img src="{% static "images/scientic/Physics.jpg" %}" style="margin: 1px"></p>
+                    <p><input type="text" class="scientic_place" value="" name="scient" placeholder="Up"/>
+                        <input type="hidden" value="2" name="name_scient"></p>
+                    <p><input class="scientic" type="submit" value="Физика"/></p>
+                    <p>Физика: {{ scientic.phisics_up }}</p>
+                </div>
+            </form>
+        </div>
+        <div class="scientic_knowledge">
+            <form method="post" action=study>
+                <div>
+                    <p> Биология</p>
+                    <p><img src="{% static "images/scientic/biolog.jpg" %}" style="margin: 1px"></p>
+                    <p><input type="text" class="scientic_place" value="" name="scient" placeholder="Up"/>
+                        <input type="hidden" value="3" name="name_scient"></p>
+                    <p><input class="scientic" type="submit" value="Биология"/>
+                    </p>
+
+                    <p>Биология: {{ scientic.biologic_chimics_up }}</p>
+                </div>
+            </form>
+        </div>
+        <div class="scientic_knowledge">
+            <form method="post" action=study>
+                <div>
+                    <p> Энергетика</p>
+                    <p><img src="{% static "images/scientic/Energy.jpg" %}" style="margin: 1px"></p>
+
+                    <p><input type="text" class="scientic_place" value="" name="scient" placeholder="Up"/>
+                        <input type="hidden" value="4" name="name_scient"></p>
+                    <p><input id="scient" class="scientic" type="submit" value="Энергетика"/>
+                    </p>
+                    <p>Энергетика: {{ scientic.energetics_up }}</p>
+                </div>
+            </form>
+        </div>
+        <div class="scientic_knowledge">
+
+            <form method="post" action=study
+                  enctype="multipart/form-data">
+                <div>
+                    <p> Електроника</p>
+
+                    <p>
+                        <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
+                             alt="Електроника" width="136" height="176"/></p>
+
+                    <p><label for="scient"></label>
+                        <input type="text" class="scientic_place" value=""
+                               name="scient" id="scient"
+                               placeholder="Up"/>
+                        <input type="hidden" value="5" name="name_scient"></p>
+
+                    <p><input id="scient" class="scientic" type="submit" value="Електроника" name="add_button"/>
+                    </p>
+
+                    <p>Електроника: {{ scientic.radionics_up }}</p>
+                </div>
+            </form>
+        </div>
+        <div class="scientic_knowledge">
+            <form method="post" action=study
+                  enctype="multipart/form-data">
+                <div>
+                    <p> Нанотехнологии</p>
+
+                    <p>
+                        <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
+                             alt="Нанотехнологии" width="136" height="176"/></p>
+
+                    <p><label for="scient"></label>
+                        <input type="text" class="scientic_place" value=""
+                               name="scient" id="scient"
+                               placeholder="Up"/>
+                        <input type="hidden" value="6" name="name_scient"></p>
+
+                    <p><input id="scient" class="scientic" type="submit" value="Нанотехнологии"
+                              name="add_button"/>
+                    </p>
+
+                    <p>Нанотехнологии: {{ scientic.nanotech_up }}</p>
+                </div>
+            </form>
+        </div>
+        <div class="scientic_knowledge">
+            <form method="post" action=study
+                  enctype="multipart/form-data">
+                <div>
+                    <p> Астрономия</p>
+
+                    <p>
+                        <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
+                             alt="Астрономия" width="136" height="176"/></p>
+
+                    <p><label for="scient"></label>
+                        <input type="text" class="scientic_place" value=""
+                               name="scient" id="scient"
+                               placeholder="Up"/>
+                        <input type="hidden" value="7" name="name_scient"></p>
+
+                    <p><input id="scient" class="scientic" type="submit" value="Астрономия" name="add_button"/>
+                    </p>
+
+                    <p>Астрономия: {{ scientic.astronomy_up }}</p>
+                </div>
+            </form>
+        </div>
+        <div class="scientic_knowledge">
+            <form method="post" action=study
+                  enctype="multipart/form-data">
+                <div>
+                    <p>Логистика</p>
+
+                    <p>
+                        <img src="https://lh6.googleusercontent.com/URiHTcRDXMe5vjg5xDDIWNzj-5SDK7_Ce2C4sDhU_0tvYsMtaZeH2fP6FCgE3K5V--7Rbu8t-kQ=w1855-h851"
+                             alt="Логистика" width="136" height="176"/></p>
+
+                    <p><label for="scient"></label>
+                        <input type="text" class="scientic_place" value=""
+                               name="scient" id="scient"
+                               placeholder="Up"/>
+                        <input type="hidden" value="8" name="name_scient"></p>
+
+                    <p><input id="scient" class="scientic" type="submit" value="Логистика" name="add_button"/>
+                    </p>
+
+                    <p>Логистика: {{ scientic.logistic_up }}</p>
+                </div>
+            </form>
+        </div>
+        <br>
+
+
+        <p style="text-align:center; font-size: 18px; color: #000000; clear: both">Сумарное развитие
+            науки: {{ scientic.all_scientic }}</p>
+
+
+    </div>
+
+
 {% endblock %}
 
 

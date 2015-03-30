@@ -1,0 +1,53 @@
+/* Scientic Styles */
+
+.turn_scientic{
+    border-radius: 7px;
+    margin: 5px 5px 3px 5px;
+    border: 1px solid #000000;
+    text-align: center;
+
+}
+
+.block_scientic{
+    text-align: center
+}
+
+.scientic_knowledge {
+    width: 20%;
+    background-color: #616161;
+    box-sizing: border-box;
+    border: 2px solid #000000;
+    border-radius: 7px;
+    margin: 6px 2px;
+    display: inline-block;
+}
+
+.scientic_place {
+    display: inline-block;
+    width: 150px;
+    height: 22px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 7px;
+    background: #c0c0c0;
+}
+
+.scientic {
+    display: inline-block;
+    width: 150px;
+    height: 22px;
+    margin-top: 5px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(0, 0, 0);
+}
