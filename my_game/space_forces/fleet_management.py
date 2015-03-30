@@ -81,7 +81,7 @@ def fleet_manage(request):
             ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
             fleet = Fleet.objects.filter(id=fleet_id).first()
-            fleet_parametr = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id).first()
+            fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
             output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                       'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                       'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
@@ -91,7 +91,7 @@ def fleet_manage(request):
                       'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                       'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                       'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                      'module_patterns': module_patterns, 'fleet_parametr': fleet_parametr}
+                      'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):

@@ -284,85 +284,29 @@ def fleet_flightplan(request):
 
             scan = request.POST.get('scan')
             if scan:
-                method_scan = int(request.POST.get('scaning'))
-                fleet = Fleet.objects.filter(id=fleet_id).first()
-                fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id).first()
-                system = System.objects.filter(id=fleet.system).first()
-                if fleet.planet_status == 1:
-                    fleet_x = (int(system.x) * 1000 + int(fleet.x)) / 1000.0
-                    fleet_y = (int(system.y) * 1000 + int(fleet.y)) / 1000.0
-                    fleet_z = (int(system.z) * 1000 + int(fleet.z)) / 1000.0
-                else:
-                    fleet_x = int(fleet.x)
-                    fleet_y = int(fleet.y)
-                    fleet_z = int(fleet.z)
+                method_scanning = int(request.POST.get('scaning'))
 
-                if method_scan == 1:
-                    flightplan = Flightplan(
-                        user = session_user,
-                        id_fleet = fleet_id,
-                        class_command = 6,
-                        id_command = method_scan,
-                        status = 0
-                    )
-                    flightplan.save()
+                fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id, method_scanning = method_scanning).first()
 
-                    flightplan_scan = Flightplan_scan(
-                        user = session_user,
-                        id_fleet = fleet_id,
-                        id_command = method_scan,
-                        range_scanning = fleet_parametr.passive_scan,
-                        start_time = datetime.now(),
-                        time_scaning = fleet_parametr.time_scanning,
-                        id_fleetplan = flightplan.id
-                    )
+                flightplan = Flightplan(
+                    user = session_user,
+                    id_fleet = fleet_id,
+                    class_command = 6,
+                    id_command = method_scanning,
+                    status = 0
+                )
+                flightplan.save()
 
-
-                    delta = fleet_parametr.passive_scan
-
-
-
-
-                    max_x = fleet_x + delta
-                    min_x = fleet_x - delta
-                    max_y = fleet_y + delta
-                    min_y = fleet_y - delta
-                    max_z = fleet_z + delta
-                    min_z = fleet_z - delta
-                    systems = System.objects.filter()
-                    asteroid_fields = Asteroid_field.objects.filter()
-                    mail = 'Координаты систем:' + '\n'
-                    for system in systems:
-                        if min_x <= system.x <= max_x and min_y <= system.y <= max_y and min_z <= system.z <= max_z:
-                            system_x = system.x
-                            system_y = system.y
-                            system_z = system.z
-                            distance = round(math.sqrt(
-                                (fleet_x - system_x) ** 2 + (fleet_y - system_y) ** 2 + (fleet_z - system_z) ** 2), 3)
-                            if distance <= delta and distance != 0:
-                                line = str(system_x) + ':' + str(system_y) + ':' + str(system_z) + ' Растояние:' + str(
-                                    distance) + ' св.' + ' \n'
-                                mail = mail + line
-
-                    size = 0
-                    ast_mail = '\n'+ 'Координаты астероидных полей:' + '\n'
-                    for asteroid_field in asteroid_fields:
-                        if min_x <= asteroid_field.x <= max_x and min_y <= asteroid_field.y <= max_y and min_z <= asteroid_field.z <= max_z:
-                            system_x = asteroid_field.x
-                            system_y = asteroid_field.y
-                            system_z = asteroid_field.z
-                            asteroid_size = asteroid_field.size
-                            size = size + asteroid_field.size
-                            distance = round(math.sqrt(
-                                (fleet_x - system_x) ** 2 + (fleet_y - system_y) ** 2 + (fleet_z - system_z) ** 2), 3)
-                            if distance <= delta:
-                                line = str(system_x) + ' : ' + str(system_y) + ' : ' + str(system_z) + ' (' + str(
-                                    asteroid_size) + ') ' + ' Растояние:' + str(distance) + ' св.' + '\n'
-                                ast_mail = ast_mail + line
-
-                            # elif method_scan == 2:
-
-                            # elif method_scan == 3:
+                flightplan_scan = Flightplan_scan(
+                    user = session_user,
+                    id_fleet = fleet_id,
+                    id_command = method_scanning,
+                    range_scanning = fleet_parametr_scan.range_scanning,
+                    start_time = datetime.now(),
+                    time_scaning = fleet_parametr_scan.time_scanning,
+                    id_fleetplan = flightplan.id
+                )
+                flightplan_scan.save()
 
         if request.POST.get('delete_command'):
             command = 3

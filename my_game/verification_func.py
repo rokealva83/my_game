@@ -4,16 +4,16 @@ import random
 from datetime import datetime, timedelta
 
 from django.utils import timezone
-
+import math
 from my_game.models import Planet
-from my_game.models import MyUser, User_city, User_scientic
+from my_game.models import MyUser, User_city, User_scientic, System, Asteroid_field
 from my_game.models import Turn_scientic, Turn_building, Turn_assembly_pieces, \
     Turn_production
 from my_game.models import Factory_pattern, Factory_installed, Building_pattern, Building_installed
 from my_game.models import Warehouse_factory, Warehouse_element, Warehouse
 from knowledge import scientic_func
 from my_game.models import Project_ship, Turn_ship_build, Ship, Fleet, Element_ship, Hold
-from my_game.models import Flightplan, Flightplan_flight
+from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan
 from my_game.models import Trade_flight, Trade_teleport
 from my_game.models import User_variables
 
@@ -424,7 +424,57 @@ def verification_flight_list(request):
 
                         flightplan = Flightplan.objects.filter(id=flightplan_id).delete()
                 elif flightplan.class_command == 6:
-                    a = 1
+                    if flightplan.id_command == 1:
+                        system = System.objects.filter(id=fleet.system).first()
+                        fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id = fleet.id, method_scanning = flightplan.id_command).first()
+
+                        if fleet.planet_status == 1:
+                            fleet_x = (int(system.x) * 1000 + int(fleet.x)) / 1000.0
+                            fleet_y = (int(system.y) * 1000 + int(fleet.y)) / 1000.0
+                            fleet_z = (int(system.z) * 1000 + int(fleet.z)) / 1000.0
+                        else:
+                            fleet_x = int(fleet.x)
+                            fleet_y = int(fleet.y)
+                            fleet_z = int(fleet.z)
+
+                        delta = fleet_parametr_scan.range_scanning
+                        max_x = fleet_x + delta
+                        min_x = fleet_x - delta
+                        max_y = fleet_y + delta
+                        min_y = fleet_y - delta
+                        max_z = fleet_z + delta
+                        min_z = fleet_z - delta
+                        systems = System.objects.filter()
+                        asteroid_fields = Asteroid_field.objects.filter()
+                        mail = 'Координаты систем:' + '\n'
+                        for system in systems:
+                            if min_x <= system.x <= max_x and min_y <= system.y <= max_y and min_z <= system.z <= max_z:
+                                system_x = system.x
+                                system_y = system.y
+                                system_z = system.z
+                                distance = round(math.sqrt(
+                                    (fleet_x - system_x) ** 2 + (fleet_y - system_y) ** 2 + (fleet_z - system_z) ** 2), 3)
+                                if distance <= delta and distance != 0:
+                                    line = str(system_x) + ':' + str(system_y) + ':' + str(system_z) + ' Растояние:' + str(
+                                        distance) + ' св.' + ' \n'
+                                    mail = mail + line
+
+                        size = 0
+                        ast_mail = '\n'+ 'Координаты астероидных полей:' + '\n'
+                        for asteroid_field in asteroid_fields:
+                            if min_x <= asteroid_field.x <= max_x and min_y <= asteroid_field.y <= max_y and min_z <= asteroid_field.z <= max_z:
+                                system_x = asteroid_field.x
+                                system_y = asteroid_field.y
+                                system_z = asteroid_field.z
+                                asteroid_size = asteroid_field.size
+                                size = size + asteroid_field.size
+                                distance = round(math.sqrt(
+                                    (fleet_x - system_x) ** 2 + (fleet_y - system_y) ** 2 + (fleet_z - system_z) ** 2), 3)
+                                if distance <= delta:
+                                    line = str(system_x) + ' : ' + str(system_y) + ' : ' + str(system_z) + ' (' + str(
+                                        asteroid_size) + ') ' + ' Растояние:' + str(distance) + ' св.' + '\n'
+                                    ast_mail = ast_mail + line
+                            a = 1
 
 
             lens = lens + 1
