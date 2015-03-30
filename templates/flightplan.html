@@ -91,8 +91,15 @@
             {% endif %}
         </p>
 
-        <p>
 
+            <p>
+            {% if fleet_parametr_resource_extraction %}
+                <input type="checkbox" name="resource_extraction" class="coordinate_checkbox">
+                Добыча ресурсов
+            {% endif %}
+        </p>
+
+        <p>
             {% if fleet_parametr_scans %}
                 <input type="checkbox" name="scan" class="coordinate_checkbox">
                 Сканирование окружения

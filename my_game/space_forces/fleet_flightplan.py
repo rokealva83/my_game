@@ -282,6 +282,10 @@ def fleet_flightplan(request):
                 )
                 flightplan_flight.save()
 
+            resource_extraction = request.POST.get('resource_extraction')
+            if resource_extraction:
+                a =1
+
             scan = request.POST.get('scan')
             if scan:
                 method_scanning = int(request.POST.get('scaning'))

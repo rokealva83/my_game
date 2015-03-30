@@ -5,7 +5,8 @@ from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game.models import Hull_pattern, Project_ship, Element_ship, Module_pattern, Engine_pattern, Generator_pattern, \
     Shield_pattern, Weapon_pattern
-from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_energy_power
+from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_energy_power, \
+    Fleet_parametr_resource_extraction
 from my_game import function
 
 
@@ -106,6 +107,24 @@ def add_ship(request):
                             if element_pattern:
                                 hold = hold + element_pattern.param1
                                 use_energy = use_energy + element_pattern.power_consuption
+
+                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                            module_class=3).first()
+                            if element_pattern:
+                                fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+                                    fleet_id=fleet_id).first()
+                                if fleet_parametr_resource_extraction:
+                                    extraction_per_minute = fleet_parametr_resource_extraction.extraction_per_minute + element_pattern.param1 * amount_ship
+                                    fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+                                        fleet_id=fleet_id).update(extraction_per_minute=extraction_per_minute)
+                                else:
+                                    fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction(
+                                        fleet_id=fleet_id,
+                                        extraction_per_minute=element_pattern.param1 * amount_ship
+                                    )
+                                    fleet_parametr_resource_extraction.save()
+                                use_energy = use_energy + element_pattern.power_consuption
+
                             element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
                                                                             module_class=6).first()
                             if element_pattern:
@@ -213,7 +232,6 @@ def add_ship(request):
                             use_energy_null = use_energy_null + fleet_energy_power.use_energy_null
                             use_fuel_generator = use_fuel_generator + fleet_energy_power.use_fuel_generator
                             produced_energy = produced_energy + fleet_energy_power.produce_energy
-
 
                             fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                                 ship_empty_mass=ship_empty_mass,

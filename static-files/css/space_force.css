@@ -1,0 +1,71 @@
+/* Space force Styles */
+
+.left_block_force{
+    width: 550px;
+    background-color: #616161;
+    opacity: 0.75;
+    border-radius: 7px;
+    float: left;
+    margin: 5px 5px 0px 5px;
+    border: 1px solid #000000;
+}
+
+.button_force{
+    display: inline-block;
+    width: 110px;
+    height: 22px;
+    margin-top: 5px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(0, 0, 0);
+}
+
+.list_force{
+    display: inline-block;
+    width: 125px;
+    height: 22px;
+    margin-top: 5px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(0, 0, 0);
+}
+
+.force_name {
+    display: inline-block;
+    width: 150px;
+    height: 22px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 7px;
+    background: #c0c0c0;
+}
+
+.number_ship{
+    display: inline-block;
+    width: 50px;
+    height: 22px;
+    line-height: 5px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 7px;
+    background: #c0c0c0;
+}

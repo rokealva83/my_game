@@ -957,6 +957,14 @@ class Fleet_parametr_scan(models.Model):
     time_scanning = models.IntegerField(default=0)
     range_scanning = models.IntegerField(default=0)
 
+class Fleet_parametr_resource_extraction(models.Model):
+    class Meta():
+        db_table = 'fleet_parametr_resource_extraction'
+
+    fleet_id = models.IntegerField()
+    extraction_per_minute = models.IntegerField(default=0)
+
+
 
 class Hold(models.Model):
     class Meta():

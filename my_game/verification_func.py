@@ -15,7 +15,7 @@ from knowledge import scientic_func
 from my_game.models import Project_ship, Turn_ship_build, Ship, Fleet, Element_ship, Hold
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan
 from my_game.models import Trade_flight, Trade_teleport
-from my_game.models import User_variables
+from my_game.models import User_variables ,Mail
 
 
 def check_scientific_verification_queue(request):
@@ -409,20 +409,8 @@ def verification_flight_list(request):
 
                         old_flightplan_flight = flightplan_flight
                         flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
-                        flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).first()
-
-                        if flightplan_flight:
-                            finish_time = old_flightplan_flight.start_time + timedelta(
-                                seconds=flightplan_flight.flight_time)
-
-                            start_x = old_flightplan_flight.finish_x
-                            start_y = old_flightplan_flight.finish_y
-                            start_z = old_flightplan_flight.finish_z
-                            flightplan_flight = Flightplan_flight.objects.filter(id_fleet=flightplan.id_fleet).update(
-                                start_x=start_x, start_y=start_y, start_z=start_z,
-                                start_time=old_flightplan_flight.finish_time)
-
                         flightplan = Flightplan.objects.filter(id=flightplan_id).delete()
+
                 elif flightplan.class_command == 6:
                     if flightplan.id_command == 1:
                         system = System.objects.filter(id=fleet.system).first()
@@ -474,7 +462,18 @@ def verification_flight_list(request):
                                     line = str(system_x) + ' : ' + str(system_y) + ' : ' + str(system_z) + ' (' + str(
                                         asteroid_size) + ') ' + ' Растояние:' + str(distance) + ' св.' + '\n'
                                     ast_mail = ast_mail + line
-                            a = 1
+                        final_mail = mail + '\n' +ast_mail
+
+                    mail = Mail(
+                        user = user,
+                        recipient = 0,
+                        time = datetime.now(),
+                        status = 1,
+                        category = 4,
+                        login_recipient = 'Система',
+                        title = 'Отчет сканирования',
+                        message = final_mail
+                    )
 
 
             lens = lens + 1

@@ -4,7 +4,6 @@
         <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
 
         <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
-
         {% if ship_holds %}
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 0 %}
@@ -12,20 +11,17 @@
                              {% if basic_resource.id == ship_hold.id_shipment %}
                                   <p>{{ basic_resource.name }} ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
                             / {{ ship_hold.size_shipment }} )
-                            <input value="0" name="amount_resource{{ ship_hold.id_shipment }}" class="scientic_place"></p>
+                            <input value="0" name="amount_resource{{ ship_hold.id_shipment }}" class="number_ship"></p>
                             {% endif %}
                         {% endfor %}
-
                 {% endif %}
-
-
                 {% if ship_hold.class_shipment == 10 %}
                     {% for factory_pattern in factory_patterns %}
                         {% if factory_pattern.id ==  ship_hold.id_shipment %}
                             <p>{{ factory_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_factory" class="scientic_place"></p>
+                                <input value="0" name="amount_factory" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_factory"/>
                         {% endif %}
                     {% endfor %}
@@ -36,7 +32,7 @@
                             <p>{{ hull_pattern.name }} ( {{ ship_hold.amount_shipment }} / {{ ship_hold.mass_shipment }}
                                 /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_hull" class="scientic_place"></p>
+                                <input value="0" name="amount_hull" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_hull"/>
                         {% endif %}
                     {% endfor %}
@@ -47,7 +43,7 @@
                             <p>{{ armor_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_armor" class="scientic_place"></p>
+                                <input value="0" name="amount_armor" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_armor"/>
                         {% endif %}
                     {% endfor %}
@@ -58,7 +54,7 @@
                             <p>{{ shield_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_shield" class="scientic_place"></p>
+                                <input value="0" name="amount_shield" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_shield"/>
                         {% endif %}
                     {% endfor %}
@@ -69,7 +65,7 @@
                             <p>{{ engine_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_engine" class="scientic_place"></p>
+                                <input value="0" name="amount_engine" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_engine"/>
                         {% endif %}
                     {% endfor %}
@@ -80,7 +76,7 @@
                             <p>{{ generator_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_generator" class="scientic_place"></p>
+                                <input value="0" name="amount_generator" class="number_ship"></p>
                             <input type="hidden" id="fleet_id"
                                    value={{ ship_hold.id_shipment }} name="hidden_generator"/>
                         {% endif %}
@@ -92,7 +88,7 @@
                             <p>{{ weapon_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_weapon" class="scientic_place"></p>
+                                <input value="0" name="amount_weapon" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_weapon"/>
                         {% endif %}
                     {% endfor %}
@@ -103,7 +99,7 @@
                             <p>{{ shell_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_shell" class="scientic_place"></p>
+                                <input value="0" name="amount_shell" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_shell"/>
                         {% endif %}
                     {% endfor %}
@@ -114,24 +110,22 @@
                             <p>{{ module_pattern.name }} ( {{ ship_hold.amount_shipment }}
                                 / {{ ship_hold.mass_shipment }} /
                                 {{ ship_hold.size_shipment }} )
-                                <input value="0" name="amount_module" class="scientic_place"></p>
+                                <input value="0" name="amount_module" class="number_ship"></p>
                             <input type="hidden" id="fleet_id" value={{ ship_hold.id_shipment }} name="hidden_module"/>
                         {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}
-            <p><input class="scientic" type="submit" value="Выгрузить" name="unload"/>
-                <input class="scientic" type="submit" value="Выгрузить все" name="unload_all"/></p>
+            <p><input class="list_force" type="submit" value="Выгрузить" name="unload"/>
+                <input class="list_force" type="submit" value="Выгрузить все" name="unload_all"/></p>
         {% endif %}
     </form>
-
     <form method="post" action="fleet_hold" style="text-align: center">
         <p>Управление трюмом флота</p>
         <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
-
         <div>
             Resource in warehouse
-            <select name="warehouse_resource" class="scientic">
+            <select name="warehouse_resource" class="list_force">
                 <option selected disabled>Choise resource</option>
                 {% for warehouse in warehouses %}
                     {% if warehouse.amount > 0 %}
@@ -146,11 +140,11 @@
                     {% endif %}
                 {% endfor %}
             </select>
-            <input value="0" name="resource_amount" class="scientic_place" placeholder="Resource amount"/>
+            <input value="0" name="resource_amount" class="number_ship" placeholder="Resource amount"/>
         </div>
         <div>
             {% if warehouse_factorys %} Factory in warehouse
-                <select name="warehouse_factory" class="scientic">
+                <select name="warehouse_factory" class="list_force">
                     <option selected disabled>Choise factory</option>
                     {% for warehouse_factory in warehouse_factorys %}
                         {% for factory_pattern in factory_patterns %}
@@ -165,11 +159,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="factory_amount" class="scientic_place" placeholder="Factory amount"/>
+            <input value="0" name="factory_amount" class="number_ship" placeholder="Factory amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Hull in warehouse
-                <select name="warehouse_hull" class="scientic">
+                <select name="warehouse_hull" class="list_force">
                     <option selected disabled>Choise hull</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 1 %}
@@ -187,11 +181,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="hull_amount" class="scientic_place" placeholder="Hull amount"/>
+            <input value="0" name="hull_amount" class="number_ship" placeholder="Hull amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Armor in warehouse
-                <select name="warehouse_armor" class="scientic">
+                <select name="warehouse_armor" class="list_force">
                     <option selected disabled>Choise armor</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 2 %}
@@ -209,11 +203,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="armor_amount" class="scientic_place" placeholder="Armor amount"/>
+            <input value="0" name="armor_amount" class="number_ship" placeholder="Armor amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Shield in warehouse
-                <select name="warehouse_shield" class="scientic">
+                <select name="warehouse_shield" class="list_force">
                     <option selected disabled>Choise shield</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 3 %}
@@ -231,11 +225,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="shield_amount" class="scientic_place" placeholder="Shield amount"/>
+            <input value="0" name="shield_amount" class="number_ship" placeholder="Shield amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Engine in warehouse
-                <select name="warehouse_engine" class="scientic">
+                <select name="warehouse_engine" class="list_force">
                     <option selected disabled>Choise engine</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 4 %}
@@ -253,11 +247,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="engine_amount" class="scientic_place" placeholder="Engine amount"/>
+            <input value="0" name="engine_amount" class="number_ship" placeholder="Engine amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Generator in warehouse
-                <select name="warehouse_generator" class="scientic">
+                <select name="warehouse_generator" class="list_force">
                     <option selected disabled>Choise generator</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 5 %}
@@ -275,11 +269,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="generator_amount" class="scientic_place" placeholder="Generator amount"/>
+            <input value="0" name="generator_amount" class="number_ship" placeholder="Generator amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Weapon in warehouse
-                <select name="warehouse_weapon" class="scientic">
+                <select name="warehouse_weapon" class="list_force">
                     <option selected disabled>Choise weapon</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 6 %}
@@ -297,11 +291,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="weapon_amount" class="scientic_place" placeholder="Weapon amount"/>
+            <input value="0" name="weapon_amount" class="number_ship" placeholder="Weapon amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Shell in warehouse
-                <select name="warehouse_shell" class="scientic">
+                <select name="warehouse_shell" class="list_force">
                     <option selected disabled>Choise shell</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 7 %}
@@ -319,11 +313,11 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="shell_amount" class="scientic_place" placeholder="Shell amount"/>
+            <input value="0" name="shell_amount" class="number_ship" placeholder="Shell amount"/>
         </div>
         <div>
             {% if warehouse_elements %} Module in warehouse
-                <select name="warehouse_module" class="scientic">
+                <select name="warehouse_module" class="list_force">
                     <option selected disabled>Choise module</option>
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 8 %}
@@ -341,8 +335,8 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            <input value="0" name="module_amount" class="scientic_place" placeholder="Module amount"/>
+            <input value="0" name="module_amount" class="number_ship" placeholder="Module amount"/>
         </div>
-        <input class="scientic" type="submit" value="Загрузить" name="add_shipment"/>
+        <input class="list_force" type="submit" value="Загрузить" name="add_shipment"/>
     </form>
 {% endblock %}
