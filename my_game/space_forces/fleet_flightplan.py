@@ -334,6 +334,5 @@ def fleet_flightplan(request):
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
-                  'mail': mail, 'ast_mail': ast_mail}
-        return render(request, "test.html", output)
+                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,                  }
+        return render(request, "flightplan.html", output)

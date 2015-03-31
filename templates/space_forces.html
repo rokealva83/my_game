@@ -30,7 +30,6 @@
             <form method="post" action="fleet_manage" style="text-align: center">
                 <div class="fleet">
                     <p>{{ user_fleet.name }}</p>
-
                     <p>
                         Status:
                         {% if user_fleet.status == 0 %}
@@ -44,11 +43,13 @@
                         Coordinate: {{ user_city.name_city }} - ({{ user_fleet.x }} : {{ user_fleet.y }}
                         : {{ user_fleet.z }})
                     </p>
+                {% spaceless %}
                     {% for ship_fleet in ship_fleets %}
                         {% if ship_fleet.place_id == user_fleet.id %}
                             {{ ship_fleet.name }} : {{ ship_fleet.amount_ship }}
                         {% endif %}
                     {% endfor %}
+                {% endspaceless %}
                     <p>
                         <input class="button_force" type="submit" value="Navy ships" name="navy_ships"/>
                         <input class="button_force" type="submit" value="The hold of the fleet" name="hold_fleet"
@@ -84,6 +85,7 @@
                     {% endfor %}
                 {% endif %}
             </form>
+
             <p>
             <form method="post" action="delete_ship" style="text-align: center">
                 {% if ship_fleets %}
