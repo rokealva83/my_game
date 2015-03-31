@@ -7,7 +7,7 @@ from django.utils import timezone
 from my_game.models import MyUser, User_city
 from my_game.models import  Turn_building
 from my_game.models import Factory_pattern, Factory_installed, Building_pattern, Building_installed
-import verification_func
+import my_game.verification_func as verification_func
 
 
 def verification_phase_of_construction(request):

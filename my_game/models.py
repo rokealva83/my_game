@@ -1077,9 +1077,9 @@ class Flightplan_production(models.Model):
     id_fleet = models.IntegerField()
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
-    production_per_second = models.IntegerField()
+    production_per_minute = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    time_extraction = models.IntegerField(default=0)
 
 
 class Flightplan_refill(models.Model):

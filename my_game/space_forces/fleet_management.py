@@ -3,7 +3,8 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource
-from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine
+from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
+    Flightplan_production, Flightplan_scan
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
@@ -53,12 +54,12 @@ def fleet_manage(request):
             fleet_id = new_fleet.pk
 
             fleet_energy = Fleet_energy_power(
-                fleet_id = fleet_id
+                fleet_id=fleet_id
             )
             fleet_energy.save()
 
             fleet_engine = Fleet_engine(
-                fleet_id = fleet_id
+                fleet_id=fleet_id
             )
             fleet_engine.save()
 
@@ -83,6 +84,9 @@ def fleet_manage(request):
             fleet = Fleet.objects.filter(id=fleet_id).first()
             fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
             fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(fleet_id=fleet_id).first()
+            flightplan_scans = Flightplan_scan.objects.filter(id_fleet=fleet_id)
+            flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id)
+            fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
             output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                       'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                       'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
@@ -92,7 +96,10 @@ def fleet_manage(request):
                       'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                       'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                       'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                      'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans, 'fleet_parametr_resource_extraction':fleet_parametr_resource_extraction}
+                      'flightplan_scans': flightplan_scans, 'flightplan_productions': flightplan_productions,
+                      'fleet_engine': fleet_engine,
+                      'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans,
+                      'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):

@@ -1,8 +1,12 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
 {% block title %}ВКС{% endblock %}
+
 {% block content %}
-    {% load staticfiles %}
+
     <link rel="stylesheet" type="text/css" href="{% static 'css/space_force.css' %}">
+
     <div class="left_block_force">
         <form method="post" action="fleet_manage" style="text-align: center">
             <input value="" name="fleet_name" class="force_name" placeholder="Fleet name"/>
@@ -30,6 +34,7 @@
             <form method="post" action="fleet_manage" style="text-align: center">
                 <div class="fleet">
                     <p>{{ user_fleet.name }}</p>
+
                     <p>
                         Status:
                         {% if user_fleet.status == 0 %}
@@ -43,13 +48,13 @@
                         Coordinate: {{ user_city.name_city }} - ({{ user_fleet.x }} : {{ user_fleet.y }}
                         : {{ user_fleet.z }})
                     </p>
-                {% spaceless %}
-                    {% for ship_fleet in ship_fleets %}
-                        {% if ship_fleet.place_id == user_fleet.id %}
-                            {{ ship_fleet.name }} : {{ ship_fleet.amount_ship }}
-                        {% endif %}
-                    {% endfor %}
-                {% endspaceless %}
+                    {% spaceless %}
+                        {% for ship_fleet in ship_fleets %}
+                            {% if ship_fleet.place_id == user_fleet.id %}
+                                {{ ship_fleet.name }} : {{ ship_fleet.amount_ship }}
+                            {% endif %}
+                        {% endfor %}
+                    {% endspaceless %}
                     <p>
                         <input class="button_force" type="submit" value="Navy ships" name="navy_ships"/>
                         <input class="button_force" type="submit" value="The hold of the fleet" name="hold_fleet"
@@ -69,7 +74,7 @@
             </form>
         {% endfor %}
     </div>
-    <div id="block_design_right">
+    <div class="right_block_force">
         <h3 style="text-align: center">Панель управления флотом </h3>
         {% if command == 1 %}
             <form method="post" action="add_ship" style="text-align: center">

@@ -7,8 +7,9 @@ from my_game.models import System, Planet, Asteroid_field
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game import function
-from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine
-from  my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_hold
+from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
+    Fleet_parametr_resource_extraction
+from  my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_hold, Flightplan_production
 
 
 def fleet_flightplan(request):
@@ -19,6 +20,8 @@ def fleet_flightplan(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         fleet_id = int(request.POST.get('hidden_fleet'))
+        fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
+        fleet = Fleet.objects.filter(id=fleet_id).first()
         command = 0
         if request.POST.get('add_command'):
             command = 3
@@ -31,7 +34,6 @@ def fleet_flightplan(request):
                 target_system = System.objects.filter(id=planet_system).first()
                 target_planet = Planet.objects.filter(system_id=planet_system, planet_num=planet_planet).first()
                 fleet = Fleet.objects.filter(id=fleet_id).first()
-                fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
                 fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).first()
                 system = System.objects.filter(id=fleet.system).first()
                 # XYZ - координаты звезд  xyz - соординаты планет  XxYyZz - межзвездные координаты планет
@@ -94,7 +96,8 @@ def fleet_flightplan(request):
                                 id_command = 3
                             else:
                                 flight_time = math.sqrt(
-                                    distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.intersystem_power)) * 2
+                                    distance / 2 * (int(fleet.ship_empty_mass) ) / int(
+                                        fleet_engine.intersystem_power)) * 2
                                 id_command = 2
                         elif planet_null:
                             fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
@@ -109,7 +112,8 @@ def fleet_flightplan(request):
                                 id_command = 4
                             else:
                                 flight_time = math.sqrt(
-                                    distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.intersystem_power)) * 2
+                                    distance / 2 * (int(fleet.ship_empty_mass) ) / int(
+                                        fleet_engine.intersystem_power)) * 2
                                 id_command = 2
                         else:
                             flight_time = math.sqrt(
@@ -218,7 +222,8 @@ def fleet_flightplan(request):
                     distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2) ** 2)
 
                 if coordinate_system == fleet.system:
-                    flight_time = math.sqrt(distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.system_power)) * 2
+                    flight_time = math.sqrt(
+                        distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.system_power)) * 2
                     id_command = 1
                 else:
                     if coordinate_giper:
@@ -284,31 +289,55 @@ def fleet_flightplan(request):
 
             resource_extraction = request.POST.get('resource_extraction')
             if resource_extraction:
-                a =1
+                time_extraction = request.POST.get('time_extraction')
+                full_hold = request.POST.get('full_hold')
+
+                fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+                    fleet_id=fleet_id).first()
+                if full_hold:
+                    time_extraction = int(fleet.empty_hold / fleet_parametr_resource_extraction.extraction_per_minute)
+
+                flightplan = Flightplan(
+                    user=session_user,
+                    id_fleet=fleet_id,
+                    class_command=3,
+                    id_command=1,
+                    status=0
+                )
+                flightplan.save()
+
+                flightplan_production = Flightplan_production(
+                    user=session_user,
+                    id_fleet=fleet_id,
+                    id_fleetplan=flightplan.id,
+                    id_command=1,
+                    production_per_minute=fleet_parametr_resource_extraction.extraction_per_minute,
+                    time_extraction=time_extraction
+                )
+                flightplan_production.save()
 
             scan = request.POST.get('scan')
             if scan:
                 method_scanning = int(request.POST.get('scaning'))
-
-                fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id, method_scanning = method_scanning).first()
-
+                fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id,
+                                                                         method_scanning=method_scanning).first()
                 flightplan = Flightplan(
-                    user = session_user,
-                    id_fleet = fleet_id,
-                    class_command = 6,
-                    id_command = method_scanning,
-                    status = 0
+                    user=session_user,
+                    id_fleet=fleet_id,
+                    class_command=6,
+                    id_command=method_scanning,
+                    status=0
                 )
                 flightplan.save()
 
                 flightplan_scan = Flightplan_scan(
-                    user = session_user,
-                    id_fleet = fleet_id,
-                    id_command = method_scanning,
-                    range_scanning = fleet_parametr_scan.range_scanning,
-                    start_time = datetime.now(),
-                    time_scaning = fleet_parametr_scan.time_scanning,
-                    id_fleetplan = flightplan.id
+                    user=session_user,
+                    id_fleet=fleet_id,
+                    id_command=method_scanning,
+                    range_scanning=fleet_parametr_scan.range_scanning,
+                    start_time=datetime.now(),
+                    time_scanning=fleet_parametr_scan.time_scanning,
+                    id_fleetplan=flightplan.id
                 )
                 flightplan_scan.save()
 
@@ -319,6 +348,10 @@ def fleet_flightplan(request):
             flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).first()
             if flightplan.class_command == 1:
                 flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
+            if flightplan.class_command == 3:
+                flightplan_scan = Flightplan_scan.objects.filter(id_fleetplan=flightplan.id).delete()
+            if flightplan.class_command == 6:
+                flightplan_production = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).delete()
             flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).delete()
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
@@ -329,10 +362,20 @@ def fleet_flightplan(request):
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         flightplans = Flightplan.objects.filter(id_fleet=fleet_id)
         flightplan_flights = Flightplan_flight.objects.filter(id_fleet=fleet_id)
+        flightplan_scans = Flightplan_scan.objects.filter(id_fleet=fleet_id)
+        flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id)
+        fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
+        fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
+        fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+            fleet_id=fleet_id).first()
+
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,                  }
+                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
+                  'flightplan_scans': flightplan_scans, 'flightplan_productions': flightplan_productions,
+                  'fleet_engine': fleet_engine, 'fleet_parametr_scans': fleet_parametr_scans,
+                  'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction}
         return render(request, "flightplan.html", output)

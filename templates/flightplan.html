@@ -1,8 +1,94 @@
 {% extends "space_forces.html" %}
 {% block content_2 %}
+    <form method="post" action="fleet_flightplan"
+          style="text-align: center; border: 1px solid; border-radius: 7px; margin: 3px">
+        <h3 style="text-align: center">Список команд</h3>
+
+        <p>
+            <input type="checkbox" name="city" class="coordinate_checkbox">
+            Перелет к планете
+            <input value="0" name="planet_system" class="coordinate_place"/>
+            <input value="0" name="planet_planet" class="coordinate_place"/>
+        </p>
+
+        <p>
+            {% if fleet_engine.giper_power != 0 %}
+                Использовать гипер
+                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+            {% endif %}
+            {% if fleet_engine.null_power != 0 %}
+                Использовать джамп
+                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+            {% endif %}
+        </p>
+
+
+        <p>
+            <input type="checkbox" name="coordinate" class="coordinate_checkbox">
+            Перелет в координаты
+            <input value="0" name="coordinate_x" class="coordinate_place"/>
+            <input value="0" name="coordinate_y" class="coordinate_place"/>
+            <input value="0" name="coordinate_z" class="coordinate_place"/>
+        </p>
+
+        <p>
+            Системные координаты
+            <input value="0" name="coordinate_system" class="coordinate_place"/>
+            Межсистемные координаты
+            <input type="checkbox" name="coordinate_intersystem" class="coordinate_checkbox">
+        </p>
+
+        <p>
+            {% if fleet_engine.giper_power != 0 %}
+                Использовать гипер
+                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+            {% endif %}
+            {% if fleet_engine.null_power != 0 %}
+                Использовать джамп
+                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+            {% endif %}
+        </p>
+
+        <p>
+            {% if fleet_parametr_resource_extraction %}
+                <input type="checkbox" name="resource_extraction" class="coordinate_checkbox">
+                Добыча ресурсов
+
+                <input value="60" class="coordinate_place" name="time_extraction">минут
+
+                <input type="checkbox" name="full_hold" class="coordinate_checkbox">
+                До полного трюма
+            {% endif %}
+        </p>
+
+        <p>
+            {% if fleet_parametr_scans %}
+                <input type="checkbox" name="scan" class="coordinate_checkbox">
+                Сканирование окружения
+                <select name="scaning" class="scientic">
+                    <option selected disabled>Scanning method</option>
+                    {% for fleet_parametr_scan in fleet_parametr_scans %}
+                        {% if fleet_parametr_scan.method_scanning == 1 %}
+                            <option value="1">Passive scan( {{ fleet_parametr_scan.range_scanning }} )</option>
+                        {% endif %}
+                        {% if fleet_parametr_scan.method_scanning == 2 %}
+                            <option value="2">Active scan( {{ fleet_parametr_scan.range_scanning }} )</option>
+                        {% endif %}
+                        {% if fleet_parametr_scan.method_scanning == 3 %}
+                            <option value="3">Giper scan( {{ fleet_parametr_scan.range_scanning }} )</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </p>
+
+        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+        <input class="scientic" type="submit" value="Add command" name="add_command" style="margin-bottom: 4px"/>
+
+
+    </form>
     {% if flightplans %}
-        <form method="post" action="fleet_flightplan" enctype="multipart/form-data"
-              style="text-align: center;  margin-bottom: 3px; border: 1px solid; border-radius: 7px;">
+        <form method="post" action="fleet_flightplan">
             <h3 style="text-align: center">Полетный лист</h3>
             {% for flightplan in flightplans %}
                 {% if flightplan.class_command == 1 %}
@@ -29,12 +115,65 @@
                             </div>
                         {% endif %}
                     {% endfor %}
+                {% endif %}
 
+                {% if flightplan.class_command == 3 %}
+                    {% for flightplan_production in flightplan_productions %}
+                        {% if flightplan_production.id_fleetplan == flightplan.id %}
+                            <div class="fleet">
+                                <p>Добыча ресурсов {{ flightplan_production.time_extraction }}минут</p>
+                                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                                <input type="hidden"
+                                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                                <input class="scientic" type="submit" value="Delete command"
+                                       name="delete_command"/>
+
+                                <p>Status:
+                                    {% if flightplan.status == 0 %}
+                                        stand by
+                                    {% else %}
+                                        prosecution
+                                    {% endif %}
+                                </p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if flightplan.class_command == 6 %}
+                    {% for flightplan_scan in flightplan_scans %}
+                        {% if flightplan_scan.id_fleetplan == flightplan.id %}
+                            <div class="fleet">
+                                <p>
+                                    {% if flightplan_scan.id_command == 1 %}
+                                        Сканирование окружения
+                                    {% elif flightplan_scan.id_command == 2 %}
+                                        Поиск астероидов
+                                    {% endif %}
+                                    в радиусе {{ flightplan_scan.range_scanning }} св.
+                                    Время сканирования {{ flightplan_scan.time_scanning }} секунд
+                                </p>
+                                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                                <input type="hidden"
+                                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                                <input class="scientic" type="submit" value="Delete command"
+                                       name="delete_command"/>
+
+                                <p>Status:
+                                    {% if flightplan.status == 0 %}
+                                        stand by
+                                    {% else %}
+                                        prosecution
+                                    {% endif %}
+                                </p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
 
             {% endfor %}
         </form>
-        <form method="post" action="start_flight" enctype="multipart/form-data"
+        <form method="post" action="start_flight"
               style="text-align: center;  margin-bottom: 20px;">
             <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
             <input class="scientic" type="submit" value="Start flight" name="start_flight"/>
@@ -42,88 +181,4 @@
 
         </form>
     {% endif %}
-
-    <form method="post" action="fleet_flightplan" style="text-align: center; border: 1px solid; border-radius: 7px;">
-        <h3 style="text-align: center">Список команд</h3>
-
-        <p>
-            <input type="checkbox" name="city" class="coordinate_checkbox">
-            Перелет к планете
-            <input value="0" name="planet_system" class="coordinate_place"/>
-            <input value="0" name="planet_planet" class="coordinate_place"/>
-        </p>
-
-        <p>
-            {% if fleet.giper_power != 0 %}
-                Использовать гипер
-                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
-            {% endif %}
-            {% if fleet.null_power != 0 %}
-                Использовать джамп
-                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
-            {% endif %}
-        </p>
-
-
-        <p>
-            <input type="checkbox" name="coordinate" class="coordinate_checkbox">
-            Перелет в координаты
-            <input value="0" name="coordinate_x" class="coordinate_place"/>
-            <input value="0" name="coordinate_y" class="coordinate_place"/>
-            <input value="0" name="coordinate_z" class="coordinate_place"/>
-        </p>
-
-        <p>
-            Системные координаты
-            <input value="0" name="coordinate_system" class="coordinate_place"/>
-            Межсистемные координаты
-            <input type="checkbox" name="coordinate_intersystem" class="coordinate_checkbox">
-        </p>
-
-        <p>
-            {% if fleet.giper_power != 0 %}
-                Использовать гипер
-                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
-            {% endif %}
-            {% if fleet.null_power != 0 %}
-                Использовать джамп
-                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
-            {% endif %}
-        </p>
-
-
-            <p>
-            {% if fleet_parametr_resource_extraction %}
-                <input type="checkbox" name="resource_extraction" class="coordinate_checkbox">
-                Добыча ресурсов
-            {% endif %}
-        </p>
-
-        <p>
-            {% if fleet_parametr_scans %}
-                <input type="checkbox" name="scan" class="coordinate_checkbox">
-                Сканирование окружения
-                <select name="scaning" class="scientic">
-                    <option selected disabled>Scanning method</option>
-                    {% for fleet_parametr_scan in fleet_parametr_scans %}
-                        {% if fleet_parametr_scan.method_scanning == 1 %}
-                            <option value="1">Passive scan( {{ fleet_parametr_scan.range_scanning }} )</option>
-                        {% endif %}
-                        {% if fleet_parametr_scan.method_scanning == 2 %}
-                            <option value="2">Active scan( {{ fleet_parametr_scan.range_scanning }} )</option>
-                        {% endif %}
-                        {% if fleet_parametr_scan.method_scanning == 3 %}
-                            <option value="3">Giper scan( {{ fleet_parametr_scan.range_scanning }} )</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            {% endif %}
-        </p>
-
-
-        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-        <input class="scientic" type="submit" value="Add command" name="add_command"/>
-
-
-    </form>
 {% endblock %}

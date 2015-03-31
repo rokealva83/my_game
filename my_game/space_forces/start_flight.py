@@ -7,7 +7,7 @@ from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game import function
 from my_game.models import Ship, Fleet
-from my_game.models import Flightplan, Flightplan_flight
+from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_hold, Flightplan_production
 
 
 
@@ -40,6 +40,8 @@ def start_flight(request):
             fleet_id = int(request.POST.get('hidden_fleet'))
             flightplan = Flightplan.objects.filter(id_fleet=fleet_id).delete()
             flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).delete()
+            flightplan_scan = Flightplan_scan.objects.filter(id_fleet=fleet_id).delete()
+            flightplan_production = Flightplan_production.objects.filter(id_fleet=fleet_id).delete()
             command = 3
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')

@@ -3,7 +3,7 @@
 from django.utils import timezone
 from my_game.models import MyUser, User_scientic
 from my_game.models import Turn_scientic
-from knowledge import scientic_func
+import my_game.knowledge.scientic_func as scientic_func
 from my_game.models import User_variables
 
 
