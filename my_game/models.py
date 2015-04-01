@@ -9,8 +9,8 @@ class MyUser(models.Model):
     class Meta():
         db_table = 'my_user'
 
-    user_id = models.IntegerField()
-    user_name = models.CharField(max_length=20, unique=True)
+    user_id = models.IntegerField(db_index=True)
+    user_name = models.CharField(db_index=True, max_length=20, unique=True)
     password = models.CharField(max_length=50)
     race_id = models.IntegerField()
     alliance_id = models.IntegerField(default=0)
@@ -18,7 +18,7 @@ class MyUser(models.Model):
     internal_currency = models.IntegerField(default=0)
     foreigh_currency = models.IntegerField(default=0)
     real_currency = models.IntegerField(default=0)
-    e_mail = models.CharField(max_length=50, unique=True)
+    e_mail = models.CharField(db_index=True, max_length=50, unique=True)
     referal_code = models.CharField(max_length=50)
     user_luckyness = models.IntegerField()
     last_time_check = models.DateTimeField()
@@ -44,9 +44,9 @@ class System(models.Model):
         db_table = 'system'
 
     galaxy = models.ForeignKey(Galaxy)
-    x = models.IntegerField()
-    y = models.IntegerField()
-    z = models.IntegerField()
+    x = models.IntegerField(db_index=True)
+    y = models.IntegerField(db_index=True)
+    z = models.IntegerField(db_index=True)
     system_type = models.IntegerField()
     system_size = models.FloatField()
     star_size = models.FloatField()
@@ -57,9 +57,9 @@ class Planet(models.Model):
         db_table = 'planet'
 
     system = models.ForeignKey(System)
-    x = models.IntegerField()
-    y = models.IntegerField()
-    z = models.IntegerField()
+    x = models.IntegerField(db_index=True)
+    y = models.IntegerField(db_index=True)
+    z = models.IntegerField(db_index=True)
     planet_num = models.IntegerField()
     planet_name = models.CharField(max_length=20, default='New Planet')
     planet_type = models.IntegerField()
@@ -88,8 +88,8 @@ class Warehouse(models.Model):
     class Meta():
         db_table = 'warehouse'
 
-    user = models.IntegerField()
-    user_city = models.IntegerField(default=0)
+    user = models.IntegerField(db_index=True)
+    user_city = models.IntegerField(db_index=True, default=0)
     id_resource = models.IntegerField(default=0)
     amount = models.IntegerField(default=125000)
 
@@ -98,13 +98,13 @@ class User_city(models.Model):
     class Meta():
         db_table = 'user_city'
 
-    user = models.IntegerField()
-    system = models.ForeignKey(System)
-    planet = models.ForeignKey(Planet)
+    user = models.IntegerField(db_index=True)
+    system = models.ForeignKey(System, db_index=True)
+    planet = models.ForeignKey(Planet, db_index=True)
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
-    name_city = models.CharField(max_length=20, default='New City')
+    name_city = models.CharField(db_index=True, max_length=20, default='New City')
     city_size_free = models.IntegerField()
     population = models.IntegerField(default=150)
     max_population = models.IntegerField(default=500)
@@ -200,6 +200,7 @@ class Basic_hull(models.Model):
     module = models.IntegerField()
     main_weapon = models.IntegerField()
     hold_size = models.IntegerField()
+    fuel_tank = models.IntegerField(default=0)
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
@@ -482,7 +483,7 @@ class Factory_pattern(models.Model):
     class Meta():
         db_table = 'factory_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New factory')
     price_internal_currency = models.IntegerField(default=25)
@@ -510,7 +511,7 @@ class Hull_pattern(models.Model):
     class Meta():
         db_table = 'hull_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default="New hull")
     health = models.IntegerField()
@@ -522,6 +523,7 @@ class Hull_pattern(models.Model):
     module = models.IntegerField(default=3)
     main_weapon = models.IntegerField()
     hold_size = models.IntegerField()
+    fuel_tank = models.IntegerField(default=100)
     mass = models.IntegerField()
     size = models.IntegerField()
     power_consuption = models.IntegerField()
@@ -541,7 +543,7 @@ class Engine_pattern(models.Model):
     class Meta():
         db_table = 'engine_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New engine')
     health = models.FloatField()
@@ -568,7 +570,7 @@ class Generator_pattern(models.Model):
     class Meta():
         db_table = 'generator_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New generator')
     health = models.FloatField()
@@ -592,7 +594,7 @@ class Shield_pattern(models.Model):
     class Meta():
         db_table = 'shield_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New shield')
     health = models.FloatField()
@@ -619,7 +621,7 @@ class Weapon_pattern(models.Model):
     class Meta():
         db_table = 'weapon_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New weapon')
     health = models.IntegerField()
@@ -648,7 +650,7 @@ class Armor_pattern(models.Model):
     class Meta():
         db_table = 'armor_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New armor')
     health = models.FloatField()
@@ -673,7 +675,7 @@ class Shell_pattern(models.Model):
     class Meta():
         db_table = 'shell_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New shell')
     phisical_damage = models.FloatField()
@@ -696,7 +698,7 @@ class Module_pattern(models.Model):
     class Meta():
         db_table = 'module_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     basic_id = models.IntegerField()
     name = models.CharField(max_length=50, default='New module')
     health = models.IntegerField()
@@ -723,13 +725,13 @@ class Factory_installed(models.Model):
     class Meta():
         db_table = 'factory_installed'
 
-    user = models.IntegerField()
-    user_city = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    user_city = models.IntegerField(db_index=True)
     factory_pattern_id = models.IntegerField()
     name = models.CharField(max_length=50)
     time_deployment = models.IntegerField()
-    production_class = models.IntegerField()
-    production_id = models.IntegerField()
+    production_class = models.IntegerField(db_index=True)
+    production_id = models.IntegerField(db_index=True)
     time_production = models.IntegerField()
     size = models.IntegerField()
     mass = models.IntegerField()
@@ -740,9 +742,9 @@ class Warehouse_factory(models.Model):
     class Meta():
         db_table = 'warehouse_factory'
 
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    factory_id = models.IntegerField(default=0)
+    user = models.IntegerField(default=5, db_index=True)
+    user_city = models.IntegerField(default=1, db_index=True)
+    factory_id = models.IntegerField(default=0, db_index=True)
     production_class = models.IntegerField(default=0)
     production_id = models.IntegerField(default=0)
     time_production = models.IntegerField(default=0)
@@ -756,9 +758,9 @@ class Warehouse_element(models.Model):
     class Meta():
         db_table = 'warehouse_element'
 
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
-    element_class = models.IntegerField(default=1)
+    user = models.IntegerField(default=5, db_index=True)
+    user_city = models.IntegerField(default=1, db_index=True)
+    element_class = models.IntegerField(default=1, db_index=True)
     element_id = models.IntegerField(default=0)
     amount = models.IntegerField(default=0)
 
@@ -767,8 +769,8 @@ class Warehouse_ship(models.Model):
     class Meta():
         db_table = 'warehouse_ship'
 
-    user = models.IntegerField(default=5)
-    user_city = models.IntegerField(default=1)
+    user = models.IntegerField(default=5, db_index=True)
+    user_city = models.IntegerField(default=1, db_index=True)
     ship_id = models.IntegerField(default=0)
     amount = models.IntegerField(default=0)
 
@@ -777,7 +779,7 @@ class User_scientic(models.Model):
     class Meta():
         db_table = 'user_scientic'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     mathematics_up = models.IntegerField(default=0)
     time_study_math = models.IntegerField()
     phisics_up = models.IntegerField(default=0)
@@ -801,8 +803,8 @@ class Turn_building(models.Model):
     class Meta():
         db_table = 'turn_building'
 
-    user = models.IntegerField()
-    user_city = models.IntegerField(default=0)
+    user = models.IntegerField(db_index=True)
+    user_city = models.IntegerField(default=0, db_index=True)
     factory_id = models.IntegerField(default=0)
     class_id = models.IntegerField(default=0)
     x = models.IntegerField(default=0)
@@ -816,7 +818,7 @@ class Turn_scientic(models.Model):
     class Meta():
         db_table = 'turn_scientic'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     mathematics_up = models.IntegerField(default=0)
     phisics_up = models.IntegerField(default=0)
     biologic_chimics_up = models.IntegerField(default=0)
@@ -833,8 +835,8 @@ class Turn_production(models.Model):
     class Meta():
         db_table = 'turn_production'
 
-    user = models.IntegerField()
-    user_city = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    user_city = models.IntegerField(db_index=True)
     factory_id = models.IntegerField()
     element_id = models.IntegerField()
     amount_element = models.IntegerField(default=1)
@@ -846,8 +848,8 @@ class Turn_assembly_pieces(models.Model):
     class Meta():
         db_table = 'turn_assembly_pieces'
 
-    user = models.IntegerField()
-    user_city = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    user_city = models.IntegerField(db_index=True)
     pattern_id = models.IntegerField()
     class_id = models.IntegerField(default=0)
     amount_assembly = models.IntegerField(default=0)
@@ -859,7 +861,7 @@ class Project_ship(models.Model):
     class Meta():
         db_table = 'project_ship'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     name = models.CharField(max_length=20)
     hull_id = models.IntegerField()
     system_power = models.IntegerField(default=0)
@@ -879,13 +881,12 @@ class Project_ship(models.Model):
     mass = models.IntegerField(default=500)
 
 
-
 class Element_ship(models.Model):
     class Meta():
         db_table = 'element_ship'
 
-    id_project_ship = models.IntegerField()
-    class_element = models.IntegerField()
+    id_project_ship = models.IntegerField(db_index=True)
+    class_element = models.IntegerField(db_index=True)
     id_element_pattern = models.IntegerField()
     position = models.IntegerField()
     health = models.IntegerField()
@@ -895,8 +896,8 @@ class Ship(models.Model):
     class Meta():
         db_table = 'ship'
 
-    user = models.IntegerField()
-    id_project_ship = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_project_ship = models.IntegerField(db_index=True)
     name = models.CharField(max_length=20, default='New ship')
     amount_ship = models.IntegerField()
     fleet_status = models.BooleanField(default=0)
@@ -907,7 +908,7 @@ class Fleet(models.Model):
     class Meta():
         db_table = 'fleet'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     name = models.CharField(max_length=20)
     x = models.FloatField()
     y = models.FloatField()
@@ -919,13 +920,14 @@ class Fleet(models.Model):
     hold = models.IntegerField(default=0)
     empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
+    free_fuel_tank = models.IntegerField(default=0)
 
 
 class Fleet_engine(models.Model):
     class Meta():
         db_table = 'fleet_engine'
 
-    fleet_id = models.IntegerField()
+    fleet_id = models.IntegerField(db_index=True)
     system_power = models.IntegerField(default=0)
     intersystem_power = models.IntegerField(default=0)
     giper_power = models.IntegerField(default=0)
@@ -939,7 +941,7 @@ class Fleet_energy_power(models.Model):
     class Meta():
         db_table = 'fleet_energy_power'
 
-    fleet_id = models.IntegerField()
+    fleet_id = models.IntegerField(db_index=True)
     use_energy = models.IntegerField(default=0)
     use_fuel_system = models.IntegerField(default=0)
     use_fuel_intersystem = models.IntegerField(default=0)
@@ -948,14 +950,16 @@ class Fleet_energy_power(models.Model):
     produce_energy = models.IntegerField(default=0)
     use_fuel_generator = models.IntegerField(default=0)
 
+
 class Fleet_parametr_scan(models.Model):
     class Meta():
         db_table = 'fleet_parametr_scan'
 
-    fleet_id = models.IntegerField()
+    fleet_id = models.IntegerField(db_index=True)
     method_scanning = models.IntegerField(default=0)
     time_scanning = models.IntegerField(default=0)
     range_scanning = models.IntegerField(default=0)
+
 
 class Fleet_parametr_resource_extraction(models.Model):
     class Meta():
@@ -965,12 +969,11 @@ class Fleet_parametr_resource_extraction(models.Model):
     extraction_per_minute = models.IntegerField(default=0)
 
 
-
 class Hold(models.Model):
     class Meta():
         db_table = 'hold'
 
-    fleet_id = models.IntegerField()
+    fleet_id = models.IntegerField(db_index=True)
     class_shipment = models.IntegerField()
     id_shipment = models.IntegerField()
     amount_shipment = models.IntegerField()
@@ -978,11 +981,22 @@ class Hold(models.Model):
     size_shipment = models.IntegerField()
 
 
+class Fuel_tank(models.Model):
+    class Meta():
+        db_table = 'fuel_tank'
+
+    fleet_id = models.IntegerField(db_index=True)
+    class_fuel = models.IntegerField()
+    amount_fuel = models.IntegerField()
+    mass_fuel = models.IntegerField()
+    size_fuel = models.IntegerField()
+
+
 class Turn_ship_build(models.Model):
     class Meta():
         db_table = 'turn_ship_build'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     user_city = models.IntegerField()
     process_id = models.IntegerField(default=0)
     ship_pattern = models.IntegerField()
@@ -1027,8 +1041,8 @@ class Flightplan(models.Model):
     class Meta():
         db_table = 'flightplan'
 
-    user = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     class_command = models.IntegerField()
     id_command = models.IntegerField()
     status = models.IntegerField()
@@ -1038,8 +1052,8 @@ class Flightplan_flight(models.Model):
     class Meta():
         db_table = 'flightplan_flight'
 
-    user = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     start_x = models.IntegerField()
@@ -1059,8 +1073,8 @@ class Flightplan_hold(models.Model):
     class Meta():
         db_table = 'flightplan_hold'
 
-    user = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     amount = models.IntegerField()
@@ -1073,8 +1087,8 @@ class Flightplan_production(models.Model):
     class Meta():
         db_table = 'flightplan_production'
 
-    user = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     production_per_minute = models.IntegerField()
@@ -1086,8 +1100,8 @@ class Flightplan_refill(models.Model):
     class Meta():
         db_table = 'flightplan_refill'
 
-    user = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     id_fleet_refill = models.IntegerField()
@@ -1100,8 +1114,8 @@ class Flightplan_repair(models.Model):
     class Meta():
         db_table = 'flightplan_repair'
 
-    user = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     repair = models.IntegerField()
@@ -1113,8 +1127,8 @@ class Flightplan_scan(models.Model):
     class Meta():
         db_table = 'flightplan_scan'
 
-    user = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     id_command = models.IntegerField()
     id_fleetplan = models.IntegerField(default=0)
     range_scanning = models.IntegerField()
@@ -1126,7 +1140,8 @@ class Flightplan_fight(models.Model):
     class Meta():
         db_table = 'flightplan_fight'
 
-    user = models.IntegerField()
+
+    user = models.IntegerField(db_index=True)
     id_fleet = models.IntegerField()
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
@@ -1138,9 +1153,9 @@ class Asteroid_field(models.Model):
     class Meta():
         db_table = 'asteroid_field'
 
-    x = models.FloatField()
-    y = models.FloatField()
-    z = models.FloatField()
+    x = models.FloatField(db_index=True)
+    y = models.FloatField(db_index=True)
+    z = models.FloatField(db_index=True)
     class_asteroid_field = models.IntegerField(default=0)
     size = models.IntegerField()
     koef_res_1 = models.FloatField(default=0.15)
@@ -1159,7 +1174,7 @@ class Trade_element(models.Model):
         db_table = 'trade_element'
 
     name = models.CharField(max_length=50)
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     buyer = models.IntegerField(default=0)
     trade_space = models.IntegerField(default=0)
     class_element = models.IntegerField()
@@ -1183,7 +1198,8 @@ class Trade_space(models.Model):
         db_table = 'trade_space'
 
     name = models.CharField(max_length=50)
-    user = models.IntegerField()
+
+    user = models.IntegerField(db_index=True)
     password = models.CharField(max_length=50)
     tax = models.IntegerField()
 
@@ -1192,7 +1208,7 @@ class Mail(models.Model):
     class Meta():
         db_table = 'mail'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     recipient = models.IntegerField()
     time = models.DateTimeField(default=datetime.now, blank=True)
     status = models.IntegerField()
@@ -1237,7 +1253,7 @@ class Building_pattern(models.Model):
     class Meta():
         db_table = 'building_pattern'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     name = models.CharField(max_length=50)
     basic_id = models.IntegerField(default=1)
     production_class = models.IntegerField()
@@ -1266,7 +1282,7 @@ class Building_installed(models.Model):
     class Meta():
         db_table = 'building_installed'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     user_city = models.IntegerField()
     building_pattern_id = models.IntegerField()
     name = models.CharField(max_length=50)
@@ -1293,7 +1309,7 @@ class Delivery_queue(models.Model):
     class Meta():
         db_table = 'delivery_queue'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     user_city = models.IntegerField()
     name = models.CharField(max_length=50, default='new')
     class_element = models.IntegerField()
@@ -1312,7 +1328,7 @@ class Trade_teleport(models.Model):
     class Meta():
         db_table = 'trade_teleport'
 
-    user = models.IntegerField()
+    user = models.IntegerField(db_index=True)
     user_city = models.IntegerField()
     name = models.CharField(max_length=50, default='new')
     class_element = models.IntegerField()
@@ -1326,9 +1342,9 @@ class Trade_flight(models.Model):
     class Meta():
         db_table = 'trade_flight'
 
-    user = models.IntegerField()
-    user_city = models.IntegerField()
-    id_fleet = models.IntegerField()
+    user = models.IntegerField(db_index=True)
+    user_city = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
     id_flight = models.IntegerField()
     name = models.CharField(max_length=50)
     class_element = models.IntegerField()
