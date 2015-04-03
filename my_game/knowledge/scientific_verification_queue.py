@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.utils import timezone
+from datetime import datetime
 from my_game.models import MyUser, User_scientic
 from my_game.models import Turn_scientic
 import my_game.knowledge.scientic_func as scientic_func
@@ -10,6 +11,7 @@ from my_game.models import User_variables
 def check_scientific_verification_queue(request):
     user = int(request)
     time = timezone.now()
+    time_update = MyUser.objects.filter(user_id=user).first().last_time_check
     turn_scientics = Turn_scientic.objects.filter(user=user)
     user_variables = User_variables.objects.filter(id=1).first()
     if turn_scientics:
@@ -76,3 +78,8 @@ def check_scientific_verification_queue(request):
 
             if 0.875 <= new_technology <= 1:
                 scientic_func.module_upgrade(user)
+
+        last_time_update = time_update
+        last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,
+                                         0)
+        MyUser.objects.filter(user_id=user).update(last_time_scan_scient=last_time_scan_scient)
