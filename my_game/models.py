@@ -736,7 +736,35 @@ class Factory_installed(models.Model):
     size = models.IntegerField()
     mass = models.IntegerField()
     power_consumption = models.IntegerField(default=0)
+    complex_status = models.IntegerField(default=0)
+    complex_id = models.IntegerField(default=0)
 
+
+class Manufacturing_complex(models.Model):
+    class Meta():
+        db_table = 'manufacturing_complex'
+
+    user = models.IntegerField(db_index=True)
+    user_city = models.IntegerField(db_index=True)
+    name = models.CharField(max_length=50, default='New complex')
+    extraction_parametr = models.IntegerField(default=0)
+
+class Warehouse_factory_resource(models.Model):
+    class Meta():
+        db_table = 'warehouse_factory_resource'
+
+    id_factory = models.IntegerField(db_index=True)
+    id_resource = models.IntegerField()
+    amount = models.IntegerField()
+
+
+class Warehouse_complex(models.Model):
+    class Meta():
+        db_table = 'warehouse_complex'
+
+    id_complex = models.IntegerField(db_index=True)
+    id_resource = models.IntegerField()
+    amount = models.IntegerField()
 
 class Warehouse_factory(models.Model):
     class Meta():

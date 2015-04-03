@@ -9,28 +9,30 @@
 
         <h3><p style="text-align: center">Warehouse</p></h3>
         {% for warehouse in warehouses %}
-            {% for basic_resource in basic_resources %}
-                {% if basic_resource.id == warehouse.id_resource %}
-                    <p>{{ basic_resource.name }}: {{ warehouse.amount }}</p>
-                {% endif %}
-            {% endfor %}
+            {% spaceless %}
+                {% for basic_resource in basic_resources %}
+                    {% if basic_resource.id == warehouse.id_resource %}
+                        <p>{{ basic_resource.name }}: {{ warehouse.amount }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endspaceless %}
         {% endfor %}
-
-        <div>
-            <input class="toggle-box" id="Warehouse_factory" type="checkbox" align="left">
-            <label for="Warehouse_factory">
-                <h3><p style="text-align: center">Warehouse_factory</p></h3>
-            </label>
-
+        {% spaceless %}
             <div>
-                {% if warehouse_factorys %}
-                    {% for warehouse_factory in warehouse_factorys %}
-                        {% for factory_pattern in factory_patterns %}
-                            {% if warehouse_factory.factory_id == factory_pattern.id %}
-                                {% if warehouse_factory.amount > 0 %}
-                                    <p>
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <input class="toggle-box" id="Warehouse_factory" type="checkbox" align="left">
+                <label for="Warehouse_factory">
+                    <h3><p style="text-align: center">Warehouse_factory</p></h3>
+                </label>
+
+                <div>
+                    {% if warehouse_factorys %}
+                        {% for warehouse_factory in warehouse_factorys %}
+                            {% for factory_pattern in factory_patterns %}
+                                {% if warehouse_factory.factory_id == factory_pattern.id %}
+                                    {% if warehouse_factory.amount > 0 %}
+                                        <p>
+                                        <div class="warehouse_inform">
+                                            <ul>
                                         <span>{{ factory_pattern.name }}
                                             <i>
                                                 {% for attribute_factory in attribute_factorys %}
@@ -44,31 +46,33 @@
 
                                             </i> </b>: {{ warehouse_factory.amount }} </b>
                                         </span>
-                                        </ul>
-                                    </div>
-                                    </p>
+                                            </ul>
+                                        </div>
+                                        </p>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                {% endif %}
+                    {% endif %}
+                </div>
+
             </div>
-
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_hull" type="checkbox" align="left">
-            <label for="Warehouse_hull">
-                <h3><p style="text-align: center">Warehouse_hull</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 1 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for hull_pattern in hull_patterns %}
-                                {% if hull_pattern.id == warehouse_element.element_id %}
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <input class="toggle-box" id="Warehouse_hull" type="checkbox" align="left">
+                <label for="Warehouse_hull">
+                    <h3><p style="text-align: center">Warehouse_hull</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 1 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for hull_pattern in hull_patterns %}
+                                    {% if hull_pattern.id == warehouse_element.element_id %}
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span><p>{{ hull_pattern.name }}
                                                         <i>
                                                             {% for attribute_hull in attribute_hulls %}
@@ -82,30 +86,32 @@
                                                         </i> - {{ warehouse_element.amount }}
                                                     </p>
                                                     </span>
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_armor" type="checkbox" align="left">
-            <label for="Warehouse_armor">
-                <h3><p style="text-align: center">Warehouse_armor</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 2 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for armor_pattern in armor_patterns %}
-                                {% if armor_pattern.id == warehouse_element.element_id %}
+                <input class="toggle-box" id="Warehouse_armor" type="checkbox" align="left">
+                <label for="Warehouse_armor">
+                    <h3><p style="text-align: center">Warehouse_armor</p></h3>
+                </label>
 
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 2 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for armor_pattern in armor_patterns %}
+                                    {% if armor_pattern.id == warehouse_element.element_id %}
+
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span>{{ armor_pattern.name }}
                                                         <i>
                                                             {% for attribute_armor in attribute_armors %}
@@ -119,32 +125,34 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                        </ul>
-                                    </div>
+                                            </ul>
+                                        </div>
 
-                                    </p>
-                                {% endif %}
-                            {% endfor %}
+                                        </p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_shield" type="checkbox" align="left">
-            <label for="Warehouse_shield">
-                <h3><p style="text-align: center">Warehouse_shield</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 3 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for shield_pattern in shield_patterns %}
-                                {% if shield_pattern.id == warehouse_element.element_id %}
+                <input class="toggle-box" id="Warehouse_shield" type="checkbox" align="left">
+                <label for="Warehouse_shield">
+                    <h3><p style="text-align: center">Warehouse_shield</p></h3>
+                </label>
 
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 3 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for shield_pattern in shield_patterns %}
+                                    {% if shield_pattern.id == warehouse_element.element_id %}
+
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span>{{ shield_pattern.name }}
                                                         <i>
                                                             {% for attribute_shield in attribute_shields %}
@@ -158,31 +166,33 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                        </ul>
-                                    </div>
+                                            </ul>
+                                        </div>
 
-                                {% endif %}
-                            {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_engine" type="checkbox" align="left">
-            <label for="Warehouse_engine">
-                <h3><p style="text-align: center">Warehouse_engine</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 4 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for engine_pattern in engine_patterns %}
-                                {% if engine_pattern.id == warehouse_element.element_id %}
+                <input class="toggle-box" id="Warehouse_engine" type="checkbox" align="left">
+                <label for="Warehouse_engine">
+                    <h3><p style="text-align: center">Warehouse_engine</p></h3>
+                </label>
 
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 4 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for engine_pattern in engine_patterns %}
+                                    {% if engine_pattern.id == warehouse_element.element_id %}
+
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span>{{ engine_pattern.name }}
                                                         <i>
                                                             {% for attribute_engine in attribute_engines %}
@@ -196,31 +206,33 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                        </ul>
-                                    </div>
+                                            </ul>
+                                        </div>
 
 
-                                {% endif %}
-                            {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_generator" type="checkbox" align="left">
-            <label for="Warehouse_generator">
-                <h3><p style="text-align: center">Warehouse_generator</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 5 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for generator_pattern in generator_patterns %}
-                                {% if generator_pattern.id == warehouse_element.element_id %}
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <input class="toggle-box" id="Warehouse_generator" type="checkbox" align="left">
+                <label for="Warehouse_generator">
+                    <h3><p style="text-align: center">Warehouse_generator</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 5 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for generator_pattern in generator_patterns %}
+                                    {% if generator_pattern.id == warehouse_element.element_id %}
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span>{{ generator_pattern.name }}
                                                         <i>
                                                             {% for attribute_generator in attribute_generators %}
@@ -234,29 +246,31 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_weapon" type="checkbox" align="left">
-            <label for="Warehouse_weapon">
-                <h3><p style="text-align: center">Warehouse_weapon</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 6 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for weapon_pattern in weapon_patterns %}
-                                {% if weapon_pattern.id == warehouse_element.element_id %}
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <input class="toggle-box" id="Warehouse_weapon" type="checkbox" align="left">
+                <label for="Warehouse_weapon">
+                    <h3><p style="text-align: center">Warehouse_weapon</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 6 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for weapon_pattern in weapon_patterns %}
+                                    {% if weapon_pattern.id == warehouse_element.element_id %}
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span>{{ weapon_pattern.name }}
                                                         <i>
                                                             {% for attribute_weapon in attribute_weapons %}
@@ -270,29 +284,31 @@
 
                                                         </i> - {{ warehouse_element.amount }}
                                                     </span>
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_shell" type="checkbox" align="left">
-            <label for="Warehouse_shell">
-                <h3><p style="text-align: center">Warehouse_shell</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 7 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for shell_pattern in shell_patterns %}
-                                {% if shell_pattern.id == warehouse_element.element_id %}
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <input class="toggle-box" id="Warehouse_shell" type="checkbox" align="left">
+                <label for="Warehouse_shell">
+                    <h3><p style="text-align: center">Warehouse_shell</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 7 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for shell_pattern in shell_patterns %}
+                                    {% if shell_pattern.id == warehouse_element.element_id %}
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span>{{ shell_pattern.name }}
                                                         <i>
                                                             {% for attribute_shell in attribute_shells %}
@@ -306,29 +322,31 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div>
-            <input class="toggle-box" id="Warehouse_module" type="checkbox" align="left">
-            <label for="Warehouse_module">
-                <h3><p style="text-align: center">Warehouse_module</p></h3>
-            </label>
-
+        {% endspaceless %}
+        {% spaceless %}
             <div>
-                {% for warehouse_element in warehouse_elements %}
-                    {% if warehouse_element.element_class == 8 %}
-                        {% if warehouse_element.amount > 0 %}
-                            {% for module_pattern in module_patterns %}
-                                {% if module_pattern.id == warehouse_element.element_id %}
-                                    <div class="warehouse_inform">
-                                        <ul>
+                <input class="toggle-box" id="Warehouse_module" type="checkbox" align="left">
+                <label for="Warehouse_module">
+                    <h3><p style="text-align: center">Warehouse_module</p></h3>
+                </label>
+
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 8 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for module_pattern in module_patterns %}
+                                    {% if module_pattern.id == warehouse_element.element_id %}
+                                        <div class="warehouse_inform">
+                                            <ul>
                                                     <span>{{ module_pattern.name }}
                                                         <i>
                                                             {% for attribute_module in attribute_modules %}
@@ -343,15 +361,18 @@
 
                                                         </i>  - {{ warehouse_element.amount }}
                                                     </span>
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+        {% endspaceless %}
+
+
     </div>
 
     <div class="right_warehouse_block">

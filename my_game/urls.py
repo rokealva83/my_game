@@ -61,11 +61,17 @@ urlpatterns = patterns('',
 
                        url(r'^building', building.building),
                        url(r'^choice_build', building.choice_build),
+                       url(r'^create_complex', building.create_complex),
+                       url(r'^management_complex', building.management_complex),
+                       url(r'^add_in_complex', building.add_in_complex),
+                       url(r'^percent_extraction', building.percent_extraction),
+                       url(r'^remove_from_complex', building.remove_from_complex),
+                       url(r'^complex_warehouse', building.complex_warehouse),
                        url(r'^working', building.working),
-
 
                        url(r'^factory', factory.factory),
                        url(r'^choice_element', factory.choice_element),
+                       url(r'^choice_complex', factory.choice_complex),
                        url(r'^production', factory.production),
 
                        url(r'^designingships', design_views.designingships),
