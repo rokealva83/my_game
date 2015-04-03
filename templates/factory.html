@@ -124,21 +124,28 @@
                     {% if complex_factory.production_class == 1 %}
                         {% for hull_pattern in hull_patterns %}
                             {% if hull_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ hull_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ hull_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == hull_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
-                                    <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ hull_pattern.id }} name="hidden_element">
-                                    <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}
                         {% endfor %}
@@ -146,16 +153,26 @@
                     {% if complex_factory.production_class == 2 %}
                         {% for armor_pattern in armor_patterns %}
                             {% if armor_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ armor_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ armor_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == armor_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
                                     <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
@@ -168,21 +185,28 @@
                     {% if complex_factory.production_class == 3 %}
                         {% for shield_pattern in shield_patterns %}
                             {% if shield_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ shield_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ shield_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == shield_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
-                                    <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ shield_pattern.id }} name="hidden_element">
-                                    <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}
                         {% endfor %}
@@ -190,21 +214,28 @@
                     {% if complex_factory.production_class == 4 %}
                         {% for engine_pattern in engine_patterns %}
                             {% if engine_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ engine_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ engine_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == engine_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
-                                    <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ engine_pattern.id }} name="hidden_element">
-                                    <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}
                         {% endfor %}
@@ -212,21 +243,28 @@
                     {% if complex_factory.production_class == 5 %}
                         {% for generator_pattern in generator_patterns %}
                             {% if generator_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ generator_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ generator_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == generator_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
-                                    <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ generator_pattern.id }} name="hidden_element">
-                                    <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}
                         {% endfor %}
@@ -234,21 +272,28 @@
                     {% if complex_factory.production_class == 6 %}
                         {% for weapon_pattern in weapon_patterns %}
                             {% if weapon_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ weapon_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ weapon_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == weapon_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
-                                    <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ weapon_pattern.id }} name="hidden_element">
-                                    <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}
                         {% endfor %}
@@ -256,21 +301,28 @@
                     {% if complex_factory.production_class == 7 %}
                         {% for shell_pattern in shell_patterns %}
                             {% if shell_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ shell_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ shell_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == shell_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
-                                    <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ shell_pattern.id }} name="hidden_element">
-                                    <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}
                         {% endfor %}
@@ -278,21 +330,28 @@
                     {% if complex_factory.production_class == 8 %}
                         {% for module_pattern in module_patterns %}
                             {% if module_pattern.basic_id == complex_factory.production_id %}
-                                <form action="complex_production">
+                                <form method="GET" action="complex_production">
                                     <p>
                                         <b>{{ module_pattern.name }} </b>
-                                        <input class="building_bottom" type="submit" value="Начать производство"/>
+                                        <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
+                                        <input type="hidden" value={{ module_pattern.id }} name="hidden_element">
+                                        <input type="hidden" value={{ complex_id }} name="complex_id">
                                         {% if turn_productions %}
                                             {% for turn_production in turn_productions %}
                                                 {% if turn_production.factory_id == complex_factory.id and turn_production.element_id == module_pattern.id %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="stop"/>
                                                     <b>Идет производство</b>
+                                                {% else %}
+                                                    <input class="building_bottom" type="submit"
+                                                           value="Начать производство" name="create"/>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% else %}
+                                            <input class="building_bottom" type="submit" value="Начать производство"
+                                                   name="create"/>
                                         {% endif %}
                                     </p>
-                                    <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ module_pattern.id }} name="hidden_element">
-                                    <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}
                         {% endfor %}
@@ -301,73 +360,77 @@
             {% else %}
                 {% if factory_installed %}
                     <form method="post" action="production">
-                        {% if turn_productions %}
-                            {% for turn_production in turn_productions %}
-                                {% if turn_production.factory_id == factory_installed.id %}
-                                    <p> Очередь строительства </p>
-                                    <p>{{ turn_production.finish_time_production }}</p>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        <input class="toggle-box" id="factory{{ factory_installed.id }}" type="checkbox"
-                               align="left">
-                        {% for element_pattern in element_patterns %}
-                            {% if element_pattern.basic_id == factory_installed.production_id %}
-                                <input class="toggle-box"
-                                       id="factory{{ factory_installed.id }}element{{ element_pattern.id }}"
-                                       type="checkbox"
-                                       align="left">
-                                <label for="factory{{ factory_installed.id }}element{{ element_pattern.id }}"><b>{{ element_pattern.name }}</b>
+                        <div style="border: 1px solid #000000; border-top:none;border-right:none; border-left:none; border-radius: 7px; margin-bottom: 10px">
+                            {% if turn_productions %}
+                                {% for turn_production in turn_productions %}
+                                    {% if turn_production.factory_id == factory_installed.id %}
+                                        <p> Очередь строительства </p>
+                                        <p>{{ turn_production.finish_time_production }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <input class="toggle-box" id="factory{{ factory_installed.id }}" type="checkbox"
+                                   align="left">
+                            {% for element_pattern in element_patterns %}
+                                {% if element_pattern.basic_id == factory_installed.production_id %}
+                                    <input class="toggle-box"
+                                           id="factory{{ factory_installed.id }}element{{ element_pattern.id }}"
+                                           type="checkbox"
+                                           align="left">
+                                    <label for="factory{{ factory_installed.id }}element{{ element_pattern.id }}"><b>{{ element_pattern.name }}</b>
 
-                                </label>
-                                <div class="inform_place">
+                                    </label>
+                                    <div class="inform_place">
 
-                                    <form method="post" action="production">
-                                        <input type="new_name" value="" name="new_name"
-                                               class="scientic_place"
-                                               placeholder="Новое название модуля"/>
-                                        <input id="rename" class="scientic" type="submit"
-                                               value="Rename" name="rename_element_pattern"/>
-                                        <input type="hidden" id="factory{{ factory_installed.id }}"
-                                               value={{ factory_installed.id }} name="hidden_factory">
-                                        <input type="hidden" id="element{{ element_pattern.id }}"
-                                               value={{ element_pattern.id }} name="hidden_element">
-                                    </form>
-
-                                    <p class="factory_information">
-                                        {% for attribute in attributes %}
-
-                                            {% load my_filter %}
-                                            {% if element_pattern|getattribute:attribute != 0 %}
-                                                {{ attribute }}:
-                                                <b>{{ element_pattern|getattribute:attribute }}</b>
-                                                ;
-                                            {% endif %}
-
-                                        {% endfor %}
-                                    </p>
-
-                                    <form method="post" action="production">
-                                        <p>Количество елементов<input type="amount_element" value=""
-                                                                      name="amount_element"
-                                                                      class="scientic_place"
-                                                                      id="amount{{ element_pattern.id }}"
-                                                                      placeholder="Количество елементов"/>
+                                        <form method="post" action="production">
+                                            <input type="new_name" value="" name="new_name"
+                                                   class="scientic_place"
+                                                   placeholder="Новое название модуля"/>
+                                            <input id="rename" class="scientic" type="submit"
+                                                   value="Rename" name="rename_element_pattern"/>
                                             <input type="hidden" id="factory{{ factory_installed.id }}"
                                                    value={{ factory_installed.id }} name="hidden_factory">
                                             <input type="hidden" id="element{{ element_pattern.id }}"
                                                    value={{ element_pattern.id }} name="hidden_element">
-                                            <input id="amount_element" class="scientic" type="submit"
-                                                   value="Create" name="buttom_amount_element"/></p>
-                                    </form>
+                                        </form>
 
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <input type="hidden" id="factory{{ factory_installed.id }}"
-                               value={{ factory_installed.id }} name="hidden_factory">
-                        <input class="scientic" type="submit" value="Disassembling factory"
-                               name="disassembling"/>
+                                        <p class="factory_information">
+                                            {% for attribute in attributes %}
+
+                                                {% load my_filter %}
+                                                {% if element_pattern|getattribute:attribute != 0 %}
+                                                    {{ attribute }}:
+                                                    <b>{{ element_pattern|getattribute:attribute }}</b>
+                                                    ;
+                                                {% endif %}
+
+                                            {% endfor %}
+                                        </p>
+
+                                        <form method="post" action="production">
+                                            <p>Количество елементов<input type="amount_element" value=""
+                                                                          name="amount_element"
+                                                                          class="scientic_place"
+                                                                          id="amount{{ element_pattern.id }}"
+                                                                          placeholder="Количество елементов"/>
+                                                <input type="hidden" id="factory{{ factory_installed.id }}"
+                                                       value={{ factory_installed.id }} name="hidden_factory">
+                                                <input type="hidden" id="element{{ element_pattern.id }}"
+                                                       value={{ element_pattern.id }} name="hidden_element">
+                                                <input id="amount_element" class="scientic" type="submit"
+                                                       value="Create" name="buttom_amount_element"/></p>
+                                        </form>
+
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <input type="hidden" id="factory{{ factory_installed.id }}"
+                                   value={{ factory_installed.id }} name="hidden_factory">
+                            <input class="scientic" type="submit" value="Disassembling factory"
+                                   name="disassembling"/>
+                        </div>
                     </form>
                 {% endif %}
             {% endif %}

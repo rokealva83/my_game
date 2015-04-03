@@ -872,6 +872,17 @@ class Turn_production(models.Model):
     finish_time_production = models.DateTimeField()
 
 
+class Turn_complex_production(models.Model):
+    class Meta():
+        db_table = 'turn_complex_production'
+
+    complex_id = models.IntegerField(db_index=True)
+    factory_id = models.IntegerField()
+    element_id = models.IntegerField()
+    start_time_production = models.DateTimeField()
+    time = models.IntegerField()
+
+
 class Turn_assembly_pieces(models.Model):
     class Meta():
         db_table = 'turn_assembly_pieces'

@@ -5,7 +5,8 @@ from my_game.models import MyUser, User_city, Warehouse, Turn_building, Turn_ass
 from my_game.models import Factory_pattern, Building_pattern, Factory_installed, Basic_resource
 from my_game.models import Warehouse_factory
 from my_game.models import Manufacturing_complex, Warehouse_complex
-from my_game import function
+from my_game import function, verification_func
+from django.utils import timezone
 from my_game.building import build_function, assembly_line_workpieces
 
 
@@ -350,6 +351,12 @@ def percent_extraction(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
+        time_update = MyUser.objects.filter(user_id=session_user).first().last_time_check
+        now_date = timezone.now()
+        elapsed_time_full = now_date - time_update
+        elapsed_time_seconds = elapsed_time_full.seconds
+        time_update = now_date
+        verification_func.verification_of_resources(session_user, elapsed_time_seconds, time_update)
         complex_id = request.POST.get('complex_id')
         new_percent = request.POST.get('percent_extraction')
         manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).update(extraction_parametr = new_percent)

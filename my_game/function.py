@@ -22,7 +22,7 @@ def check_all_queues(request):
     elapsed_time_full = now_date - time_update
     elapsed_time_seconds = elapsed_time_full.seconds
     time_update = now_date
-    if elapsed_time_seconds > 10:
+    if elapsed_time_seconds > 300:
         verification_func.verification_of_resources(user, elapsed_time_seconds, time_update)
     verification_trade.verification_trade(user)
     verification_flight_list.verification_flight_list(user)

@@ -5,7 +5,7 @@ from my_game.models import MyUser, User_city, Warehouse, Turn_production
 from my_game.models import Factory_installed
 from my_game.models import Warehouse_factory
 from my_game.models import Manufacturing_complex
-from my_game.factory import factory_function
+from my_game.factory import factory_function, verification_stage_production
 from my_game.building import assembly_line_workpieces
 
 
@@ -16,6 +16,7 @@ def production(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         assembly_line_workpieces.check_assembly_line_workpieces(session_user)
+        verification_stage_production.verification_stage_production(session_user)
         message = ''
         if request.POST.get('rename_element_pattern'):
             new_name = request.POST.get('new_name')
@@ -48,7 +49,9 @@ def production(request):
                 delete_factory = Factory_installed.objects.filter(id=factory_id).delete()
                 message = 'Фабрика удалена'
 
-        turn_productions = Turn_production.objects.filter(user=session_user, user_city=session_user_city)
+        factory_installeds = Factory_installed.objects.filter(user=session_user, user_city=session_user_city,
+                                                              complex_status=0).order_by('production_class',
+                                                                                         'production_id')
         manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
@@ -57,8 +60,7 @@ def production(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'message': message,
-                  'turn_productions': turn_productions, 'user_citys': user_citys,
-                  'manufacturing_complexs': manufacturing_complexs}
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+                  'manufacturing_complexs': manufacturing_complexs, 'factory_installeds': factory_installeds}
         return render(request, "factory.html", output)
 
