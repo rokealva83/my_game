@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Turn_building, Turn_assembly_pieces
 from my_game.models import Factory_pattern, Building_pattern, Factory_installed, Basic_resource
 from my_game.models import Warehouse_factory
-from my_game.models import Manufacturing_complex, Warehouse_complex
+from my_game.models import Manufacturing_complex, Warehouse_complex, Turn_complex_production
 from my_game import function, verification_func
 from django.utils import timezone
 from my_game.building import build_function, assembly_line_workpieces
@@ -276,9 +276,15 @@ def add_in_complex(request):
         function.check_all_queues(session_user)
         complex_id = request.POST.get('complex_id')
         installed_factory_id = request.POST.get('factory_id')
-        complex_factory = Factory_installed.objects.filter(id=installed_factory_id).update(complex_status=1,
+        complex_factory = Factory_installed.objects.filter(id=installed_factory_id).first()
+        manufacturing_complex = Manufacturing_complex.objects.filter(id = complex_id).first()
+        if complex_factory.user_city == manufacturing_complex.user_city:
+            complex_factory = Factory_installed.objects.filter(id=installed_factory_id).update(complex_status=1,
                                                                                            complex_id=complex_id)
-        message = 'Производство добавлено в комплекс'
+            message = 'Производство добавлено в комплекс'
+        else:
+            message = 'Производство в комплекс не добавлено. Местоположение неверное'
+
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
         factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
@@ -315,9 +321,14 @@ def remove_from_complex(request):
         function.check_all_queues(session_user)
         complex_id = request.POST.get('complex_id')
         installed_factory_id = request.POST.get('factory_id')
-        complex_factory = Factory_installed.objects.filter(id=installed_factory_id).update(complex_status=0,
-                                                                                           complex_id=0)
-        message = 'Производство добавлено в комплекс'
+        turn_production = Turn_complex_production.objects.filter(complex_id=complex_id,
+                                                                 factory_id=installed_factory_id).first()
+        if turn_production:
+            message = 'Исключение невозможно. Идет производство'
+        else:
+            complex_factory = Factory_installed.objects.filter(id=installed_factory_id).update(complex_status=0,
+                                                                                               complex_id=0)
+            message = 'Производство добавлено в комплекс'
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
         factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
@@ -344,6 +355,7 @@ def remove_from_complex(request):
                   'basic_resources': basic_resources, 'warehouse_complexs': warehouse_complexs}
         return render(request, "building.html", output)
 
+
 def percent_extraction(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
@@ -359,7 +371,8 @@ def percent_extraction(request):
         verification_func.verification_of_resources(session_user, elapsed_time_seconds, time_update)
         complex_id = request.POST.get('complex_id')
         new_percent = request.POST.get('percent_extraction')
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).update(extraction_parametr = new_percent)
+        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).update(
+            extraction_parametr=new_percent)
         message = ''
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
@@ -387,6 +400,7 @@ def percent_extraction(request):
                   'basic_resources': basic_resources, 'warehouse_complexs': warehouse_complexs}
         return render(request, "building.html", output)
 
+
 def complex_warehouse(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
@@ -397,19 +411,24 @@ def complex_warehouse(request):
         complex_id = request.POST.get('complex_id')
         warehouse_resource = request.POST.get('warehouse_resource')
         resource_amount = request.POST.get('resource_amount')
-        warehouse = Warehouse.objects.filter(user = session_user, user_city = session_user_city, id_resource = warehouse_resource).first()
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                             id_resource=warehouse_resource).first()
         if warehouse is not None and int(warehouse.amount) >= int(resource_amount):
             new_amount = int(warehouse.amount) - int(resource_amount)
-            warehouse = Warehouse.objects.filter(user = session_user, user_city = session_user_city, id_resource = warehouse_resource).update(amount = new_amount)
-            warehouse_complex = Warehouse_complex.objects.filter(id_complex = complex_id, id_resource = warehouse_resource).first()
+            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                 id_resource=warehouse_resource).update(amount=new_amount)
+            warehouse_complex = Warehouse_complex.objects.filter(id_complex=complex_id,
+                                                                 id_resource=warehouse_resource).first()
             if warehouse_complex:
                 new_amount = int(warehouse_complex.amount) + int(resource_amount)
-                warehouse_complex = Warehouse_complex.objects.filter(id_complex = complex_id, id_resource = warehouse_resource).update(amount = new_amount)
+                warehouse_complex = Warehouse_complex.objects.filter(id_complex=complex_id,
+                                                                     id_resource=warehouse_resource).update(
+                    amount=new_amount)
             else:
-                warehouse_complex= Warehouse_complex(
-                    id_complex = complex_id,
-                    id_resource = warehouse_resource,
-                    amount = int(resource_amount)
+                warehouse_complex = Warehouse_complex(
+                    id_complex=complex_id,
+                    id_resource=warehouse_resource,
+                    amount=int(resource_amount)
                 )
                 warehouse_complex.save()
             message = 'Ресурсы переданы комплексу'

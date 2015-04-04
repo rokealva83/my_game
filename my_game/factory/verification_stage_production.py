@@ -23,12 +23,11 @@ def verification_stage_production(request):
             delta = delta_time.seconds
             if new_delta > delta:
                 work_factory = Factory_installed.objects.filter(id=turn_production.factory_id).first()
-                warehouse = Warehouse_element.objects.filter(element_id=turn_production.element_id,
+                warehouse = Warehouse_element.objects.filter(user_city=city_id, element_id=turn_production.element_id,
                                                              element_class=work_factory.production_class).first()
                 if warehouse is not None:
                     new_amount = warehouse.amount + turn_production.amount_element
-                    warehouse = Warehouse_element.objects.filter(element_id=turn_production.element_id).update(
-                        amount=new_amount)
+                    warehouse = Warehouse_element.objects.filter(id=warehouse.id).update(amount=new_amount)
                 else:
                     warehouse = Warehouse_element(
                         user=user,

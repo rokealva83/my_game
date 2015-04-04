@@ -3,7 +3,6 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse
 from my_game.models import Factory_installed
-
 from my_game.models import Manufacturing_complex
 from my_game import function
 

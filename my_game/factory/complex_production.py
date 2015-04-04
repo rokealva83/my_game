@@ -7,6 +7,7 @@ from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shield_
 from my_game.models import Factory_installed, Factory_pattern
 from my_game.factory import factory_function
 from my_game.building import assembly_line_workpieces
+from my_game import verification_func
 
 def complex_production(request):
     if "live" not in request.session:
@@ -19,7 +20,8 @@ def complex_production(request):
         factory_id = request.GET.get('hidden_factory')
         element_id = request.GET.get('hidden_element')
         complex_id = request.GET.get('complex_id')
-        message = factory_function.complex_production_module(complex_id, factory_id, element_id)
+        verification_func.verification_of_resources(session_user)
+        message = factory_function.complex_production_module(complex_id, factory_id, element_id, 0)
         factory_installeds = Factory_installed.objects.filter(user=session_user, user_city=session_user_city,
                                                               complex_status=0).order_by('production_class',
                                                                                          'production_id')

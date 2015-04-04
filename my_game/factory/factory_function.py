@@ -185,7 +185,11 @@ def complex_production_module(*args):
     complex_id = args[0]
     factory_id = args[1]
     element_id = args[2]
-
+    start_time_production = args[3]
+    if start_time_production != 0:
+        start_time_production = start_time_production
+    else:
+        start_time_production = datetime.now()
     manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
     user = MyUser.objects.filter(user_id=manufacturing_complex.user).first()
     warehouses = Warehouse_complex.objects.filter(id_complex=complex_id).order_by('id_resource')
@@ -284,14 +288,14 @@ def complex_production_module(*args):
                 complex_id = complex_id,
                 factory_id = factory_id,
                 element_id = element_id,
-                start_time_production = datetime.now(),
+                start_time_production = start_time_production,
                 time = factory_worker.time_production
             )
             turn_production.save()
-            message = 'Производство начато'
+            message = 0
         else:
-            message = 'Нехватает ресурсов'
+            message = 1
         return (message)
     else:
-        message = 'Нехватает ресурсов'
+        message = 1
     return (message)
