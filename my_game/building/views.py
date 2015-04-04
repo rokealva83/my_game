@@ -102,8 +102,8 @@ def choice_build(request):
             warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=6)
         if request.POST.get('shell') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=7).order_by(
-                'production_id')
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=7,).order_by(
+                'production_class', 'production_id')
             warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=7)
         if request.POST.get('module') is not None:
@@ -114,6 +114,14 @@ def choice_build(request):
             # if request.POST.get('device') is not None:
             # factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by('production_id')
             # warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city, production_class=9)
+
+        if request.POST.get('fuel') is not None:
+            user = session_user
+            prod = 14
+
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=14).order_by('production_id')
+            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+                                                                  production_class=14)
 
         turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
@@ -277,10 +285,10 @@ def add_in_complex(request):
         complex_id = request.POST.get('complex_id')
         installed_factory_id = request.POST.get('factory_id')
         complex_factory = Factory_installed.objects.filter(id=installed_factory_id).first()
-        manufacturing_complex = Manufacturing_complex.objects.filter(id = complex_id).first()
+        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
         if complex_factory.user_city == manufacturing_complex.user_city:
             complex_factory = Factory_installed.objects.filter(id=installed_factory_id).update(complex_status=1,
-                                                                                           complex_id=complex_id)
+                                                                                               complex_id=complex_id)
             message = 'Производство добавлено в комплекс'
         else:
             message = 'Производство в комплекс не добавлено. Местоположение неверное'

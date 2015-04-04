@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Turn_production
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed
+    Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed, Fuel_pattern
 from my_game.models import Warehouse_factory_resource, Basic_resource
 from my_game.models import Manufacturing_complex
 from my_game import function
@@ -44,6 +44,8 @@ def produce_warehouse(request):
         else:
             message = 'Нехватает ресурсов на основном складе'
         factory_installed = Factory_installed.objects.filter(id=factory_id).first()
+        attributes = {}
+        element_patterns = {}
 
         if factory_installed.production_class == 1:
             attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
@@ -103,6 +105,12 @@ def produce_warehouse(request):
         # "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
         # "health", "produced_energy", "fuel_necessary",  "mass", "size", "power_consuption")
         # element_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+
+        elif factory_installed.production_class == 14:
+            attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
+                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
+                          "mass", "size", "efficiency")
+            element_patterns = Fuel_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         basic_resources = Basic_resource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)

@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Turn_complex_production
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed
+    Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed, Fuel_pattern
 from my_game.models import Manufacturing_complex
 from my_game.factory import verification_stage_production
 from my_game.building import assembly_line_workpieces
@@ -39,6 +39,8 @@ def choice_complex(request):
 
         # element_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
+        fuel_patterns = Fuel_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         factory_installeds = Factory_installed.objects.filter(user=session_user, user_city=session_user_city,
                                                               complex_status=0).order_by('production_class',
@@ -57,5 +59,5 @@ def choice_complex(request):
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns,'factory_installeds': factory_installeds}
+                  'module_patterns': module_patterns, 'fuel_patterns':fuel_patterns,'factory_installeds': factory_installeds}
         return render(request, "factory.html", output)

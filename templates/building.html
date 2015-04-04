@@ -64,6 +64,8 @@
 
             <p><input class="building_botton" type="submit" value="Устройства" name="device"/></p>
 
+            <p><input class="building_botton" type="submit" value="Топливо" name="fuel"/></p>
+
             <br>
         </form>
 
@@ -201,7 +203,7 @@
                     {% spaceless %}
                         <option value="0">Завод расходников</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 10 %}
+                            {% if factory_installed.production_class == 7 %}
                                 <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
                             {% endif %}
                         {% endfor %}
@@ -232,6 +234,21 @@
                         <option value="0">Завод устройств</option>
                         {% for factory_installed in factory_installeds %}
                             {% if factory_installed.production_class == 9 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endspaceless %}
+                    </select>
+                        <input class="complex_botton" type="submit" value="Добавить"/>
+                        <input type="hidden" value={{ complex_id }} name="complex_id">
+                    </p>
+                </form>
+                <form method="post" action="add_in_complex">
+                    <p><select name="factory_id" class="complex_botton">
+                    {% spaceless %}
+                        <option value="0">Завод топлива</option>
+                        {% for factory_installed in factory_installeds %}
+                            {% if factory_installed.production_class == 14 %}
                                 <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
                             {% endif %}
                         {% endfor %}
@@ -301,11 +318,9 @@
                     </div>
                 </form>
             </div>
-
-
         {% else %}
             {% for factory_pattern in factory_patterns %}
-                {% if 9 < factory_pattern.production_class %}
+                {% if 9 < factory_pattern.production_class and 14 > factory_pattern.production_class %}
                     <form method="post" action="working">
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
                         <label class="slide" id="slowdown" for="factory{{ factory_pattern.id }}">
@@ -409,7 +424,7 @@
                 {% endif %}
             {% endfor %}
             {% for factory_pattern in factory_patterns %}
-                {% if 10 > factory_pattern.production_class %}
+                {% if 10 > factory_pattern.production_class%}
                     <form method="post" action="working">
 
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
@@ -467,6 +482,96 @@
                                             <option value="4">4</option>
                                         </select></p>
                                 {% endif %}
+                                <p><input id="upgrade_factory_pattern" class="building_botton" type="submit"
+                                          value="Upgrade" name="upgrade_factory_pattern"/>
+                                    <input type="hidden" id="factory{{ factory_pattern.id }}"
+                                           value={{ factory_pattern.id }} name="hidden_factory">
+                                    <input type="hidden" id="factory{{ factory_pattern.production_class }}"
+                                           value={{ factory_pattern.production_class }} name="hidden_class"></p>
+                            </form>
+                            <form method="post" action="working">
+                                <p>Количество блоков<input type="amount_factory" value="" name="amount_factory"
+                                                           class="building_place"
+                                                           placeholder="Количество блоков фабрики"/>
+                                    <input id="making_factory_unit" class="building_botton" type="submit"
+                                           value="Create" name="making_factory_unit"/></p>
+                                <input type="hidden" id="factory{{ factory_pattern.id }}"
+                                       value={{ factory_pattern.id }} name="hidden_factory">
+                                <input type="hidden" id="factory{{ factory_pattern.production_class }}"
+                                       value={{ factory_pattern.production_class }} name="hidden_class">
+                            </form>
+                            <form method="post" action="working">
+                                <input id="delete_factory_pattern" class="building_botton" type="submit" value="Delete pattern"
+                                       name="delete_factory_pattern"/>
+                                <input type="hidden" id="factory{{ factory_pattern.id }}"
+                                       value={{ factory_pattern.id }} name="hidden_factory">
+                                <input type="hidden" id="factory{{ factory_pattern.production_class }}"
+                                       value={{ factory_pattern.production_class }} name="hidden_class"></p>
+                            </form>
+                            <form method="post" action="working">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if factory_pattern.id == warehouse_element.factory_id %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
+                                            <p><input id="install_factory_unit" class="building_botton"
+                                                      type="submit" value="Install_unit" name="install_factory_unit"/>
+                                                <input type="hidden" id="factory{{ factory_pattern.id }}"
+                                                       value={{ factory_pattern.id }} name="hidden_factory">
+                                                <input type="hidden" id="factory{{ factory_pattern.production_class }}"
+                                                       value={{ factory_pattern.production_class }} name="hidden_class">
+                                            </p>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </form>
+
+                        </div>
+                    </form>
+                {% endif %}
+            {% endfor %}
+            {% for factory_pattern in factory_patterns %}
+                {% if factory_pattern.production_class == 14 %}
+                    <form method="post" action="working">
+
+                        <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
+                        <label for="factory{{ factory_pattern.id }}">
+                            <h4>{{ factory_pattern.name }}</h4>
+
+                        </label>
+
+                        <div>
+                            <form method="post" action="working">
+                                <input type="rename_factory_pattern" value="" name="rename_factory_pattern"
+                                       class="building_place"
+                                       placeholder="Новое название фабрики"/>
+                                <input id="rename_factory_pattern" class="building_botton" type="submit"
+                                       value="Rename" name="rename_bottom"/>
+                                <input type="hidden" id="factory{{ factory_pattern.id }}"
+                                       value={{ factory_pattern.id }} name="hidden_factory">
+                                <input type="hidden" id="factory{{ factory_pattern.production_class }}"
+                                       value={{ factory_pattern.production_class }} name="hidden_class">
+
+                                <p class="building_information">
+                                    {% for attribute in attributes %}
+
+                                        {% load my_filter %}
+                                        {% if factory_pattern|getattribute:attribute != 0 %}
+                                            {{ attribute }}: <b>{{ factory_pattern|getattribute:attribute }}</b>;
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </form>
+                            <form method="post" action="working">
+                                    <p><label for="">Коефициент ускорения производства</label>
+                                        <select name="number" id="number">
+                                            <option value="1">Выберите коефициент</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select></p>
+
                                 <p><input id="upgrade_factory_pattern" class="building_botton" type="submit"
                                           value="Upgrade" name="upgrade_factory_pattern"/>
                                     <input type="hidden" id="factory{{ factory_pattern.id }}"

@@ -10,7 +10,7 @@ def rename_factory_pattern(*args):
     new_name = args[0]
     pattern_id = args[1]
     class_id = args[2]
-    if class_id < 13:
+    if class_id != 13:
         name_factory = Factory_pattern.objects.filter(id=pattern_id).update(name=new_name)
     else:
         name_factory = Building_pattern.objects.filter(id=pattern_id).update(name=new_name)
@@ -21,12 +21,12 @@ def rename_factory_pattern(*args):
 def upgrade_factory_pattern(*args):
     pattern_id = int(args[2])
     class_id = int(args[3])
-    if class_id < 13:
+    if class_id != 13:
         old_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
     else:
         old_pattern = Building_pattern.objects.filter(id=pattern_id).first()
     number = int(args[0])
-    if old_pattern.production_class == 12:
+    if old_pattern.production_class == 12 or old_pattern.production_class == 14:
         speed = 1
     else:
         speed = int(args[1])
@@ -43,7 +43,7 @@ def upgrade_factory_pattern(*args):
     else:
         koef_number = int(number) * 1.6
 
-    if class_id < 13:
+    if class_id != 13:
         new_pattern = Factory_pattern(
             user=old_pattern.user,
             basic_id=old_pattern.basic_id,
@@ -114,7 +114,7 @@ def delete_factory_pattern(*args):
     if factory is not None:
         message = 'Шаблон не может быть удален'
     else:
-        if class_id < 13:
+        if class_id != 13:
             delete_pattern = Factory_pattern.objects.filter(id=pattern_id).delete()
         else:
             delete_pattern = Building_pattern.objects.filter(id=pattern_id).delete()
@@ -131,7 +131,7 @@ def making_factory_unit(*args):
     class_id = int(args[4])
     user = MyUser.objects.filter(user_id=session_user).first()
     warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-    if class_id < 13:
+    if class_id != 13:
         factory_pattern_making = Factory_pattern.objects.filter(id=pattern_id).first()
     else:
         factory_pattern_making = Building_pattern.objects.filter(id=pattern_id).first()
@@ -235,7 +235,7 @@ def install_factory_unit(*args):
     pattern_id = args[2]
     class_id = int(args[3])
     user_city = User_city.objects.filter(id=session_user_city).first()
-    if class_id < 13:
+    if class_id != 13:
         factory_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
     else:
         factory_pattern = Building_pattern.objects.filter(id=pattern_id).first()

@@ -4,9 +4,9 @@ import random
 
 from my_game.models import MyUser, User_scientic
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern
 from my_game.models import Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
-    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Race
+    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Race, Basic_fuel
 
 
 def hull_upgrade(request):
@@ -341,6 +341,8 @@ def engine_upgrade(request):
             )
             engine_pattern.save()
             new_factory_pattern(user, 4, engine_scient.id)
+            if engine_pattern.system_power!= 0 or engine_pattern.intersystem_power!=0:
+                open_fuel(user, engine_pattern.system_power, engine_pattern.intersystem_power)
     else:
         studied_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id, bought_template = 0)
         len_studied_engine = len(studied_engine)
@@ -868,3 +870,42 @@ def new_factory_pattern(*args):
     )
     user_factory.save()
     return ()
+
+
+def open_fuel(*args):
+    user = args[0]
+    system = args[1]
+    inter = args[2]
+    if system != 0 and inter !=0:
+        fuel_class = 3
+    elif system != 0 and inter ==0:
+        fuel_class = 1
+    elif system == 0 and inter !=0:
+        fuel_class = 2
+
+    fuel_pattern = Fuel_pattern.objects.filter(user = user, fuel_class = fuel_class).first()
+    if fuel_pattern is None:
+        basic_fuel = Basic_fuel.objects.filter(fuel_class = fuel_class).first()
+        fuel_pattern = Fuel_pattern(
+            user = user,
+            name = basic_fuel.name,
+            basic_id = basic_fuel.id,
+            mass = basic_fuel.mass,
+            size = basic_fuel.size,
+            efficiency = basic_fuel.efficiency,
+            fuel_class = basic_fuel.fuel_class,
+            fuel_id = basic_fuel.fuel_id,
+            price_internal_currency = basic_fuel.price_internal_currency,
+            price_resource1 = basic_fuel.price_resource1,
+            price_resource2 = basic_fuel.price_resource2,
+            price_resource3 = basic_fuel.price_resource3,
+            price_resource4 = basic_fuel.price_resource4,
+            price_mineral1 = basic_fuel.price_mineral1,
+            price_mineral2 = basic_fuel.price_mineral2,
+            price_mineral3 = basic_fuel.price_mineral3,
+            price_mineral4 = basic_fuel.price_mineral4,
+        )
+        new_factory_pattern(user, 14, fuel_pattern)
+
+
+

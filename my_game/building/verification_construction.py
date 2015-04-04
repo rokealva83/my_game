@@ -23,11 +23,8 @@ def verification_phase_of_construction(request):
         delta = delta_time.seconds
         user_city = User_city.objects.filter(user=user, id=turn_building.user_city).first()
         if new_delta > delta:
-            elapsed_time = turn_building.finish_time_deployment - my_user.last_time_check
-            elapsed_time_seconds = elapsed_time.seconds
-            time_update = turn_building.finish_time_deployment
-            verification_func.verification_of_resources(user, elapsed_time_seconds, time_update)
-            if turn_building.class_id < 13:
+            verification_func.verification_of_resources(user)
+            if turn_building.class_id != 13:
                 factory_pattern = Factory_pattern.objects.filter(id=turn_building.factory_id).first()
                 factory_installed = Factory_installed(
                     user=user,

@@ -29,7 +29,7 @@ def check_assembly_line_workpieces(request):
                                                                      production_class=turn_assembly_pieces.class_id).update(
                     amount=amount_assembly)
             else:
-                if turn_assembly_pieces.class_id < 10:
+                if turn_assembly_pieces.class_id < 10 or turn_assembly_pieces.class_id > 13:
                     factory_pattern = Factory_pattern.objects.filter(id=turn_assembly_pieces.pattern_id,
                                                                   production_class=turn_assembly_pieces.class_id).first()
                 else:

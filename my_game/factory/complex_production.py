@@ -3,11 +3,13 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse
 from my_game.models import Manufacturing_complex, Turn_complex_production
-from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shield_pattern,Engine_pattern, Generator_pattern, Weapon_pattern, Shell_pattern, Module_pattern
-from my_game.models import Factory_installed, Factory_pattern
+from my_game.models import Hull_pattern, Armor_pattern, Shield_pattern, Engine_pattern, Generator_pattern, \
+    Weapon_pattern, Shell_pattern, Module_pattern, Fuel_pattern
+from my_game.models import Factory_installed
 from my_game.factory import factory_function
 from my_game.building import assembly_line_workpieces
 from my_game import verification_func
+
 
 def complex_production(request):
     if "live" not in request.session:
@@ -35,8 +37,9 @@ def complex_production(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
         module_patterns = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
         # element_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        fuel_patterns = Fuel_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
-        turn_complex_productions= Turn_complex_production.objects.filter(complex_id = complex_id)
+        turn_complex_productions = Turn_complex_production.objects.filter(complex_id=complex_id)
         manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
@@ -45,11 +48,12 @@ def complex_production(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'turn_productions': turn_complex_productions,
+        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city,
+                  'turn_productions': turn_complex_productions,
                   'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs, 'complex_id': complex_id,
                   'complex_factorys': complex_factorys, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns,'factory_installeds': factory_installeds}
+                  'fuel_patterns': fuel_patterns, 'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'module_patterns': module_patterns, 'factory_installeds': factory_installeds}
         return render(request, "factory.html", output)

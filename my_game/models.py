@@ -479,6 +479,31 @@ class Basic_module(models.Model):
         return self.name
 
 
+class Basic_fuel(models.Model):
+    class Meta():
+        db_table = 'basic_fuel'
+
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+    mass = models.IntegerField()
+    size = models.IntegerField()
+    efficiency = models.IntegerField()
+    fuel_class = models.IntegerField()
+    fuel_id = models.IntegerField(default=0)
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Factory_pattern(models.Model):
     class Meta():
         db_table = 'factory_pattern'
@@ -721,6 +746,32 @@ class Module_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
+class Fuel_pattern(models.Model):
+    class Meta():
+        db_table = 'fuel_pattern'
+
+    user = models.IntegerField(db_index=True, default=2)
+    name = models.CharField(max_length=50)
+    basic_id = models.IntegerField(default=0)
+    mass = models.IntegerField()
+    size = models.IntegerField()
+    efficiency = models.IntegerField()
+    fuel_class = models.IntegerField()
+    fuel_id = models.IntegerField(default=0)
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Factory_installed(models.Model):
     class Meta():
         db_table = 'factory_installed'
@@ -749,6 +800,7 @@ class Manufacturing_complex(models.Model):
     name = models.CharField(max_length=50, default='New complex')
     extraction_parametr = models.IntegerField(default=0)
 
+
 class Warehouse_factory_resource(models.Model):
     class Meta():
         db_table = 'warehouse_factory_resource'
@@ -765,6 +817,7 @@ class Warehouse_complex(models.Model):
     id_complex = models.IntegerField(db_index=True)
     id_resource = models.IntegerField()
     amount = models.IntegerField()
+
 
 class Warehouse_factory(models.Model):
     class Meta():
@@ -959,6 +1012,7 @@ class Fleet(models.Model):
     hold = models.IntegerField(default=0)
     empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
+    fuel_tank = models.IntegerField(default=0)
     free_fuel_tank = models.IntegerField(default=0)
 
 
