@@ -22,17 +22,9 @@ def add_ship(request):
         flightplan_flights = {}
         warehouse_factorys = {}
         warehouse_elements = {}
-        factory_patterns = {}
-        hull_patterns = {}
-        armor_patterns = {}
-        shield_patterns = {}
-        engine_patterns = {}
-        generator_patterns = {}
-        weapon_patterns = {}
-        shell_patterns = {}
-        module_patterns = {}
         command = 1
         hold = 0
+        fuel_tank = 0
         passive_scan = 0
         active_scan = 0
         giper_scan = 0
@@ -137,6 +129,7 @@ def add_ship(request):
                                 fleet_parametr_scan.save()
                                 use_energy = use_energy + element_pattern.power_consuption
 
+                    fuel_tank = hull_pattern.fuel_tank
                     hold = hold + hull_pattern.hold_size
                     use_energy = use_energy * amount_ship
                     use_fuel_system = use_fuel_system * amount_ship
@@ -170,6 +163,9 @@ def add_ship(request):
                             ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
                             hold_empty = hold * amount_ship + int(fleet.empty_hold)
                             hold = hold * amount_ship + int(fleet.hold)
+                            free_fuel_tank = fuel_tank * amount_ship + int(fleet.free_fuel_tank)
+                            fuel_tank = fuel_tank * amount_ship + int(fleet.fuel_tank)
+
                             use_energy = use_energy + fleet_energy_power.use_energy
                             use_fuel_system = use_fuel_system + fleet_energy_power.use_fuel_system
                             use_fuel_intersystem = use_fuel_intersystem + fleet_energy_power.use_fuel_intersystem
@@ -181,7 +177,9 @@ def add_ship(request):
                             fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                                 ship_empty_mass=ship_empty_mass,
                                 hold=hold,
-                                empty_hold=hold_empty
+                                empty_hold=hold_empty,
+                                fuel_tank=fuel_tank,
+                                free_fuel_tank=free_fuel_tank,
                             )
 
                             fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
@@ -225,6 +223,8 @@ def add_ship(request):
                             ship_empty_mass = int(project_ship.mass) * amount_ship + int(fleet.ship_empty_mass)
                             hold_empty = hold * amount_ship + int(fleet.empty_hold)
                             hold = hold * amount_ship + int(fleet.hold)
+                            free_fuel_tank = fuel_tank * amount_ship + int(fleet.free_fuel_tank)
+                            fuel_tank = fuel_tank * amount_ship + int(fleet.fuel_tank)
                             use_energy = use_energy + fleet_energy_power.use_energy
                             use_fuel_system = use_fuel_system + fleet_energy_power.use_fuel_system
                             use_fuel_intersystem = use_fuel_intersystem + fleet_energy_power.use_fuel_intersystem
@@ -236,7 +236,9 @@ def add_ship(request):
                             fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                                 ship_empty_mass=ship_empty_mass,
                                 hold=hold,
-                                empty_hold=hold_empty
+                                empty_hold=hold_empty,
+                                fuel_tank=fuel_tank,
+                                free_fuel_tank=free_fuel_tank
                             )
 
                             fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
@@ -266,6 +268,8 @@ def add_ship(request):
                             if ship_in_fleet:
                                 hold_empty = fleet.empty_hold + hold * amount_ship
                                 hold = fleet.hold + hold * amount_ship
+                                free_fuel_tank = fuel_tank * amount_ship + int(fleet.free_fuel_tank)
+                                fuel_tank = fuel_tank * amount_ship + int(fleet.fuel_tank)
                                 ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
 
                                 system_power = fleet_engine.system_power + int(project_ship.system_power) * amount_ship
@@ -276,6 +280,8 @@ def add_ship(request):
                             else:
                                 hold_empty = hold * amount_ship
                                 hold = hold * amount_ship
+                                free_fuel_tank = fuel_tank * amount_ship
+                                fuel_tank = fuel_tank * amount_ship
                                 ship_empty_mass = project_ship.mass * amount_ship
                                 system_power = int(project_ship.system_power) * amount_ship
                                 intersystem_power = int(project_ship.intersystem_power) * amount_ship
@@ -293,7 +299,9 @@ def add_ship(request):
                             fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                                 ship_empty_mass=ship_empty_mass,
                                 hold=hold,
-                                empty_hold=hold_empty
+                                empty_hold=hold_empty,
+                                fuel_tank=fuel_tank,
+                                free_fuel_tank=free_fuel_tank
                             )
 
                             fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
@@ -325,6 +333,8 @@ def add_ship(request):
                             if ship_in_fleet:
                                 hold_empty = fleet.empty_hold + hold * amount_ship
                                 hold = fleet.hold + hold * amount_ship
+                                free_fuel_tank = fuel_tank * amount_ship + int(fleet.free_fuel_tank)
+                                fuel_tank = fuel_tank * amount_ship + int(fleet.fuel_tank)
                                 ship_empty_mass = fleet.ship_empty_mass + project_ship.mass * amount_ship
 
                                 system_power = fleet_engine.system_power + int(project_ship.system_power) * amount_ship
@@ -335,6 +345,8 @@ def add_ship(request):
                             else:
                                 hold_empty = hold * amount_ship
                                 hold = hold * amount_ship
+                                free_fuel_tank = fuel_tank * amount_ship
+                                fuel_tank = fuel_tank * amount_ship
                                 ship_empty_mass = project_ship.mass * amount_ship
                                 system_power = int(project_ship.system_power) * amount_ship
                                 intersystem_power = int(project_ship.intersystem_power) * amount_ship
@@ -352,7 +364,9 @@ def add_ship(request):
                             fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                                 ship_empty_mass=ship_empty_mass,
                                 hold=hold,
-                                empty_hold=hold_empty
+                                empty_hold=hold_empty,
+                                fuel_tank=fuel_tank,
+                                free_fuel_tank=free_fuel_tank
                             )
 
                             fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
@@ -386,10 +400,5 @@ def add_ship(request):
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                   'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
                   'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
-                  'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
-                  'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
-                  'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
-                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns, 'message': message}
+                  'warehouse_factorys': warehouse_factorys, 'message': message}
         return render(request, "space_forces.html", output)

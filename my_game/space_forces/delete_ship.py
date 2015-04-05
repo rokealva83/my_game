@@ -23,17 +23,11 @@ def delete_ship(request):
         flightplan_flights = {}
         warehouse_factorys = {}
         warehouse_elements = {}
-        factory_patterns = {}
-        hull_patterns = {}
-        armor_patterns = {}
-        shield_patterns = {}
-        engine_patterns = {}
-        generator_patterns = {}
-        weapon_patterns = {}
-        shell_patterns = {}
-        module_patterns = {}
+
+
         command = 0
         hold = 0
+        fuel_tank = 0
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         message = 'Корабль уже не приписан к флоту'
 
@@ -125,6 +119,7 @@ def delete_ship(request):
                             use_energy = use_energy + element_pattern.power_consuption
 
                 hold = hold + hull_pattern.hold_size
+                fuel_tank = fuel_tank + hull_pattern.fuel_tank
                 use_energy = use_energy * amount_ship
                 use_fuel_system = use_fuel_system * amount_ship
                 use_fuel_intersystem = use_fuel_intersystem * amount_ship
@@ -162,6 +157,7 @@ def delete_ship(request):
                     null_accuracy = int(fleet_engine.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                     ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
                     hold = int(fleet.hold) - hold * amount_ship
+                    fuel_tank = int(fleet.fuel_tank) - fuel_tank*amount_ship
                     use_energy = fleet_energy_power.use_energy - use_energy
                     use_fuel_system = fleet_energy_power.use_fuel_system - use_fuel_system
                     use_fuel_intersystem = fleet_energy_power.use_fuel_intersystem - use_fuel_intersystem
@@ -173,7 +169,9 @@ def delete_ship(request):
                     fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                         ship_empty_mass=ship_empty_mass,
                         hold=hold,
-                        empty_hold=hold
+                        empty_hold=hold,
+                        fuel_tank = fuel_tank,
+                        free_fuel_tank = fuel_tank
                     )
 
                     fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
@@ -226,6 +224,7 @@ def delete_ship(request):
                     null_accuracy = int(fleet_engine.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                     ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
                     hold = int(fleet.hold) - hold * amount_ship
+                    fuel_tank = int(fleet.fuel_tank) - fuel_tank*amount_ship
                     use_energy = fleet_energy_power.use_energy - use_energy
                     use_fuel_system = fleet_energy_power.use_fuel_system - use_fuel_system
                     use_fuel_intersystem = fleet_energy_power.use_fuel_intersystem - use_fuel_intersystem
@@ -237,7 +236,9 @@ def delete_ship(request):
                     fleet = Fleet.objects.filter(user=session_user, id=fleet_id).update(
                         ship_empty_mass=ship_empty_mass,
                         hold=hold,
-                        empty_hold=hold
+                        empty_hold=hold,
+                        fuel_tank = fuel_tank,
+                        free_fuel_tank = fuel_tank,
                     )
 
                     fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
@@ -274,10 +275,5 @@ def delete_ship(request):
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                   'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
                   'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
-                  'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
-                  'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
-                  'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
-                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns, 'message': message}
+                  'warehouse_factorys': warehouse_factorys, 'message': message}
         return render(request, "space_forces.html", output)
