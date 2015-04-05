@@ -54,7 +54,8 @@ def fleet_hold(request):
         fleet_id_dict = myDict.get('hidden_fleet')
         fleet_id = int(fleet_id_dict[0])
         fleet = Fleet.objects.filter(id=fleet_id).first()
-        if fleet.planet_status == 1:
+        ship_in_fleet = Ship.objects.filter(user = session_user, fleet_status = 1, place_id = fleet_id).first()
+        if fleet.planet_status == 1 and ship_in_fleet is not None:
             command = 2
             ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
             add_shipment = 0

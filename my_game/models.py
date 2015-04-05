@@ -1079,7 +1079,8 @@ class Fuel_tank(models.Model):
         db_table = 'fuel_tank'
 
     fleet_id = models.IntegerField(db_index=True)
-    class_fuel = models.IntegerField()
+    fuel_class = models.IntegerField()
+    fuel_id = models.IntegerField(default=1)
     amount_fuel = models.IntegerField()
     mass_fuel = models.IntegerField()
     size_fuel = models.IntegerField()

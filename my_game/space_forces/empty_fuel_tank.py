@@ -9,7 +9,7 @@ from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
     Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern
 
-def unload_fuel(request):
+def empty_fuel_tank(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:

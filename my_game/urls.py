@@ -34,6 +34,8 @@ from my_game.space_forces import add_ship as add_ship
 from my_game.space_forces import start_flight as start_flight
 from my_game.space_forces import fleet_hold as fleet_hold
 from my_game.space_forces import empty_fleet_hold as empty_fleet_hold
+from my_game.space_forces import fuel_tank as fuel_tank
+from my_game.space_forces import empty_fuel_tank as empty_fuel_tank
 
 from my_game.trade import views as trade
 from my_game.trade import add_trade_element as add_trade_element
@@ -108,6 +110,8 @@ urlpatterns = patterns('',
                        url(r'^start_flight', start_flight.start_flight),
                        url(r'^fleet_hold', fleet_hold.fleet_hold),
                        url(r'^empty_fleet_hold', empty_fleet_hold.empty_fleet_hold),
+                       url(r'^fuel_tank', fuel_tank.fuel_tank),
+                       url(r'^empty_fuel_tank', empty_fuel_tank.empty_fuel_tank),
 
                        url(r'^trade', trade.trade),
                        url(r'^new_trade_space', trade.new_trade_space),

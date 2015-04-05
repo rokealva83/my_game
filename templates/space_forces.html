@@ -59,7 +59,9 @@
                         <input class="button_force" type="submit" value="Navy ships" name="navy_ships"/>
                         <input class="button_force" type="submit" value="The hold of the fleet" name="hold_fleet"
                                style="width: 150px"/>
+                        <input class="button_force" type="submit" value="Fuel tank" name="fuel_tank"/>
                         <input class="button_force" type="submit" value="Flight plan" name="flight_plan"/>
+
                         <input type="hidden" id="user_fleet{{ user_fleet.id }}"
                                value={{ user_fleet.id }} name="hidden_fleet"/>
                     </p>
@@ -112,6 +114,9 @@
         {% endif %}
         {% if command == 3 %}
             {% block content_2 %}{% endblock %}
+        {% endif %}
+    {% if command == 4 %}
+            {% block content_3 %}{% endblock %}
         {% endif %}
     </div>
     <div class="clear"></div>

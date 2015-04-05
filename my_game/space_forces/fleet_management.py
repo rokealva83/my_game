@@ -2,12 +2,12 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
-from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource
+from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource, Basic_fuel
 from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
     Flightplan_production, Flightplan_scan
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern
 from my_game import function
 
 
@@ -32,6 +32,7 @@ def fleet_manage(request):
         weapon_patterns = {}
         shell_patterns = {}
         module_patterns = {}
+        fuel_patterns = {}
         ship_holds = {}
         message = ''
 
@@ -83,7 +84,8 @@ def fleet_manage(request):
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
             fleet = Fleet.objects.filter(id=fleet_id).first()
             fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
-            fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(fleet_id=fleet_id).first()
+            fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+                fleet_id=fleet_id).first()
             flightplan_scans = Flightplan_scan.objects.filter(id_fleet=fleet_id)
             flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id)
             fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
@@ -124,6 +126,33 @@ def fleet_manage(request):
             command = 2
             ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
 
+        if request.POST.get('fuel_tank'):
+            fleet_id = int(request.POST.get('hidden_fleet'))
+
+            warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
+                                                                  element_class=14).order_by('element_id')
+            fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
+
+            command = 4
+            fuel_tanks = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
+            warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
+                'id_resource')
+            basic_fuels = Basic_fuel.objects.filter()
+            user_city = User_city.objects.filter(user=session_user).first()
+            user = MyUser.objects.filter(user_id=session_user).first()
+            user_citys = User_city.objects.filter(user=int(session_user))
+            user_fleets = Fleet.objects.filter(user=session_user)
+            ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+            ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
+            request.session['userid'] = session_user
+            request.session['user_city'] = session_user_city
+            request.session['live'] = True
+            output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+                      'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets, 'ships': ships,
+                      'command': command, 'fuel_patterns': fuel_patterns, 'fuel_tanks': fuel_tanks,
+                      'basic_fuels': basic_fuels, 'warehouse_elements': warehouse_elements}
+            return render(request, "fuel_tank.html", output)
+
         if request.POST.get('delete_fleet'):
             fleet_id = int(request.POST.get('hidden_fleet'))
             command = 0
@@ -156,6 +185,6 @@ def fleet_manage(request):
                   'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'fuel_patterns': fuel_patterns,
                   'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
         return render(request, "fleet_hold.html", output)

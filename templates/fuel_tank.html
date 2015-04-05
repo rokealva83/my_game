@@ -1,0 +1,64 @@
+{% extends "space_forces.html" %}
+{% block content_3 %}
+
+    {% spaceless %}
+        <form method="post" action="empty_fuel_tank" style="text-align: center">
+            <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
+
+            <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
+
+
+            {% if fuel_tanks %}
+                {% for fuel_tank in fuel_tanks %}
+                     {% for basic_fuel in basic_fuels %}
+                         {% if basic_fuel.fuel_class == fuel_tank.fuel_class and basic_fuel.fuel_id == fuel_tank.fuel_id %}
+                                    <p>{{ basic_fuel.name }} ( {{ fuel_tank.amount_fuel }}
+                                        / {{ fuel_tank.mass_fuel }}
+                                        / {{ fuel_tank.size_fuel }} )
+                                        <input value="0" name="amount_fuel{{ fuel_tank.id }}"
+                                               class="number_fuel">
+                                    </p>
+                                {% endif %}
+                     {% endfor %}
+                {% endfor %}
+                <p><input class="list_force" type="submit" value="Выгрузить" name="unload"/>
+                    <input class="list_force" type="submit" value="Выгрузить все" name="unload_all"/></p>
+            {% endif %}
+        </form>
+
+
+
+
+        <form method="post" action="fuel_tank" style="text-align: center">
+            <p>Управление топливними баками</p>
+            <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
+
+            {% spaceless %}
+                <div>
+                    {% if warehouse_elements %} Fuel in warehouse
+                        <select name="fuel_pattern" class="list_force">
+                            <option selected disabled>Choise hull</option>
+                            {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.amount > 0 %}
+                                        {% for fuel_pattern in fuel_patterns %}
+                                            {% if fuel_pattern.id == warehouse_element.element_id %}
+                                                <option value="{{ warehouse_element.element_id }}">{{ fuel_pattern.name }}(
+                                                    {{ warehouse_element.amount }} )
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    <input value="0" name="fuel_amount" class="number_ship" placeholder="Fuel amount"/>
+                </div>
+            {% endspaceless %}
+
+
+            <input class="list_force" type="submit" value="Загрузить" name="add_shipment"/>
+        </form>
+    {% endspaceless %}
+
+{% endblock %}
