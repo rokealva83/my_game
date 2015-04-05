@@ -20,7 +20,6 @@ def fuel_tank(request):
         fuel_pattern_id = int(request.POST.get('fuel_pattern'))
         fleet = Fleet.objects.filter(id=fleet_id).first()
         ship_in_fleet = Ship.objects.filter(user=session_user, fleet_status=1, place_id=fleet_id).first()
-        command = 4
         if fleet.planet_status == 1 and ship_in_fleet is not None:
 
             add_shipment = 0
@@ -74,11 +73,11 @@ def fuel_tank(request):
             message = 'Флот не над планетой'
 
 
+        command = 4
         warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
                                                               element_class=14).order_by('element_id')
         fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-
-        fuel_tanks = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
+        fuel_tanks = Fuel_tank.objects.filter(fleet_id=fleet_id)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'id_resource')
         basic_fuels = Basic_fuel.objects.filter()
@@ -92,8 +91,7 @@ def fuel_tank(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'fleet_id': fleet_id,
-                  'ship_fleets': ship_fleets, 'ships': ships, 'command': command, 'fuel_patterns': fuel_patterns,
-                  'message': message, 'fuel_tanks': fuel_tanks, 'basic_fuels': basic_fuels,
-                  'warehouse_elements': warehouse_elements}
+                      'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets, 'ships': ships,
+                      'command': command, 'fuel_patterns': fuel_patterns, 'fuel_tanks': fuel_tanks,
+                      'basic_fuels': basic_fuels, 'warehouse_elements': warehouse_elements}
         return render(request, "fuel_tank.html", output)

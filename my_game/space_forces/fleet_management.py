@@ -7,7 +7,7 @@ from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan,
     Flightplan_production, Flightplan_scan
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Fuel_tank
 from my_game import function
 
 
@@ -134,7 +134,7 @@ def fleet_manage(request):
             fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
 
             command = 4
-            fuel_tanks = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
+            fuel_tanks = Fuel_tank.objects.filter(fleet_id=fleet_id)
             warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
                 'id_resource')
             basic_fuels = Basic_fuel.objects.filter()

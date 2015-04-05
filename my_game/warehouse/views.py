@@ -39,8 +39,10 @@ def warehouse(request):
 
         attribute_factorys = ("cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", \
                               "production_id", "time_production", "size", "mass", "power_consumption")
+
         attribute_hulls = ("health", "generator", "engine", "weapon", "armor", "shield", "main_weapon", "module", \
                            "hold_size","fuel_tank", "size", "mass", "power_consuption")
+
         attribute_armors = ("health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration", \
                             "mass")
         attribute_shields = ("health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter", \
@@ -67,5 +69,5 @@ def warehouse(request):
               'attribute_armors': attribute_armors, 'attribute_shields': attribute_shields,
               'attribute_engines': attribute_engines, 'attribute_generators': attribute_generators,
               'attribute_weapons': attribute_weapons, 'attribute_shells': attribute_shells,
-              'attribute_modules': attribute_modules, 'attribute_fuels0':attribute_fuels}
+              'attribute_modules': attribute_modules, 'attribute_fuels':attribute_fuels}
     return render(request, "warehouse.html", output)

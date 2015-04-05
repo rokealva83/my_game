@@ -24,7 +24,7 @@
                     <h3><p style="text-align: center">Warehouse_factory</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% if warehouse_factorys %}
                         {% for warehouse_factory in warehouse_factorys %}
                             {% for factory_pattern in factory_patterns %}
@@ -32,7 +32,7 @@
                                     {% if warehouse_factory.amount > 0 %}
                                         <p>
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                         <span>{{ factory_pattern.name }}
                                             <i>
                                                 {% for attribute_factory in attribute_factorys %}
@@ -62,18 +62,18 @@
             <div>
                 <input class="toggle-box" id="Warehouse_hull" type="checkbox" align="left">
                 <label for="Warehouse_hull">
-                    <h3><p style="text-align: center">Warehouse_hull</p></h3>
+                    <h3><p style="text-align: center; margin: 2px 0 2px 0">Warehouse_hull</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 1 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for hull_pattern in hull_patterns %}
                                     {% if hull_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                            <ul>
-                                                    <span><p>{{ hull_pattern.name }}
+                                            <ul style="margin: 1px 0 1px 0">
+                                                    <span>{{ hull_pattern.name }}
                                                         <i>
                                                             {% for attribute_hull in attribute_hulls %}
                                                                 {% load my_filter %}
@@ -84,7 +84,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </i> - {{ warehouse_element.amount }}
-                                                    </p>
+
                                                     </span>
                                             </ul>
                                         </div>
@@ -103,7 +103,7 @@
                     <h3><p style="text-align: center">Warehouse_armor</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 2 %}
                             {% if warehouse_element.amount > 0 %}
@@ -111,7 +111,7 @@
                                     {% if armor_pattern.id == warehouse_element.element_id %}
 
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ armor_pattern.name }}
                                                         <i>
                                                             {% for attribute_armor in attribute_armors %}
@@ -144,7 +144,7 @@
                     <h3><p style="text-align: center">Warehouse_shield</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 3 %}
                             {% if warehouse_element.amount > 0 %}
@@ -152,7 +152,7 @@
                                     {% if shield_pattern.id == warehouse_element.element_id %}
 
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ shield_pattern.name }}
                                                         <i>
                                                             {% for attribute_shield in attribute_shields %}
@@ -184,7 +184,7 @@
                     <h3><p style="text-align: center">Warehouse_engine</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 4 %}
                             {% if warehouse_element.amount > 0 %}
@@ -192,7 +192,7 @@
                                     {% if engine_pattern.id == warehouse_element.element_id %}
 
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ engine_pattern.name }}
                                                         <i>
                                                             {% for attribute_engine in attribute_engines %}
@@ -225,14 +225,14 @@
                     <h3><p style="text-align: center">Warehouse_generator</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 5 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for generator_pattern in generator_patterns %}
                                     {% if generator_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ generator_pattern.name }}
                                                         <i>
                                                             {% for attribute_generator in attribute_generators %}
@@ -263,14 +263,14 @@
                     <h3><p style="text-align: center">Warehouse_weapon</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 6 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for weapon_pattern in weapon_patterns %}
                                     {% if weapon_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ weapon_pattern.name }}
                                                         <i>
                                                             {% for attribute_weapon in attribute_weapons %}
@@ -301,14 +301,14 @@
                     <h3><p style="text-align: center">Warehouse_shell</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 7 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for shell_pattern in shell_patterns %}
                                     {% if shell_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ shell_pattern.name }}
                                                         <i>
                                                             {% for attribute_shell in attribute_shells %}
@@ -339,14 +339,14 @@
                     <h3><p style="text-align: center">Warehouse_module</p></h3>
                 </label>
 
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 8 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for module_pattern in module_patterns %}
                                     {% if module_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ module_pattern.name }}
                                                         <i>
                                                             {% for attribute_module in attribute_modules %}
@@ -377,14 +377,14 @@
                 <label for="Warehouse_fuel">
                     <h3><p style="text-align: center">Warehouse_fuel</p></h3>
                 </label>
-                <div>
+                <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 14 %}
                             {% if warehouse_element.amount > 0 %}
                                 {% for fuel_pattern in fuel_patterns %}
                                     {% if fuel_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
-                                            <ul>
+                                            <ul style="margin: 1px 0 1px 0">
                                                     <span>{{ fuel_pattern.name }}
                                                         <i>
                                                             {% for attribute_fuel in attribute_fuels %}
