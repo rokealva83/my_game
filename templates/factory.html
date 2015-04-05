@@ -329,7 +329,7 @@
                         {% endfor %}
                     {% endif %}
                     {% if complex_factory.production_class == 14 %}
-                        {% for module_pattern in module_patterns %}
+                        {% for fuel_pattern in fuel_patterns %}
                             {% if fuel_pattern.basic_id == complex_factory.production_id %}
                                 <form method="GET" action="complex_production">
                                     <p>
@@ -344,7 +344,7 @@
                                         {% endif %}
                                     </p>
                                     <input type="hidden" value={{ complex_factory.id }} name="hidden_factory">
-                                    <input type="hidden" value={{ module_pattern.id }} name="hidden_element">
+                                    <input type="hidden" value={{ fuel_pattern.id }} name="hidden_element">
                                     <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                                 </form>
                             {% endif %}

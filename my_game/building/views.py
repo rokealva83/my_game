@@ -376,7 +376,7 @@ def percent_extraction(request):
         elapsed_time_full = now_date - time_update
         elapsed_time_seconds = elapsed_time_full.seconds
         time_update = now_date
-        verification_func.verification_of_resources(session_user, elapsed_time_seconds, time_update)
+        verification_func.verification_of_resources(session_user)
         complex_id = request.POST.get('complex_id')
         new_percent = request.POST.get('percent_extraction')
         manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).update(

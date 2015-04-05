@@ -5,7 +5,7 @@ from my_game.models import MyUser, User_city, Warehouse, Turn_complex_production
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed, Fuel_pattern
 from my_game.models import Manufacturing_complex
-from my_game.factory import verification_stage_production
+from my_game.factory import verification_stage_production, verification_complex_stage
 from my_game.building import assembly_line_workpieces
 
 
@@ -18,6 +18,7 @@ def choice_complex(request):
         complex_id = request.POST.get('complex_id')
         assembly_line_workpieces.check_assembly_line_workpieces(session_user)
         verification_stage_production.verification_stage_production(session_user)
+        verification_complex_stage.verification_complex_stage(session_user)
 
         complex_factorys = Factory_installed.objects.filter(complex_id=complex_id).order_by('production_class')
 

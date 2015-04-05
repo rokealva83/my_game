@@ -40,6 +40,7 @@ def hull_upgrade(request):
                 hold_size=hull_scient.hold_size,
                 mass=hull_scient.mass,
                 size=hull_scient.size,
+                fuel_tank = hull_scient.fuel_tank,
                 power_consuption=hull_scient.power_consuption,
                 price_internal_currency=hull_scient.price_internal_currency,
                 price_resource1=hull_scient.price_resource1,

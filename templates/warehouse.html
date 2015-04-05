@@ -371,6 +371,44 @@
                 </div>
             </div>
         {% endspaceless %}
+        {% spaceless %}
+            <div>
+                <input class="toggle-box" id="Warehouse_fuel" type="checkbox" align="left">
+                <label for="Warehouse_fuel">
+                    <h3><p style="text-align: center">Warehouse_fuel</p></h3>
+                </label>
+                <div>
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 14 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for fuel_pattern in fuel_patterns %}
+                                    {% if fuel_pattern.id == warehouse_element.element_id %}
+                                        <div class="warehouse_inform">
+                                            <ul>
+                                                    <span>{{ fuel_pattern.name }}
+                                                        <i>
+                                                            {% for attribute_fuel in attribute_fuels %}
+                                                                {% load my_filter %}
+                                                                {% if fuel_pattern|getattribute:attribute_fuel != 0 %}
+                                                                    <li style="list-style-type: none">
+                                                                        {{ attribute_fuel }}:{{ fuel_pattern|getattribute:attribute_fuel }}
+                                                                    </li>
+                                                                    {% spaceless %}{% endspaceless %}
+                                                                {% endif %}
+                                                            {% endfor %}
+
+                                                        </i>  - {{ warehouse_element.amount }}
+                                                    </span>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endspaceless %}
 
 
     </div>
