@@ -15,6 +15,25 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+import djcelery
+# указываем на то, что расписание будет задаваться посредством django-ORM
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+# указываем брокер сообщений
+BROKER_URL = 'redis://127.0.0.1:8000/0'
+# указываем хранилище результатов (можете не указывать)
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:8000/0'
+# формат хранения задач (можете не указывать)
+CELERY_TASK_SERIALIZER = 'json'
+# формат хранения результатов (можете не указывать)
+CELERY_RESULT_SERIALIZER = 'json'
+# если настроены джанговские параметры уведомлений по почте
+# и данный параметр True, то исключения в задачах будут
+# фиксироваться на почте администраторов приложения
+CELERY_SEND_TASK_ERROR_EMAILS = True
+# инициализация django-celery
+djcelery.setup_loader()
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -41,6 +60,8 @@ INSTALLED_APPS = (
     'my_game',
     'my_game.templatetags.my_filter',
     'my_game.space_forces.fleet_management',
+    'djcelery',
+    'redis'
 )
 
 MIDDLEWARE_CLASSES = (

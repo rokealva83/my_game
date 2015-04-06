@@ -1156,9 +1156,9 @@ class Flightplan_flight(models.Model):
     finish_x = models.IntegerField()
     finish_y = models.IntegerField()
     finish_z = models.IntegerField()
+    system_flight = models.BooleanField(default=True)
     flight_time = models.IntegerField(default=0)
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    finish_time = models.DateTimeField(default=datetime.now, blank=True)
     system = models.IntegerField(default=0)
     planet = models.IntegerField(default=0)
 
@@ -1174,7 +1174,7 @@ class Flightplan_hold(models.Model):
     amount = models.IntegerField()
     trade_item_number = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    time = models.IntegerField(default=0)
 
 
 class Flightplan_production(models.Model):
@@ -1201,7 +1201,7 @@ class Flightplan_refill(models.Model):
     id_fleet_refill = models.IntegerField()
     amount_fuel = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    time_refil = models.IntegerField(default=0)
 
 
 class Flightplan_repair(models.Model):
@@ -1214,7 +1214,7 @@ class Flightplan_repair(models.Model):
     id_command = models.IntegerField()
     repair = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    time_repair = models.IntegerField(default=0)
 
 
 class Flightplan_scan(models.Model):
