@@ -19,9 +19,9 @@ import djcelery
 # указываем на то, что расписание будет задаваться посредством django-ORM
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 # указываем брокер сообщений
-BROKER_URL = 'redis://127.0.0.1:8000/0'
+BROKER_URL = 'redis://127.0.0.1:8000/1'
 # указываем хранилище результатов (можете не указывать)
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:8000/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:8000/1'
 # формат хранения задач (можете не указывать)
 CELERY_TASK_SERIALIZER = 'json'
 # формат хранения результатов (можете не указывать)
