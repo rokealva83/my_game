@@ -18,19 +18,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 import djcelery
 # указываем на то, что расписание будет задаваться посредством django-ORM
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-# указываем брокер сообщений
-BROKER_URL = 'redis://127.0.0.1:8000/1'
-# указываем хранилище результатов (можете не указывать)
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:8000/1'
-# формат хранения задач (можете не указывать)
+# # указываем брокер сообщений
+BROKER_URL = 'redis://127.0.0.1:6379/1'
+# # указываем хранилище результатов (можете не указывать)
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
+# # формат хранения задач (можете не указывать)
 CELERY_TASK_SERIALIZER = 'json'
-# формат хранения результатов (можете не указывать)
+# # формат хранения результатов (можете не указывать)
 CELERY_RESULT_SERIALIZER = 'json'
 # если настроены джанговские параметры уведомлений по почте
 # и данный параметр True, то исключения в задачах будут
 # фиксироваться на почте администраторов приложения
 CELERY_SEND_TASK_ERROR_EMAILS = True
-# инициализация django-celery
+# # инициализация django-celery
 djcelery.setup_loader()
 
 
