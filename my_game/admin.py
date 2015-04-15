@@ -16,8 +16,8 @@ from my_game.models import Basic_module
 from my_game.models import Basic_shell
 from my_game.models import Basic_shield
 from my_game.models import Basic_weapon
-from  my_game.models import User_scientic
-from  my_game.models import Turn_scientic
+from my_game.models import User_scientic
+from my_game.models import Turn_scientic
 
 
 class UserAdmin(admin.ModelAdmin):

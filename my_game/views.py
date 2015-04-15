@@ -19,9 +19,6 @@ from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship, Fl
 
 
 def home(request):
-    from my_game.tasks import test2
-
-    test2.apply_async()
     return render(request, "index.html", {})
 
 

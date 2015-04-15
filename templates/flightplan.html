@@ -5,7 +5,7 @@
         <h3 style="text-align: center">Список команд</h3>
 
         <p>
-            <input type="checkbox" name="city" class="coordinate_checkbox">
+            <input type="checkbox" name="city" class="flightplan_checkbox">
             Перелет к планете
             <input value="0" name="planet_system" class="coordinate_place"/>
             <input value="0" name="planet_planet" class="coordinate_place"/>
@@ -14,17 +14,17 @@
         <p>
             {% if fleet_engine.giper_power != 0 %}
                 Использовать гипер
-                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+                <input type="checkbox" name="planet_giper" class="flightplan_checkbox">
             {% endif %}
             {% if fleet_engine.null_power != 0 %}
                 Использовать джамп
-                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+                <input type="checkbox" name="planet_null" class="flightplan_checkbox">
             {% endif %}
         </p>
 
 
         <p>
-            <input type="checkbox" name="coordinate" class="coordinate_checkbox">
+            <input type="checkbox" name="coordinate" class="flightplan_checkbox">
             Перелет в координаты
             <input value="0" name="coordinate_x" class="coordinate_place"/>
             <input value="0" name="coordinate_y" class="coordinate_place"/>
@@ -35,35 +35,35 @@
             Системные координаты
             <input value="0" name="coordinate_system" class="coordinate_place"/>
             Межсистемные координаты
-            <input type="checkbox" name="coordinate_intersystem" class="coordinate_checkbox">
+            <input type="checkbox" name="coordinate_intersystem" class="flightplan_checkbox">
         </p>
 
         <p>
             {% if fleet_engine.giper_power != 0 %}
                 Использовать гипер
-                <input type="checkbox" name="planet_giper" class="coordinate_checkbox">
+                <input type="checkbox" name="planet_giper" class="flightplan_checkbox">
             {% endif %}
             {% if fleet_engine.null_power != 0 %}
                 Использовать джамп
-                <input type="checkbox" name="planet_null" class="coordinate_checkbox">
+                <input type="checkbox" name="planet_null" class="flightplan_checkbox">
             {% endif %}
         </p>
 
         <p>
             {% if fleet_parametr_resource_extraction %}
-                <input type="checkbox" name="resource_extraction" class="coordinate_checkbox">
+                <input type="checkbox" name="resource_extraction" class="flightplan_checkbox">
                 Добыча ресурсов
 
                 <input value="60" class="coordinate_place" name="time_extraction">минут
 
-                <input type="checkbox" name="full_hold" class="coordinate_checkbox">
+                <input type="checkbox" name="full_hold" class="flightplan_checkbox">
                 До полного трюма
             {% endif %}
         </p>
 
         <p>
             {% if fleet_parametr_scans %}
-                <input type="checkbox" name="scan" class="coordinate_checkbox">
+                <input type="checkbox" name="scan" class="flightplan_checkbox">
                 Сканирование окружения
                 <select name="scaning" class="scientic">
                     <option selected disabled>Scanning method</option>
@@ -80,6 +80,310 @@
                     {% endfor %}
                 </select>
             {% endif %}
+        </p>
+        <p>
+            <input type="checkbox" name="upload_hold" class="flightplan_checkbox">
+            Название
+            <select name="name_upload_element" class="scientic">
+                <option selected disabled>Товар</option>
+                <optgroup label="Resource">
+                    {% for warehouse in warehouses %}
+                        {% if warehouse.amount > 0 %}
+                            {% for basic_resource in basic_resources %}
+                                {% if basic_resource.id == warehouse.id_resource %}
+                                    <option value="{{ warehouse.id_resource }}; 0">{{ basic_resource.name }}
+                                        ( {{ warehouse.amount }} )
+                                    </option>
+
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Factory">
+                    {% if warehouse_factorys %}
+                        {% for warehouse_factory in warehouse_factorys %}
+                            {% for factory_pattern in factory_patterns %}
+                                {% if warehouse_factory.factory_id == factory_pattern.id %}
+                                    {% if warehouse_factory.amount > 0 %}
+                                        <option value="{{ warehouse_factory.id }}; 10">{{ factory_pattern.name }}
+                                            ( {{ warehouse_factory.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </optgroup>
+                <optgroup label="Hull">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 1 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for hull_pattern in hull_patterns %}
+                                    {% if hull_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ hull_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Armor">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 2 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for armor_pattern in armor_patterns %}
+                                    {% if armor_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ armor_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Shield">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 3 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for shield_pattern in shield_patterns %}
+                                    {% if shield_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shield_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Engine">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 4 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for engine_pattern in engine_patterns %}
+                                    {% if engine_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ engine_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Generator">
+
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 5 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for generator_pattern in generator_patterns %}
+                                    {% if generator_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ generator_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Weapon">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 6 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for weapon_pattern in weapon_patterns %}
+                                    {% if weapon_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ weapon_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Shell">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 7 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for shell_pattern in shell_patterns %}
+                                    {% if shell_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shell_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Module">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 8 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for module_pattern in module_patterns %}
+                                    {% if module_pattern.id == warehouse_element.element_id %}
+                                        <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ module_pattern.name }}
+                                            ( {{ warehouse_element.amount }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </optgroup>
+            </select>
+            Количество <input type="text" value=""
+                              name="upload_amount" class="number_ship" placeholder="Количество"/>
+        </p>
+        <p>
+            <input type="checkbox" name="unload_hold" class="flightplan_checkbox">
+            Название
+            <select name="id_hold_element" class="scientic">
+                <option selected disabled>Товар</option>
+                {% if ship_holds %}
+                    <optgroup label="Resource">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 0 %}
+                                {% for basic_resource in basic_resources %}
+                                    {% if basic_resource.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ basic_resource.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Factory">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 10 %}
+                                {% for factory_pattern in factory_patterns %}
+                                    {% if factory_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ factory_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Hull">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 1 %}
+                                {% for hull_pattern in hull_patterns %}
+                                    {% if hull_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ hull_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Armor">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 2 %}
+                                {% for armor_pattern in armor_patterns %}
+                                    {% if armor_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ armor_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Shield">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 3 %}
+                                {% for shield_pattern in shield_patterns %}
+                                    {% if shield_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ shield_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Engine">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 4 %}
+                                {% for engine_pattern in engine_patterns %}
+                                    {% if engine_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ engine_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Generator">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 5 %}
+                                {% for generator_pattern in generator_patterns %}
+                                    {% if generator_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ generator_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Weapon">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 6 %}
+                                {% for weapon_pattern in weapon_patterns %}
+                                    {% if weapon_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ weapon_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Shell">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 7 %}
+                                {% for shell_pattern in shell_patterns %}
+                                    {% if shell_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ shell_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Module">
+                        {% for ship_hold in ship_holds %}
+                            {% if ship_hold.class_shipment == 8 %}
+                                {% for module_pattern in module_patterns %}
+                                    {% if module_pattern.id == ship_hold.id_shipment %}
+                                        <option value="{{ ship_hold.id }}">{{ module_pattern.name }}
+                                            ( {{ ship_hold.amount_shipment }} )
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                {% endif %}
+            </select>
+            Количество <input type="text" value=""
+                              name="unload_amount" class="number_ship" placeholder="Количество"/>
+        </p>
+        <p>
+            Выгрузить все<input type="checkbox" name="unload_all" class="flightplan_checkbox">
+            Разгрузить весь трюм<input type="checkbox" name="unload_all_hold" class="flightplan_checkbox">
         </p>
 
         <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
@@ -113,6 +417,31 @@
                                     {% endif %}
                                 </p>
                             </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if flightplan.class_command == 2 %}
+                    {% for flightplan_hold in flightplan_holds %}
+                        {% if flightplan.id == flightplan_hold.id_fleetplan %}
+                            <p>
+                                {% if flightplan_hold.id_command == 1 %}
+                                    Загрузить {{ flightplan_hold.name }}: {{ flightplan_hold.amount }}. Время:
+                                    {{ flightplan_hold.time }} секунд
+                                {% elif flightplan_hold.id_command == 2 %}
+                                    Вигрузить {{ flightplan_hold.name }} :{{ flightplan_hold.amount }}. Время:
+                                    {{ flightplan_hold.time }} секунд
+                                {% elif flightplan_hold.id_command == 3 %}
+                                    Выгрузить все {{ flightplan_hold.name }}. Время: {{ flightplan_hold.time }} секунд
+                                {% else %}
+                                    Полностью разгрузить трюм. Время: {{ flightplan_hold.time }} секунд
+                                {% endif %}
+                            <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                                    <input type="hidden"
+                                           value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                                    <input class="scientic" type="submit" value="Delete command"
+                                           name="delete_command"/>
+                            </p>
                         {% endif %}
                     {% endfor %}
                 {% endif %}

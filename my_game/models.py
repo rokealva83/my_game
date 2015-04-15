@@ -1171,11 +1171,12 @@ class Flightplan_hold(models.Model):
     id_fleet = models.IntegerField(db_index=True)
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
+    class_element = models.IntegerField(default=0)
+    id_element =models.IntegerField(default=0)
     amount = models.IntegerField()
-    trade_item_number = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
     time = models.IntegerField(default=0)
-
+    name = models.CharField(max_length=50, default='')
 
 class Flightplan_production(models.Model):
     class Meta():

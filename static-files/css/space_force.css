@@ -78,3 +78,12 @@
     border-radius: 7px;
     background: #c0c0c0;
 }
+
+
+.flightplan_checkbox {
+    display: inline-block;
+    width: 17px;
+    height: 25px;
+    margin-top: 0px;
+    vertical-align: middle;
+}
