@@ -1,4 +1,7 @@
 /* Space force Styles */
+p{
+    font-size: 12px;
+}
 
 .left_block_force{
     width: 550px;
@@ -10,7 +13,7 @@
     border: 1px solid #000000;
 }
 .right_block_force{
-    width: 450px;
+    width: 460px;
     background-color: #616161;
     opacity: 0.75;
     border-radius: 7px;
@@ -25,7 +28,7 @@
     height: 22px;
     margin-top: 5px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     text-decoration: none;
     outline: none;
@@ -42,7 +45,7 @@
     height: 22px;
     margin-top: 5px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     text-decoration: none;
     outline: none;
@@ -58,7 +61,7 @@
     width: 150px;
     height: 22px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     outline: none;
     border: 1px solid #000000;
@@ -71,7 +74,7 @@
     width: 50px;
     height: 22px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     outline: none;
     border: 1px solid #000000;
@@ -94,10 +97,18 @@
     width: 75px;
     height: 22px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     outline: none;
     border: 1px solid #000000;
     border-radius: 7px;
     background: #c0c0c0;
+}
+
+
+.operation{
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }

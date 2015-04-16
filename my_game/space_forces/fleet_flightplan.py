@@ -6,7 +6,8 @@ from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game import function
 from my_game.models import Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_parametr_resource_extraction
-from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_production, Flightplan_hold
+from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_production, Flightplan_hold, \
+    Flightplan_refill, Flightplan_repair
 from space_forces import flight
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
@@ -178,20 +179,70 @@ def fleet_flightplan(request):
                     flightplan_hold.save()
 
             refill_fleet = request.POST.get('refill_fleet')
-            if refill_fleet:
-                full_tank = request.POST.get('full_tank')
-                if full_tank:
-                    a = 1
-                else:
-                    fleet_id = request.POST.get('fleet_number')
-                    fuel_id = request.POST.get('id_fuel')
-
             overload = request.POST.get('overload')
-            if overload:
-                id_hold_element = request.POST.get('id_hold_element')
-                overload_amount = request.POST.get('overload_amount')
-                overload_fleet_number = request.POST.get('overload_fleet_number')
-                all_goods = request.POST.get('all_goods')
+            yourself = request.POST.get('yourself')
+            if refill_fleet is not None or overload is not None or yourself is not None:
+                if yourself:
+                    id_command = 1
+                    id_fleet_refill = fleet_id
+                    amount = request.POST.get('yourself_amount')
+                    class_element = 14
+                    id_fuel_yourself = request.POST.get('id_fuel_yourself')
+                    id_fuel_yourself = id_fuel_yourself.split(';')
+                    id_element = id_fuel_yourself[0]
+                    class_refill = 1
+                    time = 150
+                    yourself_full_tank = request.POST.get('yourself_full_tank')
+                    if yourself_full_tank:
+                        id_command = 2
+                        amount = 0
+                        time = 300
+
+                if refill_fleet:
+
+                    class_refill = 2
+
+                    id_fleet_refill = request.POST.get('fleet_number')
+                    fuel_id = request.POST.get('id_fuel')
+                    amount = request.POST.get('amount')
+
+
+                elif overload:
+                    class_refill = 0
+                    id_hold_element = request.POST.get('id_hold_element')
+                    overload_amount = request.POST.get('overload_amount')
+                    overload_fleet_number = request.POST.get('overload_fleet_number')
+                    all_goods = request.POST.get('all_goods')
+
+
+
+                flightplan = Flightplan(
+                    user=session_user,
+                    id_fleet=fleet_id,
+                    class_command=4,
+                    id_command=id_command,
+                    status=0
+                )
+                flightplan.save()
+
+                flightplan_refill = Flightplan_refill(
+                    user = session_user,
+                    id_fleet = fleet_id,
+                    id_command = id_command,
+                    id_fleet_refill = id_fleet_refill,
+                    class_refill = class_refill,
+                    class_element = class_element,
+                    id_element = id_element,
+                    amount = amount,
+                    start_time = datetime.now(),
+                    time_refill = time,
+                    id_fleetplan = flightplan.id,
+
+                )
+
+
+
+
 
         if request.POST.get('delete_command'):
             command = 3
