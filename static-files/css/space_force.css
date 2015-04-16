@@ -25,7 +25,7 @@ p{
 .button_force{
     display: inline-block;
     width: 110px;
-    height: 22px;
+    height: 18px;
     margin-top: 5px;
     line-height: 5px;
     font-size: 12px;
@@ -39,10 +39,28 @@ p{
     color: rgb(0, 0, 0);
 }
 
+.button_force:hover{
+    display: inline-block;
+    width: 110px;
+    height: 18px;
+    margin-top: 5px;
+    line-height: 5px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: rgb(50, 50, 50) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(208, 208, 208);
+}
+
+
 .list_force{
     display: inline-block;
     width: 125px;
-    height: 22px;
+    height: 18px;
     margin-top: 5px;
     line-height: 5px;
     font-size: 12px;
@@ -54,12 +72,30 @@ p{
     background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
     box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
     color: rgb(0, 0, 0);
+}
+
+
+.list_force:hover{
+    display: inline-block;
+    width: 125px;
+    height: 18px;
+    margin-top: 5px;
+    line-height: 5px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: rgb(50, 50, 50) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(200, 200, 200);
 }
 
 .force_name {
     display: inline-block;
     width: 150px;
-    height: 22px;
+    height: 18px;
     line-height: 5px;
     font-size: 12px;
     text-align: center;
@@ -72,7 +108,7 @@ p{
 .number_ship{
     display: inline-block;
     width: 50px;
-    height: 22px;
+    height: 18px;
     line-height: 5px;
     font-size: 12px;
     text-align: center;
@@ -86,7 +122,7 @@ p{
 .flightplan_checkbox {
     display: inline-block;
     width: 17px;
-    height: 25px;
+    height: 20px;
     margin-top: 0px;
     vertical-align: middle;
 }
@@ -95,7 +131,7 @@ p{
 .fleet_number{
     display: inline-block;
     width: 75px;
-    height: 22px;
+    height: 18px;
     line-height: 5px;
     font-size: 12px;
     text-align: center;
@@ -111,4 +147,80 @@ p{
     border-bottom: 1px solid black;
     margin-top: 3px;
     margin-bottom: 3px;
+}
+
+
+.coordinate_place {
+    display: inline-block;
+    width: 50px;
+    height: 18px;
+    margin-top: 2px;
+    line-height: 5px;
+    font-size: 11px;
+    text-align: center;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    background: #c0c0c0;
+    color: rgb(0, 0, 0);
+}
+
+.coordinate_checkbox {
+    display: inline-block;
+    width: 17px;
+    height: 20px;
+    margin-top: 0px;
+    vertical-align: middle;
+}
+
+.fleet {
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 7px;
+    margin: 7px 5px 5px 5px;
+    padding: 2px 0 7px 0;
+}
+
+.fleet p{
+    margin-bottom: -5px;
+    margin-top: -5px;
+}
+
+td p{
+    margin-bottom: -5px;
+    margin-top: -5px;
+}
+
+.delete_button{
+    display: inline-block;
+    width: 75px;
+    height: 18px;
+    margin-top: 5px;
+    line-height: 5px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(0, 0, 0);
+}
+
+.delete_button:hover{
+    display: inline-block;
+    width: 110px;
+    height: 18px;
+    margin-top: 5px;
+    line-height: 5px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: rgb(50, 50, 50) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(208, 208, 208);
 }

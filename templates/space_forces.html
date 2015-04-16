@@ -51,7 +51,7 @@
                     {% spaceless %}
                         {% for ship_fleet in ship_fleets %}
                             {% if ship_fleet.place_id == user_fleet.id %}
-                                {{ ship_fleet.name }} : {{ ship_fleet.amount_ship }}
+                               <p> {{ ship_fleet.name }} : {{ ship_fleet.amount_ship }}</p>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}

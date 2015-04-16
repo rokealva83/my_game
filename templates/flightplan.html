@@ -85,7 +85,7 @@
                     <td>
                         <p>
                             Сканирование окружения
-                            <select name="scaning" class="scientic">
+                            <select name="scaning" class="list_force">
                                 <option selected disabled>Scanning method</option>
                                 {% for fleet_parametr_scan in fleet_parametr_scans %}
                                     {% if fleet_parametr_scan.method_scanning == 1 %}
@@ -113,7 +113,7 @@
                 <td>
                     <p>
                         Название
-                        <select name="name_upload_element" class="scientic">
+                        <select name="name_upload_element" class="list_force">
                             <option selected disabled>Товар</option>
                             <optgroup label="Resource">
                                 {% for warehouse in warehouses %}
@@ -292,7 +292,7 @@
                 </td>
                 <td>
                     <p> Название
-                        <select name="id_hold_element" class="scientic">
+                        <select name="id_hold_element" class="list_force">
                             <option selected disabled>Товар</option>
                             {% if ship_holds %}
                                 <optgroup label="Resource">
@@ -457,7 +457,7 @@
                 <td>
                     <p>
                         Заправится
-                        <select name="id_fuel_yourself" class="scientic">
+                        <select name="id_fuel_yourself" class="list_force">
                             <option selected disabled>Топливо</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 14 %}
@@ -473,12 +473,13 @@
                                 {% endif %}
                             {% endfor %}
                         </select>
-                        <input type="text" value="" name="yourself_amount" class="fleet_number" placeholder="Количество"/></p>
+                        <input type="text" value="" name="yourself_amount" class="fleet_number"
+                               placeholder="Количество"/></p>
                     <p>
                         <input type="checkbox" name="yourself_full_tank" class="flightplan_checkbox"> До полного
                     </p>
                 </td>
-
+            </tr>
             <tr align="center">
                 <td>
 
@@ -491,7 +492,7 @@
                     </p>
 
                     <p>
-                        <select name="id_fuel" class="scientic">
+                        <select name="id_fuel" class="list_force">
                             <option selected disabled>Топливо</option>
                             {% for ship_hold in ship_holds %}
                                 {% if ship_hold.class_shipment == 14 %}
@@ -516,7 +517,7 @@
                 <td>
                     <p>
                         Перегрузить
-                        <select name="id_hold_element" class="scientic">
+                        <select name="id_hold_element" class="list_force">
                             <option selected disabled>Товар</option>
                             {% if ship_holds %}
                                 <optgroup label="Resource">
@@ -677,129 +678,191 @@
             </tr>
         </table>
         <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-        <input class="scientic" type="submit" value="Add command" name="add_command" style="margin-bottom: 4px"/>
+        <input class="button_force" type="submit" value="Add command" name="add_command" style="margin-bottom: 4px"/>
 
     </form>
     {% if flightplans %}
-        <tr align="center">
-            <td style="width: 20px">Товар</td>
-            <td style="width: 428px">Количество</td>
-        </tr>
-        <form method="post" action="fleet_flightplan">
-            <h3 style="text-align: center">Полетный лист</h3>
-            {% for flightplan in flightplans %}
-                {% if flightplan.class_command == 1 %}
-                    {% for flightplan_flight in flightplan_flights %}
-                        {% if flightplan_flight.id_fleetplan == flightplan.id %}
-                            <div class="fleet" style="text-align: center">
-                                <p>Перелет в точку {{ flightplan_flight.finish_x }}
-                                    : {{ flightplan_flight.finish_y }}
-                                    : {{ flightplan_flight.finish_z }}
-                                    <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                                    <input type="hidden"
-                                           value={{ flightplan.id }} name="hidden_flightplan_id"/>
-                                    <input class="scientic" type="submit" value="Delete command"
-                                           name="delete_command"/>
-                                </p>
+        <table border="1" align="center" style="margin-bottom: 7px">
+            <tr align="center">
+                <td style="width: 100px"><p>Действие</p></td>
+                <td style="width: 240px"><p>Параметры</p></td>
+                <td style="width: 108px"><p>Удалить</p></td>
+            </tr>
 
-                                <p>Status:
-                                    {% if flightplan.status == 0 %}
-                                        stand by
-                                    {% else %}
-                                        prosecution
-                                    {% endif %}
-                                </p>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+            <form method="post" action="fleet_flightplan">
+                <h3 style="text-align: center">Полетный лист</h3>
+                {% for flightplan in flightplans %}
+                    {% if flightplan.class_command == 1 %}
+                        {% for flightplan_flight in flightplan_flights %}
+                            {% if flightplan_flight.id_fleetplan == flightplan.id %}
+                                <tr align="center">
+                                    <td><p>Перелет в точку</p></td>
+                                    <td><p>{{ flightplan_flight.finish_x }}
+                                        : {{ flightplan_flight.finish_y }}
+                                        : {{ flightplan_flight.finish_z }}</p>
 
-                {% if flightplan.class_command == 2 %}
-                    {% for flightplan_hold in flightplan_holds %}
-                        {% if flightplan.id == flightplan_hold.id_fleetplan %}
-                            <p>
-                                {% if flightplan_hold.id_command == 1 %}
-                                    Загрузить {{ flightplan_hold.name }}: {{ flightplan_hold.amount }}. Время:
-                                    {{ flightplan_hold.time }} секунд
-                                {% elif flightplan_hold.id_command == 2 %}
-                                    Вигрузить {{ flightplan_hold.name }} :{{ flightplan_hold.amount }}. Время:
-                                    {{ flightplan_hold.time }} секунд
-                                {% elif flightplan_hold.id_command == 3 %}
-                                    Выгрузить все {{ flightplan_hold.name }}. Время: {{ flightplan_hold.time }} секунд
-                                {% else %}
-                                    Полностью разгрузить трюм. Время: {{ flightplan_hold.time }} секунд
-                                {% endif %}
-                                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                                <input type="hidden"
-                                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
-                                <input class="scientic" type="submit" value="Delete command"
-                                       name="delete_command"/>
-                            </p>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                                        <p>
+                                            {% if flightplan_flight.id_command == 1 %}
+                                                Системный полет
+                                            {% elif flightplan_flight.id_command == 2 %}
+                                                Межсистемный полет
+                                            {% elif flightplan_flight.id_command == 3 %}
+                                                Гиперпереход
+                                            {% elif flightplan_flight.id_command == 4 %}
+                                                Нуль-переход
+                                            {% endif %}
+                                        </p>
 
-                {% if flightplan.class_command == 3 %}
-                    {% for flightplan_production in flightplan_productions %}
-                        {% if flightplan_production.id_fleetplan == flightplan.id %}
-                            <div class="fleet">
-                                <p>Добыча ресурсов {{ flightplan_production.time_extraction }}минут</p>
-                                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                                <input type="hidden"
-                                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
-                                <input class="scientic" type="submit" value="Delete command"
-                                       name="delete_command"/>
+                                        <p>Status:
+                                            {% if flightplan.status == 0 %}
+                                                stand by
+                                            {% else %}
+                                                prosecution
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                                        <input type="hidden"
+                                               value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                                        <input class="delete_button" type="submit" value="Remove"
+                                               name="delete_command"/>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
 
-                                <p>Status:
-                                    {% if flightplan.status == 0 %}
-                                        stand by
-                                    {% else %}
-                                        prosecution
-                                    {% endif %}
-                                </p>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                    {% if flightplan.class_command == 2 %}
+                        {% for flightplan_hold in flightplan_holds %}
+                            {% if flightplan.id == flightplan_hold.id_fleetplan %}
+                                <tr align="center">
+                                    <td>
+                                        <p>
+                                            {% if flightplan_hold.id_command == 1 %}
+                                                Загрузить
+                                            {% elif flightplan_hold.id_command == 2 %}
+                                                Вигрузить
+                                            {% elif flightplan_hold.id_command == 3 %}
+                                                Выгрузить все
+                                            {% else %}
+                                                Полностью разгрузить трюм
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            {{ flightplan_hold.name }}: {{ flightplan_hold.amount }} единиц
+                                        </p>
 
-                {% if flightplan.class_command == 6 %}
-                    {% for flightplan_scan in flightplan_scans %}
-                        {% if flightplan_scan.id_fleetplan == flightplan.id %}
-                            <div class="fleet">
-                                <p>
-                                    {% if flightplan_scan.id_command == 1 %}
-                                        Сканирование окружения
-                                    {% elif flightplan_scan.id_command == 2 %}
-                                        Поиск астероидов
-                                    {% endif %}
-                                    в радиусе {{ flightplan_scan.range_scanning }} св.
-                                    Время сканирования {{ flightplan_scan.time_scanning }} секунд
-                                </p>
-                                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                                <input type="hidden"
-                                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
-                                <input class="scientic" type="submit" value="Delete command"
-                                       name="delete_command"/>
+                                        <p>
+                                            Время процеса:{{ flightplan_hold.time }} секунд
+                                        </p>
 
-                                <p>Status:
-                                    {% if flightplan.status == 0 %}
-                                        stand by
-                                    {% else %}
-                                        prosecution
-                                    {% endif %}
-                                </p>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                                        <p>Status:
+                                            {% if flightplan.status == 0 %}
+                                                stand by
+                                            {% else %}
+                                                prosecution
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                                        <input type="hidden"
+                                               value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                                        <input class="delete_button" type="submit" value="Remove"
+                                               name="delete_command"/>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
 
-            {% endfor %}
-        </form>
+                    {% if flightplan.class_command == 3 %}
+                        {% for flightplan_production in flightplan_productions %}
+                            {% if flightplan_production.id_fleetplan == flightplan.id %}
+                                <tr align="center">
+                                    <td>
+                                        <p style="line-height: 12px">
+                                            Добыча ресурсов
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Время добычи {{ flightplan_production.time_extraction }} минут
+                                        </p>
+
+                                        <p>
+                                            Status:
+                                            {% if flightplan.status == 0 %}
+                                                stand by
+                                            {% else %}
+                                                prosecution
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                                        <input type="hidden"
+                                               value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                                        <input class="delete_button" type="submit" value="Remove"
+                                               name="delete_command"/>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if flightplan.class_command == 6 %}
+                        {% for flightplan_scan in flightplan_scans %}
+                            {% if flightplan_scan.id_fleetplan == flightplan.id %}
+                                <tr align="center">
+                                    <td>
+                                        <p style="line-height: 12px">
+                                            {% if flightplan_scan.id_command == 1 %}
+                                                Сканирование окружения
+                                            {% elif flightplan_scan.id_command == 2 %}
+                                                Поиск астероидов
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            в радиусе {{ flightplan_scan.range_scanning }} св.
+                                        </p>
+
+                                        <p>
+                                            Время сканирования {{ flightplan_scan.time_scanning }} секунд
+                                        </p>
+
+                                        <p>Status:
+                                            {% if flightplan.status == 0 %}
+                                                stand by
+                                            {% else %}
+                                                prosecution
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                                        <input type="hidden"
+                                               value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                                        <input class="delete_button" type="submit" value="Remove"
+                                               name="delete_command"/>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                {% endfor %}
+            </form>
+        </table>
         <form method="post" action="start_flight"
               style="text-align: center;  margin-bottom: 20px;">
             <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-            <input class="scientic" type="submit" value="Start flight" name="start_flight"/>
-            <input class="scientic" type="submit" value="Delete list" name="delete_list"/>
+            <input class="button_force" type="submit" value="Start flight" name="start_flight"/>
+            <input class="button_force" type="submit" value="Delete list" name="delete_list"/>
 
         </form>
     {% endif %}
