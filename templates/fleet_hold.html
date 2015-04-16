@@ -151,6 +151,20 @@
                             {% endfor %}
                         {% endif %}
                     {% endspaceless %}
+                    {% spaceless %}
+                        {% if ship_hold.class_shipment == 14 %}
+                            {% for fuel_pattern in fuel_patterns %}
+                                {% if fuel_pattern.id ==  ship_hold.id_shipment %}
+                                    <p>{{ fuel_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                        / {{ ship_hold.mass_shipment }} /
+                                        {{ ship_hold.size_shipment }} )
+                                        <input value="0" name="amount_fuel" class="number_ship"></p>
+                                    <input type="hidden" id="fleet_id"
+                                           value={{ ship_hold.id_shipment }} name="hidden_fuel"/>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endspaceless %}
 
                 {% endfor %}
                 <p><input class="list_force" type="submit" value="Выгрузить" name="unload"/>
@@ -160,6 +174,7 @@
         <form method="post" action="fleet_hold" style="text-align: center">
             <p>Управление трюмом флота</p>
             <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
+
             <div>
                 Resource in warehouse
                 <select name="warehouse_resource" class="list_force">
@@ -374,7 +389,7 @@
                     {% if warehouse_elements %} Module in warehouse
                         <select name="warehouse_module" class="list_force">
                             <option selected disabled>Choise module</option>
-                            {% for warehouse_element in warehouse_elements %}
+             module               {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 8 %}
                                     {% if warehouse_element.amount > 0 %}
                                         {% for module_pattern in module_patterns %}
@@ -391,6 +406,30 @@
                         </select>
                     {% endif %}
                     <input value="0" name="module_amount" class="number_ship" placeholder="Module amount"/>
+                </div>
+            {% endspaceless %}
+            {% spaceless %}
+                <div>
+                    {% if warehouse_elements %} Fuel in warehouse
+                        <select name="warehouse_fuel" class="list_force">
+                            <option selected disabled>Choise fuel</option>
+                            {% for warehouse_element in warehouse_elements %}
+                                {% if warehouse_element.element_class == 14 %}
+                                    {% if warehouse_element.amount > 0 %}
+                                        {% for fuel_pattern in fuel_patterns %}
+                                            {% if fuel_pattern.id == warehouse_element.element_id %}
+                                                <option value="{{ warehouse_element.element_id }}">{{ fuel_pattern.name }}(
+                                                    {{ warehouse_element.amount }}
+                                                    )
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    <input value="0" name="fuel_amount" class="number_ship" placeholder="Fuel amount"/>
                 </div>
             {% endspaceless %}
 

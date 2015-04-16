@@ -7,7 +7,7 @@ from my_game import function
 from my_game.models import Project_ship, Ship, Fleet, Hold
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
-    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern
+    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern
 
 
 def empty_fleet_hold(request):
@@ -44,6 +44,7 @@ def empty_fleet_hold(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
         # device_patterns = Device_pattern.objects.filter(user = session_user)
         error = 0
 
@@ -152,7 +153,8 @@ def empty_fleet_hold(request):
                         size = int(factory.size) * factory_amount
                         amount_shipment = factory_amount
                         mass_shipment = int(factory.mass) * factory_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_hull = myDict.get('amount_hull')
@@ -168,7 +170,8 @@ def empty_fleet_hold(request):
                         size = int(hull.size) * hull_amount
                         amount_shipment = hull_amount
                         mass_shipment = int(hull.mass) * hull_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_armor = myDict.get('amount_armor')
@@ -184,7 +187,8 @@ def empty_fleet_hold(request):
                         size = 15 * armor_amount
                         amount_shipment = armor_amount
                         mass_shipment = int(armor.mass) * armor_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_shield = myDict.get('amount_shield')
@@ -200,7 +204,8 @@ def empty_fleet_hold(request):
                         size = int(shield.size) * shield_amount
                         amount_shipment = shield_amount
                         mass_shipment = int(shield.mass) * shield_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_engine = myDict.get('amount_engine')
@@ -216,7 +221,8 @@ def empty_fleet_hold(request):
                         size = int(engine.size) * engine_amount
                         amount_shipment = engine_amount
                         mass_shipment = int(engine.mass) * engine_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_generator = myDict.get('amount_generator')
@@ -232,7 +238,8 @@ def empty_fleet_hold(request):
                         size = int(generator.size) * generator_amount
                         amount_shipment = generator_amount
                         mass_shipment = int(generator.mass) * generator_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_weapon = myDict.get('amount_weapon')
@@ -248,7 +255,8 @@ def empty_fleet_hold(request):
                         size = int(weapon.size) * weapon_amount
                         amount_shipment = weapon_amount
                         mass_shipment = int(weapon.mass) * weapon_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_shell = myDict.get('amount_shell')
@@ -264,7 +272,8 @@ def empty_fleet_hold(request):
                         size = int(shell.size) * shell_amount
                         amount_shipment = shell_amount
                         mass_shipment = int(shell.mass) * shell_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
 
             amount_module = myDict.get('amount_module')
@@ -280,12 +289,13 @@ def empty_fleet_hold(request):
                         size = int(module.size) * module_amount
                         amount_shipment = module_amount
                         mass_shipment = int(module.mass) * module_amount
-                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
                                   mass_shipment, size)
         else:
             message = 'Флот не над планетой'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         basic_resources = Basic_resource.objects.filter()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -305,15 +315,15 @@ def empty_fleet_hold(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
-                  'ship_fleets': ship_fleets,
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
                   'ships': ships, 'command': command, 'flightplans': flightplans,
                   'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
                   'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
-                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
-                  'shield_patterns': shield_patterns,
-                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds, 'basic_resources':basic_resources}
+                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shell_patterns': shell_patterns,
+                  'shield_patterns': shield_patterns, 'weapon_patterns': weapon_patterns,
+                  'fuel_patterns': fuel_patterns, 'engine_patterns': engine_patterns,
+                  'generator_patterns': generator_patterns, 'module_patterns': module_patterns, 'message': message,
+                  'ship_holds': ship_holds, 'basic_resources': basic_resources}
         return render(request, "fleet_hold.html", output)
 
 
@@ -331,10 +341,12 @@ def unloading(*args):
     hold_amount_shipment = hold.amount_shipment
 
     if class_shipment == 0:
-        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource = id_shipment).first()
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                             id_resource=id_shipment).first()
         new_amount = warehouse.amount + amount_shipment
-        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource = id_shipment).update(
-                amount=new_amount)
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                             id_resource=id_shipment).update(
+            amount=new_amount)
         mass = amount_shipment
         size = amount_shipment
 

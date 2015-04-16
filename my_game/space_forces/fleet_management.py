@@ -106,6 +106,7 @@ def fleet_manage(request):
             weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
             shell_patterns = Shell_pattern.objects.filter(user=session_user)
             module_patterns = Module_pattern.objects.filter(user=session_user)
+            fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
             basic_resources = Basic_resource.objects.all()
             # device_patterns = Device_pattern.objects.filter(user = session_user)
             ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
@@ -119,9 +120,10 @@ def fleet_manage(request):
                       'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                       'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                       'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                      'flightplan_scans': flightplan_scans, 'flightplan_productions': flightplan_productions,
-                      'fleet_engine': fleet_engine, 'basic_resources': basic_resources,
-                      'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans,
+                      'fuel_patterns': fuel_patterns, 'flightplan_scans': flightplan_scans,
+                      'flightplan_productions': flightplan_productions, 'fleet_engine': fleet_engine,
+                      'basic_resources': basic_resources, 'module_patterns': module_patterns,
+                      'fleet_parametr_scans': fleet_parametr_scans,
                       'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                       'ship_holds': ship_holds, 'flightplan_holds': flightplan_holds}
             return render(request, "flightplan.html", output)
@@ -143,6 +145,7 @@ def fleet_manage(request):
             weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
             shell_patterns = Shell_pattern.objects.filter(user=session_user)
             module_patterns = Module_pattern.objects.filter(user=session_user)
+            fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
             # device_patterns = Device_pattern.objects.filter(user = session_user)
 
             command = 2

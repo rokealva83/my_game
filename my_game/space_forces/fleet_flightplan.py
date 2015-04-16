@@ -10,8 +10,7 @@ from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Fligh
 from space_forces import flight
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
-    Basic_resource, Hold
-from my_game.models import Basic_armor, Basic_engine, Basic_factory, Basic_generator, Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon
+    Basic_resource, Hold, Fuel_pattern
 
 
 def fleet_flightplan(request):
@@ -96,46 +95,7 @@ def fleet_flightplan(request):
                 name_upload_element = name_upload_element.split(';')
                 id_element = int(name_upload_element[0])
                 class_element = int(name_upload_element[1])
-
-                if class_element == 0:
-                    resource = Basic_resource.objects.filter(id=id_element).first()
-                    name = resource.name
-
-                elif class_element == 1:
-                    hull = Hull_pattern.objects.filter(id=id_element).first()
-                    name = hull.name
-
-                elif class_element == 2:
-                    armor = Armor_pattern.objects.filter(id=id_element).first()
-                    name = armor.name
-
-                elif class_element == 3:
-                    shield = Shield_pattern.objects.filter(id=id_element).first()
-                    name = shield.name
-
-                elif class_element == 4:
-                    engine = Engine_pattern.objects.filter(id=id_element).first()
-                    name = engine.name
-
-                elif class_element == 5:
-                    generator = Generator_pattern.objects.filter(id=id_element).first()
-                    name = generator.name
-
-                elif class_element == 6:
-                    weapon = Weapon_pattern.objects.filter(id=id_element).first()
-                    name = weapon.name
-
-                elif class_element == 7:
-                    shell = Shell_pattern.objects.filter(id=id_element).first()
-                    name = shell.name
-
-                elif class_element == 8:
-                    module = Module_pattern.objects.filter(id=id_element).first()
-                    name = module.name
-
-                elif class_element == 10:
-                    factory = Factory_pattern.objects.filter(id=id_element).first()
-                    name = factory.name
+                name = find_name(class_element, id_element)
 
                 flightplan = Flightplan(
                     user=session_user,
@@ -156,7 +116,7 @@ def fleet_flightplan(request):
                     time=300,
                     class_element=class_element,
                     id_element=id_element,
-                    name = name
+                    name=name
                 )
                 flightplan_hold.save()
 
@@ -169,47 +129,8 @@ def fleet_flightplan(request):
                 hold = Hold.objects.filter(id=id_hold_element).first()
                 class_element = hold.class_shipment
                 id_element = hold.id_shipment
-                if class_element == 0:
-                    resource = Basic_resource.objects.filter(id=id_element).first()
-                    name = resource.name
 
-                elif class_element == 1:
-                    hull = Hull_pattern.objects.filter(id=id_element).first()
-                    name = hull.name
-
-                elif class_element == 2:
-                    armor = Armor_pattern.objects.filter(id=id_element).first()
-                    name = armor.name
-
-                elif class_element == 3:
-                    shield = Shield_pattern.objects.filter(id=id_element).first()
-                    name = shield.name
-
-                elif class_element == 4:
-                    engine = Engine_pattern.objects.filter(id=id_element).first()
-                    name = engine.name
-
-                elif class_element == 5:
-                    generator = Generator_pattern.objects.filter(id=id_element).first()
-                    name = generator.name
-
-                elif class_element == 6:
-                    weapon = Weapon_pattern.objects.filter(id=id_element).first()
-                    name = weapon.name
-
-                elif class_element == 7:
-                    shell = Shell_pattern.objects.filter(id=id_element).first()
-                    name = shell.name
-
-                elif class_element == 8:
-                    module = Module_pattern.objects.filter(id=id_element).first()
-                    name = module.name
-
-                elif class_element == 10:
-                    factory = Factory_pattern.objects.filter(id=id_element).first()
-                    name = factory.name
-
-
+                name = find_name(class_element, id_element)
                 error = 0
                 if unload_all_hold:
                     id_command = 4
@@ -252,9 +173,25 @@ def fleet_flightplan(request):
                         time=time,
                         class_element=class_element,
                         id_element=id_element,
-                        name = name
+                        name=name
                     )
                     flightplan_hold.save()
+
+            refill_fleet = request.POST.get('refill_fleet')
+            if refill_fleet:
+                full_tank = request.POST.get('full_tank')
+                if full_tank:
+                    a = 1
+                else:
+                    fleet_id = request.POST.get('fleet_number')
+                    fuel_id = request.POST.get('id_fuel')
+
+            overload = request.POST.get('overload')
+            if overload:
+                id_hold_element = request.POST.get('id_hold_element')
+                overload_amount = request.POST.get('overload_amount')
+                overload_fleet_number = request.POST.get('overload_fleet_number')
+                all_goods = request.POST.get('all_goods')
 
         if request.POST.get('delete_command'):
             command = 3
@@ -302,6 +239,7 @@ def fleet_flightplan(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
         basic_resources = Basic_resource.objects.all()
+        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
         # device_patterns = Device_pattern.objects.filter(user = session_user)
         ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
         add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
@@ -319,11 +257,61 @@ def fleet_flightplan(request):
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'fuel_patterns': fuel_patterns,
                   'flightplan_scans': flightplan_scans, 'flightplan_productions': flightplan_productions,
                   'fleet_engine': fleet_engine, 'basic_resources': basic_resources,
                   'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans,
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
-                  'ship_holds': ship_holds, 'message': message, 'flightplan_holds':flightplan_holds}
+                  'ship_holds': ship_holds, 'message': message, 'flightplan_holds': flightplan_holds}
 
         return render(request, "flightplan.html", output)
+
+
+def find_name(*args):
+    class_element = args[0]
+    id_element = args[1]
+    name = ''
+    if class_element == 0:
+        resource = Basic_resource.objects.filter(id=id_element).first()
+        name = resource.name
+
+    elif class_element == 1:
+        hull = Hull_pattern.objects.filter(id=id_element).first()
+        name = hull.name
+
+    elif class_element == 2:
+        armor = Armor_pattern.objects.filter(id=id_element).first()
+        name = armor.name
+
+    elif class_element == 3:
+        shield = Shield_pattern.objects.filter(id=id_element).first()
+        name = shield.name
+
+    elif class_element == 4:
+        engine = Engine_pattern.objects.filter(id=id_element).first()
+        name = engine.name
+
+    elif class_element == 5:
+        generator = Generator_pattern.objects.filter(id=id_element).first()
+        name = generator.name
+
+    elif class_element == 6:
+        weapon = Weapon_pattern.objects.filter(id=id_element).first()
+        name = weapon.name
+
+    elif class_element == 7:
+        shell = Shell_pattern.objects.filter(id=id_element).first()
+        name = shell.name
+
+    elif class_element == 8:
+        module = Module_pattern.objects.filter(id=id_element).first()
+        name = module.name
+
+    elif class_element == 10:
+        factory = Factory_pattern.objects.filter(id=id_element).first()
+        name = factory.name
+
+    elif class_element == 14:
+        factory = Fuel_pattern.objects.filter(id=id_element).first()
+        name = factory.name
+    return name

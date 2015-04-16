@@ -7,7 +7,7 @@ from my_game import function
 from my_game.models import Project_ship, Ship, Fleet, Hold
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
-    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern
+    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern
 
 
 def fleet_hold(request):
@@ -45,6 +45,7 @@ def fleet_hold(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
         # device_patterns = Device_pattern.objects.filter(user = session_user)
         error = 0
 
@@ -179,6 +180,18 @@ def fleet_hold(request):
                     mass_shipment = module.mass * int(module_amount[0])
                     add_shipment = 1
 
+            fuel_amount = myDict.get('fuel_amount')
+            id_shipment_mod = myDict.get('warehouse_fuel')
+            if int(fuel_amount[0]) != 0 and add_shipment == 0 and id_shipment_mod is not None:
+                id_shipment = int(id_shipment_mod[0])
+                class_shipment = 14
+                fuel = Fuel_pattern.objects.filter(id=id_shipment).first()
+                size = fuel.size * int(fuel_amount[0])
+                if size <= fleet.empty_hold:
+                    amount_shipment = int(fuel_amount[0])
+                    mass_shipment = fuel.mass * int(fuel_amount[0])
+                    add_shipment = 1
+
             if add_shipment != 0:
                 if class_shipment == 0:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
@@ -201,7 +214,7 @@ def fleet_hold(request):
                     else:
                         error = 1
 
-                elif 0 < class_shipment < 10:
+                elif 0 < class_shipment < 10 or class_shipment == 14:
                     warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
                                                                          element_class=class_shipment,
                                                                          element_id=id_shipment).first()
@@ -266,12 +279,12 @@ def fleet_hold(request):
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'basic_resources':basic_resources, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
-                  'ship_fleets': ship_fleets,
+                  'ship_fleets': ship_fleets, 'fuel_patterns': fuel_patterns, 'shell_patterns':shell_patterns,
                   'ships': ships, 'command': command, 'flightplans': flightplans,
                   'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
                   'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
-                  'shield_patterns': shield_patterns,
+                  'shield_patterns': shield_patterns, 'weapon_patterns':weapon_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
         return render(request, "fleet_hold.html", output)

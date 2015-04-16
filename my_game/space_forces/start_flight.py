@@ -10,8 +10,7 @@ from my_game.models import Ship, Fleet
 from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_hold, Flightplan_production
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
-    Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction
-
+    Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern
 
 
 def start_flight(request):
@@ -56,7 +55,7 @@ def start_flight(request):
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-        fleet = Fleet.objects.filter(user = session_user)
+        fleet = Fleet.objects.filter(user=session_user)
         flightplans = Flightplan.objects.filter(id_fleet=fleet_id)
         flightplan_flights = Flightplan_flight.objects.filter(id_fleet=fleet_id)
         flightplan_scans = Flightplan_scan.objects.filter(id_fleet=fleet_id)
@@ -80,6 +79,7 @@ def start_flight(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
         basic_resources = Basic_resource.objects.all()
         # device_patterns = Device_pattern.objects.filter(user = session_user)
         ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
@@ -90,18 +90,16 @@ def start_flight(request):
         request.session['live'] = True
 
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
-                  'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
-                  'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
-                  'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
-                  'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
+                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
+                  'ships': ships, 'fleet': fleet, 'command': command, 'flightplans': flightplans,
+                  'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
+                  'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
+                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'fuel_patterns': fuel_patterns,
                   'flightplan_scans': flightplan_scans, 'flightplan_productions': flightplan_productions,
-                  'fleet_engine': fleet_engine, 'basic_resources': basic_resources,
-                  'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans,
-                  'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
-                  'ship_holds': ship_holds, 'message': message}
+                  'fleet_engine': fleet_engine, 'basic_resources': basic_resources, 'module_patterns': module_patterns,
+                  'fleet_parametr_scans': fleet_parametr_scans, 'ship_holds': ship_holds, 'message': message,
+                  'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction}
 
         return render(request, "space_forces.html", output)

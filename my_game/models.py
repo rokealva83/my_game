@@ -1200,9 +1200,12 @@ class Flightplan_refill(models.Model):
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     id_fleet_refill = models.IntegerField()
-    amount_fuel = models.IntegerField()
+    class_refill = models.IntegerField(default=0)
+    class_element = models.IntegerField(default=0)
+    id_element = models.IntegerField(default=0)
+    amount = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    time_refil = models.IntegerField(default=0)
+    time_refill = models.IntegerField(default=0)
 
 
 class Flightplan_repair(models.Model):

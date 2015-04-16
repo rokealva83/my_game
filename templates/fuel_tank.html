@@ -44,7 +44,7 @@
                 <div>
                     {% if warehouse_elements %} Fuel in warehouse
                         <select name="fuel_pattern" class="list_force">
-                            <option selected disabled>Choise hull</option>
+                            <option selected disabled>Choise fuel</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.amount > 0 %}
                                     {% for fuel_pattern in fuel_patterns %}
