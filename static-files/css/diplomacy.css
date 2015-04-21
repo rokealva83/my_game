@@ -4,7 +4,7 @@
     background-color: #616161;
     float: left;
     opacity: 0.8;
-    width: 1400px;
+    width: 1025px;
     height: 600px;
     text-align: center;
     vertical-align: middle;
@@ -92,7 +92,7 @@
     height: 25px;
     margin: 7px 0 0 15px;
     line-height: 25px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     text-decoration: none;
     outline: none;
@@ -117,7 +117,7 @@
     height: 22px;
     margin-top: 2px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: left;
     outline: none;
     border: 1px solid #000000;
@@ -132,7 +132,7 @@
     height: 22px;
     margin-top: 2px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: left;
     outline: none;
     border: 1px solid #000000;
@@ -147,7 +147,7 @@
     height: 300px;
     margin-top: 2px;
     line-height: 5px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: left;
     outline: none;
     border: 1px solid #000000;

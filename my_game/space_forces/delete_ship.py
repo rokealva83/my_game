@@ -108,7 +108,7 @@ def delete_ship(request):
                                 fleet_id=fleet_id).update(extraction_per_minute=extraction_per_minute)
 
                         element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
-                                                                        module_class=5, param1=1).first()
+                                                                        module_class=5, param3=1).first()
                         if element_pattern:
                             fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
                                                                                               class_process=1).first()
@@ -122,7 +122,7 @@ def delete_ship(request):
                                     process_per_minute=new_process_per_minute)
 
                         element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
-                                                                        module_class=5, param1=2).first()
+                                                                        module_class=5, param3=2).first()
                         if element_pattern:
                             fleet_parametr_repqair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
                                                                                               class_process=2).first()

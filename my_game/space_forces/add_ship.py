@@ -118,7 +118,7 @@ def add_ship(request):
                                 use_energy = use_energy + element_pattern.power_consuption
 
                             element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
-                                                                            module_class=5, param1=1).first()
+                                                                            module_class=5, param3=1).first()
                             if element_pattern:
                                 fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
                                                                                                   class_process=1).first()
@@ -136,7 +136,7 @@ def add_ship(request):
                                     fleet_parametr_build.save()
 
                             element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
-                                                                            module_class=5, param1=2).first()
+                                                                            module_class=5, param3=2).first()
                             if element_pattern:
                                 fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
                                                                                                    class_process=2).first()

@@ -97,6 +97,7 @@ def fleet_manage(request):
             flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id)
             flightplan_holds = Flightplan_hold.objects.filter(id_fleet=fleet_id).order_by('id')
             flightplan_refills = Flightplan_refill.objects.filter(id_fleet=fleet_id).order_by('id')
+            flightplan_build_repairs = Flightplan_build_repair.objects.filter(id_fleet=fleet_id).order_by('id')
 
             fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
             warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
@@ -134,7 +135,8 @@ def fleet_manage(request):
                       'fleet_parametr_scans': fleet_parametr_scans, 'flightplan_refills': flightplan_refills,
                       'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                       'ship_holds': ship_holds, 'flightplan_holds': flightplan_holds,
-                      'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair}
+                      'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
+                      'flightplan_build_repairs': flightplan_build_repairs}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):
