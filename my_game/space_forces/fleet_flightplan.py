@@ -199,12 +199,17 @@ def fleet_flightplan(request):
                         time = 300
 
                 if refill_fleet:
-
                     class_refill = 2
-
+                    id_command = 1
                     id_fleet_refill = request.POST.get('fleet_number')
                     fuel_id = request.POST.get('id_fuel')
                     amount = request.POST.get('amount')
+
+                    class_refill = 2
+                    class_element = 2
+                    id_element = 3
+
+                    time = 600
 
 
                 elif overload:
@@ -213,6 +218,7 @@ def fleet_flightplan(request):
                     overload_amount = request.POST.get('overload_amount')
                     overload_fleet_number = request.POST.get('overload_fleet_number')
                     all_goods = request.POST.get('all_goods')
+
 
 
 

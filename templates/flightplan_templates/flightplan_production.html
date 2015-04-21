@@ -1,0 +1,32 @@
+{% for flightplan_production in flightplan_productions %}
+    {% if flightplan_production.id_fleetplan == flightplan.id %}
+        <tr align="center">
+            <td>
+                <p style="line-height: 12px">
+                    Добыча ресурсов
+                </p>
+            </td>
+            <td>
+                <p>
+                    Время добычи {{ flightplan_production.time_extraction }} минут
+                </p>
+
+                <p>
+                    Status:
+                    {% if flightplan.status == 0 %}
+                        stand by
+                    {% else %}
+                        prosecution
+                    {% endif %}
+                </p>
+            </td>
+            <td>
+                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                <input type="hidden"
+                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                <input class="delete_button" type="submit" value="Remove"
+                       name="delete_command"/>
+            </td>
+        </tr>
+    {% endif %}
+{% endfor %}

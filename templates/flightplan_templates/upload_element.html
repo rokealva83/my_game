@@ -1,0 +1,171 @@
+Название
+<select name="name_upload_element" class="list_force">
+    <option selected disabled>Товар</option>
+    <optgroup label="Resource">
+        {% for warehouse in warehouses %}
+            {% if warehouse.amount > 0 %}
+                {% for basic_resource in basic_resources %}
+                    {% if basic_resource.id == warehouse.id_resource %}
+                        <option value="{{ warehouse.id_resource }}; 0">{{ basic_resource.name }}
+                            ( {{ warehouse.amount }} )
+                        </option>
+
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Factory">
+        {% if warehouse_factorys %}
+            {% for warehouse_factory in warehouse_factorys %}
+                {% for factory_pattern in factory_patterns %}
+                    {% if warehouse_factory.factory_id == factory_pattern.id %}
+                        {% if warehouse_factory.amount > 0 %}
+                            <option value="{{ warehouse_factory.id }}; 10">{{ factory_pattern.name }}
+                                ( {{ warehouse_factory.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </optgroup>
+    <optgroup label="Hull">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 1 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for hull_pattern in hull_patterns %}
+                        {% if hull_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ hull_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Armor">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 2 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for armor_pattern in armor_patterns %}
+                        {% if armor_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ armor_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Shield">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 3 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for shield_pattern in shield_patterns %}
+                        {% if shield_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shield_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Engine">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 4 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for engine_pattern in engine_patterns %}
+                        {% if engine_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ engine_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Generator">
+
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 5 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for generator_pattern in generator_patterns %}
+                        {% if generator_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ generator_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Weapon">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 6 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for weapon_pattern in weapon_patterns %}
+                        {% if weapon_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ weapon_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Shell">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 7 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for shell_pattern in shell_patterns %}
+                        {% if shell_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shell_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Module">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 8 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for module_pattern in module_patterns %}
+                        {% if module_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ module_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+    <optgroup label="Fuel">
+        {% for warehouse_element in warehouse_elements %}
+            {% if warehouse_element.element_class == 14 %}
+                {% if warehouse_element.amount > 0 %}
+                    {% for fuel_pattern in fuel_patterns %}
+                        {% if fuel_pattern.id == warehouse_element.element_id %}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ fuel_pattern.name }}
+                                ( {{ warehouse_element.amount }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </optgroup>
+</select>
+Количество <input type="text" value=""
+                  name="upload_amount" class="fleet_number" placeholder="Количество"/>
