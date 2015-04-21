@@ -245,74 +245,8 @@
                     {% endif %}
 
                     {% if flightplan.class_command == 4 %}
-                        {% for flightplan_refill in flightplan_refills %}
-                            {% if flightplan.id == flightplan_refill.id_fleetplan %}
-                                <tr align="center">
-                                    <td>
-                                        <p>
-                                            {% if flightplan_refill.id_command == 1 %}
-                                                Заправить себя
-                                            {% elif flightplan_refill.id_command == 2 %}
-                                                Заправить флот
-                                            {% elif flightplan_refill.id_command == 3 %}
-                                                Перегрузить
-                                            {% endif %}
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <p>
-                                            {% if flightplan_refill.id_command == 1 %}
-                                                {% if flightplan_refill.class_refill == 1 %}
-                                                    {{ flightplan_refill.name }}: {{ flightplan_refill.amount }} единиц
-                                                {% else %}
-                                                    {{ flightplan_refill.name }} до полного
-                                                {% endif %}
-                                            {% elif flightplan_refill.id_command == 2 %}
-                                                {% if flightplan_refill.class_refill == 1 %}
-                                                    №{{ flightplan_refill.id_fleet_refill }}
-                                                    {{ flightplan_refill.name }}: {{ flightplan_refill.amount }} единиц
-                                                {% else %}
-                                                    {{ flightplan_refill.name }} до полного
-                                                {% endif %}
-                                            {% elif flightplan_refill.id_command == 3 %}
-                                                {% if flightplan_refill.class_refill == 1 %}
-                                                    во флот №{{ flightplan_refill.id_fleet_refill }}
-                                                    {{ flightplan_refill.name }}: {{ flightplan_refill.amount }} единиц
-                                                {% else %}
-                                                    во флот №{{ flightplan_refill.id_fleet_refill }} весь {{ flightplan_refill.name }}
-                                                {% endif %}
-                                            {% endif %}
-
-                                        </p>
-
-                                        <p>
-                                            Время процеса:{{ flightplan_refill.time_refill }} секунд
-                                        </p>
-
-                                        <p>Status:
-                                            {% if flightplan.status == 0 %}
-                                                stand by
-                                            {% else %}
-                                                prosecution
-                                            {% endif %}
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                                        <input type="hidden"
-                                               value={{ flightplan.id }} name="hidden_flightplan_id"/>
-                                        <input class="delete_button" type="submit" value="Remove"
-                                               name="delete_command"/>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-
-
-
-
+                        {% include 'flightplan_templates/flightplan_refill.html' %}
                     {% endif %}
-
 
                     {% if flightplan.class_command == 6 %}
                         {% include 'flightplan_templates/flightplan_scan.html' %}
