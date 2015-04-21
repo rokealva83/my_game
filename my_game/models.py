@@ -1219,17 +1219,16 @@ class Flightplan_refill(models.Model):
     name = models.CharField(max_length=50, default='')
 
 
-class Flightplan_repair(models.Model):
+class Flightplan_build_repair(models.Model):
     class Meta():
-        db_table = 'flightplan_repair'
+        db_table = 'flightplan_build_repair'
 
-    user = models.IntegerField(db_index=True)
     id_fleet = models.IntegerField(db_index=True)
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
-    repair = models.IntegerField()
+    fleet_repair = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    time_repair = models.IntegerField(default=0)
+    time = models.IntegerField(default=0)
 
 
 class Flightplan_scan(models.Model):

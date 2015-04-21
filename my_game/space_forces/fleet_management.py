@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource, Basic_fuel
 from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
-    Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_repair
+    Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_build_repair
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction, \
     Fleet_parametr_build_repair
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
