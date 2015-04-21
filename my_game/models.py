@@ -1206,6 +1206,7 @@ class Flightplan_refill(models.Model):
     amount = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
     time_refill = models.IntegerField(default=0)
+    name = models.CharField(max_length=50, default='')
 
 
 class Flightplan_repair(models.Model):

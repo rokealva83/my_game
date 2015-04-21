@@ -121,9 +121,9 @@ p{
 
 .flightplan_checkbox {
     display: inline-block;
-    width: 17px;
-    height: 20px;
-    margin-top: 0px;
+    width: 14px;
+    height: 14px;
+    margin: 6px 2px 6px 2px;
     vertical-align: middle;
 }
 

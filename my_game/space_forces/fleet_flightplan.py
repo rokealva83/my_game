@@ -192,35 +192,44 @@ def fleet_flightplan(request):
                     id_element = id_fuel_yourself[0]
                     class_refill = 1
                     time = 150
+                    name = find_name(class_element, id_element)
                     yourself_full_tank = request.POST.get('yourself_full_tank')
                     if yourself_full_tank:
-                        id_command = 2
+                        class_refill = 2
                         amount = 0
                         time = 300
 
                 if refill_fleet:
-                    class_refill = 2
-                    id_command = 1
+                    id_command = 2
                     id_fleet_refill = request.POST.get('fleet_number')
-                    fuel_id = request.POST.get('id_fuel')
+                    id_element = request.POST.get('id_fuel')
                     amount = request.POST.get('amount')
-
-                    class_refill = 2
-                    class_element = 2
-                    id_element = 3
-
-                    time = 600
-
+                    hold = Hold.objects.filter(id=id_element).first()
+                    name = find_name(hold.class_shipment, hold.id_shipment)
+                    class_refill = 1
+                    class_element = 0
+                    time = 150
+                    full_tank = request.POST.get('full_tank')
+                    if full_tank:
+                        class_refill = 2
+                        amount = 0
+                        time = 300
 
                 elif overload:
-                    class_refill = 0
-                    id_hold_element = request.POST.get('id_hold_element')
-                    overload_amount = request.POST.get('overload_amount')
-                    overload_fleet_number = request.POST.get('overload_fleet_number')
+                    id_command = 3
+                    id_element = request.POST.get('id_hold_element')
+                    amount = request.POST.get('overload_amount')
+                    id_fleet_refill = request.POST.get('overload_fleet_number')
+                    hold = Hold.objects.filter(id=id_element).first()
+                    name = find_name(hold.class_shipment, hold.id_shipment)
+                    class_refill = 1
+                    class_element = 0
+                    time = 300
                     all_goods = request.POST.get('all_goods')
-
-
-
+                    if all_goods:
+                        class_refill = 2
+                        amount = 0
+                        time = 450
 
                 flightplan = Flightplan(
                     user=session_user,
@@ -232,23 +241,20 @@ def fleet_flightplan(request):
                 flightplan.save()
 
                 flightplan_refill = Flightplan_refill(
-                    user = session_user,
-                    id_fleet = fleet_id,
-                    id_command = id_command,
-                    id_fleet_refill = id_fleet_refill,
-                    class_refill = class_refill,
-                    class_element = class_element,
-                    id_element = id_element,
-                    amount = amount,
-                    start_time = datetime.now(),
-                    time_refill = time,
-                    id_fleetplan = flightplan.id,
-
+                    user=session_user,
+                    id_fleet=fleet_id,
+                    id_command=id_command,
+                    id_fleet_refill=id_fleet_refill,
+                    class_refill=class_refill,
+                    class_element=class_element,
+                    id_element=id_element,
+                    amount=amount,
+                    start_time=datetime.now(),
+                    time_refill=time,
+                    id_fleetplan=flightplan.id,
+                    name=name
                 )
-
-
-
-
+                flightplan_refill.save()
 
         if request.POST.get('delete_command'):
             command = 3
@@ -261,6 +267,8 @@ def fleet_flightplan(request):
                 flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan.id).delete()
             if flightplan.class_command == 3:
                 flightplan_scan = Flightplan_scan.objects.filter(id_fleetplan=flightplan.id).delete()
+            if flightplan.class_command == 4:
+                flightplan_scan = Flightplan_refill.objects.filter(id_fleetplan=flightplan.id).delete()
             if flightplan.class_command == 6:
                 flightplan_production = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).delete()
             flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).delete()
@@ -276,6 +284,7 @@ def fleet_flightplan(request):
         flightplan_scans = Flightplan_scan.objects.filter(id_fleet=fleet_id).order_by('id')
         flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id).order_by('id')
         flightplan_holds = Flightplan_hold.objects.filter(id_fleet=fleet_id).order_by('id')
+        flightplan_refills = Flightplan_refill.objects.filter(id_fleet=fleet_id).order_by('id')
         fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
         fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
         fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
@@ -319,7 +328,8 @@ def fleet_flightplan(request):
                   'fleet_engine': fleet_engine, 'basic_resources': basic_resources,
                   'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans,
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
-                  'ship_holds': ship_holds, 'message': message, 'flightplan_holds': flightplan_holds}
+                  'ship_holds': ship_holds, 'message': message, 'flightplan_holds': flightplan_holds,
+                  'flightplan_refills': flightplan_refills}
 
         return render(request, "flightplan.html", output)
 

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource, Basic_fuel
 from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
-    Flightplan_production, Flightplan_scan, Flightplan_hold
+    Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_repair
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Fuel_tank
@@ -90,6 +90,7 @@ def fleet_manage(request):
             flightplan_scans = Flightplan_scan.objects.filter(id_fleet=fleet_id)
             flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id)
             flightplan_holds = Flightplan_hold.objects.filter(id_fleet=fleet_id).order_by('id')
+            flightplan_refills = Flightplan_refill.objects.filter(id_fleet=fleet_id).order_by('id')
             fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
             warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
                                                                   user_city=session_user_city).order_by(
@@ -123,7 +124,7 @@ def fleet_manage(request):
                       'fuel_patterns': fuel_patterns, 'flightplan_scans': flightplan_scans,
                       'flightplan_productions': flightplan_productions, 'fleet_engine': fleet_engine,
                       'basic_resources': basic_resources, 'module_patterns': module_patterns,
-                      'fleet_parametr_scans': fleet_parametr_scans,
+                      'fleet_parametr_scans': fleet_parametr_scans, 'flightplan_refills': flightplan_refills,
                       'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                       'ship_holds': ship_holds, 'flightplan_holds': flightplan_holds}
             return render(request, "flightplan.html", output)
