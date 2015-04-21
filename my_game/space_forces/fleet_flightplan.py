@@ -7,7 +7,7 @@ from my_game.models import Warehouse
 from my_game import function
 from my_game.models import Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_parametr_resource_extraction
 from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_production, Flightplan_hold, \
-    Flightplan_refill, Flightplan_repair
+    Flightplan_refill, Flightplan_repair, Fleet_parametr_build_repair
 from space_forces import flight
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
@@ -289,6 +289,10 @@ def fleet_flightplan(request):
         fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
         fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
             fleet_id=fleet_id).first()
+        fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                          class_process=1).first()
+        fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                           class_process=2).first()
         warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
                                                               user_city=session_user_city).order_by(
             'production_class', 'production_id')
@@ -329,7 +333,8 @@ def fleet_flightplan(request):
                   'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans,
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                   'ship_holds': ship_holds, 'message': message, 'flightplan_holds': flightplan_holds,
-                  'flightplan_refills': flightplan_refills}
+                  'flightplan_refills': flightplan_refills, 'fleet_parametr_build': fleet_parametr_build,
+                  'fleet_parametr_repair': fleet_parametr_repair}
 
         return render(request, "flightplan.html", output)
 

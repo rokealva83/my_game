@@ -106,7 +106,6 @@
                     </td>
                 </tr>
             {% endif %}
-
             <tr align="center">
                 <td>
                     <input type="checkbox" name="upload_hold" class="flightplan_checkbox">
@@ -216,6 +215,44 @@
                     </p>
                 </td>
             </tr>
+            {% if fleet_parametr_build %}
+                <tr align="center">
+                    <td>
+                        <input type="checkbox" name="build" class="flightplan_checkbox"></td>
+                    <td>
+                        <p>Начать сборку
+                            <select name="id_factory" class="list_force">
+                                <option selected disabled>Фабрика</option>
+                                {% for ship_hold in ship_holds %}
+                                    {% if ship_hold.class_shipment == 10 %}
+                                        {% for factory_pattern in factory_patterns %}
+                                            {% if factory_pattern.id == ship_hold.id_shipment %}
+                                                <option value="{{ ship_hold.id }}">{{ factory_pattern.name }}
+                                                    ( {{ ship_hold.amount_shipment }} )
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </p>
+
+                    </td>
+                </tr>
+            {% endif %}
+            {% if fleet_parametr_repair %}
+                <tr align="center">
+                    <td>
+                        <input type="checkbox" name="repair" class="flightplan_checkbox"></td>
+                    <td>
+                        Ремонт флота №<input type="text" value="" name="fleet_number" class="fleet_number"
+                                             placeholder="Количество"/>
+                        Ремонтировать себя
+                        <input type="checkbox" name="repair_yourself" class="flightplan_checkbox"></td>
+
+                    </td>
+                </tr>
+            {% endif %}
         </table>
         <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
         <input class="button_force" type="submit" value="Add command" name="add_command" style="margin-bottom: 4px"/>

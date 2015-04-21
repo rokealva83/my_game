@@ -1062,6 +1062,15 @@ class Fleet_parametr_resource_extraction(models.Model):
     extraction_per_minute = models.IntegerField(default=0)
 
 
+class Fleet_parametr_build_repair(models.Model):
+    class Meta():
+        db_table = 'fleet_parametr_build_repair'
+
+    fleet_id = models.IntegerField()
+    class_process = models.IntegerField()
+    process_per_minute = models.IntegerField()
+
+
 class Hold(models.Model):
     class Meta():
         db_table = 'hold'
@@ -1172,11 +1181,12 @@ class Flightplan_hold(models.Model):
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     class_element = models.IntegerField(default=0)
-    id_element =models.IntegerField(default=0)
+    id_element = models.IntegerField(default=0)
     amount = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
     time = models.IntegerField(default=0)
     name = models.CharField(max_length=50, default='')
+
 
 class Flightplan_production(models.Model):
     class Meta():
@@ -1220,6 +1230,19 @@ class Flightplan_repair(models.Model):
     repair = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
     time_repair = models.IntegerField(default=0)
+
+
+class Flightplan_scan(models.Model):
+    class Meta():
+        db_table = 'flightplan_scan'
+
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField(db_index=True)
+    id_command = models.IntegerField()
+    id_fleetplan = models.IntegerField(default=0)
+    range_scanning = models.IntegerField()
+    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    time_scanning = models.IntegerField(default=0)
 
 
 class Flightplan_scan(models.Model):

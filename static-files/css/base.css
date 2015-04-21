@@ -44,8 +44,14 @@ p{
     border-radius: 7px;
     box-sizing: border-box;
     border: 1px solid #000000;
-
+    font-size: 11px;
 }
+
+
+.inform_resource p{
+    margin: 2px 0 -6px 0;
+}
+
 
 #content{
     width: 1200px;

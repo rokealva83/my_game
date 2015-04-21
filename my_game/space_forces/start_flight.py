@@ -10,7 +10,8 @@ from my_game.models import Ship, Fleet
 from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_hold, Flightplan_production
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
-    Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern, Flightplan_repair, Flightplan_refill
+    Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern, \
+    Flightplan_repair, Flightplan_refill, Fleet_parametr_build_repair
 
 
 def start_flight(request):
@@ -66,6 +67,10 @@ def start_flight(request):
         fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
         fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
             fleet_id=fleet_id).first()
+        fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                          class_process=1).first()
+        fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                           class_process=2).first()
         warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
                                                               user_city=session_user_city).order_by(
             'production_class', 'production_id')
@@ -102,6 +107,8 @@ def start_flight(request):
                   'flightplan_scans': flightplan_scans, 'flightplan_productions': flightplan_productions,
                   'fleet_engine': fleet_engine, 'basic_resources': basic_resources, 'module_patterns': module_patterns,
                   'fleet_parametr_scans': fleet_parametr_scans, 'ship_holds': ship_holds, 'message': message,
-                  'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction, 'flightplan_refills': flightplan_refills}
+                  'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
+                  'flightplan_refills': flightplan_refills,
+                  'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair}
 
         return render(request, "space_forces.html", output)

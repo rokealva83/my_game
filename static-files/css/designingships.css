@@ -1,0 +1,174 @@
+#block_design_left {
+    width: 490px;
+    background-color: #616161;
+    opacity: 0.8;
+    border-radius: 7px;
+    float: left;
+    margin: 5px 5px 0px 5px;
+    border: 1px solid #000000;
+    padding: 8px;
+}
+
+#block_design_right {
+    width: 490px;
+    background-color: #616161;
+    opacity: 0.8;
+    border-radius: 7px;
+    float: left;
+    margin: 5px 5px 0px 5px;
+    border: 1px solid #000000;
+    padding: 8px;
+}
+
+#block_design_up {
+    min-height: 40px;
+    max-height: 100px;
+    text-align: center;
+}
+
+.design_tabs {
+    max-width: 100%;
+    height: 650px;
+    text-align: center;
+    margin: 5px;
+}
+
+.design_tabs ul,
+.design_tabs li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.design_tabs,
+.design_tabs input[type="radio"]:checked + label {
+    position: relative;
+}
+
+.design_tabs li,
+.design_tabs input[type="radio"] + label {
+    display: inline-block;
+}
+
+.design_tabs li > div,
+.design_tabs input[type="radio"] {
+    position: absolute;
+}
+
+.design_tabs li > div,
+.design_tabs input[type="radio"] + label {
+    border: solid 1px #848484;
+}
+
+.design_tabs {
+    font: normal 11px Arial, Sans-serif;
+    color: #000000;
+}
+
+.design_tabs p {
+    text-align: left;
+    margin-top: 5px;
+}
+
+.design_tabs li {
+    vertical-align: top;
+}
+
+.design_tabs li:first-child {
+    margin-left: 8px;
+}
+
+.design_tabs li > div {
+    top: 23px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    padding: 8px;
+    overflow: auto;
+    border-radius: 7px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.design_tabs input[type="radio"] + label {
+    margin: 0 1px 0 0;
+    padding: 0 7px;
+    line-height: 22px;
+    background: #8c8c8c;
+    text-align: center;
+    border-radius: 7px 7px 0 0;
+    cursor: pointer;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.design_tabs input[type="radio"]:checked + label {
+    z-index: 1;
+    background: #565656;
+    border-bottom-color: #a1a1a1;
+    cursor: default;
+}
+
+.design_tabs input[type="radio"] {
+    opacity: 0;
+}
+
+.design_tabs input[type="radio"] ~ div {
+    display: none;
+}
+
+.design_tabs input[type="radio"]:checked:not(:disabled) ~ div {
+    display: block;
+}
+
+.design_tabs input[type="radio"]:disabled + label {
+    opacity: .5;
+    cursor: no-drop;
+}
+
+#design_pattern {
+    width: 88%;
+    float: left;
+    margin: 5px;
+    background: #676767;
+    border-radius: 7px;
+    border: 1px solid #000;
+    opacity: 0.9;
+    text-align: center;
+}
+
+.design_button {
+    display: inline-block;
+    width: 150px;
+    height: 20px;
+    margin-top: 2px;
+    line-height: 5px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    background: rgb(103, 103, 103) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
+    color: rgb(0, 0, 0);
+}
+
+
+.design_place {
+    display: inline-block;
+    width: 150px;
+    height: 20px;
+    margin-top: 2px;
+    line-height: 5px;
+    font-size: 12px;
+    text-align: center;
+    outline: none;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    background: #c0c0c0;
+    color: rgb(0, 0, 0);
+}

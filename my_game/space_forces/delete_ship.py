@@ -6,7 +6,7 @@ from my_game.models import Hull_pattern, Element_ship, Module_pattern, Generator
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
-    Fleet_parametr_resource_extraction
+    Fleet_parametr_resource_extraction, Fleet_parametr_build_repair
 
 from my_game import function
 
@@ -23,7 +23,6 @@ def delete_ship(request):
         flightplan_flights = {}
         warehouse_factorys = {}
         warehouse_elements = {}
-
 
         command = 0
         hold = 0
@@ -109,6 +108,34 @@ def delete_ship(request):
                                 fleet_id=fleet_id).update(extraction_per_minute=extraction_per_minute)
 
                         element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                        module_class=5, param1=1).first()
+                        if element_pattern:
+                            fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                              class_process=1).first()
+                            new_process_per_minute = fleet_parametr_build.process_per_minute - element_pattern.param2 * amount_ship
+                            if new_process_per_minute == 0:
+                                fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                                  class_process=1).delete()
+                            else:
+                                fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                                  class_process=1).update(
+                                    process_per_minute=new_process_per_minute)
+
+                        element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                        module_class=5, param1=2).first()
+                        if element_pattern:
+                            fleet_parametr_repqair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                              class_process=2).first()
+                            new_process_per_minute = fleet_parametr_repqair.process_per_minute - element_pattern.param2 * amount_ship
+                            if new_process_per_minute == 0:
+                                fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                                  class_process=2).delete()
+                            else:
+                                fleet_parametr_repqair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                                  class_process=2).update(
+                                    process_per_minute=new_process_per_minute)
+
+                        element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
                                                                         module_class=6).first()
                         if element_pattern:
                             if amount_ship == ship.amount_ship:
@@ -157,7 +184,7 @@ def delete_ship(request):
                     null_accuracy = int(fleet_engine.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                     ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
                     hold = int(fleet.hold) - hold * amount_ship
-                    fuel_tank = int(fleet.fuel_tank) - fuel_tank*amount_ship
+                    fuel_tank = int(fleet.fuel_tank) - fuel_tank * amount_ship
                     use_energy = fleet_energy_power.use_energy - use_energy
                     use_fuel_system = fleet_energy_power.use_fuel_system - use_fuel_system
                     use_fuel_intersystem = fleet_energy_power.use_fuel_intersystem - use_fuel_intersystem
@@ -170,8 +197,8 @@ def delete_ship(request):
                         ship_empty_mass=ship_empty_mass,
                         hold=hold,
                         empty_hold=hold,
-                        fuel_tank = fuel_tank,
-                        free_fuel_tank = fuel_tank
+                        fuel_tank=fuel_tank,
+                        free_fuel_tank=fuel_tank
                     )
 
                     fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
@@ -224,7 +251,7 @@ def delete_ship(request):
                     null_accuracy = int(fleet_engine.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
                     ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
                     hold = int(fleet.hold) - hold * amount_ship
-                    fuel_tank = int(fleet.fuel_tank) - fuel_tank*amount_ship
+                    fuel_tank = int(fleet.fuel_tank) - fuel_tank * amount_ship
                     use_energy = fleet_energy_power.use_energy - use_energy
                     use_fuel_system = fleet_energy_power.use_fuel_system - use_fuel_system
                     use_fuel_intersystem = fleet_energy_power.use_fuel_intersystem - use_fuel_intersystem
@@ -237,8 +264,8 @@ def delete_ship(request):
                         ship_empty_mass=ship_empty_mass,
                         hold=hold,
                         empty_hold=hold,
-                        fuel_tank = fuel_tank,
-                        free_fuel_tank = fuel_tank,
+                        fuel_tank=fuel_tank,
+                        free_fuel_tank=fuel_tank,
                     )
 
                     fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(

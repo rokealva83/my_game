@@ -6,7 +6,7 @@ from my_game.models import Warehouse
 from my_game.models import Hull_pattern, Project_ship, Element_ship, Module_pattern, Engine_pattern, Generator_pattern, \
     Shield_pattern, Weapon_pattern
 from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_energy_power, \
-    Fleet_parametr_resource_extraction
+    Fleet_parametr_resource_extraction, Fleet_parametr_build_repair
 from my_game import function
 
 
@@ -116,6 +116,43 @@ def add_ship(request):
                                     )
                                     fleet_parametr_resource_extraction.save()
                                 use_energy = use_energy + element_pattern.power_consuption
+
+                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                            module_class=5, param1=1).first()
+                            if element_pattern:
+                                fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                                  class_process=1).first()
+                                if fleet_parametr_build:
+                                    new_process_per_minute = fleet_parametr_build.process_per_minute + element_pattern.param2 * amount_ship
+                                    fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                                      class_process=1).update(
+                                        process_per_minute=new_process_per_minute)
+                                else:
+                                    fleet_parametr_build = Fleet_parametr_build_repair(
+                                        fleet_id=fleet_id,
+                                        class_process=1,
+                                        process_per_minute=element_pattern.param2 * amount_ship
+                                    )
+                                    fleet_parametr_build.save()
+
+                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                                                                            module_class=5, param1=2).first()
+                            if element_pattern:
+                                fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                                                                                   class_process=2).first()
+                                if fleet_parametr_repair:
+                                    new_process_per_minute = fleet_parametr_repair.process_per_minute + element_pattern.param2 * amount_ship
+                                    fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(
+                                        fleet_id=fleet_id,
+                                        class_process=2).update(
+                                        process_per_minute=new_process_per_minute)
+                                else:
+                                    fleet_parametr_repair = Fleet_parametr_build_repair(
+                                        fleet_id=fleet_id,
+                                        class_process=2,
+                                        process_per_minute=element_pattern.param2 * amount_ship
+                                    )
+                                    fleet_parametr_repair.save()
 
                             element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
                                                                             module_class=6).first()

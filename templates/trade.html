@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block title %}Торговля{% endblock %}
 {% block content %}
-    <div id="game_content">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/trade.css' %}">
         <div id="block_trade">
 
             <div style="text-align: center;">
@@ -33,7 +34,7 @@
 
                     <input type="hidden" id="trade_space_id" value={{ trade_space_id }} name="trade_space_id"/>
 
-                    <select name="trade_space_id" class="scientic">
+                    <select name="trade_space_id" class="trade_button">
                         <option value="0">Выберите пространство</option>
                         {% for trade_space in trade_spaces %}
                             <option value="{{ trade_space.id }}">{{ trade_space.name }}</option>
@@ -41,9 +42,9 @@
                     </select>
                     <h4>Код доступа</h4>
                     <input type="password" value=""
-                           name="password" class="scientic_place" placeholder="password"/>
+                           name="password" class="trade_place" placeholder="password"/>
 
-                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="trade_button"/>
 
                     <p style="text-align: right; margin-right: 5px; margin-top: 15px"><a href="#new_trade_space"
                                                                                          class="trade_space">Создать
@@ -62,15 +63,15 @@
                            value="{{ trade_space_id }}" name="trade_space_id">
                     <h4>Название</h4>
                     <input type="text" value=""
-                           name="name" class="scientic_place" placeholder="name"/>
+                           name="name" class="trade_place" placeholder="name"/>
 
                     <h4>Код доступа</h4>
                     <input type="password" value=""
-                           name="pass" class="scientic_place" placeholder="password"/>
+                           name="pass" class="trade_place" placeholder="password"/>
 
 
                     <h4>Налог от продаж</h4>
-                    <select name="tax" class="scientic">
+                    <select name="tax" class="trade_button">
                         <option value="0">Выберите налог</option>
                         <option value="1">1%</option>
                         <option value="2">2%</option>
@@ -79,7 +80,7 @@
                         <option value="5">5%</option>
                     </select>
 
-                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="trade_button"/>
 
                     <a class="close" title="Закрыть" href="#close"></a>
                 </form>
@@ -96,7 +97,7 @@
                     <input type="hidden" id="trade_space_id" value={{ trade_space_id }} name="trade_space_id"/>
 
                     <p>Название
-                        <select name="name" class="scientic">
+                        <select name="name" class="trade_button">
                             <option selected disabled>Товар</option>
                             <optgroup label="Resource">
                                 {% for warehouse in warehouses %}
@@ -267,26 +268,26 @@
                     </p>
 
                     <p>Количество <input type="text" value=""
-                                         name="amount" class="scientic_place" placeholder="Количество"/></p>
+                                         name="amount" class="trade_place" placeholder="Количество"/></p>
 
                     <p>Цена всей партии <input type="text" value=""
-                                               name="price" class="scientic_place" placeholder="Цена всей партии"/></p>
+                                               name="price" class="trade_place" placeholder="Цена всей партии"/></p>
 
                     <p>Цена единицы <input type="text" value=""
-                                           name="unit_price" class="scientic_place" placeholder="Цена единицы"/></p>
+                                           name="unit_price" class="trade_place" placeholder="Цена единицы"/></p>
 
                     <p>Минимальная партия <input type="text" value=""
-                                                 name="minimum_lot" class="scientic_place"
+                                                 name="minimum_lot" class="trade_place"
                                                  placeholder="Минимальная партия"/></p>
 
 
                     <p>Личная ставка <input type="text" value="Empty"
-                                            name="personal_rate" class="scientic_place" placeholder="Личная ставка"/>
+                                            name="personal_rate" class="trade_place" placeholder="Личная ставка"/>
                     </p>
 
                     <p>Уведомить <input type="checkbox" name="notify"/></p>
 
-                    <p>Запрет продаж <select name="ban" class="scientic">
+                    <p>Запрет продаж <select name="ban" class="trade_button">
                         <option value="0">-3</option>
                         <option value="1">-2</option>
                         <option value="2">-1</option>
@@ -297,7 +298,7 @@
                     </select></p>
 
 
-                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="trade_button"/>
 
                 </form>
 
@@ -378,10 +379,10 @@
                     {% if ships %}
                         {% for ship in ships %}<p>
                             {{ ship.name }} ( {{ ship.amount_ship }} )
-                            <input value="0" name="amount_ship" class="scientic_place"
+                            <input value="0" name="amount_ship" class="trade_place"
                                    placeholder="Amount ship"/>
                             <input type="hidden" value={{ ship.id }} name="hidden_ship"/>
-                            <input class="scientic" type="submit" value="Добавить" name="add_ship"/></p>
+                            <input class="trade_button" type="submit" value="Добавить" name="add_ship"/></p>
                         {% endfor %}
                     {% endif %}
                     <a class="close" title="Закрыть" href="#close"></a>
@@ -401,14 +402,14 @@
                     <h3>Покупка кредитов</h3>
 
                     <p>Количество кредитов <input type="text" value="0"
-                                                  name="amount" class="scientic_place" placeholder="amount"/></p>
+                                                  name="amount" class="trade_place" placeholder="amount"/></p>
 
-                    <p>Операция <select name="operation" class="scientic">
+                    <p>Операция <select name="operation" class="trade_button">
                         <option value="0">Купить</option>
                         <option value="1">Продать</option>
                     </select></p>
 
-                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="scientic"/>
+                    <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="trade_button"/>
 
                     <a class="close" title="Закрыть" href="#close"></a>
                 </form>
@@ -446,7 +447,7 @@
                                 </td>
                                 <td>
                                     <p>
-                                        <select name="method" class="scientic">
+                                        <select name="method" class="trade_button">
                                             <option value="0">Способ доставки</option>
                                             <option value="1">Телепортация</option>
                                             <option value="2">Флотом покупателя</option>
@@ -488,7 +489,7 @@
 
                                     <td>
                                         <p>
-                                            <select name="method" class="scientic">
+                                            <select name="method" class="trade_button">
                                                 <option value="0">Способ доставки</option>
                                                 <option value="1">Телепортация</option>
                                                 <option value="2">Флотом покупателя</option>
@@ -517,7 +518,7 @@
 
             <div style="border: 1px solid #000000; border-radius: 7px; margin: 3px 0 5px 0">
                 <p align="center">Пространство: {{ trade_space.name }}</p>
-                <table border="1" align="center" style="margin-bottom: 7px">
+                <table border="1" align="center" style="margin-bottom: 7px" class="trade_table">
                     <caption>Торговые ставки</caption>
                     <tr align="center">
                         <td style="width: 250px">Товар</td>
@@ -541,10 +542,10 @@
                                     <td>{{ trade_element.min_amount }}</td>
                                     <td>{{ trade_element.cost_element }} кредитов</td>
                                     <td><input type="text" value=""
-                                               name="amount" class="scientic_place" placeholder="Покупка"/></td>
+                                               name="amount" class="trade_place" placeholder="Покупка"/></td>
                                     <td>
                                         <p>
-                                            <select name="method" class="scientic">
+                                            <select name="method" class="trade_button">
                                                 <option value="0">Способ доставки</option>
                                                 <option value="1">Телепортация</option>
                                                 <option value="2">Флотом покупателя</option>
@@ -572,6 +573,6 @@
 
         </div>
         <div class="clear"></div>
-    </div>
+
     <div class="clear"></div>
 {% endblock %}

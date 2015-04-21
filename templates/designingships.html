@@ -1,120 +1,118 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block title %}Проектирование кораблей{% endblock %}
 {% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/designingships.css' %}">
 
-        <div id="block_design_left">
+    <div id="block_design_left">
 
+        <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
 
-            <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
+        <p style="text-align: center"> Очередь сборки корабля </p>
+        {% for turn_ship_build in turn_ship_builds %}
+            <p style="text-align: center">{{ turn_ship_build.finish_time_build }}</p>
+        {% endfor %}
+        <h3 style="text-align: center">Project list</h3>
+        {% if chosen_hull != None %}
+            <div class="hull">
 
-            <p style="text-align: center"> Очередь сборки корабля </p>
-            {% for turn_ship_build in turn_ship_builds %}
-                <p style="text-align: center">{{ turn_ship_build.finish_time_build }}</p>
-            {% endfor %}
-            <h3 style="text-align: center">Project list</h3>
-            {% if chosen_hull != None %}
-                <div class="hull">
+                <ul>
+                    <li>
+                        <h4>Information</h4>
 
-                    <ul>
+                    </li>
+                    {% if chosen_hull != None %}
                         <li>
-                            <h4>Information</h4>
+                            <h4>Top</h4>
 
                         </li>
-                        {% if chosen_hull != None %}
-                            <li>
-                                <h4>Top</h4>
+                        <li>
+                            <h4>Back</h4>
 
-                            </li>
-                            <li>
-                                <h4>Back</h4>
+                        </li>
+                        <li>
+                            <h4>Left</h4>
 
-                            </li>
-                            <li>
-                                <h4>Left</h4>
+                        </li>
+                        <li>
+                            <h4>Summ.Info</h4>
+                        </li>
+                        <li>
+                            <h4>Right</h4>
+                        </li>
+                        <li>
+                            <h4>Front</h4>
+                        </li>
+                        <li>
+                            <h4>Bottom</h4>
+                        </li>
+                        <li>
+                            <h4></h4>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+        {% for project_ship in project_ships %}
+            <div id="project_list">
+                <p>
+                    {{ project_ship.name }}
 
-                            </li>
-                            <li>
-                                <h4>Summ.Info</h4>
-                            </li>
-                            <li>
-                                <h4>Right</h4>
-                            </li>
-                            <li>
-                                <h4>Front</h4>
-                            </li>
-                            <li>
-                                <h4>Bottom</h4>
-                            </li>
-                            <li>
-                                <h4></h4>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            {% endif %}
+                <form method="POST" action="work_with_project">
+                    <input type="create" value="" name="amount" class="design_place"
+                           placeholder="Количество"/>
+                    <input type="hidden" id="ship{{ project_ship.id }}"
+                           value={{ project_ship.id }} name="hidden_ship">
+                    <input class="design_button" type="submit" value="Create" name="create_ship"/>
+                    <input class="design_button" type="submit" value="Delete pattern" name="delete_pattern"/>
+                </form>
 
-            {% for project_ship in project_ships %}
-                <div id="project_list">
-                    <p>
-                        {{ project_ship.name }}
+                </p>
 
-                    <form method="POST" action="work_with_project">
-                        <input type="create" value="" name="amount" class="scientic_place"
-                               placeholder="Количество"/>
-                        <input type="hidden" id="ship{{ project_ship.id }}"
-                               value={{ project_ship.id }} name="hidden_ship">
-                        <input class="scientic" type="submit" value="Create" name="create_ship"/>
-                        <input class="scientic" type="submit" value="Delete pattern" name="delete_pattern"/>
-                    </form>
+            </div>
 
+        {% endfor %}
+
+        {% if chosen_hull == None %}<p>
+            <div class="hull" style="text-align: center">
+                <ul>
+                    <li>
+                        <h4>Information</h4>
+                    </li>
+                </ul>
+            </div></p>
+        {% endif %}
+
+    </div>
+    <div id="block_design_right">
+        {% if chosen_hull == None %}
+            <div id="block_design_up">
+                <form method="POST" action="new_ship">
+                    <p> Choice hull pattern
+                        <select name="choice_pattern" class="design_button">
+                            <option selected disabled>Choise hull</option>
+                            {% for hull in hulls %}
+                                <option value="{{ hull.id }}" data-name="{{ hull.name }}"
+                                        data-health="{{ hull.health }}" data-generator="{{ hull.generator }}"
+                                        data-engine="{{ hull.engine }}" data-weapon="{{ hull.weapon }}"
+                                        data-armor="{{ hull.armor }}" data-shield="{{ hull.shield }}"
+                                        data-module="{{ hull.module }}"
+                                        data-main_weapon="{{ hull.main_weapon }}"
+                                        data-hold_size="{{ hull.hold_size }}" data-mass="{{ hull.mass }}"
+                                        data-size="{{ hull.size }}"
+                                        data-power_consuption="{{ hull.power_consuption }}"> {{ hull.name }} </option>
+                            {% endfor %}
+                        </select>
+                        Ship name <input type="ship_name" value="" name="ship_name" class="design_place"
+                                         placeholder="Название"/>
+                        <input class="design_button" type="submit" value="Create" name="create_pattern"/>
                     </p>
-
-                </div>
-
-            {% endfor %}
-
-            {% if chosen_hull == None %}<p>
-                <div class="hull" style="text-align: center">
-                    <ul>
-                        <li>
-                            <h4>Information</h4>
-                        </li>
-                    </ul>
-                </div></p>
-            {% endif %}
-
-        </div>
-
-        <div id="block_design_right">
-
-            {% if chosen_hull == None %}
-                <div id="block_design_up">
-                    <form method="POST" action="new_ship">
-                        <p> Choice hull pattern
-                            <select name="choice_pattern" class="scientic">
-                                <option selected disabled>Choise hull</option>
-                                {% for hull in hulls %}
-                                    <option value="{{ hull.id }}" data-name="{{ hull.name }}"
-                                            data-health="{{ hull.health }}" data-generator="{{ hull.generator }}"
-                                            data-engine="{{ hull.engine }}" data-weapon="{{ hull.weapon }}"
-                                            data-armor="{{ hull.armor }}" data-shield="{{ hull.shield }}"
-                                            data-module="{{ hull.module }}"
-                                            data-main_weapon="{{ hull.main_weapon }}"
-                                            data-hold_size="{{ hull.hold_size }}" data-mass="{{ hull.mass }}"
-                                            data-size="{{ hull.size }}"
-                                            data-power_consuption="{{ hull.power_consuption }}"> {{ hull.name }} </option>
-                                {% endfor %}
-                            </select>
-                            Ship name <input type="ship_name" value="" name="ship_name" class="scientic_place"
-                                             placeholder="Название"/>
-                            <input class="scientic" type="submit" value="Create" name="create_pattern"/>
-                        </p>
-                    </form>
-                </div>
-            {% else %}
-                {% block content_2 %}{% endblock %}
-            {% endif %}
-        </div>
-        <div class="clear"></div>
+                </form>
+            </div>
+        {% else %}
+            {% block content_2 %}{% endblock %}
+        {% endif %}
+    </div>
+    <div class="clear"></div>
     <div class="clear"></div>
 {% endblock %}
