@@ -1,0 +1,26 @@
+<a class="overlay" id="trade_space"></a>
+
+<div class="popup_space">
+    <form method="post" action="trade">
+        <h3>Выбрать торговое пространство</h3>
+
+        <input type="hidden" id="trade_space_id" value={{ trade_space_id }} name="trade_space_id"/>
+
+        <select name="trade_space_id" class="trade_button">
+            <option value="0">Выберите пространство</option>
+            {% for trade_space in trade_spaces %}
+                <option value="{{ trade_space.id }}">{{ trade_space.name }}</option>
+            {% endfor %}
+        </select>
+        <h4>Код доступа</h4>
+        <input type="password" value=""
+               name="password" class="trade_place" placeholder="password"/>
+
+        <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="trade_button"/>
+
+        <p style="text-align: right; margin-right: 5px; margin-top: 15px"><a href="#new_trade_space"
+                                                                             class="trade_space">Создать
+            торговое пространство</a></p>
+        <a class="close" title="Закрыть" href="#close"></a>
+    </form>
+</div>

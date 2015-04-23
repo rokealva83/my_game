@@ -1,0 +1,23 @@
+<a href="#x" class="overlay" id="create_trade_fleet"></a>
+
+<div class="popup_create_trade_fleet">
+
+    <form method="post" action="create_trade_fleet" style="text-align: center">
+        <input type="hidden" id=trade_space_id
+               value="{{ trade_space_id }}" name="trade_space_id">
+
+        <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
+        {% if ships %}
+            {% for ship in ships %}<p>
+                {{ ship.name }} ( {{ ship.amount_ship }} )
+                <input value="0" name="amount_ship" class="trade_place"
+                       placeholder="Amount ship"/>
+                <input type="hidden" value={{ ship.id }} name="hidden_ship"/>
+                <input class="trade_button" type="submit" value="Добавить" name="add_ship"/></p>
+            {% endfor %}
+        {% endif %}
+        <a class="close" title="Закрыть" href="#close"></a>
+    </form>
+
+
+</div>

@@ -1,0 +1,22 @@
+<a class="overlay" id="buy_credit"></a>
+
+<div class="popup_space">
+    <form method="post" action="buy_credit">
+        <input type="hidden" id=trade_space_id
+               value="{{ trade_space_id }}" name="trade_space_id">
+
+        <h3>Покупка кредитов</h3>
+
+        <p>Количество кредитов <input type="text" value="0"
+                                      name="amount" class="trade_place" placeholder="amount"/></p>
+
+        <p>Операция <select name="operation" class="trade_button">
+            <option value="0">Купить</option>
+            <option value="1">Продать</option>
+        </select></p>
+
+        <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="trade_button"/>
+
+        <a class="close" title="Закрыть" href="#close"></a>
+    </form>
+</div>

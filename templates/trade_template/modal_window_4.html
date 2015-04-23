@@ -1,0 +1,56 @@
+<a class="overlay" id="trade_element"></a>
+
+        <div class="popup_trade">
+
+            <table border="1" align="center">
+                <caption>Торговые ставки</caption>
+                <tr>
+                    <td>Товар</td>
+                    <td>Пространство</td>
+                    <td>Количество</td>
+                    <td>Цена за все</td>
+                    <td>Минимальная партия</td>
+                    <td>Цена партии</td>
+                    <td>Ставка</td>
+
+                </tr>
+
+                {% for user_trade_element in user_trade_elements %}
+                    <tr>
+                        <form method="post" action="del_trade" value="{{ user_trade_element.id }}">
+                            <input type="hidden" id=trade_space_id
+                                   value="{{ trade_space_id }}" name="trade_space_id">
+                            <td>{{ user_trade_element.name }}</td>
+                            {% for trade_space in trade_spaces %}
+                                {% if trade_space.id == user_trade_element.trade_space %}
+
+                                    <td>{{ trade_space.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{ user_trade_element.amount }}</td>
+                            <td>{{ user_trade_element.cost }}</td>
+                            <td>{{ user_trade_element.min_amount }}</td>
+                            <td>{{ user_trade_element.cost_element }}</td>
+                            {% if user_trade_element.buyer == 0 %}
+                                <td>Общая ставка</td>
+                            {% else %}
+                                {% for user in users %}
+                                    {% if user.user_id == user_trade_element.buyer %}
+                                        <td>{{ user.user_name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <td><input href="trade_del/{{ user_trade_element.id }}" style="margin:0 2px 0 2px"
+                                       type="submit"
+                                       value="Снять" class="trade_del"/>
+                                <input type="hidden" id="trade_del"
+                                       value={{ user_trade_element.id }} name="trade_del"/>
+                            </td>
+                        </form>
+                    </tr>
+                {% endfor %}
+            </table>
+
+
+            <a class="close" title="Закрыть" href="#close"></a>
+        </div>

@@ -1,0 +1,31 @@
+<a class="overlay" id="new_trade_space"></a>
+
+<div class="popup_space">
+    <form method="post" action="new_trade_space">
+        <h3>Создать пространство</h3>
+        <input type="hidden" id=trade_space_id
+               value="{{ trade_space_id }}" name="trade_space_id">
+        <h4>Название</h4>
+        <input type="text" value=""
+               name="name" class="trade_place" placeholder="name"/>
+
+        <h4>Код доступа</h4>
+        <input type="password" value=""
+               name="pass" class="trade_place" placeholder="password"/>
+
+
+        <h4>Налог от продаж</h4>
+        <select name="tax" class="trade_button">
+            <option value="0">Выберите налог</option>
+            <option value="1">1%</option>
+            <option value="2">2%</option>
+            <option value="3">3%</option>
+            <option value="4">4%</option>
+            <option value="5">5%</option>
+        </select>
+
+        <input style="margin-top: 7px" type="submit" value="OK" name="add_button" class="trade_button"/>
+
+        <a class="close" title="Закрыть" href="#close"></a>
+    </form>
+</div>
