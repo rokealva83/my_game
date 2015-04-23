@@ -7,7 +7,7 @@ from my_game import function
 from my_game.models import Project_ship, Ship, Fleet, Hold
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
-    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern
+    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern, Device_pattern
 
 
 def empty_fleet_hold(request):
@@ -32,6 +32,7 @@ def empty_fleet_hold(request):
         weapon_patterns = {}
         shell_patterns = {}
         module_patterns = {}
+        device_patterns = {}
         ship_holds = {}
         message = ''
 
@@ -45,7 +46,7 @@ def empty_fleet_hold(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
         fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-        # device_patterns = Device_pattern.objects.filter(user = session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         error = 0
 
         full_request = request.POST
@@ -292,6 +293,24 @@ def empty_fleet_hold(request):
                         unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
                                   amount_shipment,
                                   mass_shipment, size)
+
+            amount_device = myDict.get('amount_device')
+            if amount_device is not None:
+                id_shipment_device = myDict.get('hidden_device')
+                len_device_amount = len(amount_device)
+                for i in range(len_device_amount):
+                    device_amount = int(amount_device[i])
+                    if device_amount != 0:
+                        id_shipment = int(id_shipment_device[i])
+                        class_shipment = 9
+                        device = Device_pattern.objects.filter(id=id_shipment).first()
+                        size = int(device.size) * device_amount
+                        amount_shipment = device_amount
+                        mass_shipment = int(device.mass) * device_amount
+                        unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment,
+                                  amount_shipment,
+                                  mass_shipment, size)
+
         else:
             message = 'Флот не над планетой'
 
@@ -322,8 +341,9 @@ def empty_fleet_hold(request):
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shell_patterns': shell_patterns,
                   'shield_patterns': shield_patterns, 'weapon_patterns': weapon_patterns,
                   'fuel_patterns': fuel_patterns, 'engine_patterns': engine_patterns,
-                  'generator_patterns': generator_patterns, 'module_patterns': module_patterns, 'message': message,
-                  'ship_holds': ship_holds, 'basic_resources': basic_resources}
+                  'device_patterns': device_patterns, 'generator_patterns': generator_patterns,
+                  'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds,
+                  'basic_resources': basic_resources}
         return render(request, "fleet_hold.html", output)
 
 

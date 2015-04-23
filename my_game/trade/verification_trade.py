@@ -86,7 +86,7 @@ def verification_trade(request):
                                                                  id_resource=trade_flight.id_element).update(
                                 amount=new_amount)
 
-                        elif 0 < hold.class_shipment < 9:
+                        elif 0 < hold.class_shipment < 10:
                             warehouse = Warehouse_element.objects.filter(user=user, user_city=trade_flight.user_city,
                                                                          element_class=trade_flight.class_element,
                                                                          element_id=trade_flight.id_element).first()
@@ -105,7 +105,7 @@ def verification_trade(request):
                                     element_id=trade_flight.id_element,
                                     amount=trade_flight.amount
                                 )
-                        elif hold.class_shipment > 9:
+                        elif hold.class_shipment > 10:
                             warehouse = Warehouse_factory.objects.filter(user=user, user_city=trade_flight.user_city,
                                                                          production_class__lt=13,
                                                                          factory_id=trade_flight.id_element).first()
@@ -169,7 +169,7 @@ def verification_trade(request):
                 warehouse = Warehouse.objects.filter(user=user, user_city=teleport.user_city,
                                                      id_resource=teleport.id_element).update(amount=new_amount)
 
-            elif 0 < teleport.class_element < 9:
+            elif 0 < teleport.class_element < 10:
                 warehouse = Warehouse_element.objects.filter(user=user, user_city=teleport.user_city,
                                                              element_class=teleport.class_element,
                                                              element_id=teleport.id_element).first()
@@ -187,7 +187,7 @@ def verification_trade(request):
                         element_id=teleport.id_element,
                         amount=teleport.amount
                     )
-            elif teleport.class_shipment > 9:
+            elif teleport.class_shipment > 10:
                 warehouse = Warehouse_factory.objects.filter(user=user, user_city=teleport.user_city,
                                                              production_class__lt=13,
                                                              factory_id=teleport.id_element).first()

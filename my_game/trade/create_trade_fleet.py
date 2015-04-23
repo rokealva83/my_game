@@ -3,7 +3,7 @@
 
 from my_game.models import Basic_resource
 from my_game.models import Shield_pattern, Generator_pattern, Engine_pattern, Armor_pattern, Weapon_pattern, \
-    Shell_pattern, Factory_pattern
+    Shell_pattern, Factory_pattern, Device_pattern
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game.models import Trade_element, Trade_space, Building_installed, Delivery_queue
 from django.shortcuts import render
@@ -275,6 +275,7 @@ def create_trade_fleet(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         trade_spaces = Trade_space.objects.filter()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
@@ -293,7 +294,7 @@ def create_trade_fleet(request):
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
                   'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
                   'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
-                  'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
+                  'shell_patterns': shell_patterns, 'module_patterns': module_patterns, 'device_patterns':device_patterns,
                   'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id, 'project_ships': project_ships,
                   'ships': ships, 'trade_elements': trade_elements, 'user_trade_elements': user_trade_elements,
                   'users': users, 'message': message, 'trade_building': trade_building,

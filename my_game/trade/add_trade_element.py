@@ -3,9 +3,9 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Planet, System
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern
+    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
 from my_game.models import Basic_armor, Basic_factory, Basic_engine, Basic_generator, Basic_hull, Basic_module, \
-    Basic_shell, Basic_shield, Basic_weapon
+    Basic_shell, Basic_shield, Basic_weapon, Basic_device
 from my_game.models import Warehouse_element, Warehouse_factory, Basic_resource
 from my_game import function
 from my_game.models import Project_ship, Ship
@@ -193,6 +193,21 @@ def add_trade_element(request):
             mass_element = module.mass
             size_element = module.size
 
+        elif class_element == 9:
+            warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).first()
+            if warehouse_element.amount >= amount:
+                amount = amount
+            else:
+                amount = warehouse_element.amount
+            device = Device_pattern.objects.filter(id=warehouse_element.element_id).first()
+            basic_device = Basic_device.objects.filter(id=device.basic_id).first()
+            new_amount = warehouse_element.amount - amount
+            name = basic_device.name
+            warehouse_element = Warehouse_element.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            id_element = device.id
+            mass_element = device.mass
+            size_element = device.size
+
         elif class_element == 10:
             warehouse_factory = Warehouse_factory.objects.filter(id=id_warehouse_element).first()
             if warehouse_factory.amount >= amount:
@@ -278,6 +293,7 @@ def add_trade_element(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
         users = MyUser.objects.filter()
@@ -296,7 +312,7 @@ def add_trade_element(request):
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'device_patterns':device_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
                   'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements,
                   'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space,

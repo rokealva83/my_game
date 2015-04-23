@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from my_game.models import MyUser
 from my_game.models import Turn_production
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed, Fuel_pattern
+    Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed, Fuel_pattern, Device_pattern
 from my_game.models import Warehouse, Warehouse_factory_resource
 from my_game.models import Manufacturing_complex, Warehouse_complex, Turn_complex_production
 
@@ -33,8 +33,8 @@ def rename_element_pattern(*args):
         new_name = Shell_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 8:
         new_name = Module_pattern.objects.filter(id=element_id).update(name=new_names)
-        # if production_class == 9:
-    # new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
+    if production_class == 9:
+        new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
     if production_class == 14:
         new_name = Fuel_pattern.objects.filter(id=element_id).update(name=new_names)
     message = 'Модуль переименован'
@@ -72,8 +72,8 @@ def production_module(*args):
                 module_which_produces = Shell_pattern.objects.filter(id=element_id).first()
             elif factory_worker.production_class == 8:
                 module_which_produces = Module_pattern.objects.filter(id=element_id).first()
-                # elif factory_worker.production_class == 9:
-                #            module_which_produces = Device_pattern.objects.filter(id=element_id).first()
+            elif factory_worker.production_class == 9:
+                module_which_produces = Device_pattern.objects.filter(id=element_id).first()
             elif factory_worker.production_class == 14:
                 module_which_produces = Fuel_pattern.objects.filter(id=element_id).first()
 
@@ -218,8 +218,8 @@ def complex_production_module(*args):
             module_which_produces = Shell_pattern.objects.filter(id=element_id).first()
         elif factory_worker.production_class == 8:
             module_which_produces = Module_pattern.objects.filter(id=element_id).first()
-        #elif factory_worker.production_class == 9:
-        #    module_which_produces = Device_pattern.objects.filter(id=element_id).first()
+        elif factory_worker.production_class == 9:
+           module_which_produces = Device_pattern.objects.filter(id=element_id).first()
         elif factory_worker.production_class == 14:
             module_which_produces = Fuel_pattern.objects.filter(id=element_id).first()
 

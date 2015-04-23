@@ -4,9 +4,9 @@ import random
 
 from my_game.models import MyUser, User_scientic
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Device_pattern
 from my_game.models import Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
-    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Race, Basic_fuel
+    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Race, Basic_fuel, Basic_device
 
 
 def hull_upgrade(request):
@@ -716,6 +716,49 @@ def module_upgrade(request):
                             u_module.save()
                 u_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id).last()
                 price_increase(u_module)
+
+
+def device_open(request):
+    user = request
+    b_device = Basic_device.objects.all()
+    number_device = len(b_device) - 1
+    number_device_scient = random.randint(0, number_device)
+    device_scient = b_device[number_device_scient]
+    u_device = Device_pattern.objects.filter(user=user, basic_id=device_scient.id).last()
+    if u_device is None:
+        koef = element_open(user, device_scient)
+        if koef < 0:
+            koef = 0.00001
+
+        upper_scope = 1#0.33 * koef
+        new_device = random.random()
+
+        if 0 < new_device < upper_scope:
+            device_pattern = Device_pattern(
+                user=user,
+                basic_id=device_scient.id,
+                name=device_scient.name,
+                health=device_scient.health,
+                param1=device_scient.param1,
+                param2=device_scient.param2,
+                param3=device_scient.param3,
+                mass=device_scient.mass,
+                size=device_scient.size,
+                power_consuption=device_scient.power_consuption,
+                device_class=device_scient.device_class,
+                price_internal_currency=device_scient.price_internal_currency,
+                price_resource1=device_scient.price_resource1,
+                price_resource2=device_scient.price_resource2,
+                price_resource3=device_scient.price_resource3,
+                price_resource4=device_scient.price_resource4,
+                price_mineral1=device_scient.price_mineral1,
+                price_mineral2=device_scient.price_mineral2,
+                price_mineral3=device_scient.price_mineral3,
+                price_mineral4=device_scient.price_mineral4,
+            )
+            device_pattern.save()
+            new_factory_pattern(user, 9, device_scient.id)
+
 
 
 def element_open(*args):

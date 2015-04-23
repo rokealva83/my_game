@@ -504,6 +504,43 @@ class Basic_fuel(models.Model):
         return self.name
 
 
+class Basic_device(models.Model):
+    class Meta():
+        db_table = 'basic_device'
+
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+    health = models.IntegerField()
+    param1 = models.IntegerField()
+    param2 = models.IntegerField()
+    param3 = models.IntegerField()
+    mass = models.IntegerField()
+    size = models.IntegerField()
+    power_consuption = models.IntegerField()
+    device_class = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
+    min_all_scientic = models.IntegerField(default=0)
+    min_math = models.IntegerField(default=0)
+    min_phis = models.IntegerField(default=0)
+    min_biol = models.IntegerField(default=0)
+    min_energy = models.IntegerField(default=0)
+    min_radio = models.IntegerField(default=0)
+    min_nanotech = models.IntegerField(default=0)
+    min_astronomy = models.IntegerField(default=0)
+    min_logist = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Factory_pattern(models.Model):
     class Meta():
         db_table = 'factory_pattern'
@@ -770,6 +807,33 @@ class Fuel_pattern(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Device_pattern(models.Model):
+    class Meta():
+        db_table = 'device_pattern'
+
+    user = models.IntegerField(db_index=True)
+    basic_id = models.IntegerField()
+    name = models.CharField(max_length=50, default='New device')
+    health = models.IntegerField()
+    param1 = models.IntegerField()
+    param2 = models.IntegerField()
+    param3 = models.IntegerField()
+    mass = models.IntegerField()
+    size = models.IntegerField()
+    power_consuption = models.IntegerField()
+    device_class = models.IntegerField()
+    price_internal_currency = models.IntegerField(default=25)
+    price_resource1 = models.IntegerField(default=0)
+    price_resource2 = models.IntegerField(default=0)
+    price_resource3 = models.IntegerField(default=0)
+    price_resource4 = models.IntegerField(default=0)
+    price_mineral1 = models.IntegerField(default=0)
+    price_mineral2 = models.IntegerField(default=0)
+    price_mineral3 = models.IntegerField(default=0)
+    price_mineral4 = models.IntegerField(default=0)
+    bought_template = models.BooleanField(default=False)
 
 
 class Factory_installed(models.Model):
@@ -1244,23 +1308,20 @@ class Flightplan_scan(models.Model):
     time_scanning = models.IntegerField(default=0)
 
 
-class Flightplan_scan(models.Model):
+class Flightplan_colonization(models.Model):
     class Meta():
-        db_table = 'flightplan_scan'
+        db_table = 'flightplan_colonization'
 
-    user = models.IntegerField(db_index=True)
     id_fleet = models.IntegerField(db_index=True)
     id_command = models.IntegerField()
-    id_fleetplan = models.IntegerField(default=0)
-    range_scanning = models.IntegerField()
+    id_fleetplan = models.IntegerField()
     start_time = models.DateTimeField(default=datetime.now, blank=True)
-    time_scanning = models.IntegerField(default=0)
+    time = models.IntegerField()
 
 
 class Flightplan_fight(models.Model):
     class Meta():
         db_table = 'flightplan_fight'
-
 
     user = models.IntegerField(db_index=True)
     id_fleet = models.IntegerField()
@@ -1319,7 +1380,6 @@ class Trade_space(models.Model):
         db_table = 'trade_space'
 
     name = models.CharField(max_length=50)
-
     user = models.IntegerField(db_index=True)
     password = models.CharField(max_length=50)
     tax = models.IntegerField()

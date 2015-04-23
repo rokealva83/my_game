@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from my_game.models import MyUser, User_city, Warehouse
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Device_pattern
 from my_game.models import Warehouse_factory, Warehouse_element, Basic_resource
 from my_game import function
 
@@ -34,14 +34,14 @@ def warehouse(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
-        # device_patterns = Device_pattern.objects.filter(user = session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
 
         attribute_factorys = ("cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", \
                               "production_id", "time_production", "size", "mass", "power_consumption")
 
         attribute_hulls = ("health", "generator", "engine", "weapon", "armor", "shield", "main_weapon", "module", \
-                           "hold_size","fuel_tank", "size", "mass", "power_consuption")
+                           "hold_size", "fuel_tank", "size", "mass", "power_consuption")
 
         attribute_armors = ("health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration", \
                             "mass")
@@ -54,6 +54,7 @@ def warehouse(request):
                              "mass", "size", "power_consuption")
         attribute_shells = ("phisical_damage", "speed", "mass", "size")
         attribute_modules = ("health", "param1", "param2", "param3", "mass", "size", "power_consuption")
+        attribute_devices = ("health", "param1", "param2", "param3", "mass", "size", "power_consuption")
         attribute_fuels = ("mass", "size", "efficiency")
 
     request.session['userid'] = session_user
@@ -64,10 +65,11 @@ def warehouse(request):
               'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
               'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
               'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
-              'shell_patterns': shell_patterns, 'module_patterns': module_patterns, 'fuel_patterns':fuel_patterns,
-              'attribute_factorys': attribute_factorys, 'attribute_hulls': attribute_hulls,
-              'attribute_armors': attribute_armors, 'attribute_shields': attribute_shields,
-              'attribute_engines': attribute_engines, 'attribute_generators': attribute_generators,
-              'attribute_weapons': attribute_weapons, 'attribute_shells': attribute_shells,
-              'attribute_modules': attribute_modules, 'attribute_fuels':attribute_fuels}
+              'shell_patterns': shell_patterns, 'module_patterns': module_patterns, 'fuel_patterns': fuel_patterns,
+              'device_patterns': device_patterns, 'attribute_factorys': attribute_factorys,
+              'attribute_hulls': attribute_hulls, 'attribute_armors': attribute_armors,
+              'attribute_shields': attribute_shields, 'attribute_engines': attribute_engines,
+              'attribute_generators': attribute_generators, 'attribute_weapons': attribute_weapons,
+              'attribute_shells': attribute_shells, 'attribute_modules': attribute_modules,
+              'attribute_fuels': attribute_fuels, 'attribute_devices': attribute_devices}
     return render(request, "warehouse.html", output)

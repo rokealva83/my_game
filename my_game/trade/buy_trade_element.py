@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import math
 from my_game.models import MyUser, User_city, Warehouse, Basic_resource, Planet, System
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern
+    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
 from my_game.trade import trade_function
@@ -168,9 +168,10 @@ def buy_trade(request):
                                                                                    trade_element, lot)
                             new_amount = trade_element.amount - amount
                             trade_element = Trade_element.objects.filter(id=id_element).update(amount=new_amount)
-                            fleet = Fleet.objects.filter(id = id_fleet).update(status = 1, planet_status = 0, planet = 0, system = 0)
-                            trade_fligth = Trade_flight.objects.filter(id_fleet = id_fleet).first()
-                            trade_fligth = Trade_flight.objects.filter(id = trade_fligth.id).update(status = 1)
+                            fleet = Fleet.objects.filter(id=id_fleet).update(status=1, planet_status=0, planet=0,
+                                                                             system=0)
+                            trade_fligth = Trade_flight.objects.filter(id_fleet=id_fleet).first()
+                            trade_fligth = Trade_flight.objects.filter(id=trade_fligth.id).update(status=1)
                         else:
                             delivery_queue = Delivery_queue(
                                 user=session_user,
@@ -224,9 +225,10 @@ def buy_trade(request):
                                                                           trade_element, 0, fleet, 0, distance)
                             new_amount = trade_element.amount - amount
                             trade_element = Trade_element.objects.filter(id=id_element).update(amount=new_amount)
-                            fleet = Fleet.objects.filter(id = id_fleet).update(status = 1, planet_status = 0, planet = 0, system = 0)
-                            trade_fligth = Trade_flight.objects.filter(id_fleet = id_fleet).first()
-                            trade_fligth = Trade_flight.objects.filter(id = trade_fligth.id).update(status = 1)
+                            fleet = Fleet.objects.filter(id=id_fleet).update(status=1, planet_status=0, planet=0,
+                                                                             system=0)
+                            trade_fligth = Trade_flight.objects.filter(id_fleet=id_fleet).first()
+                            trade_fligth = Trade_flight.objects.filter(id=trade_fligth.id).update(status=1)
                         else:
                             delivery_queue = Delivery_queue(
                                 user=session_user,
@@ -272,6 +274,7 @@ def buy_trade(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         trade_spaces = Trade_space.objects.filter()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
@@ -292,8 +295,9 @@ def buy_trade(request):
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
-                  'user_trade_elements': user_trade_elements, 'trade_space': trade_space, 'message': message,
-                  'trade_building': trade_building, 'delivery_queues': delivery_queues}
+                  'device_patterns': device_patterns, 'module_patterns': module_patterns, 'trade_spaces': trade_spaces,
+                  'trade_space_id': trade_space_id, 'project_ships': project_ships, 'ships': ships,
+                  'trade_elements': trade_elements, 'users': users, 'user_trade_elements': user_trade_elements,
+                  'trade_space': trade_space, 'message': message, 'trade_building': trade_building,
+                  'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)

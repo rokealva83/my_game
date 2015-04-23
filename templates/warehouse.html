@@ -373,10 +373,50 @@
         {% endspaceless %}
         {% spaceless %}
             <div>
+                <input class="toggle-box" id="Warehouse_device" type="checkbox" align="left">
+                <label for="Warehouse_device">
+                    <h3><p style="text-align: center">Warehouse_device</p></h3>
+                </label>
+
+                <div style="margin: 0px">
+                    {% for warehouse_element in warehouse_elements %}
+                        {% if warehouse_element.element_class == 9 %}
+                            {% if warehouse_element.amount > 0 %}
+                                {% for device_pattern in device_patterns %}
+                                    {% if device_pattern.id == warehouse_element.element_id %}
+                                        <div class="warehouse_inform">
+                                            <ul style="margin: 1px 0 1px 0">
+                                                    <span>{{ device_pattern.name }}
+                                                        <i>
+                                                            {% for attribute_device in attribute_devices %}
+                                                                {% load my_filter %}
+                                                                {% if device_pattern|getattribute:attribute_device != 0 %}
+                                                                    <li style="list-style-type: none">
+                                                                        {{ attribute_device }}:{{ device_pattern|getattribute:attribute_device }}
+                                                                    </li>
+
+                                                                {% endif %}
+                                                            {% endfor %}
+
+                                                        </i>  - {{ warehouse_element.amount }}
+                                                    </span>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endspaceless %}
+        {% spaceless %}
+            <div>
                 <input class="toggle-box" id="Warehouse_fuel" type="checkbox" align="left">
                 <label for="Warehouse_fuel">
                     <h3><p style="text-align: center">Warehouse_fuel</p></h3>
                 </label>
+
                 <div style="margin: 0px">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 14 %}

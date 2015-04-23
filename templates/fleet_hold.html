@@ -152,6 +152,20 @@
                         {% endif %}
                     {% endspaceless %}
                     {% spaceless %}
+                        {% if ship_hold.class_shipment == 9 %}
+                            {% for device_pattern in device_patterns %}
+                                {% if device_pattern.id ==  ship_hold.id_shipment %}
+                                    <p>{{ device_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                        / {{ ship_hold.mass_shipment }} /
+                                        {{ ship_hold.size_shipment }} )
+                                        <input value="0" name="amount_device" class="number_ship"></p>
+                                    <input type="hidden" id="fleet_id"
+                                           value={{ ship_hold.id_shipment }} name="hidden_device"/>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endspaceless %}
+                    {% spaceless %}
                         {% if ship_hold.class_shipment == 14 %}
                             {% for fuel_pattern in fuel_patterns %}
                                 {% if fuel_pattern.id ==  ship_hold.id_shipment %}
@@ -389,7 +403,7 @@
                     {% if warehouse_elements %} Module in warehouse
                         <select name="warehouse_module" class="list_force">
                             <option selected disabled>Choise module</option>
-             module               {% for warehouse_element in warehouse_elements %}
+                            {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 8 %}
                                     {% if warehouse_element.amount > 0 %}
                                         {% for module_pattern in module_patterns %}
@@ -406,6 +420,30 @@
                         </select>
                     {% endif %}
                     <input value="0" name="module_amount" class="number_ship" placeholder="Module amount"/>
+                </div>
+            {% endspaceless %}
+            {% spaceless %}
+                <div>
+                    {% if warehouse_elements %} Device in warehouse
+                        <select name="warehouse_device" class="list_force">
+                            <option selected disabled>Choise device</option>
+                            {% for warehouse_element in warehouse_elements %}
+                                {% if warehouse_element.element_class == 9 %}
+                                    {% if warehouse_element.amount > 0 %}
+                                        {% for device_pattern in device_patterns %}
+                                            {% if device_pattern.id == warehouse_element.element_id %}
+                                                <option value="{{ warehouse_element.element_id }}">{{ device_pattern.name }}(
+                                                    {{ warehouse_element.amount }}
+                                                    )
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    <input value="0" name="device_amount" class="number_ship" placeholder="Device amount"/>
                 </div>
             {% endspaceless %}
             {% spaceless %}

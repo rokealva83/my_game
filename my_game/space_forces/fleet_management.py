@@ -8,7 +8,7 @@ from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan,
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction, \
     Fleet_parametr_build_repair
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Fuel_tank
+    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Fuel_tank, Device_pattern
 from my_game import function
 
 
@@ -33,6 +33,7 @@ def fleet_manage(request):
         weapon_patterns = {}
         shell_patterns = {}
         module_patterns = {}
+        device_patterns = {}
         fuel_patterns = {}
         ship_holds = {}
         message = ''
@@ -117,7 +118,7 @@ def fleet_manage(request):
             module_patterns = Module_pattern.objects.filter(user=session_user)
             fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
             basic_resources = Basic_resource.objects.all()
-            # device_patterns = Device_pattern.objects.filter(user = session_user)
+            device_patterns = Device_pattern.objects.filter(user=session_user)
             ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
 
             output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
@@ -136,7 +137,7 @@ def fleet_manage(request):
                       'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                       'ship_holds': ship_holds, 'flightplan_holds': flightplan_holds,
                       'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
-                      'flightplan_build_repairs': flightplan_build_repairs}
+                      'flightplan_build_repairs': flightplan_build_repairs, 'device_patterns': device_patterns}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):
@@ -157,7 +158,7 @@ def fleet_manage(request):
             shell_patterns = Shell_pattern.objects.filter(user=session_user)
             module_patterns = Module_pattern.objects.filter(user=session_user)
             fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-            # device_patterns = Device_pattern.objects.filter(user = session_user)
+            device_patterns = Device_pattern.objects.filter(user=session_user)
 
             command = 2
             ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
@@ -222,5 +223,6 @@ def fleet_manage(request):
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'fuel_patterns': fuel_patterns,
-                  'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
+                  'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds,
+                  'device_patterns': device_patterns}
         return render(request, "fleet_hold.html", output)

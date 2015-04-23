@@ -111,9 +111,9 @@ def choice_build(request):
                 'production_id')
             warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=8)
-            # if request.POST.get('device') is not None:
-            # factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by('production_id')
-            # warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city, production_class=9)
+        if request.POST.get('device') is not None:
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by('production_id')
+            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city, production_class=9)
 
         if request.POST.get('fuel') is not None:
             user = session_user

@@ -7,7 +7,7 @@ from my_game import function
 from my_game.models import Project_ship, Ship, Fleet, Hold
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
-    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern
+    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern, Device_pattern
 
 
 def fleet_hold(request):
@@ -32,6 +32,7 @@ def fleet_hold(request):
         weapon_patterns = {}
         shell_patterns = {}
         module_patterns = {}
+        device_patterns = {}
         ship_holds = {}
         message = ''
         add_shipment = 0
@@ -46,7 +47,7 @@ def fleet_hold(request):
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
         fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-        # device_patterns = Device_pattern.objects.filter(user = session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         error = 0
 
         full_request = request.POST
@@ -55,7 +56,7 @@ def fleet_hold(request):
         fleet_id_dict = myDict.get('hidden_fleet')
         fleet_id = int(fleet_id_dict[0])
         fleet = Fleet.objects.filter(id=fleet_id).first()
-        ship_in_fleet = Ship.objects.filter(user = session_user, fleet_status = 1, place_id = fleet_id).first()
+        ship_in_fleet = Ship.objects.filter(user=session_user, fleet_status=1, place_id=fleet_id).first()
         if fleet.planet_status == 1 and ship_in_fleet is not None:
             command = 2
             ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
@@ -180,6 +181,18 @@ def fleet_hold(request):
                     mass_shipment = module.mass * int(module_amount[0])
                     add_shipment = 1
 
+            device_amount = myDict.get('device_amount')
+            id_shipment_device = myDict.get('warehouse_device')
+            if int(device_amount[0]) != 0 and add_shipment == 0 and id_shipment_device is not None:
+                id_shipment = int(id_shipment_device[0])
+                class_shipment = 9
+                device = Device_pattern.objects.filter(id=id_shipment).first()
+                size = device.size * int(device_amount[0])
+                if size <= fleet.empty_hold:
+                    amount_shipment = int(device_amount[0])
+                    mass_shipment = device.mass * int(device_amount[0])
+                    add_shipment = 1
+
             fuel_amount = myDict.get('fuel_amount')
             id_shipment_mod = myDict.get('warehouse_fuel')
             if int(fuel_amount[0]) != 0 and add_shipment == 0 and id_shipment_mod is not None:
@@ -258,7 +271,7 @@ def fleet_hold(request):
         else:
             message = 'Флот не над планетой'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         basic_resources = Basic_resource.objects.filter()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -277,14 +290,14 @@ def fleet_hold(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'basic_resources':basic_resources, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
-                  'ship_fleets': ship_fleets, 'fuel_patterns': fuel_patterns, 'shell_patterns':shell_patterns,
+        output = {'user': user, 'warehouses': warehouses, 'basic_resources': basic_resources, 'user_city': user_city,
+                  'user_citys': user_citys, 'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
+                  'ship_fleets': ship_fleets, 'fuel_patterns': fuel_patterns, 'shell_patterns': shell_patterns,
                   'ships': ships, 'command': command, 'flightplans': flightplans,
                   'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
                   'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
-                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
-                  'shield_patterns': shield_patterns, 'weapon_patterns':weapon_patterns,
+                  'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
+                  'weapon_patterns': weapon_patterns, 'device_patterns': device_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds}
         return render(request, "fleet_hold.html", output)

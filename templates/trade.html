@@ -250,6 +250,21 @@
                                     {% endif %}
                                 {% endfor %}
                             </optgroup>
+                        <optgroup label="Device">
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 9 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for device_pattern in device_patterns %}
+                                                {% if device_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.id }}; {{ warehouse_element.element_class }}">{{ device_pattern.name }}
+                                                        ( {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
                             </optgroup>
                             <optgroup label="Ship">
                                 {% for ship in ships %}

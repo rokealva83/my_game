@@ -4,7 +4,7 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern
+    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
 from my_game.models import Project_ship, Ship
@@ -38,7 +38,7 @@ def del_trade(request):
                 warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                      id_resource=trade_element.id_element).update(amount=new_amount)
 
-            elif 0 < trade_element.class_element < 9:
+            elif 0 < trade_element.class_element < 10:
                 warehouse_element = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
                                                                      element_class=trade_element.class_element,
                                                                      element_id=trade_element.id_element).first()
@@ -119,6 +119,7 @@ def del_trade(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
         user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user=session_user)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
@@ -138,8 +139,8 @@ def del_trade(request):
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements,
-                  'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space,
-                  'trade_building': trade_building, 'delivery_queues': delivery_queues}
+                  'device_patterns': device_patterns, 'module_patterns': module_patterns, 'trade_spaces': trade_spaces,
+                  'trade_space_id': trade_space_id, 'project_ships': project_ships, 'ships': ships,
+                  'trade_elements': trade_elements, 'user_trade_elements': user_trade_elements, 'users': users,
+                  'trade_space': trade_space, 'trade_building': trade_building, 'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)

@@ -131,6 +131,19 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
+        <optgroup label="Device">
+            {% for ship_hold in ship_holds %}
+                {% if ship_hold.class_shipment == 9 %}
+                    {% for device_pattern in device_patterns %}
+                        {% if device_pattern.id == ship_hold.id_shipment %}
+                            <option value="{{ ship_hold.id }}">{{ device_pattern.name }}
+                                ( {{ ship_hold.amount_shipment }} )
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </optgroup>
         <optgroup label="Fuel">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 14 %}

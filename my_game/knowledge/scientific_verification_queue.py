@@ -6,6 +6,7 @@ from my_game.models import MyUser, User_scientic
 from my_game.models import Turn_scientic
 import my_game.knowledge.scientic_func as scientic_func
 from my_game.models import User_variables
+import random
 
 
 def check_scientific_verification_queue(request):
@@ -53,7 +54,7 @@ def check_scientific_verification_queue(request):
     if delta_time > user_variables.time_check_new_technology:
         all_scientic = User_scientic.objects.filter(user=user).first()
         if all_scientic.all_scientic > 10:
-            new_technology = 0.9 #random.random()
+            new_technology = random.random()
 
             if 0 <= new_technology < 0.125:
                 scientic_func.hull_upgrade(user)
@@ -78,6 +79,10 @@ def check_scientific_verification_queue(request):
 
             if 0.875 <= new_technology <= 1:
                 scientic_func.module_upgrade(user)
+
+            new_device = random.random()
+            if 0< new_device < 1:
+                scientic_func.device_open(user)
 
         last_time_update = time_update
         last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,

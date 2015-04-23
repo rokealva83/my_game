@@ -7,7 +7,7 @@ from my_game.models import Warehouse
 from my_game import function
 from my_game.models import Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_parametr_resource_extraction
 from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_production, Flightplan_hold, \
-    Flightplan_refill, Flightplan_build_repair, Fleet_parametr_build_repair
+    Flightplan_refill, Flightplan_build_repair, Fleet_parametr_build_repair, Flightplan_colonization
 from space_forces import flight
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
@@ -296,6 +296,28 @@ def fleet_flightplan(request):
                     time=time,
                 )
                 flightplan_build_repair.save()
+
+            colonization = request.POST.get('build')
+            if colonization:
+                ships = Ship.objects.filter()
+
+                id_command = 1
+                flightplan = Flightplan(
+                    user=session_user,
+                    id_fleet=fleet_id,
+                    class_command=8,
+                    id_command=id_command,
+                    status=0
+                )
+                flightplan.save()
+
+                flightplan_colonization= Flightplan_colonization(
+                    id_fleet = fleet_id,
+                    id_command = id_command,
+                    id_fleetplan=flightplan.id,
+                    start_time=datetime.now(),
+                    time=time,
+                )
 
         if request.POST.get('delete_command'):
             command = 3

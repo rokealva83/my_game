@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Basic_resource
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern
+    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
 from my_game.models import Basic_armor, Basic_factory, Basic_engine, Basic_generator, Basic_hull, Basic_module, \
     Basic_shell, Basic_shield, Basic_weapon, Basic_scientic
 from my_game.models import Warehouse_element, Warehouse_factory
@@ -61,6 +61,7 @@ def buy_credit(request):
         weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
         shell_patterns = Shell_pattern.objects.filter(user=session_user)
         module_patterns = Module_pattern.objects.filter(user=session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         trade_spaces = Trade_space.objects.filter()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         project_ships = Project_ship.objects.filter(user=session_user)
@@ -81,7 +82,7 @@ def buy_credit(request):
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'device_patterns':device_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
                   'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users, 'user_trade_elements':user_trade_elements,
                   'trade_space': trade_space, 'message': message, 'trade_building': trade_building, 'delivery_queues': delivery_queues}
