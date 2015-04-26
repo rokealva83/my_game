@@ -253,15 +253,26 @@
                     </td>
                 </tr>
             {% endif %}
-            <tr align="center">
-                <td>
-                    <input type="checkbox" name="colonization" class="flightplan_checkbox"></td>
-                <td>
-                    <p>
-                        Колонизировать
-                    </p>
-                </td>
-            </tr>
+
+            {% for ship_hold in ship_holds %}
+                {% if ship_hold.class_shipment == 9 %}
+                    <tr align="center">
+                        <td>
+                            <input type="checkbox" name="colonization" class="flightplan_checkbox"></td>
+                        <td>
+
+                            <p>
+                                {% if ship_hold.id_shipment == 1 %}
+                                    Колонизировать
+                                {% elif ship_hold.id_shipment == 2 %}
+                                    Развернуть ядро станции
+                                {% endif %}
+                            </p>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+
         </table>
         <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
         <input class="button_force" type="submit" value="Add command" name="add_command" style="margin-bottom: 4px"/>

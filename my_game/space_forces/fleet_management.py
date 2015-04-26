@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource, Basic_fuel
 from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
-    Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_build_repair
+    Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_build_repair, Flightplan_colonization
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction, \
     Fleet_parametr_build_repair
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
@@ -99,6 +99,7 @@ def fleet_manage(request):
             flightplan_holds = Flightplan_hold.objects.filter(id_fleet=fleet_id).order_by('id')
             flightplan_refills = Flightplan_refill.objects.filter(id_fleet=fleet_id).order_by('id')
             flightplan_build_repairs = Flightplan_build_repair.objects.filter(id_fleet=fleet_id).order_by('id')
+            flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).order_by('id')
 
             fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
             warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
@@ -137,7 +138,8 @@ def fleet_manage(request):
                       'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                       'ship_holds': ship_holds, 'flightplan_holds': flightplan_holds,
                       'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
-                      'flightplan_build_repairs': flightplan_build_repairs, 'device_patterns': device_patterns}
+                      'flightplan_build_repairs': flightplan_build_repairs, 'device_patterns': device_patterns,
+                  'flightplan_colonization': flightplan_colonization}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):

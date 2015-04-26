@@ -7,7 +7,7 @@ from my_game.models import Warehouse
 from my_game import function
 from my_game.models import Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_parametr_resource_extraction
 from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_production, Flightplan_hold, \
-    Flightplan_refill, Flightplan_build_repair, Fleet_parametr_build_repair, Flightplan_colonization
+    Flightplan_refill, Flightplan_build_repair, Fleet_parametr_build_repair, Flightplan_colonization, Device_pattern
 from space_forces import flight
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
@@ -297,7 +297,7 @@ def fleet_flightplan(request):
                 )
                 flightplan_build_repair.save()
 
-            colonization = request.POST.get('build')
+            colonization = request.POST.get('colonization')
             if colonization:
                 ships = Ship.objects.filter()
 
@@ -311,13 +311,17 @@ def fleet_flightplan(request):
                 )
                 flightplan.save()
 
-                flightplan_colonization= Flightplan_colonization(
-                    id_fleet = fleet_id,
-                    id_command = id_command,
+                hold = Hold.objects.filter(fleet_id=fleet_id, class_shipment=9).first()
+                colonization_module = Device_pattern.objects.filter(id=hold.id_shipment).first()
+
+                flightplan_colonization = Flightplan_colonization(
+                    id_fleet=fleet_id,
+                    id_command=id_command,
                     id_fleetplan=flightplan.id,
                     start_time=datetime.now(),
-                    time=time,
+                    time=colonization_module.param1,
                 )
+                flightplan_colonization.save()
 
         if request.POST.get('delete_command'):
             command = 3
@@ -349,6 +353,7 @@ def fleet_flightplan(request):
         flightplan_holds = Flightplan_hold.objects.filter(id_fleet=fleet_id).order_by('id')
         flightplan_refills = Flightplan_refill.objects.filter(id_fleet=fleet_id).order_by('id')
         flightplan_build_repairs = Flightplan_build_repair.objects.filter(id_fleet=fleet_id).order_by('id')
+        flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).order_by('id')
         fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
         fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
         fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
@@ -374,7 +379,7 @@ def fleet_flightplan(request):
         module_patterns = Module_pattern.objects.filter(user=session_user)
         basic_resources = Basic_resource.objects.all()
         fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-        # device_patterns = Device_pattern.objects.filter(user = session_user)
+        device_patterns = Device_pattern.objects.filter(user=session_user)
         ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
         add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
@@ -385,20 +390,22 @@ def fleet_flightplan(request):
 
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
-                  'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet,
-                  'command': command, 'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
+                  'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet, 'command': command,
+                  'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
                   'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
-                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'fuel_patterns': fuel_patterns,
+                  'device_patterns': device_patterns, 'engine_patterns': engine_patterns,
+                  'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
+                  'shell_patterns': shell_patterns, 'fuel_patterns': fuel_patterns,
                   'flightplan_scans': flightplan_scans, 'flightplan_productions': flightplan_productions,
-                  'fleet_engine': fleet_engine, 'basic_resources': basic_resources,
-                  'module_patterns': module_patterns, 'fleet_parametr_scans': fleet_parametr_scans,
-                  'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
-                  'ship_holds': ship_holds, 'message': message, 'flightplan_holds': flightplan_holds,
-                  'flightplan_refills': flightplan_refills, 'fleet_parametr_build': fleet_parametr_build,
-                  'fleet_parametr_repair': fleet_parametr_repair, 'flightplan_build_repairs':flightplan_build_repairs}
+                  'fleet_engine': fleet_engine, 'basic_resources': basic_resources, 'module_patterns': module_patterns,
+                  'fleet_parametr_scans': fleet_parametr_scans,
+                  'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction, 'ship_holds': ship_holds,
+                  'message': message, 'flightplan_holds': flightplan_holds, 'flightplan_refills': flightplan_refills,
+                  'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
+                  'flightplan_build_repairs': flightplan_build_repairs,
+                  'flightplan_colonization': flightplan_colonization}
 
         return render(request, "flightplan.html", output)
 

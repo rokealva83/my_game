@@ -11,7 +11,7 @@ from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Fligh
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
     Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern, \
-    Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair
+    Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair, Flightplan_colonization
 
 
 def start_flight(request):
@@ -64,6 +64,7 @@ def start_flight(request):
         flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id)
         flightplan_refills = Flightplan_refill.objects.filter(id_fleet=fleet_id).order_by('id')
         flightplan_build_repairs = Flightplan_build_repair.objects.filter(id_fleet=fleet_id).order_by('id')
+        flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).order_by('id')
         fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
         fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
         fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
@@ -110,6 +111,7 @@ def start_flight(request):
                   'fleet_parametr_scans': fleet_parametr_scans, 'ship_holds': ship_holds, 'message': message,
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                   'flightplan_refills': flightplan_refills, 'flightplan_build_repairs':flightplan_build_repairs,
-                  'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair}
+                  'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
+                  'flightplan_colonization': flightplan_colonization}
 
         return render(request, "space_forces.html", output)
