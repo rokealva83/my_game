@@ -37,5 +37,19 @@ function send_message() {
     var message = 'user=' + user + '&text=' + text;
     xhttp.send(message);
 
+    $('#text').each(function(){
+        $(this).val('')
+    });
+
 }
+
+
+$(document).ready(function () {
+    $("#ground .touch").click(function(){
+        var name = $(this).text();
+        $('#text').each(function(){
+        $(this).val(name+',')
+    });
+    })
+})
 
