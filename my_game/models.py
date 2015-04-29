@@ -1,30 +1,34 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 
 # Create your models here.
-
-
+# -*- coding: utf-8 -*-
 
 class MyUser(models.Model):
     class Meta():
         db_table = 'my_user'
+        verbose_name = u'Пользаватель'
+        verbose_name_plural = u'Пользаватель'
 
     user_id = models.IntegerField(db_index=True)
-    user_name = models.CharField(db_index=True, max_length=20, unique=True)
+    user_name = models.CharField(db_index=True, max_length=20, unique=True, verbose_name=u'Имя игрока')
     password = models.CharField(max_length=50)
     race_id = models.IntegerField()
     alliance_id = models.IntegerField(default=0)
     union_id = models.IntegerField(default=0)
-    internal_currency = models.IntegerField(default=0)
-    foreigh_currency = models.IntegerField(default=0)
-    real_currency = models.IntegerField(default=0)
-    e_mail = models.CharField(db_index=True, max_length=50, unique=True)
+    internal_currency = models.IntegerField(default=0, verbose_name=u'Внутренняя валюта')
+    foreigh_currency = models.IntegerField(default=0, verbose_name=u'Внешняя валюта')
+    real_currency = models.IntegerField(default=0, verbose_name=u'Реальная валюта')
+    e_mail = models.CharField(db_index=True, max_length=50, unique=True, verbose_name=u'Почта')
     referal_code = models.CharField(max_length=50)
     user_luckyness = models.IntegerField()
     last_time_check = models.DateTimeField()
     last_time_scan_scient = models.DateTimeField()
-    premium_account = models.BooleanField(default=0)
-    time_left_premium = models.DateTimeField(default=datetime.now)
+    premium_account = models.BooleanField(default=0, verbose_name=u'Премиум аккаунт')
+    time_left_premium = models.DateTimeField(default=timezone.now, verbose_name=u'Время действия преемиум аккаунта')
+
 
     def __unicode__(self):
         return self.user_name
@@ -1231,7 +1235,7 @@ class Flightplan_flight(models.Model):
     finish_z = models.IntegerField()
     system_flight = models.BooleanField(default=True)
     flight_time = models.IntegerField(default=0)
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     system = models.IntegerField(default=0)
     planet = models.IntegerField(default=0)
 
@@ -1247,7 +1251,7 @@ class Flightplan_hold(models.Model):
     class_element = models.IntegerField(default=0)
     id_element = models.IntegerField(default=0)
     amount = models.IntegerField()
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     time = models.IntegerField(default=0)
     name = models.CharField(max_length=50, default='')
 
@@ -1261,7 +1265,7 @@ class Flightplan_production(models.Model):
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     production_per_minute = models.IntegerField()
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     time_extraction = models.IntegerField(default=0)
 
 
@@ -1278,7 +1282,7 @@ class Flightplan_refill(models.Model):
     class_element = models.IntegerField(default=0)
     id_element = models.IntegerField(default=0)
     amount = models.IntegerField()
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     time_refill = models.IntegerField(default=0)
     name = models.CharField(max_length=50, default='')
 
@@ -1291,7 +1295,7 @@ class Flightplan_build_repair(models.Model):
     id_fleetplan = models.IntegerField(default=0)
     id_command = models.IntegerField()
     fleet_repair = models.IntegerField()
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     time = models.IntegerField(default=0)
 
 
@@ -1304,7 +1308,7 @@ class Flightplan_scan(models.Model):
     id_command = models.IntegerField()
     id_fleetplan = models.IntegerField(default=0)
     range_scanning = models.IntegerField()
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     time_scanning = models.IntegerField(default=0)
 
 
@@ -1315,7 +1319,7 @@ class Flightplan_colonization(models.Model):
     id_fleet = models.IntegerField(db_index=True)
     id_command = models.IntegerField()
     id_fleetplan = models.IntegerField()
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     time = models.IntegerField()
 
 
@@ -1391,7 +1395,7 @@ class Mail(models.Model):
 
     user = models.IntegerField(db_index=True)
     recipient = models.IntegerField()
-    time = models.DateTimeField(default=datetime.now, blank=True)
+    time = models.DateTimeField(default=timezone.now, blank=True)
     status = models.IntegerField()
     category = models.IntegerField()
     login_recipient = models.CharField(max_length=50)
@@ -1541,6 +1545,14 @@ class Trade_flight(models.Model):
     finish_y = models.IntegerField()
     finish_z = models.IntegerField()
     flight_time = models.IntegerField(default=0)
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
-    finish_time = models.DateTimeField(default=datetime.now, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
+    finish_time = models.DateTimeField(default=timezone.now, blank=True)
     planet = models.IntegerField(default=0)
+
+
+class Chat(models.Model):
+    class Meta():
+        db_table = 'chat'
+
+    user = models.CharField(db_index=True, max_length=20)
+    text = models.CharField(max_length=512)

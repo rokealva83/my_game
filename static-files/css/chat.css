@@ -1,0 +1,28 @@
+/* Chat Styles */
+
+.bkgr{
+    margin: 15px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.bkgr p{
+    margin-top: 0px;
+    margin-bottom: -8px;
+}
+
+.my_btn{
+    width: 1015px;
+    margin: 5px 11px 0 11px;
+    background: rgb(222, 222, 222) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, 0.53) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(41, 41, 41, 0.80) 0 2px 5px -1px;
+
+}
+
+
+.form-control{
+    width: 1008px;
+    margin: 0 11px 0 11px;
+}

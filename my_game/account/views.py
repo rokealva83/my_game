@@ -191,8 +191,8 @@ def auth(request):
                 request.session['user_city'] = user_city.id
                 request.session['live'] = True
                 return render(request, "civilization.html", output)
-        else:
-            message = 'Неверно введено имя или пароль пользователя'
-            output = {'message': message}
-        return render(request, "index.html", output)
+            else:
+                message = 'Неверно введено имя или пароль пользователя'
+                output = {'message': message}
+                return render(request, "index.html", output)
     return render(request, "index.html", {})

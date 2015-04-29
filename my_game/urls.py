@@ -126,4 +126,8 @@ urlpatterns = patterns('',
                        url(r'^send_mail', send_mail.send_mail),
                        url(r'^remove', remove.remove_mail),
                        url(r'^remove_all', remove.remove_mail),
+
+                       url(r'^chat', 'my_game.views.chat'),
+                       url(r'^send_message', 'my_game.views.send_message'),
+                       url(r'^update_message', 'my_game.views.update_message'),
                        )

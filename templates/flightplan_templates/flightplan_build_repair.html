@@ -1,0 +1,50 @@
+{% for flightplan_build_repair in flightplan_build_repairs %}
+    {% if flightplan.id == flightplan_build_repair.id_fleetplan %}
+        <tr align="center">
+            <td>
+                <p>
+                    {% if flightplan_build_repair.id_command == 5 %}
+                        Сборка
+                    {% elif flightplan_build_repair.id_command == 7 %}
+                        Ремонт
+                    {% endif %}
+                </p>
+
+            </td>
+            <td>
+                <p>
+                    {% if flightplan_build_repair.id_command == 5 %}
+                        модуля фабрики
+                    {% elif flightplan_build_repair.id_command == 7 %}
+                        {% if flightplan_build_repair.fleet_repair == flightplan_build_repair.id_fleet %}
+                            самого себя
+                        {% else %}
+                            флота №{{ flightplan_build_repair.fleet_repair }}
+                        {% endif %}
+                    {% endif %}
+
+                </p>
+
+                <p> {% if flightplan_build_repair.time != 0 %}
+                    Время процеса:{{ flightplan_build_repair.time }} секунд
+                {% endif %}
+                </p>
+
+                <p>Status:
+                    {% if flightplan.status == 0 %}
+                        stand by
+                    {% else %}
+                        prosecution
+                    {% endif %}
+                </p>
+            </td>
+            <td>
+                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
+                <input type="hidden"
+                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                <input class="delete_button" type="submit" value="Remove"
+                       name="delete_command"/>
+            </td>
+        </tr>
+    {% endif %}
+{% endfor %}

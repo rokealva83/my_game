@@ -358,7 +358,7 @@ def fleet_flightplan(request):
         fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
         fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
             fleet_id=fleet_id).first()
-        fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+        fleet_parametr_builds = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
                                                                           class_process=1).first()
         fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
                                                                            class_process=2).first()
@@ -403,7 +403,7 @@ def fleet_flightplan(request):
                   'fleet_parametr_scans': fleet_parametr_scans,
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction, 'ship_holds': ship_holds,
                   'message': message, 'flightplan_holds': flightplan_holds, 'flightplan_refills': flightplan_refills,
-                  'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
+                  'fleet_parametr_builds': fleet_parametr_builds, 'fleet_parametr_repair': fleet_parametr_repair,
                   'flightplan_build_repairs': flightplan_build_repairs,
                   'flightplan_colonization': flightplan_colonization}
 

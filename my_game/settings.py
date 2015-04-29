@@ -51,6 +51,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,7 +62,7 @@ INSTALLED_APPS = (
     'my_game.templatetags.my_filter',
     'my_game.space_forces.fleet_management',
     'djcelery',
-    'redis'
+    'redis',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -119,3 +120,5 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
+
+

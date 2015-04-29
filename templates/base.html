@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/window_style.css' %}">
 
-
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
@@ -173,6 +172,12 @@
                 <button disabled class="menu_button" type="submit" name="exit">Выход</button>
             </div>
         </form>
+        <form method="post" action="chat">
+            <div>
+                <button class="menu_button" type="submit" name="chat">Чат</button>
+            </div>
+        </form>
+
     </div>
     <div id="game_content">
         {% block content %}{% endblock %}

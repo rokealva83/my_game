@@ -114,7 +114,6 @@
                     <p>
                         {% include 'flightplan_templates/upload_element.html' %}
                     </p>
-
                 </td>
             </tr>
             <tr align="center">
@@ -236,7 +235,6 @@
                                 {% endfor %}
                             </select>
                         </p>
-
                     </td>
                 </tr>
             {% endif %}
@@ -249,7 +247,6 @@
                                              placeholder="Количество"/>
                         Ремонтировать себя
                         <input type="checkbox" name="repair_yourself" class="flightplan_checkbox"></td>
-
                     </td>
                 </tr>
             {% endif %}
@@ -260,7 +257,6 @@
                         <td>
                             <input type="checkbox" name="colonization" class="flightplan_checkbox"></td>
                         <td>
-
                             <p>
                                 {% if ship_hold.id_shipment == 1 %}
                                     Колонизировать
@@ -272,7 +268,6 @@
                     </tr>
                 {% endif %}
             {% endfor %}
-
         </table>
         <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
         <input class="button_force" type="submit" value="Add command" name="add_command" style="margin-bottom: 4px"/>
@@ -305,8 +300,16 @@
                         {% include 'flightplan_templates/flightplan_refill.html' %}
                     {% endif %}
 
+                    {% if flightplan.class_command == 5 or flightplan.class_command == 7 %}
+                        {% include 'flightplan_templates/flightplan_build_repair.html' %}
+                    {% endif %}
+
                     {% if flightplan.class_command == 6 %}
                         {% include 'flightplan_templates/flightplan_scan.html' %}
+                    {% endif %}
+
+                    {% if flightplan.class_command == 8 %}
+                        {% include 'flightplan_templates/flightplan_build_repair.html' %}
                     {% endif %}
 
                 {% endfor %}

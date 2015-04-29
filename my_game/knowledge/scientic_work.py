@@ -1,31 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
-from django.http.response import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.template.loader import get_template
-from django.template import Context
 import math
-import random
-import sys
-import string
-from datetime import datetime, timedelta, date, time as dt_time
-import time
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.urlresolvers import reverse
-from django.contrib.sessions.models import Session
-from django.conf import settings
-from django.conf.urls.static import static
-from my_game.models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Race, User_scientic, Basic_scientic, \
-    Turn_scientic, Turn_production, Turn_building, Turn_assembly_pieces
-from my_game.models import Basic_scientic, Turn_scientic, Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
-    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon
-from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from my_game.models import Warehouse_factory, Warehouse_element, Warehouse_ship
-import function
-from my_game.models import Project_ship, Element_ship, Ship
-from my_game.models import User_variables
+
+from datetime import datetime, timedelta
+
+from my_game.models import MyUser, Warehouse
+from my_game.models import Basic_scientic, Turn_scientic
 
 
 
