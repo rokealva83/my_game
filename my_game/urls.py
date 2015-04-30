@@ -49,6 +49,8 @@ from my_game.diplomacy import views as diplomacy
 from my_game.diplomacy import send_mail as send_mail
 from my_game.diplomacy import remove_mail as remove
 
+from my_game.chat import views as chatroom
+
 
 
 # import my_game.registration.registration
@@ -127,7 +129,7 @@ urlpatterns = patterns('',
                        url(r'^remove', remove.remove_mail),
                        url(r'^remove_all', remove.remove_mail),
 
-                       url(r'^chat', 'my_game.views.chat'),
-                       url(r'^send_message', 'my_game.views.send_message'),
-                       url(r'^update_message', 'my_game.views.update_message'),
+                       url(r'^chat', chatroom.chat),
+                       url(r'^send_message', chatroom.send_message),
+                       url(r'^update_message', chatroom.update_message),
                        )

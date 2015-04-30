@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
 
 # Create your models here.
 # -*- coding: utf-8 -*-
@@ -1555,4 +1556,6 @@ class Chat(models.Model):
         db_table = 'chat'
 
     user = models.CharField(db_index=True, max_length=20)
-    text = models.CharField(max_length=512)
+    text = models.CharField(max_length=64)
+    time = models.DateTimeField(default=datetime.now, blank=True)
+
