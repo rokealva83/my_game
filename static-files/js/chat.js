@@ -4,23 +4,17 @@
 
 setInterval(
     function update() {
-        var id = $('.message:last').attr('id');
 
+        var id = $('.message:last').attr('id');
         $.post('/update_message',
             {
                 id: id
             },
             function (response) {
-                var mess = response.result
+                var mess = response.result;
                 for (i = 1; i < mess.length; i++) {
-                    var num = 1
                     var message = mess[i];
-                    var len = message.text.length
-                    if (len > 90) {
-                        var idd = len / 90
-                        num = math.ceil(idd)
-                    }
-                    var delete_id = message.id - 39
+                    var delete_id = message.id - 39;
                     var first_message = $('#ground p:first').attr('id')
                     if (delete_id == first_message) {
                         $('#ground p:first').remove()
@@ -29,8 +23,27 @@ setInterval(
                 }
             }
         );
+
+        var user_id = $('.user_online:last').attr('id');
+        if (user_id == undefined) {
+            user_id = 1
+        }
+        $.post('/update_user',
+            {
+                id: user_id
+            },
+            function (response) {
+                var user = response.result;
+                if (user != undefined) {
+                    for (i = 0; i < user.length; i++) {
+                        var user_online = user[i];
+                        $('#user_online').append('<p id="' + user_online.id + '" class="user_online"> <b>' + user_online.user + '</b></p>')
+                    }
+                }
+            }
+        );
     }
-    , 500)
+    , 1000);
 
 
 function send_message() {
@@ -42,7 +55,6 @@ function send_message() {
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     var message = 'user=' + user + '&text=' + text;
     xhttp.send(message);
-
     $('#text').each(function () {
         $(this).val('')
     });
@@ -53,8 +65,28 @@ $(document).ready(function () {
     $("#ground .touch").click(function () {
         var name = $(this).text();
         $('#text').each(function () {
-            $(this).val(name + ',')
+            $(this).val(name + ',');
         });
-    })
-})
+    });
+});
 
+
+setInterval(
+    function online_user() {
+        $.post('/user_delete');
+        $("#user_online p").each(function () {
+            var user_id = $(this).attr('id');
+            var online_user;
+            $.post('/update_user_delete',
+                {
+                    id: user_id
+                },
+                function (response) {
+                    online_user= response.result;
+                    if (online_user == 0) {
+                        $('#user_online p#'+user_id).remove();
+                    }
+                });
+        });
+    }
+    , 5000)

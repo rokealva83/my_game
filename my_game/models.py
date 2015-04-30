@@ -1555,7 +1555,17 @@ class Chat(models.Model):
     class Meta():
         db_table = 'chat'
 
-    user = models.CharField(db_index=True, max_length=20)
+    user = models.CharField(max_length=20)
+    user_id = models.IntegerField(db_index=True, default=1)
     text = models.CharField(max_length=64)
     time = models.DateTimeField(default=datetime.now, blank=True)
+
+
+class User_chat_online(models.Model):
+    class Meta():
+        db_table = 'user_chat_online'
+    user_id = models.IntegerField(db_index=True)
+    user = models.CharField(max_length=20)
+    last_time_update = models.DateTimeField()
+
 

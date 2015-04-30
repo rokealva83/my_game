@@ -132,4 +132,6 @@ urlpatterns = patterns('',
                        url(r'^chat', chatroom.chat),
                        url(r'^send_message', chatroom.send_message),
                        url(r'^update_message', chatroom.update_message),
+                       url(r'^user_delete', chatroom.user_delete),
+                       url(r'^update_user', chatroom.update_user),
                        )

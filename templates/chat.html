@@ -18,6 +18,9 @@
             {% endfor %}
         </div>
         <div id="user_online">
+            {% for online_user in online_users %}
+                <p id="{{ online_user.id }}" class="user_online"> <b>{{ online_user.user }}</b></p>
+            {% endfor %}
 
         </div>
 
