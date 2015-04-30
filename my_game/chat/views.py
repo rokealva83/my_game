@@ -3,7 +3,7 @@ from my_game.models import MyUser, User_city, Warehouse, Chat, User_chat_online
 import function
 from django.http import JsonResponse
 from django.utils import timezone
-from datetime import datetime
+
 
 
 def chat(request):
@@ -13,7 +13,6 @@ def chat(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         user = MyUser.objects.filter(user_id=session_user).first()
-
         user_online = User_chat_online.objects.filter(user_id=session_user).first()
         if user_online is None:
             user_online = User_chat_online(
@@ -101,7 +100,7 @@ def user_delete(request):
         last_time_update = online_user.last_time_update
         delta_time = timezone.now()-last_time_update
         delta_time = delta_time.seconds
-        if delta_time > 30:
+        if delta_time > 300:
             online_user_delete = User_chat_online.objects.filter(id = online_user.id).delete()
 
 

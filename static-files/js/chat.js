@@ -46,7 +46,6 @@ setInterval(
     , 1000);
 
 
-
 function send_message() {
     var user = document.getElementById('user').value;
     var text = document.getElementById('text').value;
@@ -71,7 +70,6 @@ $(document).ready(function () {
     });
 });
 
-//Почемуто удаляет не то что надо. Мигает.
 
 setInterval(
     function delete_user() {

@@ -1,0 +1,21 @@
+<a class="overlay"></a>
+<div class="rent_window">
+    <div id="adress"></div>
+    <section id="teaser" class="request_form" style="max-height: 540px; padding: 0; padding-top: 25px">
+
+        <textarea id="text_private" name="text_private" type="text" class="private_message"
+                  placeholder="Введите свое сообщение" value=""></textarea>
+
+        <span class="input-group-btn">
+
+            <input id="user" type="hidden" value="{{ user_name }}" name="user_private">
+            <button class="btn btn-default my_private_btn" type="submit" onclick='send_private_message()'><b>Отправить
+                сообщение</b>
+            </button>
+
+        </span>
+
+    </section>
+
+    <a class="close" title="Закрыть"></a>
+</div>

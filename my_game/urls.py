@@ -50,6 +50,7 @@ from my_game.diplomacy import send_mail as send_mail
 from my_game.diplomacy import remove_mail as remove
 
 from my_game.chat import views as chatroom
+from my_game.chat import private_message as private_chatroom
 
 
 
@@ -135,4 +136,6 @@ urlpatterns = patterns('',
                        url(r'^user_delete', chatroom.user_delete),
                        url(r'^update_user', chatroom.update_user),
                        url(r'^delete_user_update', chatroom.delete_user_update),
+                       url(r'^send_private_message', private_chatroom.send_private_message),
+                       url(r'^update_private_message', private_chatroom.update_private_message),
                        )

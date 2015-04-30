@@ -46,3 +46,83 @@
     width: 1008px;
     margin: 0 11px 0 11px;
 }
+
+
+/* Базовые стили слоя затемнения и модального окна  */
+.overlay {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    display: none;
+/* фон затемнения */
+    background-color: rgba(0, 0, 0, 0.65);
+    position: fixed; /* фиксированное поцизионирование */
+    cursor: default; /* тип курсара */
+}
+/* стили модального окна */
+.rent_window {
+    top: 45%;
+    right: 0;
+    left: 50%;
+    font-size: 14px;
+    z-index: 20;
+    margin: 0;
+    width: 320px;
+    height: 250px;
+    display: none;
+/* фиксированное позиционирование, окно стабильно при прокрутке */
+    position: fixed;
+    padding: 15px;
+    opacity: 0;
+    margin-left: -200px;
+    background-color: #3d3d3d;
+
+/* внешняя тень */
+    -webkit-transition: -webkit-transform 0.6s ease-out;
+    -moz-transition: -moz-transform 0.6s ease-out;
+    -o-transition: -o-transform 0.6s ease-out;
+    transition: transform 0.6s ease-out;
+}
+
+
+.my_private_btn{
+    width: 295px;
+    margin: 5px 11px 0 11px;
+    background: rgb(222, 222, 222) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, 0.53) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(41, 41, 41, 0.80) 0 2px 5px -1px;
+
+}
+
+.private_message{
+  width: 310px;
+  height: 100px;
+  border-radius: 5px;
+}
+
+.private_message_text {
+    font-size: 14px;
+    z-index: 20;
+    margin: 0;
+    margin-left: -110px;
+    width: 220px;
+    min-height: 125px;
+    max-height: 400px;
+    top: 60%;
+    left: 50%;
+    display: block;
+    border-radius: 5px;
+/* фиксированное позиционирование, окно стабильно при прокрутке */
+    position: fixed;
+    padding: 15px;
+    opacity: 0;
+    background-color: #a4a4a4;
+
+
+/* внешняя тень */
+    -webkit-transition: -webkit-transform 0.6s ease-out;
+    -moz-transition: -moz-transform 0.6s ease-out;
+    -o-transition: -o-transform 0.6s ease-out;
+    transition: transform 0.6s ease-out;
+}
