@@ -46,6 +46,7 @@ setInterval(
     , 1000);
 
 
+
 function send_message() {
     var user = document.getElementById('user').value;
     var text = document.getElementById('text').value;
@@ -70,14 +71,19 @@ $(document).ready(function () {
     });
 });
 
+//Почемуто удаляет не то что надо. Мигает.
+
+setInterval(
+    function delete_user() {
+        $.post('/user_delete')}, 5000);
 
 setInterval(
     function online_user() {
-        $.post('/user_delete');
         $("#user_online p").each(function () {
             var user_id = $(this).attr('id');
-            var online_user;
-            $.post('/update_user_delete',
+            var online_user = 1;
+
+            $.post('/delete_user_update',
                 {
                     id: user_id
                 },
@@ -89,4 +95,4 @@ setInterval(
                 });
         });
     }
-    , 5000)
+    , 5000);

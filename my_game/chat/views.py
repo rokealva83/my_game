@@ -106,7 +106,7 @@ def user_delete(request):
 
 
 
-def update_user_delete(request):
+def delete_user_update(request):
     id = int(request.POST.get('id'))
     response = 0
     online_user = User_chat_online.objects.filter(id = id)
