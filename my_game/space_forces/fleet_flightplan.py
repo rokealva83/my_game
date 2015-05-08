@@ -10,7 +10,7 @@ from my_game import function
 from my_game.models import Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_parametr_resource_extraction
 from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_production, Flightplan_hold, \
     Flightplan_refill, Flightplan_build_repair, Fleet_parametr_build_repair, Flightplan_colonization, Device_pattern
-from my_game.flightplan.create import flight
+from my_game.flightplan.create import flight, scan, upload_hold, unload_hold
 from my_game.flightplan.create import resource_extraction
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
@@ -38,128 +38,31 @@ def fleet_flightplan(request):
             if city or coordinate:
                 flight.flight_system(session_user, session_user_city, answer)
 
-            resource_extraction = request.POST.get('resource_extraction')
-            if resource_extraction:
+            extraction = request.POST.get('resource_extraction')
+            if extraction:
                 time_extraction = request.POST.get('time_extraction')
                 full_hold = request.POST.get('full_hold')
-
                 resource_extraction.resource_extraction(session_user, fleet_id, fleet, time_extraction, full_hold)
 
-
-
-            scan = request.POST.get('scan')
-            if scan:
+            scaning = request.POST.get('scan')
+            if scaning:
                 method_scanning = int(request.POST.get('scaning'))
-                fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id,
-                                                                         method_scanning=method_scanning).first()
-                flightplan = Flightplan(
-                    user=session_user,
-                    id_fleet=fleet_id,
-                    class_command=6,
-                    id_command=method_scanning,
-                    status=0
-                )
-                flightplan.save()
+                scan.scan(session_user, fleet_id, method_scanning)
 
-                flightplan_scan = Flightplan_scan(
-                    user=session_user,
-                    id_fleet=fleet_id,
-                    id_command=method_scanning,
-                    range_scanning=fleet_parametr_scan.range_scanning,
-                    start_time=datetime.now(),
-                    time_scanning=fleet_parametr_scan.time_scanning,
-                    id_fleetplan=flightplan.id
-                )
-                flightplan_scan.save()
 
-            upload_hold = request.POST.get('upload_hold')
-            if upload_hold:
+            upload = request.POST.get('upload_hold')
+            if upload:
                 upload_amount = int(request.POST.get('upload_amount'))
                 name_upload_element = request.POST.get('name_upload_element')
-                name_upload_element = name_upload_element.split(';')
-                id_element = int(name_upload_element[0])
-                class_element = int(name_upload_element[1])
-                name = find_name(class_element, id_element)
+                upload_hold.upload_hold(session_user, fleet_id, upload_amount, name_upload_element)
 
-                flightplan = Flightplan(
-                    user=session_user,
-                    id_fleet=fleet_id,
-                    class_command=2,
-                    id_command=1,
-                    status=0
-                )
-                flightplan.save()
-
-                flightplan_hold = Flightplan_hold(
-                    user=session_user,
-                    id_fleet=fleet_id,
-                    id_command=1,
-                    amount=upload_amount,
-                    start_time=datetime.now(),
-                    id_fleetplan=flightplan.id,
-                    time=300,
-                    class_element=class_element,
-                    id_element=id_element,
-                    name=name
-                )
-                flightplan_hold.save()
-
-            unload_hold = request.POST.get('unload_hold')
-            if unload_hold:
+            unload = request.POST.get('unload_hold')
+            if unload:
                 unload_all = request.POST.get('unload_all')
                 unload_all_hold = request.POST.get('unload_all_hold')
                 unload_amount = request.POST.get('unload_amount')
                 id_hold_element = request.POST.get('id_hold_element')
-                hold = Hold.objects.filter(id=id_hold_element).first()
-                class_element = hold.class_shipment
-                id_element = hold.id_shipment
-
-                name = find_name(class_element, id_element)
-                error = 0
-                if unload_all_hold:
-                    id_command = 4
-                    unload_amount = 0
-                    class_element = 0
-                    id_element = 0
-                    time = 600
-                elif unload_all:
-                    id_command = 3
-                    unload_amount = hold.amount_shipment
-                    class_element = 0
-                    id_element = id_hold_element
-                    time = 300
-                else:
-                    if unload_amount:
-                        id_command = 2
-                        class_element = hold.class_shipment
-                        id_element = hold.id_shipment
-                        time = 150
-                    else:
-                        message = ''
-                        error = 1
-                if error == 0:
-                    flightplan = Flightplan(
-                        user=session_user,
-                        id_fleet=fleet_id,
-                        class_command=2,
-                        id_command=id_command,
-                        status=0
-                    )
-                    flightplan.save()
-
-                    flightplan_hold = Flightplan_hold(
-                        user=session_user,
-                        id_fleet=fleet_id,
-                        id_command=id_command,
-                        amount=unload_amount,
-                        start_time=datetime.now(),
-                        id_fleetplan=flightplan.id,
-                        time=time,
-                        class_element=class_element,
-                        id_element=id_element,
-                        name=name
-                    )
-                    flightplan_hold.save()
+                unload_hold.unload_hold(session_user, fleet_id, unload_all, unload_all_hold, unload_amount, id_hold_element)
 
             refill_fleet = request.POST.get('refill_fleet')
             overload = request.POST.get('overload')
