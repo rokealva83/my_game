@@ -8,7 +8,7 @@ import my_game.building.verification_construction as verification_construction
 import my_game.factory.verification_stage_production as verification_stage_production
 import my_game.factory.verification_complex_stage as verification_complex_stage
 import my_game.designing_ships.turn_ship_build as turn_ship_build
-import flightplan.create.verification_flight_list as verification_flight_list
+import flightplan.verification_flight_list as verification_flight_list
 import my_game.trade.verification_trade as verification_trade
 
 
