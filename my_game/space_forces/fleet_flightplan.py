@@ -10,7 +10,7 @@ from my_game import function
 from my_game.models import Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_parametr_resource_extraction
 from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_production, Flightplan_hold, \
     Flightplan_refill, Flightplan_build_repair, Fleet_parametr_build_repair, Flightplan_colonization, Device_pattern
-from my_game.flightplan.create import flight, scan, upload_hold, unload_hold
+from my_game.flightplan.create import flight, scan, upload_hold, unload_hold, refill, repair_build
 from my_game.flightplan.create import resource_extraction
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
@@ -49,7 +49,6 @@ def fleet_flightplan(request):
                 method_scanning = int(request.POST.get('scaning'))
                 scan.scan(session_user, fleet_id, method_scanning)
 
-
             upload = request.POST.get('upload_hold')
             if upload:
                 upload_amount = int(request.POST.get('upload_amount'))
@@ -62,126 +61,19 @@ def fleet_flightplan(request):
                 unload_all_hold = request.POST.get('unload_all_hold')
                 unload_amount = request.POST.get('unload_amount')
                 id_hold_element = request.POST.get('id_hold_element')
-                unload_hold.unload_hold(session_user, fleet_id, unload_all, unload_all_hold, unload_amount, id_hold_element)
+                unload_hold.unload_hold(session_user, fleet_id, unload_all, unload_all_hold, unload_amount,
+                                        id_hold_element)
 
             refill_fleet = request.POST.get('refill_fleet')
             overload = request.POST.get('overload')
             yourself = request.POST.get('yourself')
             if refill_fleet is not None or overload is not None or yourself is not None:
-                if yourself:
-                    id_command = 1
-                    id_fleet_refill = fleet_id
-                    amount = request.POST.get('yourself_amount')
-                    class_element = 14
-                    id_fuel_yourself = request.POST.get('id_fuel_yourself')
-                    id_fuel_yourself = id_fuel_yourself.split(';')
-                    id_element = id_fuel_yourself[0]
-                    class_refill = 1
-                    time = 150
-                    name = find_name(class_element, id_element)
-                    yourself_full_tank = request.POST.get('yourself_full_tank')
-                    if yourself_full_tank:
-                        class_refill = 2
-                        amount = 0
-                        time = 300
-
-                if refill_fleet:
-                    id_command = 2
-                    id_fleet_refill = request.POST.get('fleet_number')
-                    id_element = request.POST.get('id_fuel')
-                    amount = request.POST.get('amount')
-                    hold = Hold.objects.filter(id=id_element).first()
-                    name = find_name(hold.class_shipment, hold.id_shipment)
-                    class_refill = 1
-                    class_element = 0
-                    time = 150
-                    full_tank = request.POST.get('full_tank')
-                    if full_tank:
-                        class_refill = 2
-                        amount = 0
-                        time = 300
-
-                elif overload:
-                    id_command = 3
-                    id_element = request.POST.get('id_hold_element')
-                    amount = request.POST.get('overload_amount')
-                    id_fleet_refill = request.POST.get('overload_fleet_number')
-                    hold = Hold.objects.filter(id=id_element).first()
-                    name = find_name(hold.class_shipment, hold.id_shipment)
-                    class_refill = 1
-                    class_element = 0
-                    time = 300
-                    all_goods = request.POST.get('all_goods')
-                    if all_goods:
-                        class_refill = 2
-                        amount = 0
-                        time = 450
-
-                flightplan = Flightplan(
-                    user=session_user,
-                    id_fleet=fleet_id,
-                    class_command=4,
-                    id_command=id_command,
-                    status=0
-                )
-                flightplan.save()
-
-                flightplan_refill = Flightplan_refill(
-                    user=session_user,
-                    id_fleet=fleet_id,
-                    id_command=id_command,
-                    id_fleet_refill=id_fleet_refill,
-                    class_refill=class_refill,
-                    class_element=class_element,
-                    id_element=id_element,
-                    amount=amount,
-                    start_time=datetime.now(),
-                    time_refill=time,
-                    id_fleetplan=flightplan.id,
-                    name=name
-                )
-                flightplan_refill.save()
+                refill.refill(session_user, fleet_id, request)
 
             repair = request.POST.get('repair')
             build = request.POST.get('build')
             if build is not None or repair is not None:
-                if build:
-                    id_hold_factory = request.POST.get('id_factory')
-                    id_command = 5
-                    fleet_repair = 0
-
-                    hold = Hold.objects.filter(id=id_hold_factory).first()
-                    factory = Factory_pattern.objects.filter(id=hold.id_shipment).first().time_deployment
-                    fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
-                                                                                      class_process=1).first().process_per_minute
-                    time = factory * fleet_parametr_build
-
-                if repair:
-                    fleet_repair = request.POST.get('fleet_number')
-                    repair_yourself = request.POST.get('repair_yourself')
-                    id_command = 7
-                    if repair_yourself:
-                        fleet_repair = fleet_id
-                    time = 0
-
-                flightplan = Flightplan(
-                    user=session_user,
-                    id_fleet=fleet_id,
-                    class_command=id_command,
-                    id_command=id_command,
-                    status=0
-                )
-                flightplan.save()
-
-                flightplan_build_repair = Flightplan_build_repair(
-                    id_fleet=fleet_id,
-                    id_fleetplan=flightplan.id,
-                    id_command=id_command,
-                    fleet_repair=fleet_repair,
-                    start_time=datetime.now(),
-                    time=time,
-                )
-                flightplan_build_repair.save()
+                repair_build.repair_build(session_user, fleet_id, request)
 
             colonization = request.POST.get('colonization')
             if colonization:
@@ -245,7 +137,7 @@ def fleet_flightplan(request):
         fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
             fleet_id=fleet_id).first()
         fleet_parametr_builds = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
-                                                                          class_process=1).first()
+                                                                           class_process=1).first()
         fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
                                                                            class_process=2).first()
         warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
