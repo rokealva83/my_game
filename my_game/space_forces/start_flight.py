@@ -14,6 +14,7 @@ from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pa
     Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair, Flightplan_colonization
 
 
+
 def start_flight(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
@@ -25,6 +26,7 @@ def start_flight(request):
         command = 0
         if request.POST.get('start_flight'):
             fleet_id = int(request.POST.get('hidden_fleet'))
+
             flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
             id_flightplan = flightplan.pk
             if flightplan.class_command == 1:
