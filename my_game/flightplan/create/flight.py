@@ -2,7 +2,7 @@
 
 import math
 from my_game.models import System, Planet
-from my_game.models import Project_ship, Ship, Fleet, Fleet_energy_power, Fleet_engine
+from my_game.models import Project_ship, Ship, Fleet, Fleet_engine
 from my_game.models import Flightplan, Flightplan_flight
 
 

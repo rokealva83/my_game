@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from my_game.models import Flightplan, Flightplan_hold
-from my_game.space_forces.fleet_flightplan import find_name
+from my_game.flightplan.find_name import find_name
 
 
 def upload_hold(*args):

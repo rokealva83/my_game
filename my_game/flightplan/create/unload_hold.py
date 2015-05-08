@@ -13,7 +13,7 @@ from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Fligh
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
     Basic_resource, Hold, Fuel_pattern
-from my_game.space_forces.fleet_flightplan import find_name
+from my_game.flightplan.find_name import find_name
 
 
 def unload_hold(*args):
