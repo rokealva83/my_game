@@ -13,9 +13,11 @@ from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pa
     Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern, \
     Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair, Flightplan_colonization
 
+from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
+    start_repair_build, start_scaning, start_unload_hold, start_upload_hold
 
 
-def start_flight(request):
+def start_flightplan(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
@@ -26,20 +28,33 @@ def start_flight(request):
         command = 0
         if request.POST.get('start_flight'):
             fleet_id = int(request.POST.get('hidden_fleet'))
-
             flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
-            id_flightplan = flightplan.pk
             if flightplan.class_command == 1:
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id,
-                                                                     id_command=flightplan.id_command).first()
-                start_time = datetime.now()
-                finish_time = start_time + timedelta(seconds=flightplan_flight.flight_time)
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id,
-                                                                     id_command=flightplan.id_command).update(
-                    start_time=start_time, finish_time=finish_time)
+                message = start_flight.start_flight(fleet_id)
 
-                flightplan = Flightplan.objects.filter(id=id_flightplan, id_fleet=fleet_id).update(status=1)
-                fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+            elif flightplan.class_command == 2:
+                if flightplan.id_command == 1:
+                    message = start_upload_hold.start_upload(fleet_id)
+                else:
+                    message = start_unload_hold.start_unload(fleet_id)
+
+            elif flightplan.class_command ==3:
+                message = start_extraction.start_extraction(fleet_id)
+
+            elif flightplan.class_command ==4:
+                message = start_refill.start_refill(fleet_id)
+
+            elif flightplan.class_command ==5 or flightplan.class_command ==7:
+                message = start_repair_build.start_repair_build(fleet_id)
+
+            elif flightplan.class_command ==6:
+                message = start_scaning.start_scaning(fleet_id)
+
+            elif flightplan.class_command ==8:
+                message = start_colonization.start_colonization(fleet_id)
+
+
+
             command = 0
 
         if request.POST.get('delete_list'):
@@ -112,7 +127,7 @@ def start_flight(request):
                   'fleet_engine': fleet_engine, 'basic_resources': basic_resources, 'module_patterns': module_patterns,
                   'fleet_parametr_scans': fleet_parametr_scans, 'ship_holds': ship_holds, 'message': message,
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
-                  'flightplan_refills': flightplan_refills, 'flightplan_build_repairs':flightplan_build_repairs,
+                  'flightplan_refills': flightplan_refills, 'flightplan_build_repairs': flightplan_build_repairs,
                   'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
                   'flightplan_colonization': flightplan_colonization}
 

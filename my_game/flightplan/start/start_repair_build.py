@@ -14,15 +14,16 @@ from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pa
     Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair, Flightplan_colonization
 
 
-def start_flight(*args):
+def start_repair_build(*args):
     fleet_id = args[0]
+
     if len(args) == 1:
         start_time = datetime.now()
 
     flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
     id_flightplan = flightplan.pk
 
-    flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id, id_command=flightplan.id_command).first()
-    flightplan_flight = Flightplan_flight.objects.filter(id=flightplan_flight.pk).update(start_time=start_time)
+    flightplan_repair = Flightplan_build_repair.objects.filter(id_fleet=fleet_id).first()
+    flightplan_repair = Flightplan_build_repair.objects.filter(id=flightplan_repair.pk).update(start_time=start_time)
     flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
     fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
