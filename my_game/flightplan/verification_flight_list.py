@@ -6,7 +6,7 @@ import math
 from my_game.models import Planet
 from my_game.models import System, Asteroid_field
 from my_game.models import Fleet
-from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production, Flightplan_scan
+from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production
 from my_game.models import Mail
 
 
