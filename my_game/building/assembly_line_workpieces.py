@@ -7,7 +7,6 @@ from my_game.models import Factory_pattern, Building_pattern
 from my_game.models import Warehouse_factory
 
 
-
 def check_assembly_line_workpieces(request):
     user = int(request)
     my_user = MyUser.objects.filter(user_id=user).first()

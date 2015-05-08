@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import math
+
 import random
-
 from django.shortcuts import render
-from django.http.response import HttpResponse
-
-from my_game.models import Galaxy, System, Planet, Asteroid_field
+from my_game.models import System, Asteroid_field
 
 
 def asteroid_generation(request):

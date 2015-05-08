@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-
 from django.shortcuts import render
-
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
 from my_game import function
@@ -15,7 +13,6 @@ from my_game.flightplan.create import resource_extraction
 from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
     Basic_resource, Hold, Fuel_pattern
-from my_game.flightplan.find_name import find_name
 
 
 def fleet_flightplan(request):

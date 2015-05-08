@@ -3,9 +3,8 @@
 import random
 
 from django.shortcuts import render
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from datetime import datetime
 from my_game.models import Planet
 from my_game.models import User_variables

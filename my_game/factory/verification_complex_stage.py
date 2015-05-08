@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import timedelta
 from my_game.models import Turn_complex_production, Manufacturing_complex
 from my_game.models import Factory_installed
 from my_game.models import Warehouse_element

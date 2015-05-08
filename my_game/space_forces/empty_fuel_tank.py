@@ -4,10 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship, Basic_resource
 from my_game import function
-from my_game.models import Project_ship, Ship, Fleet, Hold, Fuel_tank, Fuel_pattern,Basic_fuel
-from my_game.models import Flightplan, Flightplan_flight
-from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
-    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern
+from my_game.models import Ship, Fleet, Fuel_tank, Fuel_pattern,Basic_fuel
 
 
 def empty_fuel_tank(request):

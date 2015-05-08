@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse
-from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern
-from my_game.models import Warehouse_element
+from my_game.models import Hull_pattern
 from my_game import function
-from my_game.models import Project_ship, Element_ship, Turn_ship_build
+from my_game.models import Project_ship, Turn_ship_build
 
 
 def designingships(request):

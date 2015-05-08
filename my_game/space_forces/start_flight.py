@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
-from datetime import datetime, timedelta
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse
@@ -12,7 +10,6 @@ from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pa
     Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
     Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern, \
     Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair, Flightplan_colonization
-
 from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
     start_repair_build, start_scaning, start_unload_hold, start_upload_hold
 

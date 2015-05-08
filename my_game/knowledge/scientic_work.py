@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import math
-
 from datetime import datetime, timedelta
-
 from my_game.models import MyUser, Warehouse
 from my_game.models import Basic_scientic, Turn_scientic
-
 
 
 def scien_up(*args):

@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import random
-from datetime import datetime, timedelta
-
 from django.utils import timezone
 from my_game.models import MyUser, User_city
-from my_game.models import  Turn_building
+from my_game.models import Turn_building
 from my_game.models import Factory_pattern, Factory_installed, Building_pattern, Building_installed
 import my_game.verification_func as verification_func
 

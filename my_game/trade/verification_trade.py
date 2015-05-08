@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from django.utils import timezone
 from my_game.models import Planet
 from my_game.models import User_city

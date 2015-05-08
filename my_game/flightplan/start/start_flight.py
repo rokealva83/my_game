@@ -16,6 +16,7 @@ from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pa
 
 def start_flight(*args):
     fleet_id = args[0]
+    #Повверка наличия топлива в зависимости от варианта полета. Проверка достаточности топлива для полета.
     if len(args) == 1:
         start_time = datetime.now()
 

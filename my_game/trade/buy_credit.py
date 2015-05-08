@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Basic_resource
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
-from my_game.models import Basic_armor, Basic_factory, Basic_engine, Basic_generator, Basic_hull, Basic_module, \
-    Basic_shell, Basic_shield, Basic_weapon, Basic_scientic
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
-from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship
+from my_game.models import Project_ship, Ship
 from my_game.models import Trade_element, Trade_space, Building_installed, Delivery_queue
 
 

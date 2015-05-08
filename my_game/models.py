@@ -4,9 +4,6 @@ from django.db import models
 from django.utils import timezone
 from datetime import datetime
 
-# Create your models here.
-# -*- coding: utf-8 -*-
-
 class MyUser(models.Model):
     class Meta():
         db_table = 'my_user'

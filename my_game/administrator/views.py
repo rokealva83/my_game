@@ -2,10 +2,7 @@
 
 import math
 import random
-
 from django.shortcuts import render
-from django.http.response import HttpResponse
-
 from my_game.models import Galaxy, System, Planet
 
 

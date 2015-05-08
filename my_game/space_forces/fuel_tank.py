@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, User_city
 from my_game.models import Warehouse, Warehouse_element, Fuel_pattern, Basic_fuel, Fuel_tank
 from my_game import function
-from my_game.models import Ship, Fleet, Hold
+from my_game.models import Ship, Fleet
 
 
 def fuel_tank(request):

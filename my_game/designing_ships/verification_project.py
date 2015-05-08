@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 
-
-from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Weapon_pattern
-
-from my_game import function
-from my_game.models import Project_ship, Element_ship, Turn_ship_build
 
 
 def verification(*args):

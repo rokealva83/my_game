@@ -1,21 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import math
-import random
-from datetime import datetime, timedelta
-
 from django.shortcuts import render
-from django.http.response import HttpResponse
-from django.contrib.auth.models import User
-
-from my_game.models import Galaxy, System, Planet, MyUser, User_city, Warehouse, Turn_production, Turn_building, \
-    Turn_assembly_pieces
-from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Factory_installed
-from my_game.models import Warehouse_factory, Warehouse_element
+from my_game.models import MyUser, User_city, Warehouse
 import function
-import verification_func
-from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship, Fleet, Race, Mail
+from my_game.models import Mail
 
 
 def diplomacy(request):
