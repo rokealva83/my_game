@@ -242,15 +242,8 @@ def add_trade_element(request):
         system_id = planet.system_id
         if planet:
             planet = 1
-            system = System.objects.filter(id=system_id).first()
-            x = int(system.x) * 1000 + int(user_city.x)
-            y = int(system.y) * 1000 + int(user_city.y)
-            z = int(system.z) * 1000 + int(user_city.z)
         else:
             planet = 0
-            x = int(user_city.x) * 1000
-            y = int(user_city.y) * 1000
-            z = int(user_city.z) * 1000
 
         trade_element = Trade_element(
             name=name,
@@ -264,9 +257,9 @@ def add_trade_element(request):
             cost=price,
             cost_element=unit_price,
             diplomacy=ban,
-            x=x,
-            y=y,
-            z=z,
+            x=user_city.x,
+            y=user_city.y,
+            z=user_city.z,
             planet=planet,
             user_city=session_user_city,
             mass_element = mass_element,

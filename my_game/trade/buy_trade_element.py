@@ -88,19 +88,9 @@ def buy_trade(request):
                     user_city = User_city.objects.filter(id=session_user_city).first()
                     planet = Planet.objects.filter(x=user_city.x, y=user_city.y, z=user_city.z).first()
                     system_id = planet.system_id
-                    if planet:
-                        planet = 1
-                        system = System.objects.filter(id=system_id).first()
-                        x2 = int(system.x) * 1000 + int(user_city.x)
-                        y2 = int(system.y) * 1000 + int(user_city.y)
-                        z2 = int(system.z) * 1000 + int(user_city.z)
-                    else:
-                        planet = 0
-                        x2 = (user_city.x) * 1000
-                        y2 = (user_city.y) * 1000
-                        z2 = (user_city.z) * 1000
                     distance = math.sqrt(
-                        (trade_element.x - x2) ** 2 + (trade_element.y - y2) ** 2 + (trade_element.z - z2) ** 2)
+                        (trade_element.x - user_city.x) ** 2 + (trade_element.y - user_city.y) ** 2 + (
+                        trade_element.z - user_city.z) ** 2)
                     if method == 1:
                         mass_element = trade_element.mass_element
                         mass = amount * mass_element

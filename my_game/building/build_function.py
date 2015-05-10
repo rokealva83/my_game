@@ -245,8 +245,12 @@ def install_factory_unit(*args):
 
         if factory_pattern.production_class == 12:
             power_consumption = 0
+            free_energy = 100
         else:
             power_consumption = factory_pattern.power_consumption
+
+        a= factory_pattern.cost_expert_deployment
+        b = user_city.population
 
         if factory_pattern.cost_expert_deployment < user_city.population and free_energy > power_consumption:
             last_building = Turn_building.objects.filter(user=session_user, user_city=session_user_city).last()

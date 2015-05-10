@@ -75,9 +75,9 @@ def add_user(request):
                 user=id_user,
                 system_id=planeta.system_id,
                 planet=planeta,
-                x=planeta.x,
-                y=planeta.y,
-                z=planeta.z,
+                x=planeta.global_x,
+                y=planeta.global_y,
+                z=planeta.global_z,
                 city_size_free=planeta.work_area_planet,
                 founding_date=datetime.today(),
                 extraction_date=datetime.today()
@@ -100,6 +100,48 @@ def add_user(request):
                 user_city = user_city.id,
                 id_resource = 2,
                 amount = user_variables.registr_resource2
+            )
+            warehouse.save()
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 3,
+                amount = user_variables.registr_resource3
+            )
+            warehouse.save()
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 4,
+                amount = user_variables.registr_resource4
+            )
+            warehouse.save()
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 5,
+                amount = user_variables.registr_mineral1
+            )
+            warehouse.save()
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 6,
+                amount = user_variables.registr_mineral2
+            )
+            warehouse.save()
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 7,
+                amount = user_variables.registr_mineral3
+            )
+            warehouse.save()
+            warehouse = Warehouse(
+                user = id_user,
+                user_city = user_city.id,
+                id_resource = 8,
+                amount = user_variables.registr_mineral4
             )
             warehouse.save()
 

@@ -39,6 +39,7 @@ def choice_build(request):
     else:
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
+        function.check_all_queues(session_user)
         factory_patterns = {}
         building_patterns = {}
         warehouse_elements = {}

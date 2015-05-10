@@ -760,7 +760,6 @@ def device_open(request):
             new_factory_pattern(user, 9, device_scient.id)
 
 
-
 def element_open(*args):
     user = args[0]
     element_scient = args[1]

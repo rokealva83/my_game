@@ -79,7 +79,8 @@ def verification_of_resources(request):
         total_number_specialists = 0
         for check_all_user_factory in check_all_user_factorys:
             install_factory = Factory_pattern.objects.filter(id=check_all_user_factory.factory_pattern_id).first()
-            total_number_specialists = total_number_specialists + install_factory.cost_expert_deployment
+            if install_factory:
+                total_number_specialists = total_number_specialists + install_factory.cost_expert_deployment
         increase_internal_currency = total_number_specialists * elapsed_time_seconds * tax
         new_internal_currency = MyUser.objects.get(user_id=user).internal_currency + increase_internal_currency
         money = MyUser.objects.filter(user_id=user).update(internal_currency=new_internal_currency)

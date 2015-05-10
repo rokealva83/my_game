@@ -8,7 +8,7 @@ from my_game.models import System, Asteroid_field
 from my_game.models import Fleet
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production
 from my_game.models import Mail
-from flightplan.start.start_flight import start_flight
+from my_game.flightplan.start.start_flight import start_flight
 
 
 def verification_flight_list(request):

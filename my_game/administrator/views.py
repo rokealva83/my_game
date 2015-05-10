@@ -80,9 +80,9 @@ def star_generation(request):
 
             system = System(
                 galaxy_id=1,
-                x=x,
-                y=y,
-                z=z,
+                x=x*1000,
+                y=y*1000,
+                z=z*1000,
                 system_type=star_type,
                 system_size=system_size,
                 star_size=radius_star
@@ -121,12 +121,15 @@ def star_generation(request):
                 aa = random.randint(1, 360)
                 dev = random.randint(-25, 25)
                 orb_radius = radius_star + planet_id * radius
-                xx = orb_radius * math.cos(aa)
-                yy = orb_radius * math.sin(aa)
-                zz = random.randint(-15, 15)
-                plan.append(int(xx))
-                plan.append(int(yy))
-                plan.append(zz)
+                system_x = orb_radius * math.cos(aa)
+                system_y = orb_radius * math.sin(aa)
+                system_z = random.randint(-15, 15)
+                global_x = x*1000+system_x
+                global_y = y*1000+system_y
+                global_z = z*1000+system_z
+                plan.append(int(system_x))
+                plan.append(int(system_y))
+                plan.append(system_z)
 
                 # generate size and classification of planet
                 planet_type = 0
@@ -150,9 +153,12 @@ def star_generation(request):
 
                 planet = Planet(
                     system_id=system_id,
-                    x=xx,
-                    y=yy,
-                    z=zz,
+                    global_x=global_x,
+                    global_y=global_y,
+                    global_z=global_z,
+                    system_x=system_x,
+                    system_y=system_y,
+                    system_z=system_z,
                     planet_num=planet_id,
                     planet_type=planet_type,
                     planet_size=planet_size,

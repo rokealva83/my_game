@@ -2,7 +2,7 @@
 
 from django.utils import timezone
 from datetime import datetime
-from my_game.models import MyUser, User_scientic
+from my_game.models import MyUser, User_scientic, Basic_building, Building_pattern
 from my_game.models import Turn_scientic
 import my_game.knowledge.scientic_func as scientic_func
 from my_game.models import User_variables
@@ -54,7 +54,7 @@ def check_scientific_verification_queue(request):
     if delta_time > user_variables.time_check_new_technology:
         all_scientic = User_scientic.objects.filter(user=user).first()
         if all_scientic.all_scientic > 10:
-            new_technology = random.random()
+            new_technology = 0.9 #random.random()
 
             if 0 <= new_technology < 0.125:
                 scientic_func.hull_upgrade(user)
@@ -81,10 +81,43 @@ def check_scientific_verification_queue(request):
                 scientic_func.module_upgrade(user)
 
             new_device = random.random()
-            if 0< new_device < 1:
+            if 0 < new_device < 1:
                 scientic_func.device_open(user)
 
         last_time_update = time_update
         last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,
                                          0)
         MyUser.objects.filter(user_id=user).update(last_time_scan_scient=last_time_scan_scient)
+
+    user_scientic = User_scientic.objects.filter(user=user).first()
+
+    if int(user_scientic.all_scientic) > 50:
+        building = Building_pattern.objects.filter(production_class=13).first()
+        if building is None:
+            building = Basic_building.objects.filter(production_class=13).first()
+            building_pattern = Building_pattern(
+                name=building.name,
+                user=user,
+                production_class=13,
+                production_id=1,
+                time_production=building.time_production,
+                warehouse=building.warehouse,
+                max_warehouse=building.max_warehouse,
+                price_internal_currency=building.price_internal_currency,
+                price_resource1=building.price_resource1,
+                price_resource2=building.price_resource2,
+                price_resource3=building.price_resource3,
+                price_resource4=building.price_resource4,
+                price_mineral1=building.price_mineral1,
+                price_mineral2=building.price_mineral2,
+                price_mineral3=building.price_mineral3,
+                price_mineral4=building.price_mineral4,
+                cost_expert_deployment=building.cost_expert_deployment,
+                assembly_workpiece=building.assembly_workpiece,
+                time_deployment=building.time_deployment,
+                size=building.size,
+                mass=building.mass,
+                power_consumption=building.power_consumption,
+                basic_id = building.id
+            )
+            building_pattern.save()

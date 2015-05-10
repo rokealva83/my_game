@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city
+from my_game.models import MyUser, User_city,Planet
 from my_game.models import Warehouse
 from my_game.models import Hull_pattern, Project_ship, Element_ship, Module_pattern, Engine_pattern, Generator_pattern, \
     Shield_pattern, Weapon_pattern
@@ -48,7 +48,10 @@ def add_ship(request):
         fleet = Fleet.objects.filter(id=fleet_id).first()
         fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
         fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).first()
-        if fleet.status == 0 and fleet.planet == session_user_city:
+        user_city = User_city.objects.filter(id=session_user_city).first()
+        city_planet = int(user_city.planet_id)
+        fleet_planet = int(Planet.objects.filter(system_id=fleet.system, planet_num=fleet.planet).first().id)
+        if fleet.status == 0 and city_planet == fleet_planet:
             if amount_ship > 0:
                 if int(ship.amount_ship) >= int(amount_ship):
                     ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,

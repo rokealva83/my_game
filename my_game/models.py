@@ -7,8 +7,8 @@ from datetime import datetime
 class MyUser(models.Model):
     class Meta():
         db_table = 'my_user'
-        verbose_name = u'Пользаватель'
-        verbose_name_plural = u'Пользаватель'
+        verbose_name = u'Пользователь'
+        verbose_name_plural = u'Пользователь'
 
     user_id = models.IntegerField(db_index=True)
     user_name = models.CharField(db_index=True, max_length=20, unique=True, verbose_name=u'Имя игрока')
@@ -59,9 +59,12 @@ class Planet(models.Model):
         db_table = 'planet'
 
     system = models.ForeignKey(System)
-    x = models.IntegerField(db_index=True)
-    y = models.IntegerField(db_index=True)
-    z = models.IntegerField(db_index=True)
+    global_x = models.IntegerField(db_index=True)
+    global_y = models.IntegerField(db_index=True)
+    global_z = models.IntegerField(db_index=True)
+    system_x = models.IntegerField(db_index=True, default=0)
+    system_y = models.IntegerField(db_index=True, default=0)
+    system_z = models.IntegerField(db_index=True, default=0)
     planet_num = models.IntegerField()
     planet_name = models.CharField(max_length=20, default='New Planet')
     planet_type = models.IntegerField()
