@@ -34,7 +34,7 @@ def fleet_flightplan(request):
             city = request.POST.get('city')
             coordinate = request.POST.get('coordinate')
             if city or coordinate:
-                flight.flight_system(session_user, session_user_city, answer)
+                message = flight.flight_system(session_user, session_user_city, answer)
 
             extraction = request.POST.get('resource_extraction')
             if extraction:

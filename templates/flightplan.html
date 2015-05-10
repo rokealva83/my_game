@@ -4,6 +4,7 @@
           style="text-align: center; border: 0.3px solid; border-radius: 7px; margin: 3px">
         <table border="1" align="center" style="margin-bottom: 7px">
             <caption><h3 style="text-align: center; margin-bottom: 5px; margin-top: 5px">Список команд</h3></caption>
+            <p style="color: red"><i>{{ message }}</i></p>
             <tr align="center">
                 <td style="width: 20px"></td>
                 <td style="width: 428px">Команда</td>
@@ -53,11 +54,11 @@
                     <p>
                         {% if fleet_engine.giper_power != 0 %}
                             Использовать гипер
-                            <input type="checkbox" name="planet_giper" class="flightplan_checkbox">
+                            <input type="checkbox" name="coordinate_giper" class="flightplan_checkbox">
                         {% endif %}
                         {% if fleet_engine.null_power != 0 %}
                             Использовать джамп
-                            <input type="checkbox" name="planet_null" class="flightplan_checkbox">
+                            <input type="checkbox" name="coordinate_null" class="flightplan_checkbox">
                         {% endif %}
                     </p>
                 </td>

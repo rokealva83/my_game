@@ -15,6 +15,7 @@ def flight_system(*args):
     fleet = Fleet.objects.filter(id=fleet_id).first()
     city = request.POST.get('city')
     coordinate = request.POST.get('coordinate')
+    message = ''
     if city:
         planet_system = int(request.POST.get('planet_system'))
         planet_planet = int(request.POST.get('planet_planet'))
@@ -22,86 +23,97 @@ def flight_system(*args):
         planet_null = request.POST.get('planet_null')
         target_system = System.objects.filter(id=planet_system).first()
         target_planet = Planet.objects.filter(system_id=planet_system, planet_num=planet_planet).first()
-        system = System.objects.filter(id=fleet.system).first()
-        # XYZ - координаты звезд  xyz - соординаты планет  XxYyZz - межзвездные координаты планет
-        flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
-        if flightplan_flight:
-            Xx1 = flightplan_flight.finish_x
-            Yy1 = flightplan_flight.finish_y
-            Zz1 = flightplan_flight.finish_z
-        else:
-            if fleet.planet_status == 1:
-                system = System.objects.filter(id=fleet.system).first()
-                Xx1 = int(system.x) * 1000 + int(fleet.x)
-                Yy1 = int(system.y) * 1000 + int(fleet.y)
-                Zz1 = int(system.z) * 1000 + int(fleet.z)
-            else:
-                Xx1 = int(fleet.x) * 1000
-                Yy1 = int(fleet.y) * 1000
-                Zz1 = int(fleet.z) * 1000
-
         if target_planet:
-            Xx2 = int(target_system.x) * 1000 + int(target_planet.x)
-            Yy2 = int(target_system.y) * 1000 + int(target_planet.y)
-            Zz2 = int(target_system.z) * 1000 + int(target_planet.z)
-        else:
-            distance = math.sqrt((Xx1 - int(target_system.x) * 1000) ** 2 + (Yy1 - int(target_system.y) * 1000) ** 2 + (
-                Zz1 - int(target_system.z) * 1000) ** 2)
-            Xx2 = Xx1 + (int(target_system.x) * 1000 - Xx1) * (
-                distance - int(target_system.system_size) * 1000) / distance
-            Yy2 = Yy1 + (int(target_system.y) * 1000 - Yy1) * (
-                distance - int(target_system.system_size) * 1000) / distance
-            Zz2 = Zz1 + (int(target_system.z) * 1000 - Zz1) * (
-                distance - int(target_system.system_size) * 1000) / distance
-
-        distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2) ** 2)
-
-        if fleet.system != 0:
             system = System.objects.filter(id=fleet.system).first()
-        else:
+            # XYZ - координаты звезд  xyz - соординаты планет  XxYyZz - межзвездные координаты планет
             flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
             if flightplan_flight:
-                system = flightplan_flight.system
+                Xx1 = flightplan_flight.finish_x
+                Yy1 = flightplan_flight.finish_y
+                Zz1 = flightplan_flight.finish_z
+            else:
+                if fleet.planet_status == 1:
+                    system = System.objects.filter(id=fleet.system).first()
+                    Xx1 = int(system.x) * 1000 + int(fleet.x)
+                    Yy1 = int(system.y) * 1000 + int(fleet.y)
+                    Zz1 = int(system.z) * 1000 + int(fleet.z)
+                else:
+                    Xx1 = int(fleet.x) * 1000
+                    Yy1 = int(fleet.y) * 1000
+                    Zz1 = int(fleet.z) * 1000
 
-        if system:
-            if int(system.id) == planet_system:
-                flight_time = math.sqrt(
-                    distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.system_power)) * 2
-                id_command = 1
+            if target_planet:
+                Xx2 = int(target_system.x) * 1000 + int(target_planet.x)
+                Yy2 = int(target_system.y) * 1000 + int(target_planet.y)
+                Zz2 = int(target_system.z) * 1000 + int(target_planet.z)
+            else:
+                distance = math.sqrt(
+                    (Xx1 - int(target_system.x) * 1000) ** 2 + (Yy1 - int(target_system.y) * 1000) ** 2 + (
+                        Zz1 - int(target_system.z) * 1000) ** 2)
+                Xx2 = Xx1 + (int(target_system.x) * 1000 - Xx1) * (
+                    distance - int(target_system.system_size) * 1000) / distance
+                Yy2 = Yy1 + (int(target_system.y) * 1000 - Yy1) * (
+                    distance - int(target_system.system_size) * 1000) / distance
+                Zz2 = Zz1 + (int(target_system.z) * 1000 - Zz1) * (
+                    distance - int(target_system.system_size) * 1000) / distance
+
+            distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2) ** 2)
+
+            if fleet.system != 0:
+                system = System.objects.filter(id=fleet.system).first()
+            else:
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
+                if flightplan_flight:
+                    system = flightplan_flight.system
+
+            if system:
+                if int(system.id) == planet_system:
+                    flight_time = math.sqrt(
+                        distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.system_power)) * 2
+                    id_command = 1
+                else:
+                    answer = calculation(fleet_id, planet_giper, planet_null, distance)
+                    id_command = answer['id_command']
+                    flight_time = answer['flight_time']
             else:
                 answer = calculation(fleet_id, planet_giper, planet_null, distance)
                 id_command = answer['id_command']
                 flight_time = answer['flight_time']
-        else:
-            answer = calculation(fleet_id, planet_giper, planet_null, distance)
-            id_command = answer['id_command']
-            flight_time = answer['flight_time']
 
-        flightplan = Flightplan(
-            user=session_user,
-            id_fleet=fleet_id,
-            class_command=1,
-            id_command=id_command,
-            status=0,
-        )
-        flightplan.save()
-        id_fleetplan = flightplan.pk
-        flightplan_flight = Flightplan_flight(
-            user=session_user,
-            id_fleet=fleet_id,
-            id_fleetplan=id_fleetplan,
-            id_command=id_command,
-            start_x=Xx1,
-            start_y=Yy1,
-            start_z=Zz1,
-            finish_x=int(Xx2),
-            finish_y=int(Yy2),
-            finish_z=int(Zz2),
-            flight_time=flight_time,
-            planet=planet_planet,
-            system=planet_system
-        )
-        flightplan_flight.save()
+            if id_command != 1:
+                system_flight = 0
+            else:
+                system_flight = 1
+
+            flightplan = Flightplan(
+                user=session_user,
+                id_fleet=fleet_id,
+                class_command=1,
+                id_command=id_command,
+                status=0,
+            )
+            flightplan.save()
+            id_fleetplan = flightplan.pk
+            flightplan_flight = Flightplan_flight(
+                user=session_user,
+                id_fleet=fleet_id,
+                id_fleetplan=id_fleetplan,
+                id_command=id_command,
+                start_x=Xx1,
+                start_y=Yy1,
+                start_z=Zz1,
+                finish_x=int(Xx2),
+                finish_y=int(Yy2),
+                finish_z=int(Zz2),
+                flight_time=flight_time,
+                planet=planet_planet,
+                system=planet_system,
+                system_flight=system_flight
+            )
+            flightplan_flight.save()
+        else:
+            message = 'Планеты не существует'
+
     if coordinate:
         coordinate_x = float(request.POST.get('coordinate_x'))
         coordinate_y = float(request.POST.get('coordinate_y'))
@@ -149,6 +161,22 @@ def flight_system(*args):
             id_command = answer['id_command']
             flight_time = answer['flight_time']
 
+        planet = 0
+        system = 0
+        if coordinate_system != 0:
+            planet = Planet.objects.filter(system_id=coordinate_system, x=coordinate_x, y=coordinate_y, z=coordinate_z).first()
+            if planet:
+                planet = planet.planet_num
+                system = coordinate_system
+            else:
+                planet = 0
+
+
+        if id_command != 1:
+            system_flight = 0
+        else:
+            system_flight = 1
+
         flightplan = Flightplan(
             user=session_user,
             id_fleet=fleet_id,
@@ -157,6 +185,7 @@ def flight_system(*args):
             status=0,
         )
         flightplan.save()
+
         id_fleetplan = flightplan.pk
         flightplan_flight = Flightplan_flight(
             user=session_user,
@@ -170,10 +199,13 @@ def flight_system(*args):
             finish_y=Yy2,
             finish_z=Zz2,
             flight_time=flight_time,
-            planet=0,
-            system=0,
+            planet=planet,
+            system=system,
+            system_flight=system_flight
         )
         flightplan_flight.save()
+
+    return message
 
 
 def calculation(*args):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city
+from my_game.models import MyUser, User_city,Planet
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource, Basic_fuel
 from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
     Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_build_repair, Flightplan_colonization
@@ -44,6 +44,8 @@ def fleet_manage(request):
         if request.POST.get('create_fleet'):
             name = request.POST.get('fleet_name')
             user_city = User_city.objects.filter(id=session_user_city).first()
+            planet=Planet.objects.filter(id=user_city.planet_id).first()
+
             new_fleet = Fleet(
                 user=session_user,
                 name=name,
@@ -51,7 +53,7 @@ def fleet_manage(request):
                 y=user_city.y,
                 z=user_city.z,
                 system=user_city.system_id,
-                planet=user_city.planet_id
+                planet=planet.planet_num
             )
             new_fleet.save()
             fleet_id = new_fleet.pk

@@ -1,10 +1,21 @@
 {% for flightplan_flight in flightplan_flights %}
     {% if flightplan_flight.id_fleetplan == flightplan.id %}
         <tr align="center">
-            <td><p>Перелет в точку</p></td>
-            <td><p>{{ flightplan_flight.finish_x }}
-                : {{ flightplan_flight.finish_y }}
-                : {{ flightplan_flight.finish_z }}</p>
+            <td><p>Перелет</p></td>
+            <td>
+                <p>
+                    {% if flightplan_flight.planet == 0 %}
+                        по кооординатам
+                        {{ flightplan_flight.finish_x }}
+                        : {{ flightplan_flight.finish_y }}
+                        : {{ flightplan_flight.finish_z }}
+                    {% else %}
+                        к планете
+                        {{ flightplan_flight.system }}
+                        : {{ flightplan_flight.planet }}
+
+                    {% endif %}
+                </p>
 
                 <p>
                     {% if flightplan_flight.id_command == 1 %}

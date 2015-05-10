@@ -18,6 +18,8 @@ def start_repair_build(*args):
     fleet_id = args[0]
     # Проверка наличия необходимого количества ресурсов для ремонта. Пороверка на наличие болванки для развертывания
 
+
+
     if len(args) == 1:
         start_time = datetime.now()
 
