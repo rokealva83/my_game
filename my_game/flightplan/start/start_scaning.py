@@ -1,22 +1,38 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from my_game.models import Fleet
+from my_game.models import Fleet, Fuel_pattern, Fuel_tank
 from my_game.models import Flightplan, Flightplan_scan
+from my_game.flightplan.fuel import fuel_scan
 
 
 def start_scaning(*args):
     fleet_id = args[0]
+    fleet = Fleet.objects.filter(id=fleet_id).first()
 
     start_time = 0
+    error = 0
+    flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
+    id_flightplan = flightplan.pk
+    flightplan_scan = Flightplan_scan.objects.filter(id_fleet=fleet_id).first()
+
+    need_fuel = fuel_scan(fleet_id, flightplan_scan, flightplan)
+
+    fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id).first()
+    fuel_pattern = Fuel_pattern.objects.filter(user=fleet.user, fuel_class=fuel_tank.fuel_class).first()
+
+    if need_fuel > fuel_tank.amount_fuel * fuel_pattern.efficiency:
+        error = 1
 
     if len(args) == 1:
         start_time = datetime.now()
+    else:
+        start_time = args[1]
 
     flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
     id_flightplan = flightplan.pk
 
-    flightplan_scan = Flightplan_scan.objects.filter(id_fleet=fleet_id).first()
-    flightplan_scan = Flightplan_scan.objects.filter(id=flightplan_scan.pk).update(start_time=start_time)
-    flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-    fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+    if error == 0:
+        flightplan_scan = Flightplan_scan.objects.filter(id=flightplan_scan.pk).update(start_time=start_time)
+        flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
+        fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
