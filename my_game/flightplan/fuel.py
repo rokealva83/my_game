@@ -1,17 +1,29 @@
 # -*- coding: utf-8 -*-
 
-import math
+
 from my_game.flightplan.create.flight import calculation
+import math
+from my_game.models import Fleet_energy_power
 from my_game.models import Flightplan_flight
+from my_game.models import Fleet_engine
 
 
 def fuel(*args):
     fleet_id = args[0]
     flightplan_flight = args[1]
-    distance = args[2]
-    fleet = args[3]
-    fleet_energy_power = args[4]
-    fleet_engine = args[5]
+    fleet = args[2]
+
+    fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
+    fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).first()
+
+    x1 = int(flightplan_flight.start_x)
+    y1 = int(flightplan_flight.start_y)
+    z1 = int(flightplan_flight.start_z)
+    x2 = int(flightplan_flight.finish_x)
+    y2 = int(flightplan_flight.finish_y)
+    z2 = int(flightplan_flight.finish_z)
+
+    distance = math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2)
 
     coordinate_giper = ''
     coordinate_null = ''
@@ -40,6 +52,6 @@ def fuel(*args):
     if flightplan_flight.flight_time != flight_time:
         new_time = Flightplan_flight.objects.filter(id=flightplan_flight.pk).update(flight_time=flight_time)
 
-    need_fuel = need_energy / (fleet_energy_power.produce_energy / fleet_energy_power.use_fuel_generator) * (
-        flight_time / 3600)
+    need_fuel = 1.0 * need_energy / (fleet_energy_power.produce_energy / fleet_energy_power.use_fuel_generator) * (
+    flight_time / 3600.0)
     return need_fuel

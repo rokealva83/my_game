@@ -5,10 +5,12 @@ from django.utils import timezone
 import math
 from my_game.models import Planet
 from my_game.models import System, Asteroid_field
-from my_game.models import Fleet
+from my_game.models import Fleet,Fuel_pattern, Fuel_tank
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production
 from my_game.models import Mail
 from my_game.flightplan.start.start_flight import start_flight
+from my_game.flightplan.veryfication.flight_verification import verification_flight
+from my_game.flightplan import fuel
 
 
 def verification_flight_list(request):
@@ -22,53 +24,12 @@ def verification_flight_list(request):
             flightplan_id = flightplan.id
             if flightplan.status == 1:
                 if flightplan.class_command == 1:
-                    flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).first()
-                    time = timezone.now()
-                    time_start = flightplan_flight.start_time
-                    delta_time = time - time_start
-                    new_delta = delta_time.seconds
-                    delta = flightplan_flight.flight_time
-                    if new_delta > delta:
-                        finish_time = time_start + timedelta(seconds=delta)
-                        if flightplan_flight.planet != 0:
-                            planet_status = 1
-                            planet = Planet.objects.filter(system_id=flightplan_flight.system,
-                                                           planet_num=flightplan_flight.planet).first()
-                            x = planet.global_x
-                            y = planet.global_y
-                            z = planet.global_z
-
-                        else:
-                            planet_status = 0
-                            x = flightplan_flight.finish_x
-                            y = flightplan_flight.finish_y
-                            z = flightplan_flight.finish_z
-
-                        fleet_up = Fleet.objects.filter(id=fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
-                                                                            planet=flightplan_flight.planet,
-                                                                            system=flightplan_flight.system)
-
-
-
-                        flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
-                        flightplan = Flightplan.objects.filter(id=flightplan.id).delete()
-                        flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
-                        if flightplan:
-                            start_flight(fleet.id, finish_time)
-                        else:
-                            fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
-
+                    finish_time = verification_flight(fleet, flightplan)
+                    flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
+                    if flightplan:
+                        start_flight(fleet.id, finish_time)
                     else:
-
-                        new_x = flightplan_flight.start_x - (
-                                                                flightplan_flight.start_x - flightplan_flight.finish_x) / flightplan_flight.flight_time * new_delta
-                        new_y = flightplan_flight.start_y - (
-                                                                flightplan_flight.start_y - flightplan_flight.finish_y) / flightplan_flight.flight_time * new_delta
-                        new_z = flightplan_flight.start_z - (
-                                                                flightplan_flight.start_z - flightplan_flight.finish_z) / flightplan_flight.flight_time * new_delta
-                        fleet_up = fleet_up = Fleet.objects.filter(id=fleet.id).update(x=new_x, y=new_y, z=new_z,
-                                                                                       planet_status=0, planet=0,
-                                                                                       system=0)
+                        fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
 
 
 

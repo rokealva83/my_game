@@ -35,4 +35,3 @@ def starting_flight(*args):
         message = start_colonization.start_colonization(fleet_id)
 
     return message
-
