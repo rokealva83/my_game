@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city,Planet
+from my_game.models import MyUser, User_city, Planet
 from my_game.models import Warehouse
-from my_game.models import Hull_pattern, Project_ship, Element_ship, Module_pattern, Engine_pattern, Generator_pattern, \
+from my_game.models import Hull_pattern, Element_ship, Module_pattern, Engine_pattern, Generator_pattern, \
     Shield_pattern, Weapon_pattern
 from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_energy_power, \
     Fleet_parametr_resource_extraction, Fleet_parametr_build_repair
@@ -28,6 +28,9 @@ def add_ship(request):
         passive_scan = 0
         active_scan = 0
         giper_scan = 0
+        ship_id = 0
+        fleet_id = 0
+        amount_ship = 0
         message = 'Hui'
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         full_request = request.POST

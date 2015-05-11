@@ -7,7 +7,6 @@ from my_game.models import Manufacturing_complex
 from my_game import function
 
 
-
 def factory(request):
     if "live" not in request.session:
         return render(request, "index.html", {})

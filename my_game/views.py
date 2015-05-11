@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse, Chat
+from my_game.models import MyUser, User_city, Warehouse
 import function
 from my_game.models import Ship, Fleet
-
 
 
 def home(request):
@@ -13,7 +12,6 @@ def home(request):
 
 def cancel(request):
     return render(request, "index.html", {})
-
 
 
 def trade(request):
@@ -28,11 +26,11 @@ def trade(request):
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
-        ships = Ship.objects.filter(user = session_user, fleet_status = 0, place_id = session_user_city)
+        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_fleets': user_fleets, 'ships': ships, 'ship_fleets':ship_fleets}
+                  'user_fleets': user_fleets, 'ships': ships, 'ship_fleets': ship_fleets}
         return render(request, "trade.html", output)

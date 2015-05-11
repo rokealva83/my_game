@@ -69,10 +69,10 @@ def asteroid_generation(request):
             koef_min_3 = round(round(random.uniform(0.2, 0.3), 3) * mineral_koef, 3)
             koef_min_4 = round(mineral_koef - (koef_min_1 + koef_min_2 + koef_min_3), 3)
 
-            asteroid_test = Asteroid_field.objects.filter(x = x, y = y, z = z).first()
+            asteroid_test = Asteroid_field.objects.filter(x=x, y=y, z=z).first()
 
             if asteroid_test:
-                size = size = asteroid_test.size
+                size = asteroid_test.size
                 koef_res_1 = asteroid_test.koef_res_1
                 koef_res_2 = asteroid_test.koef_res_2
                 koef_res_3 = asteroid_test.koef_res_3
@@ -83,39 +83,38 @@ def asteroid_generation(request):
                 koef_min_4 = asteroid_test.koef_min_4
 
                 asteroid = Asteroid_field(
-                    x = x,
-                    y = y,
-                    z = z,
-                    size = size,
-                    koef_res_1 = koef_res_1,
-                    koef_res_2 = koef_res_2,
-                    koef_res_3 = koef_res_3,
-                    koef_res_4 = koef_res_4,
-                    koef_min_1 = koef_min_1,
-                    koef_min_2 = koef_min_2,
-                    koef_min_3 = koef_min_3,
-                    koef_min_4 = koef_min_4,
-                    artifact = artifact
+                    x=x,
+                    y=y,
+                    z=z,
+                    size=size,
+                    koef_res_1=koef_res_1,
+                    koef_res_2=koef_res_2,
+                    koef_res_3=koef_res_3,
+                    koef_res_4=koef_res_4,
+                    koef_min_1=koef_min_1,
+                    koef_min_2=koef_min_2,
+                    koef_min_3=koef_min_3,
+                    koef_min_4=koef_min_4,
+                    artifact=artifact
                 )
                 asteroid.save()
             else:
                 asteroid = Asteroid_field(
-                    x = x,
-                    y = y,
-                    z = z,
-                    size = size,
-                    koef_res_1 = koef_res_1,
-                    koef_res_2 = koef_res_2,
-                    koef_res_3 = koef_res_3,
-                    koef_res_4 = koef_res_4,
-                    koef_min_1 = koef_min_1,
-                    koef_min_2 = koef_min_2,
-                    koef_min_3 = koef_min_3,
-                    koef_min_4 = koef_min_4,
-                    artifact = artifact
+                    x=x,
+                    y=y,
+                    z=z,
+                    size=size,
+                    koef_res_1=koef_res_1,
+                    koef_res_2=koef_res_2,
+                    koef_res_3=koef_res_3,
+                    koef_res_4=koef_res_4,
+                    koef_min_1=koef_min_1,
+                    koef_min_2=koef_min_2,
+                    koef_min_3=koef_min_3,
+                    koef_min_4=koef_min_4,
+                    artifact=artifact
                 )
                 asteroid.save()
-
 
         message = 'Поля сгенерированы'
         output = {'message': message}

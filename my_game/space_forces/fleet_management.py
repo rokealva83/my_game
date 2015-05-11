@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city,Planet
+from my_game.models import MyUser, User_city, Planet
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource, Basic_fuel
-from my_game.models import Ship, Fleet, Hold, Element_ship, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
-    Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_build_repair, Flightplan_colonization
+from my_game.models import Ship, Fleet, Hold, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine, \
+    Flightplan_production, Flightplan_scan, Flightplan_hold, Flightplan_refill, Flightplan_build_repair, \
+    Flightplan_colonization
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_resource_extraction, \
     Fleet_parametr_build_repair
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
@@ -44,7 +45,7 @@ def fleet_manage(request):
         if request.POST.get('create_fleet'):
             name = request.POST.get('fleet_name')
             user_city = User_city.objects.filter(id=session_user_city).first()
-            planet=Planet.objects.filter(id=user_city.planet_id).first()
+            planet = Planet.objects.filter(id=user_city.planet_id).first()
 
             new_fleet = Fleet(
                 user=session_user,
@@ -141,7 +142,7 @@ def fleet_manage(request):
                       'ship_holds': ship_holds, 'flightplan_holds': flightplan_holds,
                       'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
                       'flightplan_build_repairs': flightplan_build_repairs, 'device_patterns': device_patterns,
-                  'flightplan_colonization': flightplan_colonization}
+                      'flightplan_colonization': flightplan_colonization}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):

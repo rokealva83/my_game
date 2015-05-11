@@ -22,6 +22,8 @@ def start_flightplan(request):
         function.check_all_queues(session_user)
         message = ''
         command = 0
+        fleet_id = 0
+
         if request.POST.get('start_flight'):
             fleet_id = int(request.POST.get('hidden_fleet'))
             message = starting_flight(fleet_id, session_user)
@@ -35,7 +37,7 @@ def start_flightplan(request):
             flightplan_production = Flightplan_production.objects.filter(id_fleet=fleet_id).delete()
             flightplan_hold = Flightplan_hold.objects.filter(id_fleet=fleet_id).delete()
             flightplan_refill = Flightplan_refill.objects.filter(id_fleet=fleet_id).delete()
-            flightplan_colonization =Flightplan_colonization.objects.filter(id_fleet=fleet_id).delete()
+            flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).delete()
             message = ''
             command = 3
 

@@ -25,7 +25,6 @@ def check_all_queues(request):
     turn_ship_build.verification_turn_ship_build(user)
 
 
-
 def check_all_user():
     users = MyUser.objects.all()
     for user in users:

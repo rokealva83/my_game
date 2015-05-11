@@ -28,12 +28,12 @@ def check_assembly_line_workpieces(request):
                                                                      production_class=turn_assembly_pieces.class_id).update(
                     amount=amount_assembly)
             else:
-                if turn_assembly_pieces.class_id !=13:
+                if turn_assembly_pieces.class_id != 13:
                     factory_pattern = Factory_pattern.objects.filter(id=turn_assembly_pieces.pattern_id,
-                                                                  production_class=turn_assembly_pieces.class_id).first()
+                                                                     production_class=turn_assembly_pieces.class_id).first()
                 else:
                     factory_pattern = Building_pattern.objects.filter(id=turn_assembly_pieces.pattern_id,
-                                                                  production_class=turn_assembly_pieces.class_id).first()
+                                                                      production_class=turn_assembly_pieces.class_id).first()
                 new_factory = Warehouse_factory(
                     user=turn_assembly_pieces.user,
                     user_city=turn_assembly_pieces.user_city,

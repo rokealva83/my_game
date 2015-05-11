@@ -3,13 +3,13 @@
 from django.shortcuts import render
 from datetime import datetime, timedelta
 import math
-from my_game.models import MyUser, User_city, Warehouse, Basic_resource, Planet, System
+from my_game.models import MyUser, User_city, Warehouse, Basic_resource, Planet
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
 from my_game.trade import trade_function
-from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan
+from my_game.models import Project_ship, Ship, Fleet
 from my_game.models import Trade_element, Trade_space, Delivery_queue, Building_installed, Trade_flight, Trade_teleport
 
 
@@ -21,6 +21,8 @@ def buy_trade(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         message = ''
+        price_element = 0
+        new_price = 0
         full_request = request.POST
         myDict = dict(full_request.iterlists())
         trade_space_id = myDict.get('trade_space_id')
@@ -90,7 +92,7 @@ def buy_trade(request):
                     system_id = planet.system_id
                     distance = math.sqrt(
                         (trade_element.x - user_city.x) ** 2 + (trade_element.y - user_city.y) ** 2 + (
-                        trade_element.z - user_city.z) ** 2)
+                            trade_element.z - user_city.z) ** 2)
                     if method == 1:
                         mass_element = trade_element.mass_element
                         mass = amount * mass_element

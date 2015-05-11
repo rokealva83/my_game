@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 from my_game.models import MyUser, User_city, Warehouse, Turn_building, Turn_assembly_pieces
-from my_game.models import Factory_pattern, Factory_installed, Building_pattern, Building_installed
+from my_game.models import Factory_pattern, Factory_installed, Building_pattern
 from my_game.models import Warehouse_factory
 
 
@@ -15,7 +15,7 @@ def rename_factory_pattern(*args):
     else:
         name_factory = Building_pattern.objects.filter(id=pattern_id).update(name=new_name)
     message = 'Шаблон переименован'
-    return (message)
+    return message
 
 
 def upgrade_factory_pattern(*args):
@@ -104,7 +104,7 @@ def upgrade_factory_pattern(*args):
         new_power_consumption = old_pattern_power * number
         new_pattern = Factory_pattern.objects.filter(id=new_pattern_id).update(power_consumption=new_power_consumption)
     message = 'Шаблон улучшен'
-    return (message)
+    return message
 
 
 def delete_factory_pattern(*args):
@@ -120,7 +120,7 @@ def delete_factory_pattern(*args):
             delete_pattern = Building_pattern.objects.filter(id=pattern_id).delete()
 
         message = 'Шаблон удален'
-    return (message)
+    return message
 
 
 def making_factory_unit(*args):
@@ -129,6 +129,16 @@ def making_factory_unit(*args):
     amount_factory_unit = int(args[2])
     pattern_id = int(args[3])
     class_id = int(args[4])
+
+    resource1 = 0
+    resource2 = 0
+    resource3 = 0
+    resource4 = 0
+    mineral1 = 0
+    mineral2 = 0
+    mineral3 = 0
+    mineral4 = 0
+
     user = MyUser.objects.filter(user_id=session_user).first()
     warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
     if class_id != 13:
@@ -226,7 +236,7 @@ def making_factory_unit(*args):
             message = 'Нехватает ресурсов'
     else:
         message = 'Очередь заполнена'
-    return (message)
+    return message
 
 
 def install_factory_unit(*args):
@@ -248,9 +258,6 @@ def install_factory_unit(*args):
             free_energy = 100
         else:
             power_consumption = factory_pattern.power_consumption
-
-        a= factory_pattern.cost_expert_deployment
-        b = user_city.population
 
         if factory_pattern.cost_expert_deployment < user_city.population and free_energy > power_consumption:
             last_building = Turn_building.objects.filter(user=session_user, user_city=session_user_city).last()
@@ -286,4 +293,4 @@ def install_factory_unit(*args):
             message = 'Нехватает инженеров или энергии'
     else:
         message = 'Очередь заполнена'
-    return (message)
+    return message

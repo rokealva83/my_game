@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from datetime import datetime
 from my_game.models import Fleet
 from my_game.models import Flightplan, Flightplan_scan
@@ -8,6 +7,8 @@ from my_game.models import Flightplan, Flightplan_scan
 
 def start_scaning(*args):
     fleet_id = args[0]
+
+    start_time = 0
 
     if len(args) == 1:
         start_time = datetime.now()

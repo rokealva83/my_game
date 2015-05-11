@@ -16,6 +16,7 @@ def work_with_project(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
+        message = ''
         if request.POST.get('create_ship'):
             ship_id = int(request.POST.get('hidden_ship'))
             amount_ship = int(request.POST.get('amount'))
@@ -48,8 +49,6 @@ def work_with_project(request):
                                                                                          element_id=id_element).first()
                                     if warehouse_element <= number_element * amount_ship:
                                         error = error + 1
-                                        error_class = element_ship.class_element
-                                        error_id = element_ship.id_element_pattern
                                     work_element_id = id_element
 
                     if error == 0:
@@ -70,7 +69,6 @@ def work_with_project(request):
                             start_time_build=start_time,
                             finish_time_build=finish_time,
                             process_id=1
-
                         )
                         turn_create_ship.save()
                         warehouse_hull = Warehouse_element.objects.filter(user=session_user,
@@ -90,10 +88,10 @@ def work_with_project(request):
                                 class_element = 6
                             id_element = element_ship.id_element_pattern
 
-                            user=int(session_user)
-                            user_city=int(session_user_city)
-                            element_class=int(class_element)
-                            element_id=int(id_element)
+                            user = int(session_user)
+                            user_city = int(session_user_city)
+                            element_class = int(class_element)
+                            element_id = int(id_element)
 
                             warehouse_element = Warehouse_element.objects.filter(user=session_user,
                                                                                  user_city=session_user_city,
@@ -106,8 +104,6 @@ def work_with_project(request):
                                                                                  element_id=id_element).update(
                                 amount=new_amount)
                         message = 'Сборка корабля начата'
-
-
                     else:
                         message = 'На складе не хватает комплектующих'
                 else:

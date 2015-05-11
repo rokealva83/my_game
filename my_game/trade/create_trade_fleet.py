@@ -21,26 +21,9 @@ def create_trade_fleet(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        add_ships = {}
-        flightplans = {}
-        flightplan_flights = {}
-        warehouse_factorys = {}
-        warehouse_elements = {}
-        factory_patterns = {}
-        hull_patterns = {}
-        armor_patterns = {}
-        shield_patterns = {}
-        engine_patterns = {}
-        generator_patterns = {}
-        weapon_patterns = {}
-        shell_patterns = {}
-        module_patterns = {}
-        command = 1
+        ship_id = 0
+        amount_ship = 0
         hold = 0
-        passive_scan = 0
-        active_scan = 0
-        giper_scan = 0
-        message = 'Hui'
 
         full_request = request.POST
         myDict = dict(full_request.iterlists())
@@ -71,12 +54,12 @@ def create_trade_fleet(request):
             fleet_id = fleet.pk
 
             fleet_energy = Fleet_energy_power(
-                fleet_id = fleet_id
+                fleet_id=fleet_id
             )
             fleet_energy.save()
 
             fleet_engine = Fleet_engine(
-                fleet_id = fleet_id
+                fleet_id=fleet_id
             )
             fleet_engine.save()
 
@@ -294,7 +277,8 @@ def create_trade_fleet(request):
                   'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
                   'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
                   'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
-                  'shell_patterns': shell_patterns, 'module_patterns': module_patterns, 'device_patterns':device_patterns,
+                  'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
+                  'device_patterns': device_patterns,
                   'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id, 'project_ships': project_ships,
                   'ships': ships, 'trade_elements': trade_elements, 'user_trade_elements': user_trade_elements,
                   'users': users, 'message': message, 'trade_building': trade_building,

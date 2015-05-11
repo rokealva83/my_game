@@ -77,8 +77,5 @@ def verification(*args):
                 produced_energy = produced_energy + generator.produced_energy
 
     if produced_energy < use_energy:
-        rrr=1
-        return (False)
-
-    return (True)
-
+        return False
+    return True

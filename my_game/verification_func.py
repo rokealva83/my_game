@@ -9,6 +9,8 @@ from my_game.models import Manufacturing_complex, Warehouse_complex
 
 def verification_of_resources(request):
     user = request
+    city_id = 0
+    user_city = 0
     tax = 0.01
     now_date = timezone.now()
     time_update = MyUser.objects.filter(user_id=user).first().last_time_check
@@ -44,7 +46,8 @@ def verification_of_resources(request):
                             resourse = resourse + elapsed_time_seconds / check_complex_factory.time_production
                         koef = 1.0 - user_complex.extraction_parametr / 100.0
                         complex_resource = resourse * koef
-                        complex_warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=prod_id).first()
+                        complex_warehouse = Warehouse_complex.objects.filter(id_complex=complex_id,
+                                                                             id_resource=prod_id).first()
                         if complex_warehouse:
                             complex_resource = complex_resource + complex_warehouse.amount
                             complex_warehouse = Warehouse_complex.objects.filter(id_complex=complex_id,
@@ -57,11 +60,13 @@ def verification_of_resources(request):
                                 amount=complex_resource
                             )
                             complex_warehouse.save()
-                        warehouse_resource = resourse*user_complex.extraction_parametr / 100.0
+                        warehouse_resource = resourse * user_complex.extraction_parametr / 100.0
                         if warehouse_resource != 0:
-                            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource=prod_id).first()
+                            warehouse = Warehouse.objects.filter(user=user, user_city=city_id,
+                                                                 id_resource=prod_id).first()
                             new_resourse = warehouse.amount + warehouse_resource
-                            warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource=prod_id).update(
+                            warehouse = Warehouse.objects.filter(user=user, user_city=city_id,
+                                                                 id_resource=prod_id).update(
                                 amount=new_resourse)
                 prod_id = prod_id + 1
 

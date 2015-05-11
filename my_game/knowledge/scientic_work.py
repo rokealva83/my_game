@@ -12,9 +12,19 @@ def scien_up(*args):
     scientic = int(args[2])
     session_user_city = int(args[3])
     number_scientic = len(Turn_scientic.objects.filter(user=session_user))
+
+    resource1=0
+    resource2=0
+    resource3=0
+    resource4=0
+    mineral1=0
+    mineral2=0
+    mineral3=0
+    mineral4=0
+
     if number_scientic < 3:
-        warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
-        user = MyUser.objects.filter(user_id = session_user).first()
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        user = MyUser.objects.filter(user_id=session_user).first()
 
         scien = Basic_scientic.objects.get(scientic_id=scientic)
         time_studys = int(scien.time_study)
@@ -76,22 +86,30 @@ def scien_up(*args):
 
             for warehouse in warehouses:
                 if warehouse.id_resource == 1:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 1).update(amount=new_resource1)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=1).update(amount=new_resource1)
                 elif warehouse.id_resource == 2:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 2).update(amount=new_resource2)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=2).update(amount=new_resource2)
                 elif warehouse.id_resource == 3:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 3).update(amount=new_resource3)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=3).update(amount=new_resource3)
                 elif warehouse.id_resource == 4:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 4).update(amount=new_resource4)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=4).update(amount=new_resource4)
                 elif warehouse.id_resource == 5:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 5).update(amount=new_mineral1)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=5).update(amount=new_mineral1)
                 elif warehouse.id_resource == 6:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 6).update(amount=new_mineral2)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=6).update(amount=new_mineral2)
                 elif warehouse.id_resource == 7:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 7).update(amount=new_mineral3)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=7).update(amount=new_mineral3)
                 elif warehouse.id_resource == 8:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city = session_user_city, id_resource = 8).update(amount=new_mineral4)
-            user = MyUser.objects.filter(user_id = session_user).update(internal_currency = new_internal_currency)
+                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                                         id_resource=8).update(amount=new_mineral4)
+            user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
 
             turn_scientic = Turn_scientic.objects.filter(user=session_user).last()
             if turn_scientic:

@@ -4,12 +4,10 @@
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, User_variables
 from my_game.models import Warehouse_element
-from my_game.models import Ship, Fleet
+from my_game.models import Ship
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Weapon_pattern
-from my_game import function
 from my_game.models import Project_ship, Element_ship, Turn_ship_build
-from my_game.designing_ships import verification_project
 import math
 from datetime import datetime, timedelta
 
@@ -38,11 +36,12 @@ def modificate_ship(request):
     modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
     ship_patterns = Project_ship.objects.filter(user=session_user)
-    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
+    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
     user_city = User_city.objects.filter(user=session_user).first()
     user = MyUser.objects.filter(user_id=session_user).first()
     user_citys = User_city.objects.filter(user=int(session_user))
-    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys, 'armors': armors,
+    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+              'armors': armors,
               'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
               'main_weapons': main_weapons, 'modules': modules, 'turn_ship_builds': turn_ship_builds,
               'modificate_ship_hull': modificate_ship_hull, 'modificate_ship_elements': modificate_ship_elements,
@@ -82,11 +81,12 @@ def choise_project(request):
     modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
     hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
+    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
     user_city = User_city.objects.filter(user=session_user).first()
     user = MyUser.objects.filter(user_id=session_user).first()
     user_citys = User_city.objects.filter(user=int(session_user))
-    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys, 'armors': armors,
+    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+              'armors': armors,
               'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
               'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls, 'turn_ship_builds': turn_ship_builds,
               'ship_patterns': ship_patterns, 'modificate_ship_hull': modificate_ship_hull,
@@ -116,7 +116,7 @@ def action_modificate_ship(request):
     main_weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
     hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-    warehouses = Warehouse.objects.filter(user=session_user, user_city = session_user_city).order_by('id_resource')
+    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
     user_city = User_city.objects.filter(user=session_user).first()
     user = MyUser.objects.filter(user_id=session_user).first()
     user_citys = User_city.objects.filter(user=int(session_user))
@@ -318,5 +318,4 @@ def error_function(*args):
         error = True
     else:
         error = False
-    return (error)
-
+    return error

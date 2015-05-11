@@ -13,18 +13,20 @@ def administration(request):
 def generation(request):
     return render(request, "admin/generation.html", {})
 
+
 def star_generation(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
         system_id = 1
         r = 5
         a = 45
         star = int(request.POST.get('star', None))
-        iter = 0
+        iteration = 0
         gal = [[0, 0, 0, 0, 0, 0, 0, 0]]
         x2 = 0
         y2 = 0
         z2 = 0
         size2 = 0
+        star_type=0
         galaxy = Galaxy(
             x=0,
             y=0,
@@ -63,7 +65,7 @@ def star_generation(request):
                 sys.append(star_type)
 
                 # valid_test
-                for i in range(iter):
+                for i in range(iteration):
                     j = 2
                     x2 = gal[i][j]
                     y2 = gal[i][j + 1]
@@ -80,9 +82,9 @@ def star_generation(request):
 
             system = System(
                 galaxy_id=1,
-                x=x*1000,
-                y=y*1000,
-                z=z*1000,
+                x=x * 1000,
+                y=y * 1000,
+                z=z * 1000,
                 system_type=star_type,
                 system_size=system_size,
                 star_size=radius_star
@@ -124,9 +126,9 @@ def star_generation(request):
                 system_x = orb_radius * math.cos(aa)
                 system_y = orb_radius * math.sin(aa)
                 system_z = random.randint(-15, 15)
-                global_x = x*1000+system_x
-                global_y = y*1000+system_y
-                global_z = z*1000+system_z
+                global_x = x * 1000 + system_x
+                global_y = y * 1000 + system_y
+                global_z = z * 1000 + system_z
                 plan.append(int(system_x))
                 plan.append(int(system_y))
                 plan.append(system_z)
@@ -173,7 +175,7 @@ def star_generation(request):
                 plans.sort()
             gal.append(sys)
             system_id = system_id + 1
-            iter = iter + 1
+            iteration = iteration + 1
             r = r + 1
             a = a + 15
     return render(request, "admin/generation.html", {})

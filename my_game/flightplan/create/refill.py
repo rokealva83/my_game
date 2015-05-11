@@ -14,6 +14,15 @@ def refill(*args):
     overload = request.POST.get('overload')
     yourself = request.POST.get('yourself')
 
+    id_command = 0
+    id_fleet_refill = 0
+    class_refill = 0
+    class_element = 0
+    id_element = 0
+    amount = 0
+    time = 0
+    name = ''
+
     if yourself:
         id_command = 1
         id_fleet_refill = fleet_id

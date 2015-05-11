@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 
 
-from datetime import datetime, timedelta
-from django.shortcuts import render
-from my_game.models import MyUser, User_city
-from my_game.models import Warehouse
-from my_game import function
-from my_game.models import Ship, Fleet
-from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_hold, Flightplan_production
-from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
-    Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
-    Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern, \
-    Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair, Flightplan_colonization
+from datetime import datetime
+from my_game.models import User_city
+from my_game.models import Fleet
+from my_game.models import Flightplan, Warehouse_element, Flightplan_refill, Hold
 
 
 def start_refill(*args):
@@ -23,6 +16,7 @@ def start_refill(*args):
     id_command = flightplan_refill.id_command
     fleet = Fleet.objects.filter(id=fleet_id).first()
     error = 0
+    start_time = 0
 
     # Проверка наличия необходимого количества товара. Проверка наличия места.
 

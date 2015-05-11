@@ -12,6 +12,10 @@ def repair_build(*args):
     repair = request.POST.get('repair')
     build = request.POST.get('build')
 
+    id_command = 0
+    time = 0
+    fleet_repair = 0
+
     if build:
         id_hold_factory = request.POST.get('id_factory')
         id_command = 5

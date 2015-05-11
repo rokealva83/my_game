@@ -32,7 +32,8 @@ def buy_credit(request):
             if internal_currency >= need_internal_currency:
                 new_internal_currency = internal_currency - need_internal_currency
                 new_foreigh_currency = foreigh_currency + amount_foreigh
-                user = MyUser.objects.filter(user_id=session_user).update(internal_currency = new_internal_currency, foreigh_currency = new_foreigh_currency)
+                user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency,
+                                                                          foreigh_currency=new_foreigh_currency)
                 message = 'Покупка совершена'
             else:
                 message = 'Нехватка внутренней валюты'
@@ -41,7 +42,8 @@ def buy_credit(request):
                 bought_currency = amount_foreigh * 495
                 new_internal_currency = internal_currency + bought_currency
                 new_foreigh_currency = foreigh_currency - amount_foreigh
-                user = MyUser.objects.filter(user_id=session_user).update(internal_currency = new_internal_currency, foreigh_currency = new_foreigh_currency)
+                user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency,
+                                                                          foreigh_currency=new_foreigh_currency)
                 message = 'Продажа совершена'
         user_citys = User_city.objects.filter(user=int(session_user))
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -68,7 +70,7 @@ def buy_credit(request):
         trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
                                                            production_class=13).first()
         delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
-        user_trade_elements = Trade_element.objects.filter(user = session_user)
+        user_trade_elements = Trade_element.objects.filter(user=session_user)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -79,8 +81,11 @@ def buy_credit(request):
                   'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
                   'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'device_patterns':device_patterns,
+                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
+                  'device_patterns': device_patterns,
                   'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users, 'user_trade_elements':user_trade_elements,
-                  'trade_space': trade_space, 'message': message, 'trade_building': trade_building, 'delivery_queues': delivery_queues}
+                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
+                  'user_trade_elements': user_trade_elements,
+                  'trade_space': trade_space, 'message': message, 'trade_building': trade_building,
+                  'delivery_queues': delivery_queues}
         return render(request, "trade.html", output)

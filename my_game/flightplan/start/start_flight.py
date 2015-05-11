@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import math
 from datetime import datetime
 from my_game.models import Fleet, Fuel_tank, Fuel_pattern
 from my_game.models import Flightplan, Flightplan_flight
@@ -17,8 +16,6 @@ def start_flight(*args):
     id_flightplan = flightplan.pk
     flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id, id_command=flightplan.id_command).first()
     flightplan_flight_id = flightplan_flight.pk
-
-
 
     need_fuel = fuel.fuel(fleet_id, flightplan_flight, fleet)
 

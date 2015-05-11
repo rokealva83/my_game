@@ -20,7 +20,7 @@ def flight_record_sheet_flight(*args):
     size_element = trade_element.size_element
     mass = lot * mass_element + fleet.ship_empty_mass
     trade_flight = Trade_flight.objects.filter(id_fleet=id_fleet).last()
-    fleet_engine = Fleet_engine.objects.filter(fleet_id = id_fleet).first()
+    fleet_engine = Fleet_engine.objects.filter(fleet_id=id_fleet).first()
 
     flight_time = math.sqrt(distance / 2 * mass / int(fleet_engine.intersystem_power)) * 2
     if trade_flight:
@@ -51,8 +51,8 @@ def flight_record_sheet_flight(*args):
         class_element=trade_element.class_element,
         id_element=trade_element.id_element,
         amount=lot,
-        mass = mass_element*lot,
-        size = size_element*lot,
+        mass=mass_element * lot,
+        size=size_element * lot,
         start_x=start_x,
         start_y=start_y,
         start_z=start_z,
@@ -93,8 +93,8 @@ def flight_record_sheet_loading_holds(*args):
         class_element=trade_element.class_element,
         id_element=trade_element.id_element,
         amount=lot,
-        mass = mass_element*lot,
-        size = size_element*lot,
+        mass=mass_element * lot,
+        size=size_element * lot,
         start_x=trade_element.x,
         start_y=trade_element.y,
         start_z=trade_element.z,

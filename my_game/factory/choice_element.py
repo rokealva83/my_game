@@ -79,9 +79,10 @@ def choice_element(request):
             element_patterns = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         elif factory_installed.production_class == 9:
-            attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-            "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-            "health", "produced_energy", "fuel_necessary",  "mass", "size", "power_consuption")
+            attributes = (
+                "price_internal_currency", "price_resource1", "price_resource2", "price_resource3", "price_resource4",
+                "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4", "health", "produced_energy",
+                "fuel_necessary", "mass", "size", "power_consuption")
             element_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
         elif factory_installed.production_class == 14:
@@ -107,4 +108,3 @@ def choice_element(request):
                   'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs,
                   'factory_warehouses': factory_warehouses, 'basic_resources': basic_resources}
         return render(request, "factory.html", output)
-

@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import datetime
 
+
 class MyUser(models.Model):
     class Meta():
         db_table = 'my_user'
@@ -26,7 +27,6 @@ class MyUser(models.Model):
     last_time_scan_scient = models.DateTimeField()
     premium_account = models.BooleanField(default=0, verbose_name=u'Премиум аккаунт')
     time_left_premium = models.DateTimeField(default=timezone.now, verbose_name=u'Время действия преемиум аккаунта')
-
 
     def __unicode__(self):
         return self.user_name
@@ -1560,6 +1560,7 @@ class Chat(models.Model):
     text = models.CharField(max_length=64)
     time = models.DateTimeField(default=datetime.now, blank=True)
 
+
 class Chat_private(models.Model):
     class Meta():
         db_table = 'chat_private'
@@ -1574,6 +1575,7 @@ class Chat_private(models.Model):
 class User_chat_online(models.Model):
     class Meta():
         db_table = 'user_chat_online'
+
     user_id = models.IntegerField(db_index=True)
     user = models.CharField(max_length=20)
     last_time_update = models.DateTimeField()

@@ -62,5 +62,5 @@ def production(request):
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'manufacturing_complexs': manufacturing_complexs, 'factory_installeds': factory_installeds}
-        return render(request, "factory.html", output)
 
+        return render(request, "factory.html", output)

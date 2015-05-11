@@ -103,7 +103,7 @@ def choice_build(request):
             warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=6)
         if request.POST.get('shell') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=7,).order_by(
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=7, ).order_by(
                 'production_class', 'production_id')
             warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=7)
@@ -113,14 +113,17 @@ def choice_build(request):
             warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=8)
         if request.POST.get('device') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by('production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city, production_class=9)
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by(
+                'production_id')
+            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+                                                                  production_class=9)
 
         if request.POST.get('fuel') is not None:
             user = session_user
             prod = 14
 
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=14).order_by('production_id')
+            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=14).order_by(
+                'production_id')
             warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=14)
 

@@ -36,7 +36,7 @@ def delivery(request):
         user_city = User_city.objects.filter(id=session_user_city).first()
         distance = math.sqrt(
             (delivery_element.x - user_city.x) ** 2 + (delivery_element.y - user_city.y) ** 2 + (
-            delivery_element.z - user_city.z) ** 2)
+                delivery_element.z - user_city.z) ** 2)
 
         if method == 1:
             mass_element = delivery_element.mass_element

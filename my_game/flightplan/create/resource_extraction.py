@@ -12,7 +12,7 @@ def resource_extraction(*args):
     full_hold = args[4]
 
     fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
-                    fleet_id=fleet_id).first()
+        fleet_id=fleet_id).first()
     if full_hold:
         time_extraction = int(fleet.empty_hold / fleet_parametr_resource_extraction.extraction_per_minute)
 

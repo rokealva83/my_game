@@ -9,6 +9,8 @@ from my_game.models import Flightplan, Flightplan_production
 def start_extraction(*args):
     fleet_id = args[0]
 
+    start_time = 0
+
     fleet = Fleet.objects.filter(id=fleet_id).first()
     x = fleet.x
     y = fleet.y

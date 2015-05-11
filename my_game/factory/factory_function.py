@@ -5,13 +5,11 @@ from my_game.models import MyUser
 from my_game.models import Turn_production
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Weapon_pattern, Factory_installed, Fuel_pattern, Device_pattern
-from my_game.models import Warehouse, Warehouse_factory_resource
+from my_game.models import Warehouse_factory_resource
 from my_game.models import Manufacturing_complex, Warehouse_complex, Turn_complex_production
 
 
 def rename_element_pattern(*args):
-    session_user = args[0]
-    session_user_city = args[1]
     pattern_id = args[2]
     element_id = args[3]
     new_names = args[4]
@@ -34,7 +32,7 @@ def rename_element_pattern(*args):
     if production_class == 8:
         new_name = Module_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 9:
-        new_name = Device_pattern.objects.filter(id = element_id).update(name = new_name)
+        new_name = Device_pattern.objects.filter(id=element_id).update(name=new_names)
     if production_class == 14:
         new_name = Fuel_pattern.objects.filter(id=element_id).update(name=new_names)
     message = 'Модуль переименован'
@@ -52,7 +50,7 @@ def production_module(*args):
     warehouses = Warehouse_factory_resource.objects.filter(id_factory=factory_id).order_by('id_resource')
     if warehouses:
         factory_worker = Factory_installed.objects.filter(id=factory_id).first()
-        len_turn_production = len(Turn_production.objects.filter(user=session_user, user_city=session_user_city, \
+        len_turn_production = len(Turn_production.objects.filter(user=session_user, user_city=session_user_city,
                                                                  factory_id=factory_worker.id))
         module_which_produces = 0
         if len_turn_production < 1:
@@ -219,7 +217,7 @@ def complex_production_module(*args):
         elif factory_worker.production_class == 8:
             module_which_produces = Module_pattern.objects.filter(id=element_id).first()
         elif factory_worker.production_class == 9:
-           module_which_produces = Device_pattern.objects.filter(id=element_id).first()
+            module_which_produces = Device_pattern.objects.filter(id=element_id).first()
         elif factory_worker.production_class == 14:
             module_which_produces = Fuel_pattern.objects.filter(id=element_id).first()
 
@@ -272,30 +270,39 @@ def complex_production_module(*args):
 
             for warehouse in warehouses:
                 if warehouse.id_resource == 1:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=1).update(amount=new_resource1)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=1).update(
+                        amount=new_resource1)
                 elif warehouse.id_resource == 2:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=2).update(amount=new_resource2)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=2).update(
+                        amount=new_resource2)
                 elif warehouse.id_resource == 3:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=3).update(amount=new_resource3)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=3).update(
+                        amount=new_resource3)
                 elif warehouse.id_resource == 4:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=4).update(amount=new_resource4)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=4).update(
+                        amount=new_resource4)
                 elif warehouse.id_resource == 5:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=5).update(amount=new_mineral1)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=5).update(
+                        amount=new_mineral1)
                 elif warehouse.id_resource == 6:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=6).update(amount=new_mineral2)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=6).update(
+                        amount=new_mineral2)
                 elif warehouse.id_resource == 7:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=7).update(amount=new_mineral3)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=7).update(
+                        amount=new_mineral3)
                 elif warehouse.id_resource == 8:
-                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=8).update(amount=new_mineral4)
+                    warehouse = Warehouse_complex.objects.filter(id_complex=complex_id, id_resource=8).update(
+                        amount=new_mineral4)
 
-            user = MyUser.objects.filter(user_id=manufacturing_complex.user).update(internal_currency=new_internal_currency)
+            user = MyUser.objects.filter(user_id=manufacturing_complex.user).update(
+                internal_currency=new_internal_currency)
 
             turn_production = Turn_complex_production(
-                complex_id = complex_id,
-                factory_id = factory_id,
-                element_id = element_id,
-                start_time_production = start_time_production,
-                time = factory_worker.time_production
+                complex_id=complex_id,
+                factory_id=factory_id,
+                element_id=element_id,
+                start_time_production=start_time_production,
+                time=factory_worker.time_production
             )
             turn_production.save()
             message = 0
@@ -304,4 +311,4 @@ def complex_production_module(*args):
         return (message)
     else:
         message = 1
-    return (message)
+    return message

@@ -51,8 +51,3 @@ def verification_complex_stage(request):
                         check = 1
                     elif message == 0:
                         check = 0
-
-
-
-
-

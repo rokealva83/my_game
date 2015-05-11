@@ -54,7 +54,7 @@ def check_scientific_verification_queue(request):
     if delta_time > user_variables.time_check_new_technology:
         all_scientic = User_scientic.objects.filter(user=user).first()
         if all_scientic.all_scientic > 10:
-            new_technology = 0.9 #random.random()
+            new_technology = random.random()
 
             if 0 <= new_technology < 0.125:
                 scientic_func.hull_upgrade(user)
@@ -118,6 +118,6 @@ def check_scientific_verification_queue(request):
                 size=building.size,
                 mass=building.mass,
                 power_consumption=building.power_consumption,
-                basic_id = building.id
+                basic_id=building.id
             )
             building_pattern.save()

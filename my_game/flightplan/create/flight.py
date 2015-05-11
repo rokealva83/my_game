@@ -44,9 +44,8 @@ def flight_system(*args):
                 Zz2 = int(target_planet.global_z)
 
             else:
-                distance = math.sqrt(
-                    (Xx1 - int(target_system.x)) ** 2 + (Yy1 - int(target_system.y)) ** 2 + (
-                        Zz1 - int(target_system.z) ) ** 2)
+                distance = math.sqrt((Xx1 - int(target_system.x)) ** 2 + (Yy1 - int(target_system.y)) ** 2 + (
+                    Zz1 - int(target_system.z)) ** 2)
                 Xx2 = Xx1 + (int(target_system.x) - Xx1) * (distance - int(target_system.system_size)) / distance
                 Yy2 = Yy1 + (int(target_system.y) - Yy1) * (distance - int(target_system.system_size)) / distance
                 Zz2 = Zz1 + (int(target_system.z) - Zz1) * (distance - int(target_system.system_size)) / distance
@@ -195,11 +194,11 @@ def calculation(*args):
                 check = 1
         if check == 0:
             flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.giper_power)) * 2
+                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.giper_power)) * 2
             id_command = 3
         else:
             flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.intersystem_power)) * 2
+                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.intersystem_power)) * 2
             id_command = 2
     elif coordinate_null:
         fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
@@ -210,14 +209,14 @@ def calculation(*args):
                 check = 1
         if check == 0:
             flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.null_power)) * 2
+                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.null_power)) * 2
             id_command = 4
         else:
             flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.intersystem_power)) * 2
+                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.intersystem_power)) * 2
             id_command = 2
     else:
         flight_time = math.sqrt(
-            distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.intersystem_power)) * 2
+            distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.intersystem_power)) * 2
         id_command = 2
     return {'flight_time': flight_time, 'id_command': id_command}

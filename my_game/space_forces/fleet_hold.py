@@ -2,10 +2,9 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
-from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship, Basic_resource
+from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource
 from my_game import function
-from my_game.models import Project_ship, Ship, Fleet, Hold
-from my_game.models import Flightplan, Flightplan_flight
+from my_game.models import Ship, Fleet, Hold
 from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
     Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern, Device_pattern
 
@@ -36,6 +35,11 @@ def fleet_hold(request):
         ship_holds = {}
         message = ''
         add_shipment = 0
+        id_shipment = 0
+        class_shipment = 0
+        amount_shipment = 0
+        mass_shipment = 0
+        size = 0
 
         factory_patterns = Factory_pattern.objects.filter(user=session_user)
         hull_patterns = Hull_pattern.objects.filter(user=session_user)

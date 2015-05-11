@@ -25,6 +25,7 @@ def new_ship(request):
         chosen_hull = {}
         hulls = {}
         choice_armor = []
+        output = {}
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()

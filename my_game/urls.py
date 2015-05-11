@@ -20,7 +20,6 @@ from my_game.factory import choice_complex as choice_complex
 from my_game.factory import choice_element as choice_element
 from my_game.factory import production as production
 
-
 from my_game.designing_ships import views as design_views
 from my_game.designing_ships import new_ship as new_ship
 from my_game.designing_ships import work_with_project as work_with_project

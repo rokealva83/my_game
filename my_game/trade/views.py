@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
+
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Basic_resource
 from my_game.models import Race, Planet
 from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
-from my_game.models import Basic_armor, Basic_factory, Basic_engine, Basic_generator, Basic_hull, Basic_module, \
-    Basic_shell, Basic_shield, Basic_weapon, Basic_scientic
 from my_game.models import Warehouse_element, Warehouse_factory
 from my_game import function
-from my_game.models import Project_ship, Element_ship, Turn_ship_build, Ship
+from my_game.models import Project_ship, Ship
 from my_game.models import Trade_element, Trade_space, Building_installed, Delivery_queue
 
 
@@ -79,7 +77,8 @@ def trade(request):
                           'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns,
                           'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
                           'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
-                          'shell_patterns': shell_patterns, 'module_patterns': module_patterns, 'device_patterns': device_patterns,
+                          'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
+                          'device_patterns': device_patterns,
                           'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
                           'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements,
                           'user_trade_elements': user_trade_elements, 'users': users, 'message': message,

@@ -2,9 +2,9 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, User_city
-from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship, Basic_resource
+from my_game.models import Warehouse, Warehouse_element
 from my_game import function
-from my_game.models import Ship, Fleet, Fuel_tank, Fuel_pattern,Basic_fuel
+from my_game.models import Ship, Fleet, Fuel_tank, Fuel_pattern, Basic_fuel
 
 
 def empty_fuel_tank(request):
@@ -23,15 +23,17 @@ def empty_fuel_tank(request):
             fleet = Fleet.objects.filter(id=fleet_id).first()
             if fleet.planet_status == 1:
                 fuel_tank = Fuel_tank.objects.filter(id=fuel_tank_id).first()
-                fuel = Fuel_pattern.objects.filter(id = fuel_tank.fuel_class).first()
+                fuel = Fuel_pattern.objects.filter(id=fuel_tank.fuel_class).first()
                 if int(fuel_tank.amount_fuel) <= int(amount):
                     amount = fuel_tank.amount_fuel
                     delete_fuel_tank = Fuel_tank.objects.filter(id=fuel_tank_id).delete()
                 else:
                     new_amount = int(fuel_tank.amount_fuel) - int(amount)
-                    new_fuel_mass = int(fuel_tank.mass_fuel) - int(fuel.mass*amount)
-                    new_fuel_size = int(fuel_tank.size_fuel) - int(fuel.size*amount)
-                    fuel_tank_up = Fuel_tank.objects.filter(id=fuel_tank_id).update(amount_fuel=new_amount, mass_fuel = new_fuel_mass, size_fuel = new_fuel_size)
+                    new_fuel_mass = int(fuel_tank.mass_fuel) - int(fuel.mass * amount)
+                    new_fuel_size = int(fuel_tank.size_fuel) - int(fuel.size * amount)
+                    fuel_tank_up = Fuel_tank.objects.filter(id=fuel_tank_id).update(amount_fuel=new_amount,
+                                                                                    mass_fuel=new_fuel_mass,
+                                                                                    size_fuel=new_fuel_size)
 
                 warehouse_element = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
                                                                      element_class=14,
@@ -51,9 +53,10 @@ def empty_fuel_tank(request):
                         element_id=fuel_tank.fuel_class,
                         amount=amount
                     )
-                new_fleet_mass = int(fleet.ship_empty_mass) - int(fuel.mass*amount)
+                new_fleet_mass = int(fleet.ship_empty_mass) - int(fuel.mass * amount)
                 new_free_fuel_tank = int(fleet.free_fuel_tank) + int(fuel.size * amount)
-                fleet = Fleet.objects.filter(id=fleet_id).update(ship_empty_mass = new_fleet_mass, free_fuel_tank = new_free_fuel_tank)
+                fleet = Fleet.objects.filter(id=fleet_id).update(ship_empty_mass=new_fleet_mass,
+                                                                 free_fuel_tank=new_free_fuel_tank)
                 message = 'Топливо выгружено'
             else:
                 message = 'Флот не над планетой'
@@ -77,8 +80,7 @@ def empty_fuel_tank(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                      'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets, 'ships': ships,
-                      'command': command, 'fuel_patterns': fuel_patterns, 'fuel_tanks': fuel_tanks,
-                      'basic_fuels': basic_fuels, 'warehouse_elements': warehouse_elements}
+                  'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets, 'ships': ships,
+                  'command': command, 'fuel_patterns': fuel_patterns, 'fuel_tanks': fuel_tanks,
+                  'basic_fuels': basic_fuels, 'warehouse_elements': warehouse_elements}
         return render(request, "fuel_tank.html", output)
-

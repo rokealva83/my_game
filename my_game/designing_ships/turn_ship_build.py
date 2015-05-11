@@ -4,7 +4,7 @@
 from django.utils import timezone
 from my_game.models import User_city
 from my_game.models import Warehouse_element
-from my_game.models import Project_ship, Turn_ship_build, Ship,Element_ship
+from my_game.models import Project_ship, Turn_ship_build, Ship, Element_ship
 
 
 def verification_turn_ship_build(request):

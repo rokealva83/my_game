@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import random
-
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.contrib.auth.models import User
@@ -28,7 +27,7 @@ def add_user(request):
         if us_name is not None or mai is not None:
             return HttpResponse()
         else:
-            user_variables = User_variables.objects.filter(id = 1).first()
+            user_variables = User_variables.objects.filter(id=1).first()
             user = User(
                 username=request.POST.get('name'),
                 password=request.POST.get('pass'),
@@ -87,61 +86,60 @@ def add_user(request):
             planet = Planet.objects.filter(pk=busy_id).update(planet_free=0)
             user_city = User_city.objects.filter(user=id_user).first()
 
-
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 1,
-                amount = user_variables.registr_resource1
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=1,
+                amount=user_variables.registr_resource1
             )
             warehouse.save()
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 2,
-                amount = user_variables.registr_resource2
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=2,
+                amount=user_variables.registr_resource2
             )
             warehouse.save()
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 3,
-                amount = user_variables.registr_resource3
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=3,
+                amount=user_variables.registr_resource3
             )
             warehouse.save()
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 4,
-                amount = user_variables.registr_resource4
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=4,
+                amount=user_variables.registr_resource4
             )
             warehouse.save()
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 5,
-                amount = user_variables.registr_mineral1
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=5,
+                amount=user_variables.registr_mineral1
             )
             warehouse.save()
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 6,
-                amount = user_variables.registr_mineral2
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=6,
+                amount=user_variables.registr_mineral2
             )
             warehouse.save()
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 7,
-                amount = user_variables.registr_mineral3
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=7,
+                amount=user_variables.registr_mineral3
             )
             warehouse.save()
             warehouse = Warehouse(
-                user = id_user,
-                user_city = user_city.id,
-                id_resource = 8,
-                amount = user_variables.registr_mineral4
+                user=id_user,
+                user_city=user_city.id,
+                id_resource=8,
+                amount=user_variables.registr_mineral4
             )
             warehouse.save()
 
@@ -202,7 +200,6 @@ def add_user(request):
             free_area = user_city.city_size_free - use_area
             user_city = User_city.objects.filter(user=id_user).update(use_energy=use_energy, city_size_free=free_area)
 
-
     elif request.POST.get('cancel_button') is not None:
         return render(request, "index.html", {})
     return render(request, "index.html", {})
@@ -217,17 +214,18 @@ def auth(request):
             if user_name_auth.password == password_post:
                 user = MyUser.objects.filter(user_id=user_name_auth.id).first()
                 user_id = user.user_id
-                user_city = User_city.objects.filter(user = user_id).first()
-                warehouses = Warehouse.objects.filter(user=user_id, user_city = user_city.id).order_by('id_resource')
+                user_city = User_city.objects.filter(user=user_id).first()
+                warehouses = Warehouse.objects.filter(user=user_id, user_city=user_city.id).order_by('id_resource')
                 user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
                 user_citys = User_city.objects.filter(user=int(user_name_auth.id))
                 planet = Planet.objects.filter(id=user_city.planet_id).first()
                 race = Race.objects.filter(id=user.race_id).first()
                 planets = Planet.objects.filter(id=user_city.planet_id)
-                len_planet= len(planets)
+                len_planet = len(planets)
                 function.check_all_queues(user_id)
-                output = {'user': user,'race':race, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                      'planet': planet, 'len_planet': len_planet}
+                output = {'user': user, 'race': race, 'warehouses': warehouses, 'user_city': user_city,
+                          'user_citys': user_citys,
+                          'planet': planet, 'len_planet': len_planet}
                 request.session['userid'] = user_name_auth.id
                 request.session['user_city'] = user_city.id
                 request.session['live'] = True

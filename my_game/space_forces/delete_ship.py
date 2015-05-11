@@ -23,6 +23,8 @@ def delete_ship(request):
         flightplan_flights = {}
         warehouse_factorys = {}
         warehouse_elements = {}
+        fleet_id = 0
+        ship_id = 0
 
         command = 0
         hold = 0
@@ -125,14 +127,14 @@ def delete_ship(request):
                                                                         module_class=5, param3=2).first()
                         if element_pattern:
                             fleet_parametr_repqair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
-                                                                                              class_process=2).first()
+                                                                                                class_process=2).first()
                             new_process_per_minute = fleet_parametr_repqair.process_per_minute - element_pattern.param2 * amount_ship
                             if new_process_per_minute == 0:
                                 fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
-                                                                                                  class_process=2).delete()
+                                                                                                   class_process=2).delete()
                             else:
                                 fleet_parametr_repqair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
-                                                                                                  class_process=2).update(
+                                                                                                    class_process=2).update(
                                     process_per_minute=new_process_per_minute)
 
                         element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,

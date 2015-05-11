@@ -37,21 +37,26 @@ def warehouse(request):
         device_patterns = Device_pattern.objects.filter(user=session_user)
         fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
 
-        attribute_factorys = ("cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", \
-                              "production_id", "time_production", "size", "mass", "power_consumption")
+        attribute_factorys = (
+        "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", "production_id",
+        "time_production", "size", "mass", "power_consumption")
 
-        attribute_hulls = ("health", "generator", "engine", "weapon", "armor", "shield", "main_weapon", "module", \
-                           "hold_size", "fuel_tank", "size", "mass", "power_consuption")
+        attribute_hulls = (
+        "health", "generator", "engine", "weapon", "armor", "shield", "main_weapon", "module", "hold_size", "fuel_tank",
+        "size", "mass", "power_consuption")
 
-        attribute_armors = ("health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration", \
-                            "mass")
-        attribute_shields = ("health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter", \
-                             "regeneration", "mass", "size", "power_consuption")
-        attribute_engines = ("health", "system_power", "intersystem_power", "giper_power", "nullT_power", \
-                             "regeneration", "mass", "size", "power_consuption")
+        attribute_armors = (
+        "health", "value_energy_resistance", "value_phisical_resistance", "power", "regeneration", "mass")
+        attribute_shields = (
+        "health", "value_energy_resistance", "value_phisical_resistance", "number_of_emitter", "regeneration", "mass",
+        "size", "power_consuption")
+        attribute_engines = (
+        "health", "system_power", "intersystem_power", "giper_power", "nullT_power", "regeneration", "mass", "size",
+        "power_consuption")
         attribute_generators = ("health", "produced_energy", "fuel_necessary", "mass", "size")
-        attribute_weapons = ("health", "energy_damage", "regenerations", "number_of_bursts", "range", "accuracy", \
-                             "mass", "size", "power_consuption")
+        attribute_weapons = (
+        "health", "energy_damage", "regenerations", "number_of_bursts", "range", "accuracy", "mass", "size",
+        "power_consuption")
         attribute_shells = ("phisical_damage", "speed", "mass", "size")
         attribute_modules = ("health", "param1", "param2", "param3", "mass", "size", "power_consuption")
         attribute_devices = ("health", "param1", "param2", "param3", "mass", "size", "power_consuption")

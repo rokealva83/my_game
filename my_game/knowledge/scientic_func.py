@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import random
-
 from my_game.models import MyUser, User_scientic
 from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
     Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Device_pattern
@@ -40,7 +39,7 @@ def hull_upgrade(request):
                 hold_size=hull_scient.hold_size,
                 mass=hull_scient.mass,
                 size=hull_scient.size,
-                fuel_tank = hull_scient.fuel_tank,
+                fuel_tank=hull_scient.fuel_tank,
                 power_consuption=hull_scient.power_consuption,
                 price_internal_currency=hull_scient.price_internal_currency,
                 price_resource1=hull_scient.price_resource1,
@@ -56,12 +55,12 @@ def hull_upgrade(request):
             new_factory_pattern(user, 1, hull_scient.id)
 
     else:
-        studied_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id, bought_template = 0)
+        studied_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id, bought_template=0)
         len_studied_hull = len(studied_hull)
         if len_studied_hull < 2:
             u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
-            hull_atribute = ['health', 'generator', 'engine', 'weapon', 'armor', 'shield', 'module', \
-                             'main_weapon', 'hold_size', 'mass', 'size', 'power_consuption']
+            hull_atribute = ['health', 'generator', 'engine', 'weapon', 'armor', 'shield', 'module', 'main_weapon',
+                             'hold_size', 'mass', 'size', 'power_consuption']
             trying = random.random()
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
                 number = random.randint(0, 11)
@@ -173,7 +172,7 @@ def armor_upgrade(request):
             armor_pattern.save()
             new_factory_pattern(user, 2, armor_scient.id)
     else:
-        studied_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id, bought_template = 0)
+        studied_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id, bought_template=0)
         len_studied_armor = len(studied_armor)
         if len_studied_armor < 2:
             u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
@@ -255,10 +254,10 @@ def shield_upgrade(request):
             shield_pattern.save()
             new_factory_pattern(user, 3, shield_scient.id)
     else:
-        studied_shield = Shell_pattern.objects.filter(user=user, basic_id=shield_scient.id, bought_template = 0)
+        studied_shield = Shell_pattern.objects.filter(user=user, basic_id=shield_scient.id, bought_template=0)
         len_studied_shield = len(studied_shield)
         if len_studied_shield < 2:
-            shield_atribute = ['health', 'value_energy_resistance', 'value_phisical_resistance', 'regeneration', \
+            shield_atribute = ['health', 'value_energy_resistance', 'value_phisical_resistance', 'regeneration',
                                'number_of_emitter', 'mass', 'size', 'power_consuption']
             trying = random.random()
             percent_update = 1 + random.randint(5, 10) / 100.0
@@ -342,15 +341,15 @@ def engine_upgrade(request):
             )
             engine_pattern.save()
             new_factory_pattern(user, 4, engine_scient.id)
-            if engine_pattern.system_power!= 0 or engine_pattern.intersystem_power!=0:
+            if engine_pattern.system_power != 0 or engine_pattern.intersystem_power != 0:
                 open_fuel(user, engine_pattern.system_power, engine_pattern.intersystem_power)
     else:
-        studied_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id, bought_template = 0)
+        studied_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id, bought_template=0)
         len_studied_engine = len(studied_engine)
         if len_studied_engine < 2:
             u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
-            engine_atribute = ['health', 'system_power', 'intersystem_power', 'giper_power', \
-                               'nullT_power', 'mass', 'size', 'power_consuption']
+            engine_atribute = ['health', 'system_power', 'intersystem_power', 'giper_power', 'nullT_power', 'mass',
+                               'size', 'power_consuption']
             trying = random.random()
             percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
@@ -422,7 +421,7 @@ def generator_upgrade(request):
             generator_pattern.save()
             new_factory_pattern(user, 5, generator_scient.id)
     else:
-        studied_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id, bought_template = 0)
+        studied_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id, bought_template=0)
         len_studied_generator = len(studied_generator)
         if len_studied_generator < 2:
             generator_atribute = ['health', 'produced_energy', 'fuel_necessary', 'mass', 'size']
@@ -441,7 +440,8 @@ def generator_upgrade(request):
                             element = element * percent_update
                             u_generator.pk = None
                             u_generator.save()
-                            u_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id).last()
+                            u_generator = Generator_pattern.objects.filter(user=user,
+                                                                           basic_id=generator_scient.id).last()
                             setattr(u_generator, atribute, element)
                             u_generator.save()
                     else:
@@ -449,7 +449,8 @@ def generator_upgrade(request):
                             element = element * percent_update
                             u_generator.pk = None
                             u_generator.save()
-                            u_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id).last()
+                            u_generator = Generator_pattern.objects.filter(user=user,
+                                                                           basic_id=generator_scient.id).last()
                             setattr(u_generator, atribute, element)
                             u_generator.save()
 
@@ -508,12 +509,12 @@ def weapon_upgrade(request):
             new_factory_pattern(user, 6, weapon_scient.id)
 
     else:
-        studied_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id, bought_template = 0)
+        studied_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id, bought_template=0)
         len_studied_weapon = len(studied_weapon)
         if len_studied_weapon < 2:
             u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
-            weapon_atribute = ['health', 'energy_damage', 'regenerations', 'number_of_bursts', \
-                               'range', 'accuracy', 'mass', 'size', 'power_consuption']
+            weapon_atribute = ['health', 'energy_damage', 'regenerations', 'number_of_bursts', 'range', 'accuracy',
+                               'mass', 'size', 'power_consuption']
             trying = random.random()
             percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
@@ -546,7 +547,8 @@ def weapon_upgrade(request):
                                     element = element * percent_update
                                     u_weapon.pk = None
                                     u_weapon.save()
-                                    u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+                                    u_weapon = Weapon_pattern.objects.filter(user=user,
+                                                                             basic_id=weapon_scient.id).last()
                                     setattr(u_weapon, atribute, element)
                                     u_weapon.save()
                             else:
@@ -554,7 +556,8 @@ def weapon_upgrade(request):
                                     element = element * percent_update
                                     u_weapon.pk = None
                                     u_weapon.save()
-                                    u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+                                    u_weapon = Weapon_pattern.objects.filter(user=user,
+                                                                             basic_id=weapon_scient.id).last()
                                     setattr(u_weapon, atribute, element)
                                     u_weapon.save()
                 u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
@@ -598,7 +601,7 @@ def shell_upgrade(request):
             shell_pattern.save()
             new_factory_pattern(user, 7, shell_scient.id)
     else:
-        studied_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id, bought_template = 0)
+        studied_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id, bought_template=0)
         len_studied_shell = len(studied_shell)
         if len_studied_shell < 2:
             shell_atribute = ['phisical_damage', 'speed', 'mass', 'size']
@@ -684,7 +687,7 @@ def module_upgrade(request):
             module_pattern.save()
             new_factory_pattern(user, 8, module_scient.id)
     else:
-        studied_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id, bought_template = 0)
+        studied_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id, bought_template=0)
         len_studied_module = len(studied_module)
         if len_studied_module < 2:
             module_atribute = ['health', 'param1', 'param2', 'param3', 'mass', 'size', 'power_consuption']
@@ -730,7 +733,7 @@ def device_open(request):
         if koef < 0:
             koef = 0.00001
 
-        upper_scope = 1#0.33 * koef
+        upper_scope = 1  # 0.33 * koef
         new_device = random.random()
 
         if 0 < new_device < upper_scope:
@@ -853,8 +856,9 @@ def element_open(*args):
 
     luckyness = MyUser.objects.filter(user_id=user).first()
     lucky = luckyness.user_luckyness
-    koef = (1 + (koef_all + koef_math + koef_phis + koef_biol + koef_energy + koef_radio + \
-                 koef_nanotech + koef_astronomy + koef_logist)) * (1 + lucky / 100.0)
+    koef = (1 + (
+        koef_all + koef_math + koef_phis + koef_biol + koef_energy + koef_radio + koef_nanotech + koef_astronomy + koef_logist)) * (
+               1 + lucky / 100.0)
     return (koef)
 
 
@@ -909,7 +913,7 @@ def new_factory_pattern(*args):
         time_production=new_factory.time_production,
         size=new_factory.size,
         mass=new_factory.mass,
-        power_consumption = new_factory.power_consumption
+        power_consumption=new_factory.power_consumption
     )
     user_factory.save()
     return ()
@@ -919,34 +923,37 @@ def open_fuel(*args):
     user = args[0]
     system = args[1]
     inter = args[2]
-    if system != 0 and inter !=0:
+
+    fuel_class = 0
+
+    if system != 0 and inter != 0:
         fuel_class = 3
-    elif system != 0 and inter ==0:
+    elif system != 0 and inter == 0:
         fuel_class = 1
-    elif system == 0 and inter !=0:
+    elif system == 0 and inter != 0:
         fuel_class = 2
 
-    fuel_pattern = Fuel_pattern.objects.filter(user = user, fuel_class = fuel_class).first()
+    fuel_pattern = Fuel_pattern.objects.filter(user=user, fuel_class=fuel_class).first()
     if fuel_pattern is None:
-        basic_fuel = Basic_fuel.objects.filter(fuel_class = fuel_class).first()
+        basic_fuel = Basic_fuel.objects.filter(fuel_class=fuel_class).first()
         fuel_pattern = Fuel_pattern(
-            user = user,
-            name = basic_fuel.name,
-            basic_id = basic_fuel.id,
-            mass = basic_fuel.mass,
-            size = basic_fuel.size,
-            efficiency = basic_fuel.efficiency,
-            fuel_class = basic_fuel.fuel_class,
-            fuel_id = basic_fuel.fuel_id,
-            price_internal_currency = basic_fuel.price_internal_currency,
-            price_resource1 = basic_fuel.price_resource1,
-            price_resource2 = basic_fuel.price_resource2,
-            price_resource3 = basic_fuel.price_resource3,
-            price_resource4 = basic_fuel.price_resource4,
-            price_mineral1 = basic_fuel.price_mineral1,
-            price_mineral2 = basic_fuel.price_mineral2,
-            price_mineral3 = basic_fuel.price_mineral3,
-            price_mineral4 = basic_fuel.price_mineral4,
+            user=user,
+            name=basic_fuel.name,
+            basic_id=basic_fuel.id,
+            mass=basic_fuel.mass,
+            size=basic_fuel.size,
+            efficiency=basic_fuel.efficiency,
+            fuel_class=basic_fuel.fuel_class,
+            fuel_id=basic_fuel.fuel_id,
+            price_internal_currency=basic_fuel.price_internal_currency,
+            price_resource1=basic_fuel.price_resource1,
+            price_resource2=basic_fuel.price_resource2,
+            price_resource3=basic_fuel.price_resource3,
+            price_resource4=basic_fuel.price_resource4,
+            price_mineral1=basic_fuel.price_mineral1,
+            price_mineral2=basic_fuel.price_mineral2,
+            price_mineral3=basic_fuel.price_mineral3,
+            price_mineral4=basic_fuel.price_mineral4,
         )
         new_factory_pattern(user, 14, fuel_pattern)
 

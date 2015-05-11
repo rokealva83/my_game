@@ -32,7 +32,8 @@ def fuel_tank(request):
                                                                          element_id=fuel_pattern_id).first()
                     if warehouse_element.amount >= fuel_amount:
                         new_element_amount = warehouse_element.amount - fuel_amount
-                        warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city, element_class=14,
+                        warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
+                                                                             element_class=14,
                                                                              element_id=fuel_pattern_id).update(
                             amount=new_element_amount)
                         error = 0
@@ -43,9 +44,10 @@ def fuel_tank(request):
                         fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id, fuel_class=fuel_pattern_id).first()
                         if fuel_tank:
                             new_fuel_amount = fuel_amount + fuel_tank.amount_fuel
-                            mass_fuel = fuel.mass*fuel_amount + fuel_tank.mass_fuel
-                            size_fuel = fuel.size*fuel_amount + fuel_tank.size_fuel
-                            fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id, fuel_class=fuel_pattern_id).update(amount_fuel=new_fuel_amount,mass_fuel=mass_fuel, size_fuel=size_fuel)
+                            mass_fuel = fuel.mass * fuel_amount + fuel_tank.mass_fuel
+                            size_fuel = fuel.size * fuel_amount + fuel_tank.size_fuel
+                            fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id, fuel_class=fuel_pattern_id).update(
+                                amount_fuel=new_fuel_amount, mass_fuel=mass_fuel, size_fuel=size_fuel)
 
                         else:
                             fuel_tank = Fuel_tank(
@@ -54,7 +56,7 @@ def fuel_tank(request):
                                 amount_fuel=fuel_amount,
                                 mass_fuel=fuel.mass * fuel_amount,
                                 size_fuel=fuel.size * fuel_amount,
-                                fuel_id = fuel.fuel_id
+                                fuel_id=fuel.fuel_id
                             )
                             fuel_tank.save()
 
@@ -72,7 +74,6 @@ def fuel_tank(request):
                 message = 'Топливо не выбрано'
         else:
             message = 'Флот не над планетой'
-
 
         command = 4
         warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
@@ -92,7 +93,7 @@ def fuel_tank(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                      'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets, 'ships': ships,
-                      'command': command, 'fuel_patterns': fuel_patterns, 'fuel_tanks': fuel_tanks,
-                      'basic_fuels': basic_fuels, 'warehouse_elements': warehouse_elements}
+                  'user_fleets': user_fleets, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets, 'ships': ships,
+                  'command': command, 'fuel_patterns': fuel_patterns, 'fuel_tanks': fuel_tanks,
+                  'basic_fuels': basic_fuels, 'warehouse_elements': warehouse_elements}
         return render(request, "fuel_tank.html", output)

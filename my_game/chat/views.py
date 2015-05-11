@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse, Chat, User_chat_online
-import function
 from django.http import JsonResponse
 from django.utils import timezone
-
 
 
 def chat(request):
@@ -18,17 +18,17 @@ def chat(request):
             user_online = User_chat_online(
                 user_id=session_user,
                 user=user.user_name,
-                last_time_update = timezone.now()
+                last_time_update=timezone.now()
             )
             user_online.save()
             message = Chat(
                 user_id=1,
                 user='System',
-                text= 'Hello, ' + str(user.user_name)
+                text='Hello, ' + str(user.user_name)
             )
             message.save()
         else:
-            user_online = User_chat_online.objects.filter(user_id=session_user).update(last_time_update = timezone.now())
+            user_online = User_chat_online.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
 
         last_id = Chat.objects.last().pk
         need_id = int(last_id) - 38
@@ -46,7 +46,7 @@ def chat(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                  'user_name': user_name, 'messages': messages, 'online_users':online_users}
+                  'user_name': user_name, 'messages': messages, 'online_users': online_users}
 
         return render(request, "chat.html", output)
 
@@ -69,12 +69,11 @@ def send_message(request):
         user_online = User_chat_online(
             user_id=session_user,
             user=user.user_name,
-            last_time_update = timezone.now()
+            last_time_update=timezone.now()
         )
         user_online.save()
     else:
-        user_online = User_chat_online.objects.filter(user_id=session_user).update(last_time_update = timezone.now())
-
+        user_online = User_chat_online.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
 
 
 def update_message(request):
@@ -98,22 +97,22 @@ def user_delete(request):
     online_users = User_chat_online.objects.all()
     for online_user in online_users:
         last_time_update = online_user.last_time_update
-        delta_time = timezone.now()-last_time_update
+        delta_time = timezone.now() - last_time_update
         delta_time = delta_time.seconds
         if delta_time > 300:
-            online_user_delete = User_chat_online.objects.filter(id = online_user.id).delete()
-
+            online_user_delete = User_chat_online.objects.filter(id=online_user.id).delete()
 
 
 def delete_user_update(request):
     id = int(request.POST.get('id'))
     response = 0
-    online_user = User_chat_online.objects.filter(id = id)
+    online_user = User_chat_online.objects.filter(id=id)
     if online_user:
         response = 1
     return JsonResponse({
         'result': response
     })
+
 
 def update_user(request):
     id = int(request.POST.get('id'))

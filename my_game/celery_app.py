@@ -3,7 +3,7 @@
 __author__ = 'tadej'
 
 
-#from __future__ import absolute_import
+# from __future__ import absolute_import
 import os
 
 from celery import Celery
