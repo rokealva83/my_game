@@ -12,8 +12,7 @@
         {% if fuel_tanks %}
             {% for fuel_tank in fuel_tanks %}
                 {% for basic_fuel in basic_fuels %}
-                    {% if basic_fuel.fuel_class == fuel_tank.fuel_class and basic_fuel.fuel_id == fuel_tank.fuel_id %}
-
+                    {% if basic_fuel.fuel_id == fuel_tank.fuel_id %}
 
                         <form method="post" action="empty_fuel_tank" style="text-align: center">
                             <p>

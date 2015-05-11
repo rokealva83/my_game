@@ -34,19 +34,21 @@ def verification_flight_list(request):
                             planet_status = 1
                             planet = Planet.objects.filter(system_id=flightplan_flight.system,
                                                            planet_num=flightplan_flight.planet).first()
-                            x = planet.x
-                            y = planet.y
-                            z = planet.z
+                            x = planet.global_x
+                            y = planet.global_y
+                            z = planet.global_z
 
                         else:
                             planet_status = 0
-                            x = flightplan_flight.finish_x / 1000.0
-                            y = flightplan_flight.finish_y / 1000.0
-                            z = flightplan_flight.finish_z / 1000.0
+                            x = flightplan_flight.finish_x
+                            y = flightplan_flight.finish_y
+                            z = flightplan_flight.finish_z
 
                         fleet_up = Fleet.objects.filter(id=fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
                                                                             planet=flightplan_flight.planet,
                                                                             system=flightplan_flight.system)
+
+
 
                         flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
                         flightplan = Flightplan.objects.filter(id=flightplan.id).delete()
@@ -58,17 +60,15 @@ def verification_flight_list(request):
 
                     else:
 
-                        new_x = (
-                                    flightplan_flight.start_x - flightplan_flight.finish_x) / flightplan_flight.flight_time * new_delta
-                        new_y = (
-                                    flightplan_flight.start_y - flightplan_flight.finish_y) / flightplan_flight.flight_time * new_delta
-                        new_z = (
-                                    flightplan_flight.start_z - flightplan_flight.finish_z) / flightplan_flight.flight_time * new_delta
+                        new_x = flightplan_flight.start_x - (
+                                                                flightplan_flight.start_x - flightplan_flight.finish_x) / flightplan_flight.flight_time * new_delta
+                        new_y = flightplan_flight.start_y - (
+                                                                flightplan_flight.start_y - flightplan_flight.finish_y) / flightplan_flight.flight_time * new_delta
+                        new_z = flightplan_flight.start_z - (
+                                                                flightplan_flight.start_z - flightplan_flight.finish_z) / flightplan_flight.flight_time * new_delta
                         fleet_up = fleet_up = Fleet.objects.filter(id=fleet.id).update(x=new_x, y=new_y, z=new_z,
                                                                                        planet_status=0, planet=0,
                                                                                        system=0)
-
-
 
 
 
@@ -81,10 +81,10 @@ def verification_flight_list(request):
                         # new_delta = delta_time.seconds
                         # new_delta = int(new_delta/60)
                         # if new_delta >= flightplan_production.time_extraction:
-                        #         extraction_mine = flightplan_production.time_extraction * flightplan_production.production_per_minute
-                        #     else:
-                        #         new_time_extraction =  flightplan_production.time_extraction - new_delta
-                        #         extraction_mine = new_delta * flightplan_production.production_per_minute
+                        # extraction_mine = flightplan_production.time_extraction * flightplan_production.production_per_minute
+                        # else:
+                        # new_time_extraction =  flightplan_production.time_extraction - new_delta
+                        # extraction_mine = new_delta * flightplan_production.production_per_minute
                         #         resource1 = extraction_mine * asteroid_field.koef_res_1
                         #         resource2 = extraction_mine * asteroid_field.koef_res_2
                         #         resource3 = extraction_mine * asteroid_field.koef_res_3

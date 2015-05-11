@@ -53,7 +53,8 @@ def fuel_tank(request):
                                 fuel_class=fuel_pattern_id,
                                 amount_fuel=fuel_amount,
                                 mass_fuel=fuel.mass * fuel_amount,
-                                size_fuel=fuel.size * fuel_amount
+                                size_fuel=fuel.size * fuel_amount,
+                                fuel_id = fuel.fuel_id
                             )
                             fuel_tank.save()
 
@@ -80,7 +81,7 @@ def fuel_tank(request):
         fuel_tanks = Fuel_tank.objects.filter(fleet_id=fleet_id)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'id_resource')
-        basic_fuels = Basic_fuel.objects.filter()
+        basic_fuels = Basic_fuel.objects.all()
         user_city = User_city.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = User_city.objects.filter(user=int(session_user))

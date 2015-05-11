@@ -39,9 +39,9 @@ def flight_system(*args):
                 Zz1 = int(fleet.z)
 
             if target_planet:
-                Xx2 = int(target_planet.x)
-                Yy2 = int(target_planet.y)
-                Zz2 = int(target_planet.z)
+                Xx2 = int(target_planet.global_x)
+                Yy2 = int(target_planet.global_y)
+                Zz2 = int(target_planet.global_z)
 
             else:
                 distance = math.sqrt(
@@ -114,8 +114,6 @@ def flight_system(*args):
         coordinate_z = float(request.POST.get('coordinate_z'))
         coordinate_giper = request.POST.get('coordinate_giper')
         coordinate_null = request.POST.get('coordinate_null')
-        coordinate_system = int(request.POST.get('coordinate_system'))
-        coordinate_intersystem = request.POST.get('coordinate_intersystem')
         fleet = Fleet.objects.filter(id=fleet_id).first()
         flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
 
@@ -133,25 +131,17 @@ def flight_system(*args):
         Zz2 = coordinate_z
         distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2) ** 2)
 
-        if coordinate_system == fleet.system:
-            flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.system_power)) * 2
-            id_command = 1
-        else:
-            answer = calculation(fleet_id, coordinate_giper, coordinate_null, distance)
-            id_command = answer['id_command']
-            flight_time = answer['flight_time']
+        answer = calculation(fleet_id, coordinate_giper, coordinate_null, distance)
+        id_command = answer['id_command']
+        flight_time = answer['flight_time']
 
-        planet = 0
         system = 0
-        if coordinate_system != 0:
-            planet = Planet.objects.filter(system_id=coordinate_system, x=coordinate_x, y=coordinate_y,
-                                           z=coordinate_z).first()
-            if planet:
-                planet = planet.planet_num
-                system = coordinate_system
-            else:
-                planet = 0
+        planet = Planet.objects.filter(global_x=coordinate_x, global_y=coordinate_y, global_z=coordinate_z).first()
+        if planet:
+            planet = planet.planet_num
+            system = planet.system_id
+        else:
+            planet = 0
 
         if id_command != 1:
             system_flight = 0
