@@ -47,8 +47,8 @@ def verification_flight(*args):
                 need_fuel = need_fuel / fuel_pattern.efficiency
 
                 new_fuel = int(fuel_tank.amount_fuel - need_fuel)
-                new_mass = int(fuel_tank.mass - need_fuel * fuel_pattern.mass)
-                new_size = int(fuel_tank.size - need_fuel * fuel_pattern.size)
+                new_mass = int(fuel_tank.mass_fuel - need_fuel * fuel_pattern.mass)
+                new_size = int(fuel_tank.size_fuel - need_fuel * fuel_pattern.size)
                 fuel_tank = Fuel_tank.objects.filter(id=fuel_tank.id, fleet_id=fleet.id).update(amount_fuel=new_fuel,
                                                                                                 mass_fuel=new_mass,
                                                                                                 size_fuel=new_size)
