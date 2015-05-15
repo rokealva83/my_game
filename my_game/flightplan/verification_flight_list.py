@@ -28,20 +28,20 @@ def verification_flight_list(request):
             if flightplan.status == 1:
                 if flightplan.class_command == 1:
                     finish_time = verification_flight(fleet)
-                    flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
+                    flightplan = Flightplan.objects.filter(id_fleet=fleet.id, status=0).first()
 
 
                 elif flightplan.class_command == 6:
                     finish_time = scan_veryfication(fleet)
-                    flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
+                    flightplan = Flightplan.objects.filter(id_fleet=fleet.id, status=0).first()
 
-            if flightplan:
-                if flightplan.class_command == 1:
-                    start_flight.start_flight(fleet.id, finish_time)
-                elif flightplan.class_command == 6:
-                    start_scaning.start_scaning(fleet.id, finish_time)
-            else:
-                fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
+                if flightplan:
+                    if flightplan.class_command == 1:
+                        start_flight.start_flight(fleet.id, finish_time)
+                    elif flightplan.class_command == 6:
+                        start_scaning.start_scaning(fleet.id, finish_time)
+                else:
+                    fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
 
 
 

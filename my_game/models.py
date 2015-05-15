@@ -1401,7 +1401,7 @@ class Mail(models.Model):
     category = models.IntegerField()
     login_recipient = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
-    message = models.CharField(max_length=1000)
+    message = models.CharField(max_length=8192)
 
 
 class Basic_building(models.Model):

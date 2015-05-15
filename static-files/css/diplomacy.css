@@ -5,7 +5,7 @@
     float: left;
     opacity: 0.8;
     width: 1025px;
-    height: 600px;
+    min-height: 600px;
     text-align: center;
     vertical-align: middle;
     border-radius: 7px;
@@ -62,7 +62,7 @@
 
 .mail_text p {
     text-align: left;
-    margin: 0px 8px 0 8px;
+    margin: -20px 8px -40px 8px;
 
 }
 
@@ -161,7 +161,8 @@
     width: 23px;
     height: 18px;
     background: url(../images/mail/answer.png)no-repeat fixed center;
+}
 
-
-
+.message_text{
+    margin: 0;
 }

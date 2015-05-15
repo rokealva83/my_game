@@ -84,7 +84,9 @@
                             </label>
 
                             <div class="mail_text">
-                                <p>{{ mail.message }}</p>
+                                <pre>
+                                    <p>{{ mail.message }}</p>
+                                </pre>
                             </div>
 
                         {% endif %}
@@ -140,7 +142,9 @@
                             </label>
 
                             <div class="mail_text">
-                                <p>{{ mail.message }}</p>
+                                <pre>
+                                    <p>{{ mail.message }}</p>
+                                </pre>
                             </div>
 
                         {% endif %}
@@ -196,7 +200,9 @@
                             </label>
 
                             <div class="mail_text">
+                                <pre>
                                 <p>{{ mail.message }}</p>
+                                </pre>
                             </div>
 
                         {% endif %}
@@ -230,7 +236,7 @@
                                     <a class="view">
                                         <img class="view" src="{% static "images/mail/plus_o.png" %}">
                                     </a>
-                                    <i>Отправитель:</i> <a href="{{ mail.login_recipient }}"
+                                    <i>Отправитель:</i> <a href=""
                                                            style="text-decoration: none; color: #000000"><b>{{ mail.login_recipient }}</b></a>
                                     <i>Тема:</i> <b>{{ mail.title }}</b> <i>Время:</i> ({{ mail.time }})
 
@@ -252,7 +258,9 @@
                             </label>
 
                             <div class="mail_text">
+                            <pre class="message_text">
                                 <p>{{ mail.message }}</p>
+                            </pre>
                             </div>
 
                         {% endif %}
