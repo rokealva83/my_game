@@ -158,9 +158,14 @@ def scan_veryfication(*args):
             new_fuel = int(fuel_tank.amount_fuel - need_fuel)
             new_mass = int(fuel_tank.mass_fuel - need_fuel * fuel_pattern.mass)
             new_size = int(fuel_tank.size_fuel - need_fuel * fuel_pattern.size)
+            new_fleet_tank = int(fleet.free_fuel_tank + need_fuel)
+            new_fleet_mass = int(fleet.ship_empty_mass - need_fuel * fuel_pattern.mass)
+
             fuel_tank = Fuel_tank.objects.filter(id=fuel_tank.id, fleet_id=fleet.id).update(amount_fuel=new_fuel,
                                                                                             mass_fuel=new_mass,
                                                                                             size_fuel=new_size)
+            fleet_up = Fleet.objects.filter(id=fleet.id).update(free_fuel_tank=new_fleet_tank,
+                                                                    ship_empty_mass=new_fleet_mass)
             flightplan_scan = Flightplan_scan.objects.filter(id_fleetplan=flightplan.id).delete()
             flightplan = Flightplan.objects.filter(id=flightplan.id).delete()
 
