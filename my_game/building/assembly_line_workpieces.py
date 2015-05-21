@@ -12,6 +12,7 @@ def check_assembly_line_workpieces(request):
     my_user = MyUser.objects.filter(user_id=user).first()
     turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=user)
     time = timezone.now()
+    #перебор елементов очереди
     for turn_assembly_pieces in turn_assembly_piecess:
         time_start = turn_assembly_pieces.start_time_assembly
         delta_time = time - time_start
@@ -21,6 +22,7 @@ def check_assembly_line_workpieces(request):
         user_city = User_city.objects.filter(user=user, id=turn_assembly_pieces.user_city).first()
         warehouse_factory = Warehouse_factory.objects.filter(factory_id=turn_assembly_pieces.pattern_id,
                                                              production_class=turn_assembly_pieces.class_id).first()
+        #проверка времени
         if new_delta > delta:
             if warehouse_factory is not None:
                 amount_assembly = turn_assembly_pieces.amount_assembly + warehouse_factory.amount
