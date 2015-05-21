@@ -6,7 +6,7 @@ from my_game.models import Turn_building
 from my_game.models import Factory_pattern, Factory_installed, Building_pattern, Building_installed
 import my_game.verification_func as verification_func
 
-
+#Проверки очереди развертывания
 def verification_phase_of_construction(request):
     user = int(request)
     my_user = MyUser.objects.filter(user_id=user).first()
@@ -19,6 +19,7 @@ def verification_phase_of_construction(request):
         delta_time = turn_building.finish_time_deployment - turn_building.start_time_deployment
         delta = delta_time.seconds
         user_city = User_city.objects.filter(user=user, id=turn_building.user_city).first()
+        #Проверка времени
         if new_delta > delta:
             verification_func.verification_of_resources(user)
             if turn_building.class_id != 13:
