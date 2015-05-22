@@ -108,11 +108,11 @@ def fleet_flightplan(request):
                 flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
             if flightplan.class_command == 2:
                 flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan.id).delete()
-            if flightplan.class_command == 3:
+            if flightplan.class_command == 6:
                 flightplan_scan = Flightplan_scan.objects.filter(id_fleetplan=flightplan.id).delete()
             if flightplan.class_command == 4:
                 flightplan_scan = Flightplan_refill.objects.filter(id_fleetplan=flightplan.id).delete()
-            if flightplan.class_command == 6:
+            if flightplan.class_command == 3:
                 flightplan_production = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).delete()
             flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).delete()
 

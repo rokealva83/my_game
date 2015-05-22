@@ -31,15 +31,17 @@ def start_flightplan(request):
 
         if request.POST.get('delete_list'):
             fleet_id = int(request.POST.get('hidden_fleet'))
-            flightplan = Flightplan.objects.filter(id_fleet=fleet_id).delete()
-            flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).delete()
-            flightplan_scan = Flightplan_scan.objects.filter(id_fleet=fleet_id).delete()
-            flightplan_production = Flightplan_production.objects.filter(id_fleet=fleet_id).delete()
-            flightplan_hold = Flightplan_hold.objects.filter(id_fleet=fleet_id).delete()
-            flightplan_refill = Flightplan_refill.objects.filter(id_fleet=fleet_id).delete()
-            flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).delete()
-            message = ''
-            command = 3
+            flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
+            if flightplan.status == 0:
+                flightplan = Flightplan.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_scan = Flightplan_scan.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_production = Flightplan_production.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_hold = Flightplan_hold.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_refill = Flightplan_refill.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).delete()
+                message = ''
+                command = 3
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user_city = User_city.objects.filter(user=session_user).first()

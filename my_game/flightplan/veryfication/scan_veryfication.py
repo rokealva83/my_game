@@ -63,6 +63,7 @@ def scan_veryfication(*args):
                             if distance <= delta * 0.1:
                                 message_planet_subject = u'      В системе найдены планеты с координатами: \n'
                                 planets = Planet.objects.filter(system_id=system.id).order_by('planet_num')
+                                mess_planet=u''
                                 for planet in planets:
                                     mess_planet = u'        №%s - %s : %s : %s \n' % (
                                     planet.planet_num, planet.global_x, planet.global_y, planet.global_z)

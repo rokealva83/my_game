@@ -3,7 +3,7 @@
 from datetime import datetime
 from my_game.models import Fleet, Fuel_pattern, Fuel_tank
 from my_game.models import Flightplan, Flightplan_scan
-from my_game.flightplan.fuel import fuel_scan
+from my_game.flightplan.fuel import fuel_process
 
 
 def start_scaning(*args):
@@ -16,7 +16,7 @@ def start_scaning(*args):
     id_flightplan = flightplan.pk
     flightplan_scan = Flightplan_scan.objects.filter(id_fleet=fleet_id).first()
     message = ''
-    need_fuel = fuel_scan(fleet_id, flightplan_scan, flightplan)
+    need_fuel = fuel_process(fleet_id, flightplan_scan, flightplan)
 
     fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id).first()
     if fuel_tank:

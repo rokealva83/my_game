@@ -1340,9 +1340,9 @@ class Asteroid_field(models.Model):
     class Meta():
         db_table = 'asteroid_field'
 
-    x = models.FloatField(db_index=True)
-    y = models.FloatField(db_index=True)
-    z = models.FloatField(db_index=True)
+    x = models.IntegerField(db_index=True)
+    y = models.IntegerField(db_index=True)
+    z = models.IntegerField(db_index=True)
     class_asteroid_field = models.IntegerField(default=0)
     size = models.IntegerField()
     koef_res_1 = models.FloatField(default=0.15)

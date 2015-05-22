@@ -100,7 +100,7 @@ def empty_fleet_hold(request):
                 unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
                           mass_shipment, size)
 
-            resource_amount = myDict.get('amount_mineral1')
+            resource_amount = myDict.get('amount_resource5')
             if resource_amount is not None and resource_amount[0] != 0:
                 id_shipment = 5
                 class_shipment = 0
@@ -110,7 +110,7 @@ def empty_fleet_hold(request):
                 unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
                           mass_shipment, size)
 
-            resource_amount = myDict.get('amount_mineral2')
+            resource_amount = myDict.get('amount_resource6')
             if resource_amount is not None and resource_amount[0] != 0:
                 id_shipment = 6
                 class_shipment = 0
@@ -120,7 +120,7 @@ def empty_fleet_hold(request):
                 unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
                           mass_shipment, size)
 
-            resource_amount = myDict.get('amount_mineral3')
+            resource_amount = myDict.get('amount_resource7')
             if resource_amount is not None and resource_amount[0] != 0:
                 id_shipment = 7
                 class_shipment = 0
@@ -130,7 +130,7 @@ def empty_fleet_hold(request):
                 unloading(session_user, session_user_city, fleet_id, class_shipment, id_shipment, amount_shipment,
                           mass_shipment, size)
 
-            resource_amount = myDict.get('amount_mineral4')
+            resource_amount = myDict.get('amount_resource8')
             if resource_amount is not None and resource_amount[0] != 0:
                 id_shipment = 8
                 class_shipment = 0
