@@ -34,15 +34,14 @@ def star_generation(request):
         )
         galaxy.save()
         while (system_id <= star):
-            # coordinates of systems
-            # print "coordinates of systems"
+            # координаты систем
             mark = 1
             while mark > 0:
                 mark = 0
                 sys = []
                 sys.append(int(system_id))
 
-                # generate coordinates
+                # генерация координат систем
                 Zm = random.randint(0, 20)
                 x = 2 * (r + Zm) * math.cos(a)
                 Zm = random.randint(0, 20)
@@ -56,7 +55,7 @@ def star_generation(request):
                 sys.append(int(z))
                 sys.append(system_size)
 
-                # classification of stars
+                # класификация звезд
                 k = random.random()
                 if k > 0.05:
                     star_type = 0
@@ -64,7 +63,7 @@ def star_generation(request):
                     star_type = 1
                 sys.append(star_type)
 
-                # valid_test
+                # тест на правильность координат
                 for i in range(iteration):
                     j = 2
                     x2 = gal[i][j]
@@ -76,7 +75,7 @@ def star_generation(request):
                 if 2 * size > ligth:
                     mark = mark + 1
 
-            # radius orbite of planet (static-files)
+            # расчет радиусов орбит планет
             radius_star = round(system_size / 3 * 1000, 2)
             radius = (system_size * 1000 - (radius_star)) / 12
 
@@ -91,7 +90,7 @@ def star_generation(request):
             )
             system.save()
 
-            # the number of planets
+            # количество планет в системе
             k = random.random()
             if 0.01 > k:
                 n = 0
@@ -105,7 +104,7 @@ def star_generation(request):
                         n = random.randint(5, 9)
 
             plans = [[0, 0, 0, 0, 0]]
-            # valid test
+            # проверка на правильность 
             for ii in range(n):
                 q = ii
                 mark1 = 1
@@ -117,7 +116,7 @@ def star_generation(request):
                         if planet_id == w:
                             mark1 = mark1 + 1
 
-                # generate planet koordinate and radius orbite
+                # генерация координат планет и радиусов орбиты
                 plan = []
                 plan.append(planet_id)
                 aa = random.randint(1, 360)
@@ -133,7 +132,7 @@ def star_generation(request):
                 plan.append(int(system_y))
                 plan.append(system_z)
 
-                # generate size and classification of planet
+                # генерация планет, их размера и класса
                 planet_type = 0
                 planet_size = radius / random.randint(8, 12)
                 planet_type = random.randint(1, 5)
@@ -145,7 +144,7 @@ def star_generation(request):
                 plan.append(round(planet_work_area))
 
 
-                # angle and the motion vector of the planets in the system
+                # скорость и направление смещения планет
                 planet_displacement_vector = round(random.randint(0, 1))
                 if planet_displacement_vector == 0:
                     planet_displacement_vector = -1

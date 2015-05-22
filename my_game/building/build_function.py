@@ -5,7 +5,7 @@ from my_game.models import MyUser, User_city, Warehouse, Turn_building, Turn_ass
 from my_game.models import Factory_pattern, Factory_installed, Building_pattern
 from my_game.models import Warehouse_factory
 
-
+#Переименовани шаблона фибрики
 def rename_factory_pattern(*args):
     new_name = args[0]
     pattern_id = args[1]
@@ -17,7 +17,7 @@ def rename_factory_pattern(*args):
     message = 'Шаблон переименован'
     return message
 
-
+# Улучшение шаблона
 def upgrade_factory_pattern(*args):
     pattern_id = int(args[2])
     class_id = int(args[3])
@@ -106,7 +106,7 @@ def upgrade_factory_pattern(*args):
     message = 'Шаблон улучшен'
     return message
 
-
+# Удаление шаблона
 def delete_factory_pattern(*args):
     pattern_id = int(args[0])
     class_id = int(args[1])
@@ -122,7 +122,7 @@ def delete_factory_pattern(*args):
         message = 'Шаблон удален'
     return message
 
-
+#Создание из шаблона заготовки
 def making_factory_unit(*args):
     session_user = int(args[0])
     session_user_city = int(args[1])
@@ -148,6 +148,7 @@ def making_factory_unit(*args):
     turn_assembly_pieces = len(Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city))
 
     if turn_assembly_pieces < 3:
+        #Проверка наличия ресурсов
         for warehouse in warehouses:
             if warehouse.id_resource == 1:
                 resource1 = warehouse.amount
@@ -238,7 +239,7 @@ def making_factory_unit(*args):
         message = 'Очередь заполнена'
     return message
 
-
+#Развертывание заготоки
 def install_factory_unit(*args):
     session_user = args[0]
     session_user_city = args[1]

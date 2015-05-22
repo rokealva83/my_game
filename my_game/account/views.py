@@ -16,12 +16,12 @@ from my_game import function
 def registration(request):
     return render(request, "registration.html", {})
 
-
+# функция добавления нового игрока
 def add_user(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
         u_name = request.POST.get('name')
         ma = request.POST.get('mail')
-        # valid name & E-mail
+        # проверка имени и емейла на уникальность
         us_name = MyUser.objects.filter(user_name=u_name).first()
         mai = MyUser.objects.filter(e_mail=ma).first()
         if us_name is not None or mai is not None:
@@ -57,6 +57,7 @@ def add_user(request):
             )
             myuser.save()
 
+            # добавление пользователю науки
             scientic = User_scientic(
                 user=id_user,
                 time_study_math=Basic_scientic.objects.get(scientic_id=1).time_study,
@@ -70,6 +71,7 @@ def add_user(request):
             )
             scientic.save()
             planeta = Planet.objects.filter(planet_type=int(request.POST.get('rac')), planet_free=1).first()
+            # установка начального города и добавление склада. Добавление начальных строений
             user_city = User_city(
                 user=id_user,
                 system_id=planeta.system_id,
@@ -204,7 +206,7 @@ def add_user(request):
         return render(request, "index.html", {})
     return render(request, "index.html", {})
 
-
+# функция авторизациир
 def auth(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
         user_name_post = request.POST.get('name')

@@ -5,12 +5,13 @@ import random
 from django.shortcuts import render
 from my_game.models import System, Asteroid_field
 
-
+# функция генерации астероидных полей
 def asteroid_generation(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
 
         asteroid = int(request.POST.get('asteroid', None))
         for i in range(asteroid):
+            #генерация кооржинат поля
             system = System.objects.filter().order_by('x').first()
             x_min = system.x - 10
             system = System.objects.filter().order_by('x').last()
@@ -23,6 +24,7 @@ def asteroid_generation(request):
             y = round(random.uniform(y_min, y_max), 3)
             z = round(random.uniform(-30, 30), 3)
 
+            # размер поля
             k = random.random()
             if 0.07 > k:
                 size = random.randint(3000000, 5000000)
@@ -35,6 +37,7 @@ def asteroid_generation(request):
                     else:
                         size = random.randint(100000, 500000)
 
+            #количество артефактов в поле
             k = random.random()
             if 0.02 > k:
                 artifact = 5
@@ -49,6 +52,7 @@ def asteroid_generation(request):
             else:
                 artifact = 0
 
+            # уровень обогащения поля
             k = random.random()
             if 0.05 > k:
                 ore = round(random.uniform(0.8, 0.95), 3)
