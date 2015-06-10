@@ -79,6 +79,8 @@ def verification_flight_list(request):
                             add_res(fleet, min3, mineral3)
                             add_res(fleet, min4, mineral4)
 
+
+
                         #  Дописать:
                         #     а) отнятие ресурсов из поля с учетом оставшегося размера
                         #     б) дописать пересчет трюма
