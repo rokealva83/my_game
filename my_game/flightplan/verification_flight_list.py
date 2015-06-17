@@ -6,7 +6,7 @@ import math
 from my_game.models import Planet
 from my_game.models import System, Asteroid_field, Flightplan_scan, Fleet_parametr_resource_extraction
 from my_game.models import Fleet, Fuel_pattern, Fuel_tank
-from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production
+from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production, Flightplan_hold
 from my_game.models import Mail, Hold
 from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
     start_repair_build, start_scaning, start_unload_hold, start_upload_hold
@@ -30,6 +30,32 @@ def verification_flight_list(request):
                 if flightplan.class_command == 1:
                     finish_time = verification_flight(fleet)
                     flightplan = Flightplan.objects.filter(id_fleet=fleet.id, status=0).first()
+
+
+
+
+                elif flightplan.class_command == 2:
+                    flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan.id).first()
+                    if flightplan_hold:
+                        if flightplan.id_command == 1:
+                            r=1
+                        elif flightplan.id_command == 2:
+                            t=1
+                        elif flightplan.id_command == 3:
+                            t=1
+                        elif flightplan.id_command == 4:
+                            t=1
+
+
+                #   1. загрузка елементов в трюм. ИД команды 1
+                #   2. выгрузка елементов из трюма. ИД команды 2
+                #   3. выгрузка всех елементов из трюма. ИД команды 3
+                #   4. разгрузка всего трюма. ИД команды 4
+                #   5. перерасчет трюма, веса корабля
+                #   6. перерасчет склада
+
+
+
 
                 elif flightplan.class_command == 3:
                     flightplan_extraction = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).first()
@@ -124,6 +150,11 @@ def verification_flight_list(request):
                 if flightplan:
                     if flightplan.class_command == 1:
                         start_flight.start_flight(fleet.id, finish_time)
+                    elif flightplan.class_command == 2:
+                        if flightplan.id_command == 1:
+                            start_upload_hold.start_upload(fleet.id, finish_time)
+                        else:
+                            start_unload_hold.start_unload(fleet.id, finish_time)
                     elif flightplan.class_command == 3:
                         start_extraction.start_extraction(fleet.id, finish_time)
                     elif flightplan.class_command == 6:
