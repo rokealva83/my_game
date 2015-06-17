@@ -3,11 +3,12 @@
 from datetime import timedelta
 from django.utils import timezone
 import math
-from my_game.models import Planet
+from my_game.models import Planet, Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship
 from my_game.models import System, Asteroid_field, Flightplan_scan, Fleet_parametr_resource_extraction
-from my_game.models import Fleet, Fuel_pattern, Fuel_tank
+from my_game.models import Fleet, Fuel_pattern, Fuel_tank, Armor_pattern, Shield_pattern, Weapon_pattern, \
+    Engine_pattern, Generator_pattern, Shell_pattern, Module_pattern, Device_pattern
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production, Flightplan_hold
-from my_game.models import Mail, Hold
+from my_game.models import Mail, Hold, Ship, Project_ship, Hull_pattern
 from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
     start_repair_build, start_scaning, start_unload_hold, start_upload_hold
 from my_game.flightplan.veryfication.flight_verification import verification_flight
@@ -30,24 +31,89 @@ def verification_flight_list(request):
                 if flightplan.class_command == 1:
                     finish_time = verification_flight(fleet)
                     flightplan = Flightplan.objects.filter(id_fleet=fleet.id, status=0).first()
-
-
-
-
                 elif flightplan.class_command == 2:
-                    flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan.id).first()
+                    error = 0
+                    flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan_id).first()
                     if flightplan_hold:
-                        if flightplan.id_command == 1:
-                            r=1
-                        elif flightplan.id_command == 2:
-                            t=1
-                        elif flightplan.id_command == 3:
-                            t=1
-                        elif flightplan.id_command == 4:
-                            t=1
+                        time = timezone()
+                        time_start = flightplan_hold.start_time
+                        time_upload = flightplan_hold.time
+                        delta_time = time - time_start
+                        new_delta = delta_time.seconds
+
+                        if new_delta > time_upload:
+
+                            if flightplan.id_command == 1:
+                                class_element = flightplan_hold.class_element
+                                if class_element == 0:
+                                    warehouse = Warehouse.objects.filter(id_resource=flightplan_hold.id_element).first()
+                                    size = 1
+                                elif class_element == 10:
+                                    warehouse = Warehouse_factory.objects.filter(id=flightplan_hold.id_element).first()
+                                    if warehouse:
+                                        size = warehouse.size
+                                elif class_element == 11:
+                                    warehouse = Warehouse_ship.objects.filter(id=flightplan_hold.id_element).first()
+                                    if warehouse:
+                                        ship = Ship.objects.filter(id=warehouse.ship_id).first()
+                                        project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                                        hull = Hull_pattern.objects.filter(id=project_ship.hull_id).first()
+                                        size = hull.size
+                                else:
+                                    warehouse = Warehouse_element.objects.filter(
+                                        element_class=class_element,
+                                        element_id=flightplan_hold.id_element).first()
+                                    if warehouse:
+                                        if class_element == 1:
+                                            pattern = Hull_pattern.objects.filter(id = warehouse.id_element).first()
+                                        elif class_element == 2:
+                                            pattern = Armor_pattern.objects.filter(id = warehouse.id_element).first()
+                                            size = pattern.mass / 4
+                                        elif class_element == 3:
+                                            pattern = Shield_pattern.objects.filter(id = warehouse.id_element).first()
+                                        elif class_element == 4:
+                                            pattern = Engine_pattern.objects.filter(id = warehouse.id_element).first()
+                                        elif class_element == 5:
+                                            pattern = Generator_pattern.objects.filter(id = warehouse.id_element).first()
+                                        elif class_element == 6:
+                                            pattern = Weapon_pattern.objects.filter(id = warehouse.id_element).first()
+                                        elif class_element == 7:
+                                            pattern = Shell_pattern.objects.filter(id = warehouse.id_element).first()
+                                        elif class_element == 8:
+                                            pattern = Module_pattern.objects.filter(id = warehouse.id_element).first()
+                                        elif class_element == 9:
+                                            pattern = Device_pattern.objects.filter(id = warehouse.id_element).first()
+
+                                        if class_element != 2:
+                                            size = pattern.size
+
+                                if warehouse:
+                                    need_amount = flightplan_hold.amount
+                                    if need_amount > warehouse.amount:
+                                        need_amount = warehouse.amount
+
+                                    need_size = need_amount * size
 
 
-                #   1. загрузка елементов в трюм. ИД команды 1
+
+                                else:
+                                    message = 'На складе нет такого модуля'
+                                    error = 1
+
+                                hold = Hold.objects.filter(class_shipment=flightplan_hold.class_element,
+                                                           id_shipment=flightplan_hold.id_element).first()
+
+
+
+                            elif flightplan.id_command == 2:
+                                t = 1
+                            elif flightplan.id_command == 3:
+                                t = 1
+                            elif flightplan.id_command == 4:
+                                t = 1
+
+
+                # 1. загрузка елементов в трюм. ИД команды 1
                 #   2. выгрузка елементов из трюма. ИД команды 2
                 #   3. выгрузка всех елементов из трюма. ИД команды 3
                 #   4. разгрузка всего трюма. ИД команды 4
@@ -123,24 +189,18 @@ def verification_flight_list(request):
                             mass = extraction
                             new_mass = fleet.ship_empty_mass + mass
                             new_empty_hold = fleet.empty_hold - extraction
-                            fleet_up = Fleet.objects.filter(id=fleet.id).update(hold=new_hold, ship_empty_mass=new_mass, empty_hold=new_empty_hold)
-                            delta=flightplan_extraction.time_extraction - new_delta
-                            flightplan_extraction = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).update(start_time=time)
+                            fleet_up = Fleet.objects.filter(id=fleet.id).update(hold=new_hold, ship_empty_mass=new_mass,
+                                                                                empty_hold=new_empty_hold)
+                            delta = flightplan_extraction.time_extraction - new_delta
+                            flightplan_extraction = Flightplan_production.objects.filter(
+                                id_fleetplan=flightplan.id).update(start_time=time, time_extraction=delta)
 
 
-                        #  Дописать:
-                        #     а) отнятие ресурсов из поля с учетом оставшегося размера
-                        #     б) дописать пересчет трюма
-                        #     в) переделать скрипт под каждую проверку
-                        #       а) пересчет идет без проверки на окончание задачи
-                        #       б) сделать пересчет оставшегося времени
-                        #       в) сдеалть пересчет топлива в баке
-                        #       г) сделать запуск следующей команды
+                            #  Предусмотреть удаление команды при окончании добычи
 
 
 
-
-                                # finish_time = extract_veryfication(fleet)
+                            # finish_time = extract_veryfication(fleet)
 
 
                 elif flightplan.class_command == 6:
@@ -176,22 +236,22 @@ def verification_flight_list(request):
 
 
 def add_res(*args):
-    fleet=args[0]
-    res=args[1]
-    resource=args[2]
+    fleet = args[0]
+    res = args[1]
+    resource = args[2]
 
     if res:
         new_res = int(res.amount_shipment) + int(resource)
         up_res = Hold.objects.filter(fleet_id=fleet.id, class_shipment=0,
-                                      id_shipment=1).update(amount_shipment=new_res)
+                                     id_shipment=1).update(amount_shipment=new_res)
     else:
-        new_res=Hold(
-            fleet_id = fleet.id,
-            class_shipment = 0,
-            id_shipment = 1,
-            mount_shipment = resource,
-            mass_shipment = resource,
-            size_shipment = resource,
+        new_res = Hold(
+            fleet_id=fleet.id,
+            class_shipment=0,
+            id_shipment=1,
+            mount_shipment=resource,
+            mass_shipment=resource,
+            size_shipment=resource,
 
         )
         new_res.save()
