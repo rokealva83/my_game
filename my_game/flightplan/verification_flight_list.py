@@ -36,7 +36,6 @@ def verification_flight_list(request):
 
                     city = User_city.objects.filter(user=user, x=fleet.x, y=fleet.y, z=fleet.z).first()
                     if city:
-                        error = 0
                         mass = 0
                         flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan_id).first()
                         if flightplan_hold:
@@ -132,22 +131,21 @@ def verification_flight_list(request):
                                                                                             element_id=flightplan_hold.id_element).update(
                                                 amount=new_amount)
 
-                                        fleet_id = fleet.id
-                                        fleet_hold = Hold.objects.filter(fleet_id=fleet_id,
+                                        fleet_hold = Hold.objects.filter(fleet_id=fleet.id,
                                                                          class_shipment=class_element,
                                                                          id_shipment=flightplan_hold.id_element).first()
                                         if fleet_hold:
                                             new_amount = fleet_hold.amount_shipment + need_amount
                                             new_size = fleet_hold.size_shipment + need_size
                                             new_mass = fleet_hold.mass_shipment + mass * need_amount
-                                            fleet_hold_up = Hold.objects.filter(fleet_id=fleet_id,
+                                            fleet_hold_up = Hold.objects.filter(fleet_id=fleet.id,
                                                                                 class_shipment=class_element,
                                                                                 id_shipment=flightplan_hold.id_element).update(
                                                 amount_shipment=new_amount, mass_shipment=new_mass,
                                                 size_shipment=new_size)
                                         else:
                                             hold = Hold(
-                                                fleet_id=fleet_id,
+                                                fleet_id=fleet.id,
                                                 class_shipment=class_element,
                                                 id_shipment=flightplan_hold.id_element,
                                                 amount_shipment=need_amount,
@@ -157,28 +155,33 @@ def verification_flight_list(request):
 
                                         new_fleet_mass = fleet.ship_empty_mass + mass * need_amount
                                         new_empty_hold = fleet.empty_hold - need_size
-                                        fleet_up = Fleet.objects.filter(id=fleet_id).update(empty_hold=new_empty_hold,
+                                        fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=new_empty_hold,
                                                                                             ship_empty_mass=new_fleet_mass)
-
-
                                     else:
                                         message = 'На складе нет такого модуля'
-                                        error = 1
-
-                                    hold = Hold.objects.filter(class_shipment=flightplan_hold.class_element,
-                                                               id_shipment=flightplan_hold.id_element).first()
-
 
 
                                 elif flightplan.id_command == 2:
-                                    t = 1
+                                    hold = Hold.objects.filter(fleet_id=fleet.id,
+                                                               class_shipment=flightplan_hold.class_element,
+                                                               id_shipment=flightplan_hold.id_element).first()
+                                    if hold:
+                                        amount = flightplan_hold.amount
+                                        if hold.amount_shipment < amount:
+                                            amount = hold.amount_shipment
+
+
+
+                                    else:
+                                        message = 'В трюме нет такого модуля'
+
+
                                 elif flightplan.id_command == 3:
                                     t = 1
                                 elif flightplan.id_command == 4:
                                     t = 1
 
 
-                                    # 1. загрузка елементов в трюм. ИД команды 1
                                     #   2. выгрузка елементов из трюма. ИД команды 2
                                     #   3. выгрузка всех елементов из трюма. ИД команды 3
                                     #   4. разгрузка всего трюма. ИД команды 4
