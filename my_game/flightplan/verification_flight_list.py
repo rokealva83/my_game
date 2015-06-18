@@ -8,7 +8,7 @@ from my_game.models import System, Asteroid_field, Flightplan_scan, Fleet_parame
 from my_game.models import Fleet, Fuel_pattern, Fuel_tank, Armor_pattern, Shield_pattern, Weapon_pattern, \
     Engine_pattern, Generator_pattern, Shell_pattern, Module_pattern, Device_pattern
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production, Flightplan_hold
-from my_game.models import Mail, Hold, Ship, Project_ship, Hull_pattern
+from my_game.models import Mail, Hold, Ship, Project_ship, Hull_pattern, User_city
 from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
     start_repair_build, start_scaning, start_unload_hold, start_upload_hold
 from my_game.flightplan.veryfication.flight_verification import verification_flight
@@ -31,94 +31,159 @@ def verification_flight_list(request):
                 if flightplan.class_command == 1:
                     finish_time = verification_flight(fleet)
                     flightplan = Flightplan.objects.filter(id_fleet=fleet.id, status=0).first()
+
                 elif flightplan.class_command == 2:
-                    error = 0
-                    flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan_id).first()
-                    if flightplan_hold:
-                        time = timezone()
-                        time_start = flightplan_hold.start_time
-                        time_upload = flightplan_hold.time
-                        delta_time = time - time_start
-                        new_delta = delta_time.seconds
 
-                        if new_delta > time_upload:
+                    city = User_city.objects.filter(user=user, x=fleet.x, y=fleet.y, z=fleet.z).first()
+                    if city:
+                        error = 0
+                        mass = 0
+                        flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan_id).first()
+                        if flightplan_hold:
+                            time = timezone()
+                            time_start = flightplan_hold.start_time
+                            time_upload = flightplan_hold.time
+                            delta_time = time - time_start
+                            new_delta = delta_time.seconds
 
-                            if flightplan.id_command == 1:
-                                class_element = flightplan_hold.class_element
-                                if class_element == 0:
-                                    warehouse = Warehouse.objects.filter(id_resource=flightplan_hold.id_element).first()
-                                    size = 1
-                                elif class_element == 10:
-                                    warehouse = Warehouse_factory.objects.filter(id=flightplan_hold.id_element).first()
+                            if new_delta > time_upload:
+
+                                if flightplan.id_command == 1:
+                                    class_element = flightplan_hold.class_element
+                                    if class_element == 0:
+                                        warehouse = Warehouse.objects.filter(user_city=city.id,
+                                                                             id_resource=flightplan_hold.id_element).first()
+                                        size = 1
+                                        mass = 1
+                                    elif class_element == 10:
+                                        warehouse = Warehouse_factory.objects.filter(user_city=city.id,
+                                                                                     id=flightplan_hold.id_element).first()
+                                        if warehouse:
+                                            size = warehouse.size
+                                            mass = warehouse.mass
+                                    elif class_element == 11:
+                                        warehouse = Warehouse_ship.objects.filter(user_city=city.id,
+                                                                                  id=flightplan_hold.id_element).first()
+                                        if warehouse:
+                                            ship = Ship.objects.filter(id=warehouse.ship_id).first()
+                                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                                            hull = Hull_pattern.objects.filter(id=project_ship.hull_id).first()
+                                            size = hull.size
+                                            mass = project_ship.mass
+                                    else:
+                                        warehouse = Warehouse_element.objects.filter(user_city=city.id,
+                                                                                     element_class=class_element,
+                                                                                     element_id=flightplan_hold.id_element).first()
+                                        if warehouse:
+                                            if class_element == 1:
+                                                pattern = Hull_pattern.objects.filter(id=warehouse.id_element).first()
+                                            elif class_element == 2:
+                                                pattern = Armor_pattern.objects.filter(id=warehouse.id_element).first()
+                                                size = pattern.mass / 4
+                                            elif class_element == 3:
+                                                pattern = Shield_pattern.objects.filter(id=warehouse.id_element).first()
+                                            elif class_element == 4:
+                                                pattern = Engine_pattern.objects.filter(id=warehouse.id_element).first()
+                                            elif class_element == 5:
+                                                pattern = Generator_pattern.objects.filter(
+                                                    id=warehouse.id_element).first()
+                                            elif class_element == 6:
+                                                pattern = Weapon_pattern.objects.filter(id=warehouse.id_element).first()
+                                            elif class_element == 7:
+                                                pattern = Shell_pattern.objects.filter(id=warehouse.id_element).first()
+                                            elif class_element == 8:
+                                                pattern = Module_pattern.objects.filter(id=warehouse.id_element).first()
+                                            elif class_element == 9:
+                                                pattern = Device_pattern.objects.filter(id=warehouse.id_element).first()
+
+                                            if class_element != 2:
+                                                size = pattern.size
+                                                mass = pattern.mass
+
                                     if warehouse:
-                                        size = warehouse.size
-                                elif class_element == 11:
-                                    warehouse = Warehouse_ship.objects.filter(id=flightplan_hold.id_element).first()
-                                    if warehouse:
-                                        ship = Ship.objects.filter(id=warehouse.ship_id).first()
-                                        project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
-                                        hull = Hull_pattern.objects.filter(id=project_ship.hull_id).first()
-                                        size = hull.size
-                                else:
-                                    warehouse = Warehouse_element.objects.filter(
-                                        element_class=class_element,
-                                        element_id=flightplan_hold.id_element).first()
-                                    if warehouse:
-                                        if class_element == 1:
-                                            pattern = Hull_pattern.objects.filter(id = warehouse.id_element).first()
-                                        elif class_element == 2:
-                                            pattern = Armor_pattern.objects.filter(id = warehouse.id_element).first()
-                                            size = pattern.mass / 4
-                                        elif class_element == 3:
-                                            pattern = Shield_pattern.objects.filter(id = warehouse.id_element).first()
-                                        elif class_element == 4:
-                                            pattern = Engine_pattern.objects.filter(id = warehouse.id_element).first()
-                                        elif class_element == 5:
-                                            pattern = Generator_pattern.objects.filter(id = warehouse.id_element).first()
-                                        elif class_element == 6:
-                                            pattern = Weapon_pattern.objects.filter(id = warehouse.id_element).first()
-                                        elif class_element == 7:
-                                            pattern = Shell_pattern.objects.filter(id = warehouse.id_element).first()
-                                        elif class_element == 8:
-                                            pattern = Module_pattern.objects.filter(id = warehouse.id_element).first()
-                                        elif class_element == 9:
-                                            pattern = Device_pattern.objects.filter(id = warehouse.id_element).first()
+                                        need_amount = flightplan_hold.amount
+                                        if need_amount > warehouse.amount:
+                                            need_amount = warehouse.amount
 
-                                        if class_element != 2:
-                                            size = pattern.size
+                                        need_size = need_amount * size
 
-                                if warehouse:
-                                    need_amount = flightplan_hold.amount
-                                    if need_amount > warehouse.amount:
-                                        need_amount = warehouse.amount
+                                        hold_size_free = fleet.empty_hold
+                                        if need_size > hold_size_free:
+                                            need_size = hold_size_free
+                                            need_amount = int(need_size / size) - 1
 
-                                    need_size = need_amount * size
+                                        new_amount = warehouse.amount - need_amount
 
+                                        if class_element == 0:
+                                            warehouse_up = Warehouse.objects.filter(user_city=city.id,
+                                                                                    id_resource=flightplan_hold.id_element).update(
+                                                amount=new_amount)
+                                        elif class_element == 10:
+                                            warehouse_up = Warehouse_factory.objects.filter(user_city=city.id,
+                                                                                            id=flightplan_hold.id_element).update(
+                                                amount=new_amount)
+                                        elif class_element == 11:
+                                            warehouse_up = Warehouse_ship.objects.filter(user_city=city.id,
+                                                                                         id=flightplan_hold.id_element).update(
+                                                amount=new_amount)
+                                        else:
+                                            warehouse_up = Warehouse_element.objects.filter(user_city=city.id,
+                                                                                            element_class=class_element,
+                                                                                            element_id=flightplan_hold.id_element).update(
+                                                amount=new_amount)
 
+                                        fleet_id = fleet.id
+                                        fleet_hold = Hold.objects.filter(fleet_id=fleet_id,
+                                                                         class_shipment=class_element,
+                                                                         id_shipment=flightplan_hold.id_element).first()
+                                        if fleet_hold:
+                                            new_amount = fleet_hold.amount_shipment + need_amount
+                                            new_size = fleet_hold.size_shipment + need_size
+                                            new_mass = fleet_hold.mass_shipment + mass * need_amount
+                                            fleet_hold_up = Hold.objects.filter(fleet_id=fleet_id,
+                                                                                class_shipment=class_element,
+                                                                                id_shipment=flightplan_hold.id_element).update(
+                                                amount_shipment=new_amount, mass_shipment=new_mass,
+                                                size_shipment=new_size)
+                                        else:
+                                            hold = Hold(
+                                                fleet_id=fleet_id,
+                                                class_shipment=class_element,
+                                                id_shipment=flightplan_hold.id_element,
+                                                amount_shipment=need_amount,
+                                                mass_shipment=mass * need_amount,
+                                                size_shipment=need_size
+                                            )
 
-                                else:
-                                    message = 'На складе нет такого модуля'
-                                    error = 1
-
-                                hold = Hold.objects.filter(class_shipment=flightplan_hold.class_element,
-                                                           id_shipment=flightplan_hold.id_element).first()
-
-
-
-                            elif flightplan.id_command == 2:
-                                t = 1
-                            elif flightplan.id_command == 3:
-                                t = 1
-                            elif flightplan.id_command == 4:
-                                t = 1
+                                        new_fleet_mass = fleet.ship_empty_mass + mass * need_amount
+                                        new_empty_hold = fleet.empty_hold - need_size
+                                        fleet_up = Fleet.objects.filter(id=fleet_id).update(empty_hold=new_empty_hold,
+                                                                                            ship_empty_mass=new_fleet_mass)
 
 
-                # 1. загрузка елементов в трюм. ИД команды 1
-                #   2. выгрузка елементов из трюма. ИД команды 2
-                #   3. выгрузка всех елементов из трюма. ИД команды 3
-                #   4. разгрузка всего трюма. ИД команды 4
-                #   5. перерасчет трюма, веса корабля
-                #   6. перерасчет склада
+                                    else:
+                                        message = 'На складе нет такого модуля'
+                                        error = 1
+
+                                    hold = Hold.objects.filter(class_shipment=flightplan_hold.class_element,
+                                                               id_shipment=flightplan_hold.id_element).first()
+
+
+
+                                elif flightplan.id_command == 2:
+                                    t = 1
+                                elif flightplan.id_command == 3:
+                                    t = 1
+                                elif flightplan.id_command == 4:
+                                    t = 1
+
+
+                                    # 1. загрузка елементов в трюм. ИД команды 1
+                                    #   2. выгрузка елементов из трюма. ИД команды 2
+                                    #   3. выгрузка всех елементов из трюма. ИД команды 3
+                                    #   4. разгрузка всего трюма. ИД команды 4
+                                    #   5. перерасчет трюма, веса корабля
+                                    #   6. перерасчет склада
 
 
 
