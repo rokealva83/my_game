@@ -8,7 +8,7 @@ from my_game.models import System, Asteroid_field, Flightplan_scan, Fleet_parame
 from my_game.models import Fleet, Fuel_pattern, Fuel_tank, Armor_pattern, Shield_pattern, Weapon_pattern, \
     Engine_pattern, Generator_pattern, Shell_pattern, Module_pattern, Device_pattern
 from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production, Flightplan_hold
-from my_game.models import Mail, Hold, Ship, Project_ship, Hull_pattern, User_city
+from my_game.models import Mail, Hold, Ship, Project_ship, Hull_pattern, User_city, Factory_pattern
 from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
     start_repair_build, start_scaning, start_unload_hold, start_upload_hold
 from my_game.flightplan.veryfication.flight_verification import verification_flight
@@ -90,6 +90,7 @@ def verification_flight_list(request):
                                                 mass_shipment=mass * need_amount,
                                                 size_shipment=need_size
                                             )
+                                            hold.save()
 
                                         new_fleet_mass = fleet.ship_empty_mass + mass * need_amount
                                         new_empty_hold = fleet.empty_hold - need_size
@@ -113,7 +114,12 @@ def verification_flight_list(request):
                                         size = answer[1]
                                         mass = answer[2]
 
-                                        # if warehouse:
+                                        if warehouse:
+                                            new_amount = warehouse.amount + amount
+                                            warehouse_update(class_element, city, flightplan_hold, new_amount)
+                                        else:
+                                            new_warehouse_update(class_element, city, flightplan_hold, amount)
+
 
 
 
@@ -224,10 +230,59 @@ def warehouse_update(*args):
             amount=new_amount)
 
 
+def new_warehouse_update(*args):
+    class_element = args[0]
+    city = args[1]
+    flightplan_hold = args[2]
+    new_amount = args[3]
+    if class_element == 0:
+        warehouse_up = Warehouse(
+            user=city.user,
+            user_city=city.id,
+            id_resource=flightplan_hold.id_element,
+            amount=new_amount
+        )
+        warehouse_up.save()
+    elif class_element == 10:
+        factory = Factory_pattern.objects.filter(id=flightplan_hold.id_element).first()
+        warehouse_up = Warehouse_factory(
+            user=city.user,
+            user_city=city.id,
+            factory_id=flightplan_hold.id_element,
+            production_class=factory.production_class,
+            production_id=factory.production_id,
+            time_production=factory.time_production,
+            amount=new_amount,
+            size=factory.size,
+            mass=factory.mass,
+            power_consumption=factory.power_consumption
+        )
+        warehouse_up.save()
+    elif class_element == 11:
+        warehouse_up = Warehouse_ship(
+            user=city.user,
+            user_city=city.id,
+            ship_id=flightplan_hold.id_element,
+            amount=new_amount
+        )
+        warehouse_up.save()
+    else:
+        warehouse_up = Warehouse_element(
+            user=city.user,
+            user_city=city.id,
+            element_class = flightplan_hold.class_element,
+            element_id = flightplan_hold.id_element,
+            amount = new_amount
+        )
+        warehouse_up.save()
+
+
 def mass_size(*args):
     class_element = args[0]
     city = args[1]
     flightplan_hold = args[2]
+    mass = 0
+    size = 0
     if class_element == 0:
         warehouse = Warehouse.objects.filter(user_city=city.id,
                                              id_resource=flightplan_hold.id_element).first()
