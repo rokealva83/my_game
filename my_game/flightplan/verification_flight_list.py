@@ -47,9 +47,8 @@ def verification_flight_list(request):
                     flightplan = Flightplan.objects.filter(id_fleet=fleet.id, status=0).first()
 
                 elif flightplan.class_command == 8:
-                    finish_time =colonization_veryfication(fleet)
+                    finish_time = colonization_veryfication(fleet)
                     flightplan = Flightplan.objects.filter(id_fleet=fleet.id, status=0).first()
-
 
                 if flightplan:
 
@@ -64,6 +63,9 @@ def verification_flight_list(request):
 
                     elif flightplan.class_command == 3:
                         start_extraction.start_extraction(fleet.id, finish_time)
+
+                    elif flightplan.class_command == 4:
+                        start_refill.start_refill(user, fleet.id, finish_time)
 
                     elif flightplan.class_command == 6:
                         start_scaning.start_scaning(fleet.id, finish_time)
@@ -81,5 +83,3 @@ def verification_flight_list(request):
                     # flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first().update(status=1)
                     #
                     # flightplan = Flightplan.objects.filter(id=flightplan_id).delete()
-
-

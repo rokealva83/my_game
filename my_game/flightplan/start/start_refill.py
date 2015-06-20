@@ -63,6 +63,8 @@ def start_refill(*args):
 
     if len(args) == 1:
         start_time = datetime.now()
+    else:
+        start_time = args[2]
 
     if error == 0:
         flightplan_refill = Flightplan_refill.objects.filter(id_fleet=fleet_id).first()

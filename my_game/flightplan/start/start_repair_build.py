@@ -8,6 +8,7 @@ from my_game.models import Flightplan, Flightplan_build_repair
 
 def start_repair_build(*args):
     fleet_id = args[0]
+    fleet = Fleet.objects.filter(id=fleet_id).first()
 
     start_time = 0
 
@@ -15,6 +16,8 @@ def start_repair_build(*args):
 
     if len(args) == 1:
         start_time = datetime.now()
+    else:
+        start_time = args[1]
 
     flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
     id_flightplan = flightplan.pk

@@ -4,18 +4,18 @@
 from datetime import datetime
 from my_game.models import Fleet
 from my_game.models import Flightplan, Flightplan_hold
+from my_game.flightplan.fuel import fuel_process
 
 
 def start_unload(*args):
     fleet_id = args[0]
-
-    start_time = 0
+    flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
+    id_flightplan = flightplan.pk
 
     if len(args) == 1:
         start_time = datetime.now()
-
-    flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
-    id_flightplan = flightplan.pk
+    else:
+        start_time = args[1]
 
     flightplan_unload = Flightplan_hold.objects.filter(id_fleet=fleet_id).first()
     flightplan_unload = Flightplan_hold.objects.filter(id=flightplan_unload.pk).update(start_time=start_time)
