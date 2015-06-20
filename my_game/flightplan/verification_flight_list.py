@@ -111,8 +111,8 @@ def verification_flight_list(request):
 
                                         answer = mass_size(class_element, city, flightplan_hold)
                                         warehouse = answer[0]
-                                        size = answer[1]
-                                        mass = answer[2]
+                                        delete_size = answer[1] * amount
+                                        delete_mass = answer[2] * amount
 
                                         if warehouse:
                                             new_amount = warehouse.amount + amount
@@ -120,10 +120,22 @@ def verification_flight_list(request):
                                         else:
                                             new_warehouse_update(class_element, city, flightplan_hold, amount)
 
+                                        amount = flightplan_hold.amount
+                                        if amount < hold.amount_shipment:
+                                            new_amount = hold.amount_shipment - amount
+                                            hold_up = Hold.objects.filter(fleet_id=fleet.id,
+                                                                          class_shipment=flightplan_hold.class_element,
+                                                                          id_shipment=flightplan_hold.id_element).update(
+                                                amount_shipment=new_amount)
+                                        else:
+                                            hold_delete = hold = Hold.objects.filter(fleet_id=fleet.id,
+                                                                                     class_shipment=flightplan_hold.class_element,
+                                                                                     id_shipment=flightplan_hold.id_element).delete()
 
-
-
-
+                                        new_fleet_mass = fleet.ship_empty_mass - delete_mass
+                                        new_empty_hold = fleet.empty_hold - delete_size
+                                        fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=new_empty_hold,
+                                                                                            ship_empty_mass=new_fleet_mass)
 
                                     else:
                                         message = 'В трюме нет такого модуля'
@@ -270,9 +282,9 @@ def new_warehouse_update(*args):
         warehouse_up = Warehouse_element(
             user=city.user,
             user_city=city.id,
-            element_class = flightplan_hold.class_element,
-            element_id = flightplan_hold.id_element,
-            amount = new_amount
+            element_class=flightplan_hold.class_element,
+            element_id=flightplan_hold.id_element,
+            amount=new_amount
         )
         warehouse_up.save()
 
