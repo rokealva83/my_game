@@ -2,13 +2,12 @@
 
 from datetime import timedelta
 from django.utils import timezone
-
 from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship
-
 from my_game.models import Fleet, Armor_pattern, Shield_pattern, Weapon_pattern, \
     Engine_pattern, Generator_pattern, Shell_pattern, Module_pattern, Device_pattern
 from my_game.models import Flightplan, Flightplan_hold
 from my_game.models import Hold, Ship, Project_ship, Hull_pattern, User_city, Factory_pattern
+from my_game.flightplan.fuel import need_fuel_process, minus_fuel
 
 
 def upload_unload_veryfication(*args):
@@ -34,6 +33,10 @@ def upload_unload_veryfication(*args):
                     upload_hold_element(fleet, flightplan_hold, city)
                 else:
                     unload_hold_element(fleet, flightplan, flightplan_hold, city)
+
+                ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet.id)
+                need_fuel = need_fuel_process(ship_in_fleets, flightplan, time_upload, fleet.id)
+                minus_fuel(fleet, need_fuel)
 
     return finish_time
 
@@ -247,7 +250,6 @@ def unload_hold_element(*args):
         holds = Hold.objects.filter(fleet_id=fleet.id)
         for hold in holds:
             hold_unload(fleet, flightplan, flightplan_hold, city, hold)
-
 
 
 def hold_unload(*args):

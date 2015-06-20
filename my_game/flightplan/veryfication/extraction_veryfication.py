@@ -3,8 +3,10 @@
 from datetime import timedelta
 from django.utils import timezone
 from my_game.models import Asteroid_field, Fleet_parametr_resource_extraction
-from my_game.models import Fleet
+from my_game.models import Fleet, Ship
 from my_game.models import Flightplan, Flightplan_production, Hold
+from my_game.flightplan.fuel import need_fuel_process, minus_fuel
+
 
 def extraction_veryfication(*args):
     fleet = args[0]
@@ -77,9 +79,14 @@ def extraction_veryfication(*args):
             new_empty_hold = fleet.empty_hold - extraction
             fleet_up = Fleet.objects.filter(id=fleet.id).update(hold=new_hold, ship_empty_mass=new_mass,
                                                                 empty_hold=new_empty_hold)
-            delta = flightplan_extraction.time_extraction - new_delta
+            new_time = flightplan_extraction.time_extraction - delta
             flightplan_extraction = Flightplan_production.objects.filter(
-                id_fleetplan=flightplan.id).update(start_time=time, time_extraction=delta)
+                id_fleetplan=flightplan.id).update(start_time=time, time_extraction=new_time)
+
+
+            ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet.id)
+            need_fuel = need_fuel_process(ship_in_fleets, flightplan, delta, fleet.id)
+            minus_fuel(fleet, need_fuel)
 
             return finish_time
 
