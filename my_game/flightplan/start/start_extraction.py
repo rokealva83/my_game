@@ -9,7 +9,7 @@ from my_game.flightplan.fuel import fuel_process
 
 def start_extraction(*args):
     fleet_id = args[0]
-    error=0
+    error = 0
     fleet = Fleet.objects.filter(id=fleet_id).first()
     x = int(fleet.x)
     y = int(fleet.y)
@@ -19,7 +19,7 @@ def start_extraction(*args):
     message = 'По даным координатам отсутствуют астероиды'
     if asteroid_field:
         message = ''
-        flightplan_extraction=Flightplan_production.objects.filter(id_fleet=fleet_id).first()
+        flightplan_extraction = Flightplan_production.objects.filter(id_fleet=fleet_id).first()
         need_fuel = fuel_process(fleet_id, flightplan_extraction, flightplan)
 
         fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id).first()
@@ -28,18 +28,18 @@ def start_extraction(*args):
             if need_fuel > fuel_tank.amount_fuel * fuel_pattern.efficiency:
                 error = 1
                 message = 'Нет топлива'
-        if len(args) == 1:
-            start_time = datetime.now()
+
+            if error == 0:
+                if len(args) == 1:
+                    start_time = datetime.now()
+                else:
+                    start_time = args[1]
+                flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
+                id_flightplan = flightplan.pk
+                flightplan_extraction = Flightplan_production.objects.filter(id=flightplan_extraction.pk).update(
+                    start_time=start_time)
+                flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
+                fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
         else:
-            start_time = args[1]
-
-        flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
-        id_flightplan = flightplan.pk
-
-        if error == 0:
-            flightplan_extraction = Flightplan_production.objects.filter(id=flightplan_extraction.pk).update(
-                start_time=start_time)
-            flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
-
+            message = 'Нет топлива'
     return message

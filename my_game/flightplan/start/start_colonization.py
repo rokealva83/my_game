@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from my_game.models import Fleet
+from my_game.models import Fleet, Fuel_tank, Fuel_pattern
 from my_game.models import Flightplan
 from my_game.models import Flightplan_colonization
 from my_game.models import Hold, Device_pattern
+from my_game.flightplan.fuel import fuel_process
 
 
 def start_colonization(*args):
     fleet_id = args[0]
 
-    start_time = 0
-
     fleet = Fleet.objects.filter(id=fleet_id).first()
     flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
+    flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).first()
     hold_modules = Hold.objects.filter(fleet_id=fleet_id, class_shipment=9)
     error = 1
     message = 'В трюме нет необходимого колонизационного устройства'
@@ -32,15 +32,27 @@ def start_colonization(*args):
                 error = 0
                 message = 'Развертка основы базы начата'
 
-    if error == 0:
-        if len(args) == 1:
-            start_time = datetime.now()
+    need_fuel = fuel_process(fleet_id, flightplan_colonization, flightplan)
+    fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id).first()
+    if fuel_tank:
+        fuel_pattern = Fuel_pattern.objects.filter(user=fleet.user, fuel_class=fuel_tank.fuel_class).first()
+        if need_fuel > fuel_tank.amount_fuel * fuel_pattern.efficiency:
+            error = 1
+            message = 'Нет топлива'
 
-        id_flightplan = flightplan.pk
-        flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).first()
-        flightplan_colonization = Flightplan_colonization.objects.filter(id=flightplan_colonization.pk).update(
-            start_time=start_time)
-        flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-        fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+        if error == 0:
+            if len(args) == 1:
+                start_time = datetime.now()
+            else:
+                start_time = args[1]
+
+            id_flightplan = flightplan.pk
+            flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).first()
+            flightplan_colonization = Flightplan_colonization.objects.filter(id=flightplan_colonization.pk).update(
+                start_time=start_time)
+            flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
+            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+    else:
+        message = 'Нет топлива'
 
     return message

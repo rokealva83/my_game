@@ -79,22 +79,27 @@ def fuel_process(*args):
 
     if flightplan.class_command == 3:
         time_process = flightplan_process.time_extraction
+    elif flightplan.class_command == 4:
+        time_process = flightplan_process.time_refill
     elif flightplan.class_command == 6:
         time_process = flightplan_process.time_scanning
+    elif flightplan.class_command == 8:
+        time_process = flightplan_process.time
 
     for ship in ship_in_fleets:
-        element_ships = Element_ship.objects.filter(id_project_ship=ship.id_project_ship)
-        for element_ship in element_ships:
-            if element_ship.class_element == 8:
-                element_pattern = Module_pattern.objects.filter(id=element_ship.id_element_pattern).first()
+        if flightplan.class_command == 3 or flightplan.class_command == 6:
+            element_ships = Element_ship.objects.filter(id_project_ship=ship.id_project_ship)
+            for element_ship in element_ships:
+                if element_ship.class_element == 8:
+                    element_pattern = Module_pattern.objects.filter(id=element_ship.id_element_pattern).first()
 
-                if flightplan.class_command == 3:
-                    if element_pattern.module_class == 3:
-                        need_energy = element_pattern.power_consuption
+                    if flightplan.class_command == 3:
+                        if element_pattern.module_class == 3:
+                            need_energy = element_pattern.power_consuption
 
-                elif flightplan.class_command == 6:
-                    if element_pattern.module_class == 6 and element_pattern.param3 == flightplan_process.id_command and find == 0:
-                        find = 1
+                    elif flightplan.class_command == 6:
+                        if element_pattern.module_class == 6 and element_pattern.param3 == flightplan_process.id_command and find == 0:
+                            find = 1
                         need_energy = element_pattern.power_consuption
 
         project = Project_ship.objects.filter(id=ship.id_project_ship).first()
