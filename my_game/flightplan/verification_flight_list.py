@@ -48,113 +48,9 @@ def verification_flight_list(request):
                             if new_delta > time_upload:
                                 class_element = flightplan_hold.class_element
                                 if flightplan.id_command == 1:
-                                    answer = mass_size(class_element, city, flightplan_hold)
-                                    warehouse = answer[0]
-                                    size = answer[1]
-                                    mass = answer[2]
-
-                                    if warehouse:
-                                        need_amount = flightplan_hold.amount
-                                        if need_amount > warehouse.amount:
-                                            need_amount = warehouse.amount
-
-                                        need_size = need_amount * size
-
-                                        hold_size_free = fleet.empty_hold
-                                        if need_size > hold_size_free:
-                                            need_size = hold_size_free
-                                            need_amount = int(need_size / size) - 1
-
-                                        new_amount = warehouse.amount - need_amount
-
-                                        warehouse_update(class_element, city, flightplan_hold, new_amount)
-
-                                        fleet_hold = Hold.objects.filter(fleet_id=fleet.id,
-                                                                         class_shipment=class_element,
-                                                                         id_shipment=flightplan_hold.id_element).first()
-                                        if fleet_hold:
-                                            new_amount = fleet_hold.amount_shipment + need_amount
-                                            new_size = fleet_hold.size_shipment + need_size
-                                            new_mass = fleet_hold.mass_shipment + mass * need_amount
-                                            fleet_hold_up = Hold.objects.filter(fleet_id=fleet.id,
-                                                                                class_shipment=class_element,
-                                                                                id_shipment=flightplan_hold.id_element).update(
-                                                amount_shipment=new_amount, mass_shipment=new_mass,
-                                                size_shipment=new_size)
-                                        else:
-                                            hold = Hold(
-                                                fleet_id=fleet.id,
-                                                class_shipment=class_element,
-                                                id_shipment=flightplan_hold.id_element,
-                                                amount_shipment=need_amount,
-                                                mass_shipment=mass * need_amount,
-                                                size_shipment=need_size
-                                            )
-                                            hold.save()
-
-                                        new_fleet_mass = fleet.ship_empty_mass + mass * need_amount
-                                        new_empty_hold = fleet.empty_hold - need_size
-                                        fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=new_empty_hold,
-                                                                                            ship_empty_mass=new_fleet_mass)
-                                    else:
-                                        message = 'На складе нет такого модуля'
-
-
-                                elif flightplan.id_command == 2:
-                                    hold = Hold.objects.filter(fleet_id=fleet.id,
-                                                               class_shipment=flightplan_hold.class_element,
-                                                               id_shipment=flightplan_hold.id_element).first()
-                                    if hold:
-                                        amount = flightplan_hold.amount
-                                        if hold.amount_shipment < amount:
-                                            amount = hold.amount_shipment
-
-                                        answer = mass_size(class_element, city, flightplan_hold)
-                                        warehouse = answer[0]
-                                        delete_size = answer[1] * amount
-                                        delete_mass = answer[2] * amount
-
-                                        if warehouse:
-                                            new_amount = warehouse.amount + amount
-                                            warehouse_update(class_element, city, flightplan_hold, new_amount)
-                                        else:
-                                            new_warehouse_update(class_element, city, flightplan_hold, amount)
-
-                                        amount = flightplan_hold.amount
-                                        if amount < hold.amount_shipment:
-                                            new_amount = hold.amount_shipment - amount
-                                            hold_up = Hold.objects.filter(fleet_id=fleet.id,
-                                                                          class_shipment=flightplan_hold.class_element,
-                                                                          id_shipment=flightplan_hold.id_element).update(
-                                                amount_shipment=new_amount)
-                                        else:
-                                            hold_delete = hold = Hold.objects.filter(fleet_id=fleet.id,
-                                                                                     class_shipment=flightplan_hold.class_element,
-                                                                                     id_shipment=flightplan_hold.id_element).delete()
-
-                                        new_fleet_mass = fleet.ship_empty_mass - delete_mass
-                                        new_empty_hold = fleet.empty_hold - delete_size
-                                        fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=new_empty_hold,
-                                                                                            ship_empty_mass=new_fleet_mass)
-
-                                    else:
-                                        message = 'В трюме нет такого модуля'
-
-
-                                elif flightplan.id_command == 3:
-                                    t = 1
-                                elif flightplan.id_command == 4:
-                                    t = 1
-
-
-                                    # 2. выгрузка елементов из трюма. ИД команды 2
-                                    #   3. выгрузка всех елементов из трюма. ИД команды 3
-                                    #   4. разгрузка всего трюма. ИД команды 4
-                                    #   5. перерасчет трюма, веса корабля
-                                    #   6. перерасчет склада
-
-
-
+                                    upload_hold_element(fleet, flightplan_hold, city)
+                                else:
+                                    unload_hold_element(fleet, flightplan, flightplan_hold, city)
 
                 elif flightplan.class_command == 3:
                     finish_time = extraction_veryfication(fleet)
@@ -328,3 +224,120 @@ def mass_size(*args):
             mass = pattern.mass
     answer = {warehouse, size, mass}
     return answer
+
+
+def upload_hold_element(*args):
+    fleet = args[0]
+    flightplan_hold = args[1]
+    class_element = flightplan_hold.class_element
+    city = args[2]
+
+    answer = mass_size(class_element, city, flightplan_hold)
+    warehouse = answer[0]
+    size = answer[1]
+    mass = answer[2]
+
+    if warehouse:
+        need_amount = flightplan_hold.amount
+        if need_amount > warehouse.amount:
+            need_amount = warehouse.amount
+
+        need_size = need_amount * size
+
+        hold_size_free = fleet.empty_hold
+        if need_size > hold_size_free:
+            need_size = hold_size_free
+            need_amount = int(need_size / size) - 1
+
+        new_amount = warehouse.amount - need_amount
+
+        warehouse_update(class_element, city, flightplan_hold, new_amount)
+
+        fleet_hold = Hold.objects.filter(fleet_id=fleet.id, class_shipment=class_element,
+                                         id_shipment=flightplan_hold.id_element).first()
+        if fleet_hold:
+            new_amount = fleet_hold.amount_shipment + need_amount
+            new_size = fleet_hold.size_shipment + need_size
+            new_mass = fleet_hold.mass_shipment + mass * need_amount
+            fleet_hold_up = Hold.objects.filter(fleet_id=fleet.id, class_shipment=class_element,
+                                                id_shipment=flightplan_hold.id_element).update(
+                amount_shipment=new_amount, mass_shipment=new_mass, size_shipment=new_size)
+        else:
+            hold = Hold(
+                fleet_id=fleet.id,
+                class_shipment=class_element,
+                id_shipment=flightplan_hold.id_element,
+                amount_shipment=need_amount,
+                mass_shipment=mass * need_amount,
+                size_shipment=need_size
+            )
+            hold.save()
+
+        new_fleet_mass = fleet.ship_empty_mass + mass * need_amount
+        new_empty_hold = fleet.empty_hold - need_size
+        fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=new_empty_hold, ship_empty_mass=new_fleet_mass)
+        message = ''
+    else:
+        message = 'На складе нет такого модуля'
+
+    return message
+
+
+def unload_hold_element(*args):
+    fleet = args[0]
+    flightplan = args[1]
+    flightplan_hold = args[2]
+    class_element = flightplan_hold.class_element
+    city = args[3]
+
+    if flightplan.id_command == 2:
+        hold = Hold.objects.filter(fleet_id=fleet.id, class_shipment=flightplan_hold.class_element,
+                                   id_shipment=flightplan_hold.id_element).first()
+        if hold:
+            amount = flightplan_hold.amount
+            if hold.amount_shipment < amount:
+                amount = hold.amount_shipment
+
+            answer = mass_size(class_element, city, flightplan_hold)
+            warehouse = answer[0]
+            delete_size = answer[1] * amount
+            delete_mass = answer[2] * amount
+
+            if warehouse:
+                new_amount = warehouse.amount + amount
+                warehouse_update(class_element, city, flightplan_hold, new_amount)
+            else:
+                new_warehouse_update(class_element, city, flightplan_hold, amount)
+
+            amount = flightplan_hold.amount
+            if amount < hold.amount_shipment:
+                new_amount = hold.amount_shipment - amount
+                hold_up = Hold.objects.filter(fleet_id=fleet.id, class_shipment=flightplan_hold.class_element,
+                                              id_shipment=flightplan_hold.id_element).update(amount_shipment=new_amount)
+            else:
+                hold_delete = hold = Hold.objects.filter(fleet_id=fleet.id,
+                                                         class_shipment=flightplan_hold.class_element,
+                                                         id_shipment=flightplan_hold.id_element).delete()
+            new_fleet_mass = fleet.ship_empty_mass - delete_mass
+            new_empty_hold = fleet.empty_hold - delete_size
+            fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=new_empty_hold,
+                                                                ship_empty_mass=new_fleet_mass)
+        else:
+            message = 'В трюме нет такого модуля'
+
+    elif flightplan.id_command == 3:
+        hold = Hold.objects.filter(fleet_id=fleet.id, class_shipment=flightplan_hold.class_element,
+                                   id_shipment=flightplan_hold.id_element).first()
+        if hold:
+            amount = hold.amount_shipment
+
+
+
+    elif flightplan.id_command == 4:
+        t = 1
+
+
+        #   3. выгрузка всех елементов из трюма. ИД команды 3
+        #   4. разгрузка всего трюма. ИД команды 4
+        #   5. перерасчет трюма, веса корабля
+        #   6. перерасчет склада
