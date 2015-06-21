@@ -19,6 +19,7 @@ def colonization_veryfication(*args):
     fleet = args[0]
     flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
     flightplan_colonization = Flightplan_colonization.objects.filter(id_fleetplan=flightplan.id).first()
+    finish_time = timezone.now()
     if flightplan_colonization:
         time = timezone.now()
         time_start = flightplan_colonization.start_time
@@ -26,7 +27,7 @@ def colonization_veryfication(*args):
         delta_time = time - time_start
         new_delta = delta_time.seconds
         if new_delta > time_colonization:
-
+            finish_time = time_start + timedelta(seconds=time_colonization)
             if flightplan_colonization.id_command == 1:
                 planet = Planet.objects.filter(global_x=fleet.x, global_y=fleet.y, global_z=fleet.z,
                                                planet_free=1).first()
@@ -64,3 +65,8 @@ def colonization_veryfication(*args):
         ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet.id)
         need_fuel = need_fuel_process(ship_in_fleets, flightplan, time_colonization, fleet.id)
         minus_fuel(fleet, need_fuel)
+
+        flightplan_del = Flightplan.objects.filter(id=flightplan.id).delete()
+        flightplan_colonization_del = Flightplan_colonization.objects.filter(id=flightplan_colonization.id).delete()
+
+    return finish_time

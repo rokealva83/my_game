@@ -21,7 +21,7 @@ def extraction_veryfication(*args):
         new_delta = delta_time.seconds
         if time_extraction > new_delta:
             delta = new_delta
-            finish_time  = time + timedelta(seconds=time_extraction)
+            finish_time = time + timedelta(seconds=time_extraction)
         else:
             delta = time_extraction
             finish = new_delta - time_extraction
@@ -80,9 +80,12 @@ def extraction_veryfication(*args):
             fleet_up = Fleet.objects.filter(id=fleet.id).update(hold=new_hold, ship_empty_mass=new_mass,
                                                                 empty_hold=new_empty_hold)
             new_time = flightplan_extraction.time_extraction - delta
-            flightplan_extraction = Flightplan_production.objects.filter(
-                id_fleetplan=flightplan.id).update(start_time=time, time_extraction=new_time)
-
+            if new_time > 0:
+                flightplan_extraction = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).update(
+                    start_time=time, time_extraction=new_time)
+            else:
+                flightplan_del = Flightplan.objects.filter(id=flightplan.id).delete()
+                flightplan_extraction_del = Flightplan_production.objects.filter(id=flightplan_extraction.id).delete()
 
             ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet.id)
             need_fuel = need_fuel_process(ship_in_fleets, flightplan, delta, fleet.id)

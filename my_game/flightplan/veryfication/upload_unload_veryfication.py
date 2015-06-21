@@ -38,6 +38,9 @@ def upload_unload_veryfication(*args):
                 need_fuel = need_fuel_process(ship_in_fleets, flightplan, time_upload, fleet.id)
                 minus_fuel(fleet, need_fuel)
 
+                flightplan_del= Flightplan.objects.filter(id=flightplan.id).delete()
+                flightplan_hold_del = Flightplan_hold.objects.filter(id=flightplan_hold.id).delete()
+
     return finish_time
 
 
