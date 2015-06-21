@@ -8,8 +8,8 @@ def resource_extraction(*args):
     session_user = args[0]
     fleet_id = args[1]
     fleet = args[2]
-    time_extraction = int(args[3])
-    time_extraction = time_extraction*60
+    time_extract = int(args[3])
+    time_extraction = time_extract*60
     full_hold = args[4]
 
     fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(

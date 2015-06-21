@@ -25,10 +25,7 @@ def verification_flight_list(request):
     finish_time = timezone.now()
     for fleet in fleets:
         flightplans = Flightplan.objects.filter(id_fleet=fleet.id)
-        flightplan_len = len(flightplans)
-        lens = 0
         for flightplan in flightplans:
-            flightplan_id = flightplan.id
             if flightplan.status == 1:
                 if flightplan.class_command == 1:
                     finish_time = verification_flight(fleet)
@@ -71,15 +68,3 @@ def verification_flight_list(request):
                         start_scaning.start_scaning(fleet.id, finish_time)
                 else:
                     fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
-
-
-
-
-
-                    # lens = lens + 1
-                    # if lens == flightplan_len:
-                    # fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
-                    # else:
-                    # flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first().update(status=1)
-                    #
-                    # flightplan = Flightplan.objects.filter(id=flightplan_id).delete()
