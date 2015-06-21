@@ -16,7 +16,7 @@ from my_game.flightplan.veryfication.flight_verification import verification_fli
 from my_game.flightplan.veryfication.scan_veryfication import scan_veryfication
 from my_game.flightplan.veryfication.extraction_veryfication import extraction_veryfication
 from my_game.flightplan.veryfication.upload_unload_veryfication import upload_unload_veryfication
-from my_game.flightplan import fuel
+from my_game.flightplan.fuel import need_fuel_process, minus_fuel
 
 
 def colonization_veryfication(*args):
@@ -30,4 +30,8 @@ def colonization_veryfication(*args):
         delta_time = time - time_start
         new_delta = delta_time.seconds
         if new_delta > time_colonization:
-            a = 1
+
+
+            ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet.id)
+            need_fuel = need_fuel_process(ship_in_fleets, flightplan, delta, fleet.id)
+            minus_fuel(fleet, need_fuel)

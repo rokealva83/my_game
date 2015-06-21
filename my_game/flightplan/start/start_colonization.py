@@ -2,8 +2,8 @@
 
 from datetime import datetime
 from my_game.models import Fleet, Fuel_tank, Fuel_pattern
-from my_game.models import Flightplan
-from my_game.models import Flightplan_colonization
+from my_game.models import Flightplan, Flightplan_colonization
+from my_game.models import Planet, MyUser
 from my_game.models import Hold, Device_pattern
 from my_game.flightplan.fuel import fuel_process
 
@@ -12,20 +12,25 @@ def start_colonization(*args):
     fleet_id = args[0]
 
     fleet = Fleet.objects.filter(id=fleet_id).first()
+    user = MyUser.objects.filter(id=fleet.user).first()
     flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
     flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).first()
     hold_modules = Hold.objects.filter(fleet_id=fleet_id, class_shipment=9)
     error = 1
     message = 'В трюме нет необходимого колонизационного устройства'
+    planet = Planet.objects.filter(global_x=fleet.x, global_y=fleet.y, global_z=fleet.z, planet_type=user.race_id,
+                                   planet_free=1).first()
+    if planet:
+        if fleet.planet != 0 and flightplan.id_command == 1:
+            for hold_module in hold_modules:
+                device = int(Device_pattern.objects.filter(id=hold_module.id_shipment).first().param3)
+                if device == 1:
+                    error = 0
+                    message = 'Колонизация начата'
+    else:
+        message = 'По координатам нет планеты, она занята или же не пригодна для колонизации'
 
-    if fleet.planet != 0 and flightplan.id_command == 1:
-        for hold_module in hold_modules:
-            device = int(Device_pattern.objects.filter(id=hold_module.id_shipment).first().param3)
-            if device == 1:
-                error = 0
-                message = 'Колонизация начата'
-
-    elif fleet.planet == 0 and flightplan.id_command == 2:
+    if fleet.planet == 0 and flightplan.id_command == 2:
         for hold_module in hold_modules:
             device = int(Device_pattern.objects.filter(id=hold_module.id_shipment).first().param3)
             if device == 2:
