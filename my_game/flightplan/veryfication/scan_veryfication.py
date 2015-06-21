@@ -21,7 +21,6 @@ def scan_veryfication(*args):
     final_mail = ''
     flightplan_scan = Flightplan_scan.objects.filter(id_fleetplan=flightplan.id).first()
     if flightplan_scan:
-        finish_time = timezone.now()
         time = timezone.now()
         time_start = flightplan_scan.start_time
         delta_time = time - time_start
@@ -72,7 +71,6 @@ def scan_veryfication(*args):
                                 line = line + message_planet_subject + message_planet
                             mail_text = mail_text + line
                 final_mail = mail_text
-
 
             elif flightplan.id_command == 2:
                 asteroid_fields = Asteroid_field.objects.all()

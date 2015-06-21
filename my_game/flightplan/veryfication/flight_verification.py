@@ -3,7 +3,7 @@
 from datetime import timedelta
 from django.utils import timezone
 from my_game.models import Planet
-from my_game.models import Fleet, Fuel_pattern, Fuel_tank
+from my_game.models import Fleet
 from my_game.models import Flightplan, Flightplan_flight
 from my_game.flightplan import fuel
 
