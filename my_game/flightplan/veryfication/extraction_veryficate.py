@@ -6,6 +6,7 @@ from my_game.models import Asteroid_field, Fleet_parametr_resource_extraction
 from my_game.models import Fleet
 from my_game.models import Flightplan, Flightplan_production, Hold
 
+
 def extraction_veryfication(*args):
     fleet = args[0]
     flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
@@ -19,7 +20,7 @@ def extraction_veryfication(*args):
         new_delta = delta_time.seconds
         if time_extraction > new_delta:
             delta = new_delta
-            finish_time  = time + timedelta(seconds=time_extraction)
+            finish_time = time + timedelta(seconds=time_extraction)
         else:
             delta = time_extraction
             finish = new_delta - time_extraction
