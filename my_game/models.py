@@ -1065,6 +1065,24 @@ class Ship(models.Model):
     place_id = models.IntegerField()
 
 
+class Damage_ship(models.Model):
+    class Meta():
+        db_table = 'damage_ship'
+
+    user = models.IntegerField(db_index=True)
+    id_fleet = models.IntegerField()
+    id_project = models.IntegerField()
+
+
+class Damage_element(models.Model):
+    class Meta():
+        db_table = 'damage_element'
+
+    id_damage_ship = models.IntegerField(db_index=True)
+    id_element = models.IntegerField()
+    health = models.IntegerField()
+
+
 class Fleet(models.Model):
     class Meta():
         db_table = 'fleet'
@@ -1579,7 +1597,3 @@ class User_chat_online(models.Model):
     user_id = models.IntegerField(db_index=True)
     user = models.CharField(max_length=20)
     last_time_update = models.DateTimeField()
-
-
-
-

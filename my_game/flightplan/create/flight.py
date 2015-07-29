@@ -8,7 +8,6 @@ from my_game.models import Flightplan, Flightplan_flight
 
 def flight_system(*args):
     session_user = args[0]
-    session_user_city = args[1]
     request = args[2]
     fleet_id = int(request.POST.get('hidden_fleet'))
     fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
@@ -29,28 +28,28 @@ def flight_system(*args):
             flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
 
             if flightplan_flight:
-                Xx1 = flightplan_flight.finish_x
-                Yy1 = flightplan_flight.finish_y
-                Zz1 = flightplan_flight.finish_z
+                xx1 = flightplan_flight.finish_x
+                yy1 = flightplan_flight.finish_y
+                zz1 = flightplan_flight.finish_z
 
             else:
-                Xx1 = int(fleet.x)
-                Yy1 = int(fleet.y)
-                Zz1 = int(fleet.z)
+                xx1 = int(fleet.x)
+                yy1 = int(fleet.y)
+                zz1 = int(fleet.z)
 
             if target_planet:
-                Xx2 = int(target_planet.global_x)
-                Yy2 = int(target_planet.global_y)
-                Zz2 = int(target_planet.global_z)
+                xx2 = int(target_planet.global_x)
+                yy2 = int(target_planet.global_y)
+                zz2 = int(target_planet.global_z)
 
             else:
-                distance = math.sqrt((Xx1 - int(target_system.x)) ** 2 + (Yy1 - int(target_system.y)) ** 2 + (
-                    Zz1 - int(target_system.z)) ** 2)
-                Xx2 = Xx1 + (int(target_system.x) - Xx1) * (distance - int(target_system.system_size)) / distance
-                Yy2 = Yy1 + (int(target_system.y) - Yy1) * (distance - int(target_system.system_size)) / distance
-                Zz2 = Zz1 + (int(target_system.z) - Zz1) * (distance - int(target_system.system_size)) / distance
+                distance = math.sqrt((xx1 - int(target_system.x)) ** 2 + (yy1 - int(target_system.y)) ** 2 + (
+                    zz1 - int(target_system.z)) ** 2)
+                xx2 = xx1 + (int(target_system.x) - xx1) * (distance - int(target_system.system_size)) / distance
+                yy2 = yy1 + (int(target_system.y) - yy1) * (distance - int(target_system.system_size)) / distance
+                zz2 = zz1 + (int(target_system.z) - zz1) * (distance - int(target_system.system_size)) / distance
 
-            distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2) ** 2)
+            distance = math.sqrt((xx1 - xx2) ** 2 + (yy1 - yy2) ** 2 + (zz1 - zz2) ** 2)
 
             if fleet.system != 0:
                 system = System.objects.filter(id=fleet.system).first()
@@ -62,7 +61,7 @@ def flight_system(*args):
             if system:
                 if int(system.id) == planet_system:
                     flight_time = math.sqrt(
-                        distance / 2 * (int(fleet.ship_empty_mass) ) / int(fleet_engine.system_power)) * 2
+                        distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.system_power)) * 2
                     id_command = 1
                 else:
                     answer = calculation(fleet_id, planet_giper, planet_null, distance)
@@ -92,12 +91,12 @@ def flight_system(*args):
                 id_fleet=fleet_id,
                 id_fleetplan=id_fleetplan,
                 id_command=id_command,
-                start_x=Xx1,
-                start_y=Yy1,
-                start_z=Zz1,
-                finish_x=int(Xx2),
-                finish_y=int(Yy2),
-                finish_z=int(Zz2),
+                start_x=xx1,
+                start_y=yy1,
+                start_z=zz1,
+                finish_x=int(xx2),
+                finish_y=int(yy2),
+                finish_z=int(zz2),
                 flight_time=flight_time,
                 planet=planet_planet,
                 system=planet_system,
@@ -117,18 +116,18 @@ def flight_system(*args):
         flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
 
         if flightplan_flight:
-            Xx1 = flightplan_flight.finish_x
-            Yy1 = flightplan_flight.finish_y
-            Zz1 = flightplan_flight.finish_z
+            xx1 = flightplan_flight.finish_x
+            yy1 = flightplan_flight.finish_y
+            zz1 = flightplan_flight.finish_z
         else:
-            Xx1 = int(fleet.x)
-            Yy1 = int(fleet.y)
-            Zz1 = int(fleet.z)
+            xx1 = int(fleet.x)
+            yy1 = int(fleet.y)
+            zz1 = int(fleet.z)
 
-        Xx2 = coordinate_x
-        Yy2 = coordinate_y
-        Zz2 = coordinate_z
-        distance = math.sqrt((Xx1 - Xx2) ** 2 + (Yy1 - Yy2) ** 2 + (Zz1 - Zz2) ** 2)
+        xx2 = coordinate_x
+        yy2 = coordinate_y
+        zz2 = coordinate_z
+        distance = math.sqrt((xx1 - xx2) ** 2 + (yy1 - yy2) ** 2 + (zz1 - zz2) ** 2)
 
         answer = calculation(fleet_id, coordinate_giper, coordinate_null, distance)
         id_command = answer['id_command']
@@ -162,12 +161,12 @@ def flight_system(*args):
             id_fleet=fleet_id,
             id_fleetplan=id_fleetplan,
             id_command=id_command,
-            start_x=Xx1,
-            start_y=Yy1,
-            start_z=Zz1,
-            finish_x=Xx2,
-            finish_y=Yy2,
-            finish_z=Zz2,
+            start_x=xx1,
+            start_y=yy1,
+            start_z=zz1,
+            finish_x=xx2,
+            finish_y=yy2,
+            finish_z=zz2,
             flight_time=flight_time,
             planet=planet,
             system=system,
