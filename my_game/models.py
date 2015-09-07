@@ -9,12 +9,12 @@ class MyUser(models.Model):
     class Meta():
         db_table = 'my_user'
         verbose_name = u'Пользователь'
-        verbose_name_plural = u'Пользователь'
+        verbose_name_plural = u'Пользователи'
 
     user_id = models.IntegerField(db_index=True)
     user_name = models.CharField(db_index=True, max_length=20, unique=True, verbose_name=u'Имя игрока')
     password = models.CharField(max_length=50)
-    race_id = models.IntegerField()
+    race_id = models.IntegerField(verbose_name=u'Раса')
     alliance_id = models.IntegerField(default=0)
     union_id = models.IntegerField(default=0)
     internal_currency = models.IntegerField(default=0, verbose_name=u'Внутренняя валюта')
@@ -122,9 +122,11 @@ class User_city(models.Model):
 class Race(models.Model):
     class Meta():
         db_table = 'race'
+        verbose_name = u'Раса'
+        verbose_name_plural = u'Расы'
 
-    name = models.CharField(max_length=50, default='Race')
-    description = models.CharField(max_length=500)
+    name = models.CharField(max_length=50, default='Race', verbose_name=u'Название')
+    description = models.CharField(max_length=4096, verbose_name=u'Описание')
     engine_system = models.FloatField()
     engine_intersystem = models.FloatField()
     engine_giper = models.FloatField()
@@ -143,9 +145,12 @@ class Race(models.Model):
 class Basic_scientic(models.Model):
     class Meta():
         db_table = 'basic_scientic'
+        verbose_name = u'Базовая наука'
+        verbose_name_plural = u'Базовая наука'
 
     scientic_id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=500)
+    name = description = models.CharField(max_length=128)
+    description = models.CharField(max_length=4096)
     time_study = models.IntegerField()
     cost_internal_currency = models.IntegerField(default=25)
     cost_resource1 = models.IntegerField(default=10)
@@ -164,6 +169,8 @@ class Basic_scientic(models.Model):
 class Basic_factory(models.Model):
     class Meta():
         db_table = 'basic_factory'
+        verbose_name = u'Базовое производство'
+        verbose_name_plural = u'Базовые производства'
 
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
