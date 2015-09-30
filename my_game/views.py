@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, User_city, Warehouse
-import function
+from my_game import function
 from my_game.models import Ship, Fleet
 
 
