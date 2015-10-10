@@ -140,7 +140,7 @@ def making_factory_unit(*args):
     mineral4 = 0
 
     user = MyUser.objects.filter(user_id=session_user).first()
-    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
     if class_id != 13:
         factory_pattern_making = FactoryPattern.objects.filter(id=pattern_id).first()
     else:

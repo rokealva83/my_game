@@ -240,7 +240,7 @@ def create_trade_fleet(request):
         else:
             message = 'Недостаточно корблей'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()

@@ -23,7 +23,7 @@ def scien_up(*args):
     mineral4=0
 
     if number_scientic < 3:
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         user = MyUser.objects.filter(user_id=session_user).first()
 
         scien = BasicScientic.objects.get(scientic_id=scientic)

@@ -196,7 +196,7 @@ def add_user(request):
     return render(request, "index.html", {})
 
 
-# функция авторизациир
+# функция авторизации
 def auth(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
         user_name_post = request.POST.get('name')

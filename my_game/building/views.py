@@ -187,7 +187,7 @@ def working(request):
 
         turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -227,7 +227,7 @@ def create_complex(request):
             'production_class', 'production_id')
         complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_id')
-        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
@@ -259,7 +259,7 @@ def management_complex(request):
             'production_class', 'production_id')
         complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_id')
-        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
@@ -304,7 +304,7 @@ def add_in_complex(request):
         complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
@@ -348,7 +348,7 @@ def remove_from_complex(request):
         complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
@@ -393,7 +393,7 @@ def percent_extraction(request):
         complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
@@ -453,7 +453,7 @@ def complex_warehouse(request):
         complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)

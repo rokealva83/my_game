@@ -19,7 +19,7 @@ def buy_credit(request):
         function.check_all_queues(session_user)
         message = ''
         trade_space_id = request.POST.get('trade_space_id')
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()

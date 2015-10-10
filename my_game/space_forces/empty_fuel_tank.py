@@ -68,7 +68,7 @@ def empty_fuel_tank(request):
         fuel_patterns = FuelPattern.objects.filter(user=session_user)
         fuel_tanks = FuelTank.objects.filter(fleet_id=fleet_id)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
-            'id_resource')
+            'resource_id')
         basic_fuels = BasicFuel.objects.filter()
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()

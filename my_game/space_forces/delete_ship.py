@@ -289,7 +289,7 @@ def delete_ship(request):
         else:
             message = 'Флот не над планетой'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = UserCity.objects.filter(user=int(session_user))

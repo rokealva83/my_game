@@ -81,7 +81,7 @@ def fleet_manage(request):
             command = 3
             warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
             warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
-                'id_resource')
+                'resource_id')
             user_city = UserCity.objects.filter(user=session_user).first()
             user = MyUser.objects.filter(user_id=session_user).first()
             user_citys = UserCity.objects.filter(user=int(session_user))
@@ -178,7 +178,7 @@ def fleet_manage(request):
             command = 4
             fuel_tanks = FuelTank.objects.filter(fleet_id=fleet_id)
             warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
-                'id_resource')
+                'resource_id')
             basic_fuels = BasicFuel.objects.filter()
             user_city = UserCity.objects.filter(user=session_user).first()
             user = MyUser.objects.filter(user_id=session_user).first()
@@ -208,7 +208,7 @@ def fleet_manage(request):
                 fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).delete()
                 message = 'Флот удален'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()

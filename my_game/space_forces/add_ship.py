@@ -428,7 +428,7 @@ def add_ship(request):
 
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = UserCity.objects.filter(user=int(session_user))

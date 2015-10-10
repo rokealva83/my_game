@@ -119,7 +119,7 @@ def work_with_project(request):
             delete_ship_element = ElementShip.objects.filter(id_project_ship=ship_id).all().delete()
             message = 'Проект удален'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = UserCity.objects.filter(user=int(session_user))

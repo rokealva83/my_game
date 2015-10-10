@@ -17,7 +17,7 @@ def factory(request):
         factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                               complex_status=0).order_by(
             'production_class', 'production_id')
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()

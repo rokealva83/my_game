@@ -91,7 +91,7 @@ def choice_element(request):
                           "mass", "size", "efficiency")
             element_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         factory_warehouses = WarehouseFactoryResource.objects.filter(id_factory=factory_id)
         basic_resources = BasicResource.objects.filter()
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)

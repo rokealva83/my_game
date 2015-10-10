@@ -10,7 +10,7 @@ from my_game.models import WarehouseElement, WarehouseFactory
 from my_game import function
 from my_game.trade import trade_function
 from my_game.models import ProjectShip, Ship, Fleet
-from my_game.models import TradeElement, TradeSpace, DeliveryQueue, BuildingInstalled, TradeFlight, TradeReleport
+from my_game.models import TradeElement, TradeSpace, DeliveryQueue, BuildingInstalled, TradeFlight, TradeTeleport
 
 
 def buy_trade(request):
@@ -105,7 +105,7 @@ def buy_trade(request):
                             start_time = datetime.now()
                             finish_time = start_time + timedelta(seconds=time)
 
-                            trade_teleport = TradeReleport(
+                            trade_teleport = TradeTeleport(
                                 user=session_user,
                                 user_city=session_user_city,
                                 name=trade_element.name,
@@ -248,7 +248,7 @@ def buy_trade(request):
         else:
             message = 'Неверное количество товара'
         trade_space_id = request.POST.get('trade_space_id')
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         user_city = UserCity.objects.filter(user=session_user).first()
         user_citys = UserCity.objects.filter(user=int(session_user))

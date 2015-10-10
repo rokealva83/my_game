@@ -10,7 +10,7 @@ from my_game.models import WarehouseElement, WarehouseFactory
 from my_game import function
 from my_game.trade import trade_function
 from my_game.models import ProjectShip, Ship, Fleet
-from my_game.models import TradeSpace, DeliveryQueue, BuildingInstalled, TradeReleport, TradeElement, TradeFlight
+from my_game.models import TradeSpace, DeliveryQueue, BuildingInstalled, TradeTeleport, TradeElement, TradeFlight
 
 
 def delivery(request):
@@ -48,7 +48,7 @@ def delivery(request):
                 time = math.sqrt(mass * distance * energy / 10000)
                 start_time = datetime.now()
                 finish_time = start_time + timedelta(seconds=time)
-                trade_teleport = TradeReleport(
+                trade_teleport = TradeTeleport(
                     user=session_user,
                     user_city=session_user_city,
                     name=delivery_element.name,
@@ -149,7 +149,7 @@ def delivery(request):
 
             else:
                 message = 'Флота продавца все заняты.'
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         basic_resources = BasicResource.objects.filter()
         user_city = UserCity.objects.filter(user=session_user).first()
         user_citys = UserCity.objects.filter(user=int(session_user))

@@ -47,7 +47,7 @@ def production_module(*args):
     amount_element = args[4]
 
     user = MyUser.objects.filter(user_id=session_user).first()
-    warehouses = WarehouseFactoryResource.objects.filter(id_factory=factory_id).order_by('id_resource')
+    warehouses = WarehouseFactoryResource.objects.filter(id_factory=factory_id).order_by('resource_id')
     if warehouses:
         factory_worker = FactoryInstalled.objects.filter(id=factory_id).first()
         len_turn_production = len(TurnProduction.objects.filter(user=session_user, user_city=session_user_city,
@@ -194,7 +194,7 @@ def complex_production_module(*args):
         start_time_production = datetime.now()
     manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
     user = MyUser.objects.filter(user_id=manufacturing_complex.user).first()
-    warehouses = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+    warehouses = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('resource_id')
 
     if warehouses:
         factory_worker = FactoryInstalled.objects.filter(id=factory_id).first()

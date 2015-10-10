@@ -86,7 +86,7 @@ def check_scientific_verification_queue(request):
         last_time_update = time_update
         last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,
                                          0)
-        MyUser.objects.filter(user_id=user).update(last_time_scan_scient=last_time_scan_scient)
+        MyUser.objects.filter(user=user).update(last_time_scan_scient=last_time_scan_scient)
 
     user_scientic = UserScientic.objects.filter(user=user).first()
 
@@ -114,9 +114,9 @@ def check_scientific_verification_queue(request):
                 cost_expert_deployment=building.cost_expert_deployment,
                 assembly_workpiece=building.assembly_workpiece,
                 time_deployment=building.time_deployment,
-                size=building.size,
-                mass=building.mass,
+                building_size=building.size,
+                building_mass=building.mass,
                 power_consumption=building.power_consumption,
-                basic_id=building.id
+                basic_building=building
             )
             building_pattern.save()

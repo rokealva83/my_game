@@ -42,7 +42,7 @@ def choice_complex(request):
 
         fuel_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                               complex_status=0).order_by('production_class',
                                                                                          'production_id')

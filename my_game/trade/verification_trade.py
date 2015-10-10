@@ -6,7 +6,7 @@ from my_game.models import UserCity
 from my_game.models import FactoryPattern
 from my_game.models import WarehouseFactory, WarehouseElement, Warehouse
 from my_game.models import Fleet, Hold
-from my_game.models import TradeFlight, TradeReleport
+from my_game.models import TradeFlight, TradeTeleport
 
 
 def verification_trade(request):
@@ -14,11 +14,11 @@ def verification_trade(request):
     time = timezone.now()
     fleets = Fleet.objects.filter(user=user, name='Trade', status=1)
     for fleet in fleets:
-        trade_flights = TradeFlight.objects.filter(id_fleet=fleet.id)
+        trade_flights = TradeFlight.objects.filter(fleet=fleet)
         flightplan_len = len(trade_flights)
         lens = 0
         for trade_flight in trade_flights:
-            user_city = UserCity.objects.filter(id=trade_flight.user_city).first()
+            user_city = UserCity.objects.filter(id=trade_flight.user_city.id).first()
             if trade_flight.status == 1:
                 if trade_flight.flightplan == 1:
                     time_start = trade_flight.start_time
@@ -41,9 +41,9 @@ def verification_trade(request):
                     delta = trade_flight.flight_time
                     if new_delta > delta:
                         hold = Hold(
-                            fleet_id=trade_flight.fleet,
+                            fleet=trade_flight.fleet,
                             class_shipment=trade_flight.class_element,
-                            id_shipment=trade_flight.element_id,
+                            shipment_id=trade_flight.element_id,
                             amount_shipment=trade_flight.amount,
                             mass_shipment=trade_flight.mass,
                             size_shipment=trade_flight.size
@@ -54,9 +54,9 @@ def verification_trade(request):
                         empty_hold = fleet.empty_hold - trade_flight.size
                         fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=empty_hold,
                                                                             ship_empty_mass=new_mass)
-                        trade_flight = TradeFlight.objects.filter(id_fleet=fleet.id).first()
+                        trade_flight = TradeFlight.objects.filter(fleet=fleet).first()
                         trade_flight = TradeFlight.objects.filter(id=trade_flight.id).delete()
-                        trade_flight = TradeFlight.objects.filter(id_fleet=fleet.id).first()
+                        trade_flight = TradeFlight.objects.filter(fleet=fleet).first()
                         if trade_flight:
                             trade_flight = TradeFlight.objects.filter(id=trade_flight.id).update(status=1)
                         else:
@@ -65,8 +65,8 @@ def verification_trade(request):
                                 planet_status = 1
                             else:
                                 planet_status = 0
-                            fleet = Fleet.objects.filter(id=fleet.id).update(planet=user_city.planet_id,
-                                                                             system=user_city.system_id, status=0,
+                            fleet_update = Fleet.objects.filter(id=fleet.id).update(planet=user_city.planet,
+                                                                             system=user_city.system, status=0,
                                                                              planet_status=planet_status)
 
                 elif trade_flight.flightplan == 3:
@@ -79,10 +79,10 @@ def verification_trade(request):
 
                         if hold.class_shipment == 0:
                             warehouse = Warehouse.objects.filter(user=user, user_city=trade_flight.user_city,
-                                                                 id_resource=trade_flight.element_id).first()
+                                                                 resource_id=trade_flight.element_id).first()
                             new_amount = warehouse.amount + trade_flight.amount
                             warehouse = Warehouse.objects.filter(user=user, user_city=trade_flight.user_city,
-                                                                 id_resource=trade_flight.element_id).update(
+                                                                 resource_id=trade_flight.element_id).update(
                                 amount=new_amount)
 
                         elif 0 < hold.class_shipment < 10:
@@ -116,29 +116,23 @@ def verification_trade(request):
                                                                              factory_id=trade_flight.element_id).update(
                                     amount=new_amount)
                             else:
-                                factory_rattern = FactoryPattern.objects.filter(id=trade_flight.element_id).first()
+                                factory_pattern = FactoryPattern.objects.filter(id=trade_flight.element_id).first()
 
                                 warehouse = WarehouseFactory(
                                     user=user,
                                     user_city=trade_flight.user_city,
-                                    factory_id=trade_flight.element_id,
-                                    production_class=factory_rattern.production_class,
-                                    production_id=factory_rattern.production_id,
-                                    time_production=factory_rattern.time_production,
+                                    factory=trade_flight.element_id,
                                     amount=trade_flight.amount,
-                                    size=factory_rattern.size,
-                                    mass=factory_rattern.mass,
-                                    power_consuption=factory_rattern.power_consuption,
                                 )
 
-                        hold = Hold.objects.filter(fleet_id=fleet.id).delete()
+                        hold = Hold.objects.filter(fleet=fleet).delete()
                         new_mass = fleet.ship_empty_mass - trade_flight.mass
                         empty_hold = fleet.empty_hold + trade_flight.size
                         fleet_up = Fleet.objects.filter(id=fleet.id).update(empty_hold=empty_hold,
                                                                             ship_empty_mass=new_mass)
-                        trade_flight = TradeFlight.objects.filter(id_fleet=fleet.id).first()
+                        trade_flight = TradeFlight.objects.filter(fleet=fleet).first()
                         trade_flight = TradeFlight.objects.filter(id=trade_flight.id).delete()
-                        trade_flight = TradeFlight.objects.filter(id_fleet=fleet.id).first()
+                        trade_flight = TradeFlight.objects.filter(fleet=fleet).first()
                         if trade_flight:
                             trade_flight = TradeFlight.objects.filter(id=trade_flight.id).update(status=1)
                         else:
@@ -147,11 +141,11 @@ def verification_trade(request):
                                 planet_status = 1
                             else:
                                 planet_status = 0
-                            fleet = Fleet.objects.filter(id=fleet.id).update(planet=user_city.planet_id,
-                                                                             system=user_city.system_id, status=0,
+                            fleet_update = Fleet.objects.filter(id=fleet.id).update(planet=user_city.planet,
+                                                                             system=user_city.system, status=0,
                                                                              planet_status=planet_status)
 
-    teleports = TradeReleport.objects.filter(user=user)
+    teleports = TradeTeleport.objects.filter(user=user)
     for teleport in teleports:
         teleport_id = teleport.id
         time_start = teleport.start_teleport
@@ -163,10 +157,10 @@ def verification_trade(request):
 
             if teleport.class_element == 0:
                 warehouse = Warehouse.objects.filter(user=user, user_city=teleport.user_city,
-                                                     id_resource=teleport.element_id).first()
+                                                     resource_id=teleport.element_id).first()
                 new_amount = warehouse.amount + teleport.amount
                 warehouse = Warehouse.objects.filter(user=user, user_city=teleport.user_city,
-                                                     id_resource=teleport.element_id).update(amount=new_amount)
+                                                     resource_id=teleport.element_id).update(amount=new_amount)
 
             elif 0 < teleport.class_element < 10:
                 warehouse = WarehouseElement.objects.filter(user=user, user_city=teleport.user_city,
@@ -194,21 +188,21 @@ def verification_trade(request):
                     new_amount = warehouse.amount + teleport.amount
                     warehouse = WarehouseFactory.objects.filter(user=user, user_city=teleport.user_city,
                                                                  production_class__lt=13,
-                                                                 factory_id=teleport.element_id).update(
+                                                                 factory=teleport.element_id).update(
                         amount=new_amount)
                 else:
-                    factory_rattern = FactoryPattern.objects.filter(id=teleport.element_id).first()
+                    factory_pattern = FactoryPattern.objects.filter(id=teleport.element_id).first()
 
                     warehouse = WarehouseFactory(
                         user=user,
                         user_city=teleport.user_city,
                         factory_id=teleport.element_id,
-                        production_class=factory_rattern.production_class,
-                        production_id=factory_rattern.production_id,
-                        time_production=factory_rattern.time_production,
+                        production_class=factory_pattern.production_class,
+                        production_id=factory_pattern.production_id,
+                        time_production=factory_pattern.time_production,
                         amount=teleport.amount,
-                        size=factory_rattern.size,
-                        mass=factory_rattern.mass,
-                        power_consuption=factory_rattern.power_consuption,
+                        size=factory_pattern.size,
+                        mass=factory_pattern.mass,
+                        power_consuption=factory_pattern.power_consuption,
                     )
-            teleport = TradeReleport.objects.filter(id=teleport_id).delete()
+            teleport = TradeTeleport.objects.filter(id=teleport_id).delete()

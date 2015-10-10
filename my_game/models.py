@@ -302,7 +302,7 @@ class FactoryPattern(models.Model):
     production_id = models.IntegerField()
     time_production = models.FloatField()
     factory_size = models.IntegerField()
-    mass = models.IntegerField()
+    factory_mass = models.IntegerField()
     power_consumption = models.IntegerField(default=0)
     bought_template = models.BooleanField(default=False)
 
@@ -1044,15 +1044,18 @@ class WarehouseFactory(models.Model):
 
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
-    factory = models.ForeignKey(FactoryInstalled, db_index=True)
-    production_class = models.IntegerField(default=0)
-    production_id = models.IntegerField(default=0)
-    time_production = models.IntegerField(default=0)
+    factory = models.ForeignKey(FactoryPattern, db_index=True)
     amount = models.IntegerField(default=0)
-    size = models.IntegerField(default=0)
-    mass = models.IntegerField(default=0)
-    power_consumption = models.IntegerField(default=0)
 
+
+class WarehouseBuilding(models.Model):
+    class Meta:
+        db_table = 'warehouse_building'
+
+    user = models.ForeignKey(MyUser, db_index=True)
+    user_city = models.ForeignKey(UserCity, db_index=True)
+    factory = models.ForeignKey(BuildingPattern, db_index=True)
+    amount = models.IntegerField(default=0)
 
 class WarehouseElement(models.Model):
     class Meta:
@@ -1071,7 +1074,7 @@ class TurnBuilding(models.Model):
 
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
-    factory = models.ForeignKey(FactoryPattern)
+    factory = models.IntegerField(default=0)
     class_id = models.IntegerField(default=0)
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
@@ -1534,7 +1537,7 @@ class DeliveryQueue(models.Model):
     size_element = models.IntegerField(default=0)
 
 
-class TradeReleport(models.Model):
+class TradeTeleport(models.Model):
     class Meta:
         db_table = 'trade_teleport'
 
@@ -1555,7 +1558,7 @@ class TradeFlight(models.Model):
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
     fleet = models.ForeignKey(Fleet)
-    flightplan = models.ForeignKey(Flightplan)
+    flightplan = models.IntegerField()
     name = models.CharField(max_length=50)
     class_element = models.IntegerField()
     element_id = models.IntegerField()

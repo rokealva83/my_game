@@ -38,7 +38,7 @@ def send_mail(request):
             new_mail.save()
 
         mails = Mail.objects.filter(user=session_user).order_by('category', '-time')
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
+        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         user = MyUser.objects.filter(user_id=session_user).first()
         user_city = UserCity.objects.filter(user=int(session_user)).first()
         user_citys = UserCity.objects.filter(user=int(session_user))
