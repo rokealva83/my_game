@@ -3,8 +3,8 @@
 from django.contrib import admin
 from my_game.models import MyUser
 from my_game.models import Race
-from my_game.models import Basic_scientic
-from my_game.models import Basic_factory
+from my_game.models import BasicScientic
+from my_game.models import BasicFactory
 
 
 class MyUserAdmin(admin.ModelAdmin):
@@ -24,8 +24,8 @@ class MyFactoryAdmin(admin.ModelAdmin):
 
 admin.site.register(MyUser, MyUserAdmin)
 admin.site.register(Race, MyRaceAdmin)
-admin.site.register(Basic_scientic, MyScienticAdmin)
-admin.site.register(Basic_factory, MyFactoryAdmin)
+admin.site.register(BasicScientic, MyScienticAdmin)
+admin.site.register(BasicFactory, MyFactoryAdmin)
 
 # admin.site.register(Galaxy)
 # admin.site.register(System)

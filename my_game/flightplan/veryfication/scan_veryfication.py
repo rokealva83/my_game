@@ -4,9 +4,9 @@ from django.utils import timezone
 from datetime import timedelta
 import math
 from my_game.models import Planet
-from my_game.models import System, Asteroid_field, Flightplan_scan
+from my_game.models import System, AsteroidField, FlightplanScan
 from my_game.models import Fleet, Ship
-from my_game.models import Flightplan, Fleet_parametr_scan
+from my_game.models import Flightplan, FleetParametrScan
 from my_game.models import Mail
 from my_game.flightplan.veryfication.flight_verification import verification_flight
 from my_game.flightplan.fuel import minus_fuel, need_fuel_process
@@ -19,7 +19,7 @@ def scan_veryfication(*args):
 
     mail_subject = ''
     final_mail = ''
-    flightplan_scan = Flightplan_scan.objects.filter(id_fleetplan=flightplan.id).first()
+    flightplan_scan = FlightplanScan.objects.filter(id_fleetplan=flightplan.id).first()
     if flightplan_scan:
         time = timezone.now()
         time_start = flightplan_scan.start_time
@@ -28,7 +28,7 @@ def scan_veryfication(*args):
         delta = flightplan_scan.time_scanning
         if new_delta > delta:
             finish_time = time_start + timedelta(seconds=delta)
-            fleet_parametr_scan = Fleet_parametr_scan.objects.filter(fleet_id=fleet.id,
+            fleet_parametr_scan = FleetParametrScan.objects.filter(fleet_id=fleet.id,
                                                                      method_scanning=flightplan.id_command).first()
             fleet_x = int(fleet.x)
             fleet_y = int(fleet.y)
@@ -73,7 +73,7 @@ def scan_veryfication(*args):
                 final_mail = mail_text
 
             elif flightplan.id_command == 2:
-                asteroid_fields = Asteroid_field.objects.all()
+                asteroid_fields = AsteroidField.objects.all()
                 size = 0
                 mail_subject = u'Поиск астероидных полей \n'
                 ast_mail = u'Флот произвел поиск астероидов, находясь на координатам %s : %s : %s.\n  Координаты астероидных полей: \n' % (
@@ -155,7 +155,7 @@ def scan_veryfication(*args):
             need_fuel = need_fuel_process(ship_in_fleets, flightplan, delta, fleet.id)
             minus_fuel(fleet, need_fuel)
 
-            flightplan_scan = Flightplan_scan.objects.filter(id_fleetplan=flightplan.id).delete()
+            flightplan_scan = FlightplanScan.objects.filter(id_fleetplan=flightplan.id).delete()
             flightplan = Flightplan.objects.filter(id=flightplan.id).delete()
 
             return finish_time

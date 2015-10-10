@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.utils import timezone
-from my_game.models import MyUser, User_city
-from my_game.models import Factory_pattern, Factory_installed, Building_installed
+from my_game.models import MyUser, UserCity
+from my_game.models import FactoryPattern, FactoryInstalled, BuildingInstalled
 from my_game.models import Warehouse
-from my_game.models import Manufacturing_complex, Warehouse_complex
+from my_game.models import ManufacturingComplex, WarehouseComplex
 
 
 def verification_of_resources(request):
@@ -18,10 +18,10 @@ def verification_of_resources(request):
     elapsed_time_seconds = elapsed_time_full.seconds
     time_update = now_date
     if elapsed_time_seconds > 300:
-        user_citys = User_city.objects.filter(user=user)
+        user_citys = UserCity.objects.filter(user=user)
         for user_city in user_citys:
             city_id = user_city.id
-            check_user_factory_resourse_city = Factory_installed.objects.filter(user=user, user_city=city_id,
+            check_user_factory_resourse_city = FactoryInstalled.objects.filter(user=user, user_city=city_id,
                                                                                 production_class=11)
             attributes = ['resource1', 'resource2', 'resource3', 'resource4', 'mineral1', 'mineral2', 'mineral3',
                           'mineral4']
@@ -35,7 +35,7 @@ def verification_of_resources(request):
                 new_resourse = warehouse.amount + resourse
                 warehouse = Warehouse.objects.filter(user=user, user_city=city_id, id_resource=prod_id).update(
                     amount=new_resourse)
-                user_complexs = Manufacturing_complex.objects.filter(user_city=user_city.id)
+                user_complexs = ManufacturingComplex.objects.filter(user_city=user_city.id)
                 for user_complex in user_complexs:
                     complex_id = user_complex.id
                     check_complex_factorys = check_user_factory_resourse_city.filter(production_id=prod_id,
@@ -46,15 +46,15 @@ def verification_of_resources(request):
                             resourse = resourse + elapsed_time_seconds / check_complex_factory.time_production
                         koef = 1.0 - user_complex.extraction_parametr / 100.0
                         complex_resource = resourse * koef
-                        complex_warehouse = Warehouse_complex.objects.filter(id_complex=complex_id,
+                        complex_warehouse = WarehouseComplex.objects.filter(id_complex=complex_id,
                                                                              id_resource=prod_id).first()
                         if complex_warehouse:
                             complex_resource = complex_resource + complex_warehouse.amount
-                            complex_warehouse = Warehouse_complex.objects.filter(id_complex=complex_id,
+                            complex_warehouse = WarehouseComplex.objects.filter(id_complex=complex_id,
                                                                                  id_resource=prod_id).update(
                                 amount=complex_resource)
                         else:
-                            complex_warehouse = Warehouse_complex(
+                            complex_warehouse = WarehouseComplex(
                                 id_complex=complex_id,
                                 id_resource=prod_id,
                                 amount=complex_resource
@@ -71,26 +71,26 @@ def verification_of_resources(request):
                 prod_id = prod_id + 1
 
         population = 0
-        population_buildings = Factory_installed.objects.filter(user=user, user_city=city_id, production_class=10)
+        population_buildings = FactoryInstalled.objects.filter(user=user, user_city=city_id, production_class=10)
         for population_building in population_buildings:
             population = population + elapsed_time_seconds / population_building.time_production
 
         new_population = user_city.population + population
         if new_population > user_city.max_population:
             new_population = user_city.max_population
-        user_city = User_city.objects.filter(id=city_id).update(population=new_population)
+        user_city = UserCity.objects.filter(id=city_id).update(population=new_population)
 
-        check_all_user_factorys = Factory_installed.objects.filter(user=user, user_city=city_id)
+        check_all_user_factorys = FactoryInstalled.objects.filter(user=user, user_city=city_id)
         total_number_specialists = 0
         for check_all_user_factory in check_all_user_factorys:
-            install_factory = Factory_pattern.objects.filter(id=check_all_user_factory.factory_pattern_id).first()
+            install_factory = FactoryPattern.objects.filter(id=check_all_user_factory.factory_pattern_id).first()
             if install_factory:
                 total_number_specialists = total_number_specialists + install_factory.cost_expert_deployment
         increase_internal_currency = total_number_specialists * elapsed_time_seconds * tax
         new_internal_currency = MyUser.objects.get(user_id=user).internal_currency + increase_internal_currency
         money = MyUser.objects.filter(user_id=user).update(internal_currency=new_internal_currency)
 
-        trade_building = Building_installed.objects.filter(user=user, user_city=city_id, production_class=13).first()
+        trade_building = BuildingInstalled.objects.filter(user=user, user_city=city_id, production_class=13).first()
         if trade_building:
             if trade_building.max_warehouse > trade_building.warehouse:
                 energy = elapsed_time_seconds / trade_building.time_production
@@ -98,7 +98,7 @@ def verification_of_resources(request):
                 new_energy = stock_energy + energy
                 if new_energy > trade_building.max_warehouse:
                     new_energy = trade_building.max_warehouse
-                trade_building = Building_installed.objects.filter(user=user, user_city=city_id,
+                trade_building = BuildingInstalled.objects.filter(user=user, user_city=city_id,
                                                                    production_class=13).update(warehouse=new_energy)
 
         last_time_update = time_update

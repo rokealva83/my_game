@@ -6,10 +6,10 @@ from django.http.response import HttpResponse
 from django.contrib.auth.models import User
 from datetime import datetime
 from my_game.models import Planet
-from my_game.models import User_variables
+from my_game.models import UserVariables
 from my_game.models import MyUser, Race
-from my_game.models import User_city, Warehouse, User_scientic, Basic_scientic, Basic_factory, Factory_pattern, \
-    Factory_installed
+from my_game.models import UserCity, Warehouse, UserScientic, BasicScientic, BasicFactory, FactoryPattern, \
+    FactoryInstalled
 from my_game import function
 
 
@@ -27,7 +27,7 @@ def add_user(request):
         if us_name is not None or mai is not None:
             return HttpResponse()
         else:
-            user_variables = User_variables.objects.filter(id=1).first()
+            user_variables = UserVariables.objects.filter(id=1).first()
             user = User(
                 username=request.POST.get('name'),
                 password=request.POST.get('pass'),
@@ -58,21 +58,21 @@ def add_user(request):
             myuser.save()
 
             # добавление пользователю науки
-            scientic = User_scientic(
+            scientic = UserScientic(
                 user=id_user,
-                time_study_math=Basic_scientic.objects.get(scientic_id=1).time_study,
-                time_study_phis=Basic_scientic.objects.get(scientic_id=2).time_study,
-                time_study_biol=Basic_scientic.objects.get(scientic_id=3).time_study,
-                time_study_ener=Basic_scientic.objects.get(scientic_id=2).time_study,
-                time_study_radio=Basic_scientic.objects.get(scientic_id=4).time_study,
-                time_study_nano=Basic_scientic.objects.get(scientic_id=3).time_study,
-                time_study_astr=Basic_scientic.objects.get(scientic_id=1).time_study,
-                time_study_logis=Basic_scientic.objects.get(scientic_id=4).time_study,
+                time_study_math=BasicScientic.objects.get(scientic_id=1).time_study,
+                time_study_phis=BasicScientic.objects.get(scientic_id=2).time_study,
+                time_study_biol=BasicScientic.objects.get(scientic_id=3).time_study,
+                time_study_ener=BasicScientic.objects.get(scientic_id=2).time_study,
+                time_study_radio=BasicScientic.objects.get(scientic_id=4).time_study,
+                time_study_nano=BasicScientic.objects.get(scientic_id=3).time_study,
+                time_study_astr=BasicScientic.objects.get(scientic_id=1).time_study,
+                time_study_logis=BasicScientic.objects.get(scientic_id=4).time_study,
             )
             scientic.save()
             planeta = Planet.objects.filter(planet_type=int(request.POST.get('rac')), planet_free=1).first()
             # установка начального города и добавление склада. Добавление начальных строений
-            user_city = User_city(
+            user_city = UserCity(
                 user=id_user,
                 system_id=planeta.system_id,
                 planet=planeta,
@@ -86,7 +86,7 @@ def add_user(request):
             user_city.save()
             busy_id = planeta.id
             planet = Planet.objects.filter(pk=busy_id).update(planet_free=0)
-            user_city = User_city.objects.filter(user=id_user).first()
+            user_city = UserCity.objects.filter(user=id_user).first()
 
             warehouse = Warehouse(
                 user=id_user,
@@ -145,10 +145,10 @@ def add_user(request):
             )
             warehouse.save()
 
-            basic_factorys = Basic_factory.objects.all()
+            basic_factorys = BasicFactory.objects.all()
             for basic_factory in basic_factorys:
                 if basic_factory.production_class > 9:
-                    factory_pattern = Factory_pattern(
+                    factory_pattern = FactoryPattern(
                         user=id_user,
                         basic_id=basic_factory.id,
                         name=basic_factory.name,
@@ -172,10 +172,10 @@ def add_user(request):
                         power_consumption=basic_factory.power_consumption
                     )
                     factory_pattern.save()
-            factory_patterns = Factory_pattern.objects.filter(user=id_user)
+            factory_patterns = FactoryPattern.objects.filter(user=id_user)
             for factory_pattern in factory_patterns:
                 if factory_pattern.production_id == 1 or factory_pattern.production_id == 2:
-                    factory_instelled = Factory_installed(
+                    factory_instelled = FactoryInstalled(
                         user=id_user,
                         user_city=user_city.id,
                         factory_pattern_id=factory_pattern.id,
@@ -189,18 +189,18 @@ def add_user(request):
                         power_consumption=factory_pattern.power_consumption
                     )
                     factory_instelled.save()
-            factory_instelleds = Factory_installed.objects.filter(user=id_user)
+            factory_instelleds = FactoryInstalled.objects.filter(user=id_user)
             use_energy = 0
             use_area = 0
             for factory_instelled in factory_instelleds:
                 use_area = factory_instelled.size + use_area
                 if factory_instelled.production_class == 12:
-                    user_city = User_city.objects.filter(user=id_user).update(power=factory_instelled.power_consumption)
+                    user_city = UserCity.objects.filter(user=id_user).update(power=factory_instelled.power_consumption)
                 else:
                     use_energy = use_energy + factory_instelled.power_consumption
-            user_city = User_city.objects.filter(user=id_user).first()
+            user_city = UserCity.objects.filter(user=id_user).first()
             free_area = user_city.city_size_free - use_area
-            user_city = User_city.objects.filter(user=id_user).update(use_energy=use_energy, city_size_free=free_area)
+            user_city = UserCity.objects.filter(user=id_user).update(use_energy=use_energy, city_size_free=free_area)
 
     elif request.POST.get('cancel_button') is not None:
         return render(request, "index.html", {})
@@ -216,10 +216,10 @@ def auth(request):
             if user_name_auth.password == password_post:
                 user = MyUser.objects.filter(user_id=user_name_auth.id).first()
                 user_id = user.user_id
-                user_city = User_city.objects.filter(user=user_id).first()
+                user_city = UserCity.objects.filter(user=user_id).first()
                 warehouses = Warehouse.objects.filter(user=user_id, user_city=user_city.id).order_by('id_resource')
-                user_city = User_city.objects.filter(user=int(user_name_auth.id)).first()
-                user_citys = User_city.objects.filter(user=int(user_name_auth.id))
+                user_city = UserCity.objects.filter(user=int(user_name_auth.id)).first()
+                user_citys = UserCity.objects.filter(user=int(user_name_auth.id))
                 planet = Planet.objects.filter(id=user_city.planet_id).first()
                 race = Race.objects.filter(id=user.race_id).first()
                 planets = Planet.objects.filter(id=user_city.planet_id)

@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import random
-from my_game.models import MyUser, User_scientic
-from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Device_pattern
-from my_game.models import Basic_armor, Basic_engine, Basic_factory, Basic_generator, \
-    Basic_hull, Basic_module, Basic_shell, Basic_shield, Basic_weapon, Race, Basic_fuel, Basic_device
+from my_game.models import MyUser, UserScientic
+from my_game.models import HullPattern, ShellPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
+    ArmorPattern, ModulePattern, FactoryPattern, WeaponPattern, FuelPattern, DevicePattern
+from my_game.models import BasicArmor, BasicEngine, BasicFactory, BasicGenerator, \
+    BasicHull, BasicModule, BasicShell, BasicShield, BasicWeapon, Race, BasicFuel, BasicDevice
 
 
 def hull_upgrade(request):
     user = request
-    b_hull = Basic_hull.objects.all()
+    b_hull = BasicHull.objects.all()
     number_hull = len(b_hull) - 1
     number_hull_scient = random.randint(0, number_hull)
     hull_scient = b_hull[number_hull_scient]
-    u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+    u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
     if u_hull is None:
         koef = element_open(user, hull_scient)
 
@@ -24,7 +24,7 @@ def hull_upgrade(request):
         upper_scope = 0.33 * koef
         new_hull = random.random()
         if 0 < new_hull < upper_scope:
-            hull_pattern = Hull_pattern(
+            hull_pattern = HullPattern(
                 user=user,
                 basic_id=hull_scient.id,
                 name=hull_scient.name,
@@ -55,10 +55,10 @@ def hull_upgrade(request):
             new_factory_pattern(user, 1, hull_scient.id)
 
     else:
-        studied_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id, bought_template=0)
+        studied_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id, bought_template=0)
         len_studied_hull = len(studied_hull)
         if len_studied_hull < 2:
-            u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+            u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
             hull_atribute = ['health', 'generator', 'engine', 'weapon', 'armor', 'shield', 'module', 'main_weapon',
                              'hold_size', 'mass', 'size', 'power_consuption']
             trying = random.random()
@@ -77,7 +77,7 @@ def hull_upgrade(request):
                                 element = element * percent_update
                                 u_hull.pk = None
                                 u_hull.save()
-                                u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+                                u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                                 setattr(u_hull, atribute, element)
                                 u_hull.save()
                         if number == 0 or number == 8 or number == 10:
@@ -86,7 +86,7 @@ def hull_upgrade(request):
                                 element = element * percent_update
                                 u_hull.pk = None
                                 u_hull.save()
-                                u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+                                u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                                 setattr(u_hull, atribute, element)
                                 u_hull.save()
                         else:
@@ -94,7 +94,7 @@ def hull_upgrade(request):
                                 element = element + 1
                                 u_hull.pk = None
                                 u_hull.save()
-                                u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+                                u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                                 setattr(u_hull, atribute, element)
                                 u_hull.save()
                 else:
@@ -105,7 +105,7 @@ def hull_upgrade(request):
                                 element = element * percent_update
                                 u_hull.pk = None
                                 u_hull.save()
-                                u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+                                u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                                 setattr(u_hull, atribute, element)
                                 u_hull.save()
                         else:
@@ -115,7 +115,7 @@ def hull_upgrade(request):
                                     element = element * percent_update
                                     u_hull.pk = None
                                     u_hull.save()
-                                    u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+                                    u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                                     setattr(u_hull, atribute, element)
                                     u_hull.save()
                             else:
@@ -123,20 +123,20 @@ def hull_upgrade(request):
                                     element = element + 1
                                     u_hull.pk = None
                                     u_hull.save()
-                                    u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+                                    u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                                     setattr(u_hull, atribute, element)
                                     u_hull.save()
-                u_hull = Hull_pattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+                u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
                 price_increase(u_hull)
 
 
 def armor_upgrade(request):
     user = request
-    b_armor = Basic_armor.objects.all()
+    b_armor = BasicArmor.objects.all()
     number_armor = len(b_armor) - 1
     number_armor_scient = random.randint(0, number_armor)
     armor_scient = b_armor[number_armor_scient]
-    u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
+    u_armor = ArmorPattern.objects.filter(user=user, basic_id=armor_scient.id).last()
     if u_armor is None:
         koef = element_open(user, armor_scient)
 
@@ -149,7 +149,7 @@ def armor_upgrade(request):
         race = user_race.race_id
         race_koef = Race.objects.filter(id=race).first()
         if 0 < new_armor < upper_scope:
-            armor_pattern = Armor_pattern(
+            armor_pattern = ArmorPattern(
                 user=user,
                 basic_id=armor_scient.id,
                 name=armor_scient.name,
@@ -172,10 +172,10 @@ def armor_upgrade(request):
             armor_pattern.save()
             new_factory_pattern(user, 2, armor_scient.id)
     else:
-        studied_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id, bought_template=0)
+        studied_armor = ArmorPattern.objects.filter(user=user, basic_id=armor_scient.id, bought_template=0)
         len_studied_armor = len(studied_armor)
         if len_studied_armor < 2:
-            u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
+            u_armor = ArmorPattern.objects.filter(user=user, basic_id=armor_scient.id).last()
             armor_atribute = ['health', 'value_energy_resistance', 'value_phisical_resistance', 'regeneration', 'power',
                               'mass']
             trying = random.random()
@@ -194,7 +194,7 @@ def armor_upgrade(request):
                             element = element * percent_update
                             u_armor.pk = None
                             u_armor.save()
-                            u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
+                            u_armor = ArmorPattern.objects.filter(user=user, basic_id=armor_scient.id).last()
                             setattr(u_armor, atribute, element)
                             u_armor.save()
                     else:
@@ -203,20 +203,20 @@ def armor_upgrade(request):
                             element = element * percent_update
                             u_armor.pk = None
                             u_armor.save()
-                            u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
+                            u_armor = ArmorPattern.objects.filter(user=user, basic_id=armor_scient.id).last()
                             setattr(u_armor, atribute, element)
                             u_armor.save()
-                u_armor = Armor_pattern.objects.filter(user=user, basic_id=armor_scient.id).last()
+                u_armor = ArmorPattern.objects.filter(user=user, basic_id=armor_scient.id).last()
                 price_increase(u_armor)
 
 
 def shield_upgrade(request):
     user = request
-    b_shield = Basic_shield.objects.all()
+    b_shield = BasicShield.objects.all()
     number_shield = len(b_shield) - 1
     number_shield_scient = random.randint(0, number_shield)
     shield_scient = b_shield[number_shield_scient]
-    u_shield = Shield_pattern.objects.filter(user=user, basic_id=shield_scient.id).last()
+    u_shield = ShieldPattern.objects.filter(user=user, basic_id=shield_scient.id).last()
     if u_shield is None:
         koef = element_open(user, shield_scient)
 
@@ -229,7 +229,7 @@ def shield_upgrade(request):
         race = user_race.race_id
         race_koef = Race.objects.filter(id=race).first()
         if 0 < new_shield < upper_scope:
-            shield_pattern = Shield_pattern(
+            shield_pattern = ShieldPattern(
                 user=user,
                 basic_id=shield_scient.id,
                 name=shield_scient.name,
@@ -254,7 +254,7 @@ def shield_upgrade(request):
             shield_pattern.save()
             new_factory_pattern(user, 3, shield_scient.id)
     else:
-        studied_shield = Shell_pattern.objects.filter(user=user, basic_id=shield_scient.id, bought_template=0)
+        studied_shield = ShellPattern.objects.filter(user=user, basic_id=shield_scient.id, bought_template=0)
         len_studied_shield = len(studied_shield)
         if len_studied_shield < 2:
             shield_atribute = ['health', 'value_energy_resistance', 'value_phisical_resistance', 'regeneration',
@@ -274,7 +274,7 @@ def shield_upgrade(request):
                             element = element * percent_update
                             u_shield.pk = None
                             u_shield.save()
-                            u_shield = Shield_pattern.objects.filter(user=user, basic_id=shield_scient.id).last()
+                            u_shield = ShieldPattern.objects.filter(user=user, basic_id=shield_scient.id).last()
                             setattr(u_shield, atribute, element)
                             u_shield.save()
                     else:
@@ -283,7 +283,7 @@ def shield_upgrade(request):
                                 element = element + 1
                                 u_shield.pk = None
                                 u_shield.save()
-                                u_shield = Shield_pattern.objects.filter(user=user, basic_id=shield_scient.id).last()
+                                u_shield = ShieldPattern.objects.filter(user=user, basic_id=shield_scient.id).last()
                                 setattr(u_shield, atribute, element)
                                 u_shield.save()
                         else:
@@ -291,20 +291,20 @@ def shield_upgrade(request):
                                 element = element * percent_update
                                 u_shield.pk = None
                                 u_shield.save()
-                                u_shield = Shield_pattern.objects.filter(user=user, basic_id=shield_scient.id).last()
+                                u_shield = ShieldPattern.objects.filter(user=user, basic_id=shield_scient.id).last()
                                 setattr(u_shield, atribute, element)
                                 u_shield.save()
-                u_shield = Shield_pattern.objects.filter(user=user, basic_id=shield_scient.id).last()
+                u_shield = ShieldPattern.objects.filter(user=user, basic_id=shield_scient.id).last()
                 price_increase(u_shield)
 
 
 def engine_upgrade(request):
     user = request
-    b_engine = Basic_engine.objects.all()
+    b_engine = BasicEngine.objects.all()
     number_engine = len(b_engine) - 1
     number_engine_scient = random.randint(0, number_engine)
     engine_scient = b_engine[number_engine_scient]
-    u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
+    u_engine = EnginePattern.objects.filter(user=user, basic_id=engine_scient.id).last()
     if u_engine is None:
         koef = element_open(user, engine_scient)
 
@@ -317,7 +317,7 @@ def engine_upgrade(request):
         race = user_race.race_id
         race_koef = Race.objects.filter(id=race).first()
         if 0 < new_engine < upper_scope:
-            engine_pattern = Engine_pattern(
+            engine_pattern = EnginePattern(
                 user=user,
                 basic_id=engine_scient.id,
                 name=engine_scient.name,
@@ -344,10 +344,10 @@ def engine_upgrade(request):
             if engine_pattern.system_power != 0 or engine_pattern.intersystem_power != 0:
                 open_fuel(user, engine_pattern.system_power, engine_pattern.intersystem_power)
     else:
-        studied_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id, bought_template=0)
+        studied_engine = EnginePattern.objects.filter(user=user, basic_id=engine_scient.id, bought_template=0)
         len_studied_engine = len(studied_engine)
         if len_studied_engine < 2:
-            u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
+            u_engine = EnginePattern.objects.filter(user=user, basic_id=engine_scient.id).last()
             engine_atribute = ['health', 'system_power', 'intersystem_power', 'giper_power', 'nullT_power', 'mass',
                                'size', 'power_consuption']
             trying = random.random()
@@ -365,7 +365,7 @@ def engine_upgrade(request):
                             element = element * percent_update
                             u_engine.pk = None
                             u_engine.save()
-                            u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
+                            u_engine = EnginePattern.objects.filter(user=user, basic_id=engine_scient.id).last()
                             setattr(u_engine, atribute, element)
                             u_engine.save()
                     else:
@@ -373,20 +373,20 @@ def engine_upgrade(request):
                             element = element * percent_update
                             u_engine.pk = None
                             u_engine.save()
-                            u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
+                            u_engine = EnginePattern.objects.filter(user=user, basic_id=engine_scient.id).last()
                             setattr(u_engine, atribute, element)
                             u_engine.save()
-                u_engine = Engine_pattern.objects.filter(user=user, basic_id=engine_scient.id).last()
+                u_engine = EnginePattern.objects.filter(user=user, basic_id=engine_scient.id).last()
                 price_increase(u_engine)
 
 
 def generator_upgrade(request):
     user = request
-    b_generator = Basic_generator.objects.all()
+    b_generator = BasicGenerator.objects.all()
     number_generator = len(b_generator) - 1
     number_generator_scient = random.randint(0, number_generator)
     generator_scient = b_generator[number_generator_scient]
-    u_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id).last()
+    u_generator = GeneratorPattern.objects.filter(user=user, basic_id=generator_scient.id).last()
     if u_generator is None:
         koef = element_open(user, generator_scient)
 
@@ -399,7 +399,7 @@ def generator_upgrade(request):
         race = user_race.race_id
         race_koef = Race.objects.filter(id=race).first()
         if 0 < new_generator < upper_scope:
-            generator_pattern = Generator_pattern(
+            generator_pattern = GeneratorPattern(
                 user=user,
                 basic_id=generator_scient.id,
                 name=generator_scient.name,
@@ -421,7 +421,7 @@ def generator_upgrade(request):
             generator_pattern.save()
             new_factory_pattern(user, 5, generator_scient.id)
     else:
-        studied_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id, bought_template=0)
+        studied_generator = GeneratorPattern.objects.filter(user=user, basic_id=generator_scient.id, bought_template=0)
         len_studied_generator = len(studied_generator)
         if len_studied_generator < 2:
             generator_atribute = ['health', 'produced_energy', 'fuel_necessary', 'mass', 'size']
@@ -440,7 +440,7 @@ def generator_upgrade(request):
                             element = element * percent_update
                             u_generator.pk = None
                             u_generator.save()
-                            u_generator = Generator_pattern.objects.filter(user=user,
+                            u_generator = GeneratorPattern.objects.filter(user=user,
                                                                            basic_id=generator_scient.id).last()
                             setattr(u_generator, atribute, element)
                             u_generator.save()
@@ -449,22 +449,22 @@ def generator_upgrade(request):
                             element = element * percent_update
                             u_generator.pk = None
                             u_generator.save()
-                            u_generator = Generator_pattern.objects.filter(user=user,
+                            u_generator = GeneratorPattern.objects.filter(user=user,
                                                                            basic_id=generator_scient.id).last()
                             setattr(u_generator, atribute, element)
                             u_generator.save()
 
-                u_generator = Generator_pattern.objects.filter(user=user, basic_id=generator_scient.id).last()
+                u_generator = GeneratorPattern.objects.filter(user=user, basic_id=generator_scient.id).last()
                 price_increase(u_generator)
 
 
 def weapon_upgrade(request):
     user = request
-    b_weapon = Basic_weapon.objects.all()
+    b_weapon = BasicWeapon.objects.all()
     number_weapon = len(b_weapon) - 1
     number_weapon_scient = random.randint(0, number_weapon)
     weapon_scient = b_weapon[number_weapon_scient]
-    u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+    u_weapon = WeaponPattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
     if u_weapon is None:
         koef = element_open(user, weapon_scient)
         if koef < 0:
@@ -481,7 +481,7 @@ def weapon_upgrade(request):
         else:
             weapon = race_koef.weapon_defense
         if 0 < new_weapon < upper_scope:
-            weapon_pattern = Weapon_pattern(
+            weapon_pattern = WeaponPattern(
                 user=user,
                 basic_id=weapon_scient.id,
                 name=weapon_scient.name,
@@ -509,10 +509,10 @@ def weapon_upgrade(request):
             new_factory_pattern(user, 6, weapon_scient.id)
 
     else:
-        studied_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id, bought_template=0)
+        studied_weapon = WeaponPattern.objects.filter(user=user, basic_id=weapon_scient.id, bought_template=0)
         len_studied_weapon = len(studied_weapon)
         if len_studied_weapon < 2:
-            u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+            u_weapon = WeaponPattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
             weapon_atribute = ['health', 'energy_damage', 'regenerations', 'number_of_bursts', 'range', 'accuracy',
                                'mass', 'size', 'power_consuption']
             trying = random.random()
@@ -530,7 +530,7 @@ def weapon_upgrade(request):
                             element = element * percent_update
                             u_weapon.pk = None
                             u_weapon.save()
-                            u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+                            u_weapon = WeaponPattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
                             setattr(u_weapon, atribute, element)
                             u_weapon.save()
                     else:
@@ -538,7 +538,7 @@ def weapon_upgrade(request):
                             element = element + 1
                             u_weapon.pk = None
                             u_weapon.save()
-                            u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+                            u_weapon = WeaponPattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
                             setattr(u_weapon, atribute, element)
                             u_weapon.save()
                         else:
@@ -547,7 +547,7 @@ def weapon_upgrade(request):
                                     element = element * percent_update
                                     u_weapon.pk = None
                                     u_weapon.save()
-                                    u_weapon = Weapon_pattern.objects.filter(user=user,
+                                    u_weapon = WeaponPattern.objects.filter(user=user,
                                                                              basic_id=weapon_scient.id).last()
                                     setattr(u_weapon, atribute, element)
                                     u_weapon.save()
@@ -556,21 +556,21 @@ def weapon_upgrade(request):
                                     element = element * percent_update
                                     u_weapon.pk = None
                                     u_weapon.save()
-                                    u_weapon = Weapon_pattern.objects.filter(user=user,
+                                    u_weapon = WeaponPattern.objects.filter(user=user,
                                                                              basic_id=weapon_scient.id).last()
                                     setattr(u_weapon, atribute, element)
                                     u_weapon.save()
-                u_weapon = Weapon_pattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
+                u_weapon = WeaponPattern.objects.filter(user=user, basic_id=weapon_scient.id).last()
                 price_increase(u_weapon)
 
 
 def shell_upgrade(request):
     user = request
-    b_shell = Basic_shell.objects.all()
+    b_shell = BasicShell.objects.all()
     number_shell = len(b_shell) - 1
     number_shell_scient = random.randint(0, number_shell)
     shell_scient = b_shell[number_shell_scient]
-    u_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id).last()
+    u_shell = ShellPattern.objects.filter(user=user, basic_id=shell_scient.id).last()
     if u_shell is None:
         koef = element_open(user, shell_scient)
 
@@ -580,7 +580,7 @@ def shell_upgrade(request):
         upper_scope = 0.33 * koef
         new_shell = random.random()
         if 0 < new_shell < upper_scope:
-            shell_pattern = Shell_pattern(
+            shell_pattern = ShellPattern(
                 user=user,
                 basic_id=shell_scient.id,
                 name=shell_scient.name,
@@ -601,7 +601,7 @@ def shell_upgrade(request):
             shell_pattern.save()
             new_factory_pattern(user, 7, shell_scient.id)
     else:
-        studied_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id, bought_template=0)
+        studied_shell = ShellPattern.objects.filter(user=user, basic_id=shell_scient.id, bought_template=0)
         len_studied_shell = len(studied_shell)
         if len_studied_shell < 2:
             shell_atribute = ['phisical_damage', 'speed', 'mass', 'size']
@@ -620,7 +620,7 @@ def shell_upgrade(request):
                             element = element * percent_update
                             u_shell.pk = None
                             u_shell.save()
-                            u_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id).last()
+                            u_shell = ShellPattern.objects.filter(user=user, basic_id=shell_scient.id).last()
                             setattr(u_shell, atribute, element)
                             u_shell.save()
                     else:
@@ -628,20 +628,20 @@ def shell_upgrade(request):
                             element = element * percent_update
                             u_shell.pk = None
                             u_shell.save()
-                            u_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id).last()
+                            u_shell = ShellPattern.objects.filter(user=user, basic_id=shell_scient.id).last()
                             setattr(u_shell, atribute, element)
                             u_shell.save()
-                u_shell = Shell_pattern.objects.filter(user=user, basic_id=shell_scient.id).last()
+                u_shell = ShellPattern.objects.filter(user=user, basic_id=shell_scient.id).last()
                 price_increase(u_shell)
 
 
 def module_upgrade(request):
     user = request
-    b_module = Basic_module.objects.all()
+    b_module = BasicModule.objects.all()
     number_module = len(b_module) - 1
     number_module_scient = random.randint(0, number_module)
     module_scient = b_module[number_module_scient]
-    u_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id).last()
+    u_module = ModulePattern.objects.filter(user=user, basic_id=module_scient.id).last()
     if u_module is None:
         koef = element_open(user, module_scient)
 
@@ -662,7 +662,7 @@ def module_upgrade(request):
             else:
                 module = race_koef.auximilary
         if 0 < new_module < upper_scope:
-            module_pattern = Module_pattern(
+            module_pattern = ModulePattern(
                 user=user,
                 basic_id=module_scient.id,
                 name=module_scient.name,
@@ -687,7 +687,7 @@ def module_upgrade(request):
             module_pattern.save()
             new_factory_pattern(user, 8, module_scient.id)
     else:
-        studied_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id, bought_template=0)
+        studied_module = ModulePattern.objects.filter(user=user, basic_id=module_scient.id, bought_template=0)
         len_studied_module = len(studied_module)
         if len_studied_module < 2:
             module_atribute = ['health', 'param1', 'param2', 'param3', 'mass', 'size', 'power_consuption']
@@ -706,7 +706,7 @@ def module_upgrade(request):
                             element = element * percent_update
                             u_module.pk = None
                             u_module.save()
-                            u_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id).last()
+                            u_module = ModulePattern.objects.filter(user=user, basic_id=module_scient.id).last()
                             setattr(u_module, atribute, element)
                             u_module.save()
                     else:
@@ -714,20 +714,20 @@ def module_upgrade(request):
                             element = element * percent_update
                             u_module.pk = None
                             u_module.save()
-                            u_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id).last()
+                            u_module = ModulePattern.objects.filter(user=user, basic_id=module_scient.id).last()
                             setattr(u_module, atribute, element)
                             u_module.save()
-                u_module = Module_pattern.objects.filter(user=user, basic_id=module_scient.id).last()
+                u_module = ModulePattern.objects.filter(user=user, basic_id=module_scient.id).last()
                 price_increase(u_module)
 
 
 def device_open(request):
     user = request
-    b_device = Basic_device.objects.all()
+    b_device = BasicDevice.objects.all()
     number_device = len(b_device) - 1
     number_device_scient = random.randint(0, number_device)
     device_scient = b_device[number_device_scient]
-    u_device = Device_pattern.objects.filter(user=user, basic_id=device_scient.id).last()
+    u_device = DevicePattern.objects.filter(user=user, basic_id=device_scient.id).last()
     if u_device is None:
         koef = element_open(user, device_scient)
         if koef < 0:
@@ -737,7 +737,7 @@ def device_open(request):
         new_device = random.random()
 
         if 0 < new_device < upper_scope:
-            device_pattern = Device_pattern(
+            device_pattern = DevicePattern(
                 user=user,
                 basic_id=device_scient.id,
                 name=device_scient.name,
@@ -767,7 +767,7 @@ def element_open(*args):
     user = args[0]
     element_scient = args[1]
     all_base = int(element_scient.min_all_scientic)
-    scin_user = User_scientic.objects.filter(user=user).first()
+    scin_user = UserScientic.objects.filter(user=user).first()
     all_user = int(scin_user.all_scientic)
     if all_base < all_user:
         koef_all = (all_user - all_base) / 100.0
@@ -891,8 +891,8 @@ def new_factory_pattern(*args):
     user = int(new_factory_patt[0])
     prod_class = int(new_factory_patt[1])
     prod_id = int(new_factory_patt[2])
-    new_factory = Basic_factory.objects.filter(production_class=prod_class, production_id=prod_id).first()
-    user_factory = Factory_pattern(
+    new_factory = BasicFactory.objects.filter(production_class=prod_class, production_id=prod_id).first()
+    user_factory = FactoryPattern(
         user=user,
         basic_id=new_factory.id,
         name=new_factory.name,
@@ -933,10 +933,10 @@ def open_fuel(*args):
     elif system == 0 and inter != 0:
         fuel_class = 2
 
-    fuel_pattern = Fuel_pattern.objects.filter(user=user, fuel_class=fuel_class).first()
+    fuel_pattern = FuelPattern.objects.filter(user=user, fuel_class=fuel_class).first()
     if fuel_pattern is None:
-        basic_fuel = Basic_fuel.objects.filter(fuel_class=fuel_class).first()
-        fuel_pattern = Fuel_pattern(
+        basic_fuel = BasicFuel.objects.filter(fuel_class=fuel_class).first()
+        fuel_pattern = FuelPattern(
             user=user,
             name=basic_fuel.name,
             basic_id=basic_fuel.id,

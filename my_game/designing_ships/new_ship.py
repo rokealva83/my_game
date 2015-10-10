@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse, User_variables
-from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern
-from my_game.models import Project_ship, Element_ship, Turn_ship_build
+from my_game.models import MyUser, UserCity, Warehouse, UserVariables
+from my_game.models import HullPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
+    ArmorPattern, ModulePattern, WeaponPattern
+from my_game.models import ProjectShip, ElementShip, TurnShipBuild
 from my_game.designing_ships import verification_project
 
 
@@ -27,22 +27,22 @@ def new_ship(request):
         choice_armor = []
         output = {}
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
 
         if request.POST.get('create_pattern'):
             chosen_hull_id = request.POST.get('choice_pattern')
             chosen_name = request.POST.get('ship_name')
-            chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
-            armors = Armor_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            shields = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            engines = Engine_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            generators = Generator_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            main_weapons = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            modules = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-            turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
+            chosen_hull = HullPattern.objects.filter(user=session_user, id=chosen_hull_id).first()
+            armors = ArmorPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            shields = ShieldPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            engines = EnginePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            generators = GeneratorPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            weapons = WeaponPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            main_weapons = WeaponPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            modules = ModulePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
             output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                       'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                       'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
@@ -57,31 +57,31 @@ def new_ship(request):
 
             full_request = request.POST
             myDict = dict(full_request.iterlists())
-            chosen_hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
-            hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+            chosen_hull = HullPattern.objects.filter(user=session_user, id=chosen_hull_id).first()
+            hulls = HullPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
             verification = verification_project.verification(session_user, session_user_city, chosen_hull,
                                                              chosen_hull_id, myDict)
             if verification == True:
 
-                new_pattern_ship = Project_ship(
+                new_pattern_ship = ProjectShip(
                     user=session_user,
                     name=chosen_name,
                     hull_id=chosen_hull_id
                 )
                 new_pattern_ship.save()
                 pattern_ship_id = new_pattern_ship.pk
-                user_variables = User_variables.objects.filter(id=1).first()
+                user_variables = UserVariables.objects.filter(id=1).first()
                 time_build = user_variables.basic_time_build_ship
-                hull = Hull_pattern.objects.filter(user=session_user, id=chosen_hull_id).first()
+                hull = HullPattern.objects.filter(user=session_user, id=chosen_hull_id).first()
                 mass = hull.mass
                 choice_armor = myDict.get('choice_armor')
                 choice_armor_side = myDict.get('choice_armor_side')
                 if choice_armor:
                     for i in range(chosen_hull.armor):
                         if int(choice_armor[i]) != 0:
-                            armor = Armor_pattern.objects.filter(id=choice_armor[i]).first()
-                            element = Element_ship(
+                            armor = ArmorPattern.objects.filter(id=choice_armor[i]).first()
+                            element = ElementShip(
                                 id_project_ship=pattern_ship_id,
                                 class_element=2,
                                 id_element_pattern=choice_armor[i],
@@ -97,8 +97,8 @@ def new_ship(request):
                 if choice_shield:
                     for i in range(chosen_hull.shield):
                         if int(choice_shield[i]) != 0:
-                            shield = Shield_pattern.objects.filter(id=choice_shield[i]).first()
-                            element = Element_ship(
+                            shield = ShieldPattern.objects.filter(id=choice_shield[i]).first()
+                            element = ElementShip(
                                 id_project_ship=pattern_ship_id,
                                 class_element=3,
                                 id_element_pattern=choice_shield[i],
@@ -121,8 +121,8 @@ def new_ship(request):
                 if choice_engine:
                     for i in range(chosen_hull.engine):
                         if int(choice_engine[i]) != 0:
-                            engine = Engine_pattern.objects.filter(id=choice_engine[i]).first()
-                            element = Element_ship(
+                            engine = EnginePattern.objects.filter(id=choice_engine[i]).first()
+                            element = ElementShip(
                                 id_project_ship=pattern_ship_id,
                                 class_element=4,
                                 id_element_pattern=choice_engine[i],
@@ -141,7 +141,7 @@ def new_ship(request):
                             time_build = time_build * 1.1
                             mass = mass + engine.mass
 
-                ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(system_power=system_power,
+                ship_pattern = ProjectShip.objects.filter(id=pattern_ship_id).update(system_power=system_power,
                                                                                       intersystem_power=intersystem_power,
                                                                                       giper_power=giper_power,
                                                                                       null_power=null_power,
@@ -157,8 +157,8 @@ def new_ship(request):
                 if choice_generator:
                     for i in range(chosen_hull.generator):
                         if int(choice_generator[i]) != 0:
-                            generator = Generator_pattern.objects.filter(id=choice_generator[i]).first()
-                            element = Element_ship(
+                            generator = GeneratorPattern.objects.filter(id=choice_generator[i]).first()
+                            element = ElementShip(
                                 id_project_ship=pattern_ship_id,
                                 class_element=5,
                                 id_element_pattern=choice_generator[i],
@@ -170,7 +170,7 @@ def new_ship(request):
                             mass = mass + generator.mass
                             generator_fuel = generator_fuel + generator.fuel_necessary
                             generator_energy = generator_energy + generator.produced_energy
-                            ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(
+                            ship_pattern = ProjectShip.objects.filter(id=pattern_ship_id).update(
                                 generator_fuel=generator_fuel, generator_energy=generator_energy)
 
                 choice_weapon = myDict.get('choice_weapon')
@@ -178,8 +178,8 @@ def new_ship(request):
                 if choice_weapon:
                     for i in range(chosen_hull.main_weapon):
                         if int(choice_weapon[i]) != 0:
-                            weapon = Weapon_pattern.objects.filter(id=choice_weapon[i]).first()
-                            element = Element_ship(
+                            weapon = WeaponPattern.objects.filter(id=choice_weapon[i]).first()
+                            element = ElementShip(
                                 id_project_ship=pattern_ship_id,
                                 class_element=6,
                                 id_element_pattern=choice_weapon[i],
@@ -195,8 +195,8 @@ def new_ship(request):
                 if choice_main_weapon:
                     for i in range(chosen_hull.main_weapon):
                         if int(choice_main_weapon[i]) != 0:
-                            weapon = Weapon_pattern.objects.filter(id=choice_weapon[i]).first()
-                            element = Element_ship(
+                            weapon = WeaponPattern.objects.filter(id=choice_weapon[i]).first()
+                            element = ElementShip(
                                 id_project_ship=pattern_ship_id,
                                 class_element=7,
                                 id_element_pattern=choice_main_weapon[i],
@@ -211,8 +211,8 @@ def new_ship(request):
                 if choice_module:
                     for i in range(chosen_hull.module):
                         if int(choice_module[i]) != 0:
-                            module = Module_pattern.objects.filter(id=choice_module[i]).first()
-                            element = Element_ship(
+                            module = ModulePattern.objects.filter(id=choice_module[i]).first()
+                            element = ElementShip(
                                 id_project_ship=pattern_ship_id,
                                 class_element=8,
                                 id_element_pattern=choice_module[i],
@@ -223,15 +223,15 @@ def new_ship(request):
                             time_build = time_build * 1.1
                             mass = mass + module.mass
 
-                ship_pattern = Project_ship.objects.filter(id=pattern_ship_id).update(time_build=time_build, mass=mass)
-                turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
-                project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
+                ship_pattern = ProjectShip.objects.filter(id=pattern_ship_id).update(time_build=time_build, mass=mass)
+                turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
+                project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
                 output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                           'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds}
             else:
                 message_error = 'Ошибка создания проекта'
-                turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
-                project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
+                turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
+                project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
                 output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                           'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                           'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,

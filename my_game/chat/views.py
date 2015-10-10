@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse, Chat, User_chat_online
+from my_game.models import MyUser, UserCity, Warehouse, Chat, UserChatOnline
 from django.http import JsonResponse
 from django.utils import timezone
 
@@ -13,9 +13,9 @@ def chat(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_online = User_chat_online.objects.filter(user_id=session_user).first()
+        user_online = UserChatOnline.objects.filter(user_id=session_user).first()
         if user_online is None:
-            user_online = User_chat_online(
+            user_online = UserChatOnline(
                 user_id=session_user,
                 user=user.user_name,
                 last_time_update=timezone.now()
@@ -28,19 +28,19 @@ def chat(request):
             )
             message.save()
         else:
-            user_online = User_chat_online.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
+            user_online = UserChatOnline.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
 
         last_id = Chat.objects.last().pk
         need_id = int(last_id) - 38
         messages = Chat.objects.filter(id__gte=need_id).all()
 
-        online_users = User_chat_online.objects.all()
+        online_users = UserChatOnline.objects.all()
 
         user_name = MyUser.objects.filter(user_id=session_user).first().user_name
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
 
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
@@ -64,16 +64,16 @@ def send_message(request):
         time=time
     )
     message.save()
-    user_online = User_chat_online.objects.filter(user_id=session_user).first()
+    user_online = UserChatOnline.objects.filter(user_id=session_user).first()
     if user_online is None:
-        user_online = User_chat_online(
+        user_online = UserChatOnline(
             user_id=session_user,
             user=user.user_name,
             last_time_update=timezone.now()
         )
         user_online.save()
     else:
-        user_online = User_chat_online.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
+        user_online = UserChatOnline.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
 
 
 def update_message(request):
@@ -94,19 +94,19 @@ def update_message(request):
 
 
 def user_delete(request):
-    online_users = User_chat_online.objects.all()
+    online_users = UserChatOnline.objects.all()
     for online_user in online_users:
         last_time_update = online_user.last_time_update
         delta_time = timezone.now() - last_time_update
         delta_time = delta_time.seconds
         if delta_time > 300:
-            online_user_delete = User_chat_online.objects.filter(id=online_user.id).delete()
+            online_user_delete = UserChatOnline.objects.filter(id=online_user.id).delete()
 
 
 def delete_user_update(request):
     id = int(request.POST.get('id'))
     response = 0
-    online_user = User_chat_online.objects.filter(id=id)
+    online_user = UserChatOnline.objects.filter(id=id)
     if online_user:
         response = 1
     return JsonResponse({
@@ -116,7 +116,7 @@ def delete_user_update(request):
 
 def update_user(request):
     id = int(request.POST.get('id'))
-    user_onlines = User_chat_online.objects.filter(id__gt=id).all()
+    user_onlines = UserChatOnline.objects.filter(id__gt=id).all()
     response = []
     for usr in user_onlines:
         response.append({

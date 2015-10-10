@@ -2,11 +2,11 @@
 
 from datetime import timedelta
 from django.utils import timezone
-from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship
-from my_game.models import Fleet, Armor_pattern, Shield_pattern, Weapon_pattern, \
-    Engine_pattern, Generator_pattern, Shell_pattern, Module_pattern, Device_pattern
-from my_game.models import Flightplan, Flightplan_hold
-from my_game.models import Hold, Ship, Project_ship, Hull_pattern, User_city, Factory_pattern
+from my_game.models import Warehouse, WarehouseElement, WarehouseFactory, WarehouseShip
+from my_game.models import Fleet, ArmorPattern, ShieldPattern, WeaponPattern, \
+    EnginePattern, GeneratorPattern, ShellPattern, ModulePattern, DevicePattern
+from my_game.models import Flightplan, FlightplanHold
+from my_game.models import Hold, Ship, ProjectShip, HullPattern, UserCity, FactoryPattern
 from my_game.flightplan.fuel import need_fuel_process, minus_fuel
 
 
@@ -14,11 +14,11 @@ def upload_unload_veryfication(*args):
     fleet = args[0]
     user = fleet.user
     flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
-    city = User_city.objects.filter(user=user, x=fleet.x, y=fleet.y, z=fleet.z).first()
+    city = UserCity.objects.filter(user=user, x=fleet.x, y=fleet.y, z=fleet.z).first()
     finish_time = timezone.now()
     if city:
         mass = 0
-        flightplan_hold = Flightplan_hold.objects.filter(id_fleetplan=flightplan.id).first()
+        flightplan_hold = FlightplanHold.objects.filter(id_fleetplan=flightplan.id).first()
         if flightplan_hold:
             time = timezone.now()
             time_start = flightplan_hold.start_time
@@ -39,7 +39,7 @@ def upload_unload_veryfication(*args):
                 minus_fuel(fleet, need_fuel)
 
                 flightplan_del= Flightplan.objects.filter(id=flightplan.id).delete()
-                flightplan_hold_del = Flightplan_hold.objects.filter(id=flightplan_hold.id).delete()
+                flightplan_hold_del = FlightplanHold.objects.filter(id=flightplan_hold.id).delete()
 
     return finish_time
 
@@ -48,23 +48,23 @@ def search_pattern(*args):
     class_element = args[0]
     warehouse = args[1]
     if class_element == 1:
-        pattern = Hull_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = HullPattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 2:
-        pattern = Armor_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = ArmorPattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 3:
-        pattern = Shield_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = ShieldPattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 4:
-        pattern = Engine_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = EnginePattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 5:
-        pattern = Generator_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = GeneratorPattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 6:
-        pattern = Weapon_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = WeaponPattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 7:
-        pattern = Shell_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = ShellPattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 8:
-        pattern = Module_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = ModulePattern.objects.filter(id=warehouse.id_element).first()
     elif class_element == 9:
-        pattern = Device_pattern.objects.filter(id=warehouse.id_element).first()
+        pattern = DevicePattern.objects.filter(id=warehouse.id_element).first()
 
         return pattern
 
@@ -78,13 +78,13 @@ def warehouse_update(*args):
         warehouse_up = Warehouse.objects.filter(user_city=city.id, id_resource=flightplan_hold.id_element).update(
             amount=new_amount)
     elif class_element == 10:
-        warehouse_up = Warehouse_factory.objects.filter(user_city=city.id, id=flightplan_hold.id_element).update(
+        warehouse_up = WarehouseFactory.objects.filter(user_city=city.id, id=flightplan_hold.id_element).update(
             amount=new_amount)
     elif class_element == 11:
-        warehouse_up = Warehouse_ship.objects.filter(user_city=city.id, id=flightplan_hold.id_element).update(
+        warehouse_up = WarehouseShip.objects.filter(user_city=city.id, id=flightplan_hold.id_element).update(
             amount=new_amount)
     else:
-        warehouse_up = Warehouse_element.objects.filter(user_city=city.id, element_class=class_element,
+        warehouse_up = WarehouseElement.objects.filter(user_city=city.id, element_class=class_element,
                                                         element_id=flightplan_hold.id_element).update(amount=new_amount)
 
 
@@ -102,8 +102,8 @@ def new_warehouse_update(*args):
         )
         warehouse_up.save()
     elif class_element == 10:
-        factory = Factory_pattern.objects.filter(id=flightplan_hold.id_element).first()
-        warehouse_up = Warehouse_factory(
+        factory = FactoryPattern.objects.filter(id=flightplan_hold.id_element).first()
+        warehouse_up = WarehouseFactory(
             user=city.user,
             user_city=city.id,
             factory_id=flightplan_hold.id_element,
@@ -117,7 +117,7 @@ def new_warehouse_update(*args):
         )
         warehouse_up.save()
     elif class_element == 11:
-        warehouse_up = Warehouse_ship(
+        warehouse_up = WarehouseShip(
             user=city.user,
             user_city=city.id,
             ship_id=flightplan_hold.id_element,
@@ -125,7 +125,7 @@ def new_warehouse_update(*args):
         )
         warehouse_up.save()
     else:
-        warehouse_up = Warehouse_element(
+        warehouse_up = WarehouseElement(
             user=city.user,
             user_city=city.id,
             element_class=flightplan_hold.class_element,
@@ -146,20 +146,20 @@ def mass_size(*args):
         size = 1
         mass = 1
     elif class_element == 10:
-        warehouse = Warehouse_factory.objects.filter(user_city=city.id, id=flightplan_hold.id_element).first()
+        warehouse = WarehouseFactory.objects.filter(user_city=city.id, id=flightplan_hold.id_element).first()
         if warehouse:
             size = warehouse.size
             mass = warehouse.mass
     elif class_element == 11:
-        warehouse = Warehouse_ship.objects.filter(user_city=city.id, id=flightplan_hold.id_element).first()
+        warehouse = WarehouseShip.objects.filter(user_city=city.id, id=flightplan_hold.id_element).first()
         if warehouse:
             ship = Ship.objects.filter(id=warehouse.ship_id).first()
-            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
-            hull = Hull_pattern.objects.filter(id=project_ship.hull_id).first()
+            project_ship = ProjectShip.objects.filter(id=ship.id_project_ship).first()
+            hull = HullPattern.objects.filter(id=project_ship.hull_id).first()
             size = hull.size
             mass = project_ship.mass
     else:
-        warehouse = Warehouse_element.objects.filter(user_city=city.id, element_class=class_element,
+        warehouse = WarehouseElement.objects.filter(user_city=city.id, element_class=class_element,
                                                      element_id=flightplan_hold.id_element).first()
         if warehouse:
             pattern = search_pattern(class_element, warehouse)

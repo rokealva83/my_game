@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city
-from my_game.models import Warehouse, Warehouse_element, Warehouse_factory, Basic_resource
+from my_game.models import MyUser, UserCity
+from my_game.models import Warehouse, WarehouseElement, WarehouseFactory, BasicResource
 from my_game import function
 from my_game.models import Ship, Fleet, Hold
-from my_game.models import Factory_pattern, Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, \
-    Generator_pattern, Weapon_pattern, Engine_pattern, Module_pattern, Fuel_pattern, Device_pattern
+from my_game.models import FactoryPattern, HullPattern, ArmorPattern, ShellPattern, ShieldPattern, \
+    GeneratorPattern, WeaponPattern, EnginePattern, ModulePattern, FuelPattern, DevicePattern
 
 
 def fleet_hold(request):
@@ -41,17 +41,17 @@ def fleet_hold(request):
         mass_shipment = 0
         size = 0
 
-        factory_patterns = Factory_pattern.objects.filter(user=session_user)
-        hull_patterns = Hull_pattern.objects.filter(user=session_user)
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
-        shield_patterns = Shield_pattern.objects.filter(user=session_user)
-        engine_patterns = Engine_pattern.objects.filter(user=session_user)
-        generator_patterns = Generator_pattern.objects.filter(user=session_user)
-        weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
-        shell_patterns = Shell_pattern.objects.filter(user=session_user)
-        module_patterns = Module_pattern.objects.filter(user=session_user)
-        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-        device_patterns = Device_pattern.objects.filter(user=session_user)
+        factory_patterns = FactoryPattern.objects.filter(user=session_user)
+        hull_patterns = HullPattern.objects.filter(user=session_user)
+        armor_patterns = ArmorPattern.objects.filter(user=session_user)
+        shield_patterns = ShieldPattern.objects.filter(user=session_user)
+        engine_patterns = EnginePattern.objects.filter(user=session_user)
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user)
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user)
+        shell_patterns = ShellPattern.objects.filter(user=session_user)
+        module_patterns = ModulePattern.objects.filter(user=session_user)
+        fuel_patterns = FuelPattern.objects.filter(user=session_user)
+        device_patterns = DevicePattern.objects.filter(user=session_user)
         error = 0
 
         full_request = request.POST
@@ -82,7 +82,7 @@ def fleet_hold(request):
             if factory_amount[0] != 0 and add_shipment == 0 and id_shipment_fac is not None:
                 id_shipment = int(id_shipment_fac[0])
                 class_shipment = 10
-                factory = Factory_pattern.objects.filter(id=id_shipment).first()
+                factory = FactoryPattern.objects.filter(id=id_shipment).first()
                 size = factory.size * int(factory_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(factory_amount[0])
@@ -94,7 +94,7 @@ def fleet_hold(request):
             if hull_amount[0] != 0 and add_shipment == 0 and id_shipment_hull is not None:
                 id_shipment = int(id_shipment_hull[0])
                 class_shipment = 1
-                hull = Hull_pattern.objects.filter(id=id_shipment).first()
+                hull = HullPattern.objects.filter(id=id_shipment).first()
                 size = hull.size * int(hull_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(hull_amount[0])
@@ -106,7 +106,7 @@ def fleet_hold(request):
             if int(armor_amount[0]) != 0 and add_shipment == 0 and id_shipment_arm is not None:
                 id_shipment = int(id_shipment_arm[0])
                 class_shipment = 2
-                armor = Armor_pattern.objects.filter(id=id_shipment).first()
+                armor = ArmorPattern.objects.filter(id=id_shipment).first()
                 size = 15 * int(armor_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(armor_amount[0])
@@ -118,7 +118,7 @@ def fleet_hold(request):
             if int(shield_amount[0]) != 0 and add_shipment == 0 and id_shipment_shield is not None:
                 id_shipment = int(id_shipment_shield[0])
                 class_shipment = 3
-                shield = Shield_pattern.objects.filter(id=id_shipment).first()
+                shield = ShieldPattern.objects.filter(id=id_shipment).first()
                 size = shield.size * int(shield_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(shield_amount[0])
@@ -130,7 +130,7 @@ def fleet_hold(request):
             if int(engine_amount[0]) != 0 and add_shipment == 0 and id_shipment_eng is not None:
                 id_shipment = int(id_shipment_eng[0])
                 class_shipment = 4
-                engine = Engine_pattern.objects.filter(id=id_shipment).first()
+                engine = EnginePattern.objects.filter(id=id_shipment).first()
                 size = engine.size * int(engine_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(engine_amount[0])
@@ -142,7 +142,7 @@ def fleet_hold(request):
             if int(generator_amount[0]) != 0 and add_shipment == 0 and id_shipment_gen is not None:
                 id_shipment = int(id_shipment_gen[0])
                 class_shipment = 5
-                generator = Generator_pattern.objects.filter(id=id_shipment).first()
+                generator = GeneratorPattern.objects.filter(id=id_shipment).first()
                 size = generator.size * int(generator_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(generator_amount[0])
@@ -154,7 +154,7 @@ def fleet_hold(request):
             if int(weapon_amount[0]) != 0 and add_shipment == 0 and id_shipment_weap is not None:
                 id_shipment = int(id_shipment_weap[0])
                 class_shipment = 6
-                weapon = Weapon_pattern.objects.filter(id=id_shipment).first()
+                weapon = WeaponPattern.objects.filter(id=id_shipment).first()
                 size = weapon.size * int(weapon_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(weapon_amount[0])
@@ -166,7 +166,7 @@ def fleet_hold(request):
             if int(shell_amount[0]) != 0 and add_shipment == 0 and id_shipment_shell is not None:
                 id_shipment = int(id_shipment_shell[0])
                 class_shipment = 7
-                shell = Shell_pattern.objects.filter(id=id_shipment).first()
+                shell = ShellPattern.objects.filter(id=id_shipment).first()
                 size = shell.size * int(shell_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(shell_amount[0])
@@ -178,7 +178,7 @@ def fleet_hold(request):
             if int(module_amount[0]) != 0 and add_shipment == 0 and id_shipment_mod is not None:
                 id_shipment = int(id_shipment_mod[0])
                 class_shipment = 8
-                module = Module_pattern.objects.filter(id=id_shipment).first()
+                module = ModulePattern.objects.filter(id=id_shipment).first()
                 size = module.size * int(module_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(module_amount[0])
@@ -190,7 +190,7 @@ def fleet_hold(request):
             if int(device_amount[0]) != 0 and add_shipment == 0 and id_shipment_device is not None:
                 id_shipment = int(id_shipment_device[0])
                 class_shipment = 9
-                device = Device_pattern.objects.filter(id=id_shipment).first()
+                device = DevicePattern.objects.filter(id=id_shipment).first()
                 size = device.size * int(device_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(device_amount[0])
@@ -202,7 +202,7 @@ def fleet_hold(request):
             if int(fuel_amount[0]) != 0 and add_shipment == 0 and id_shipment_mod is not None:
                 id_shipment = int(id_shipment_mod[0])
                 class_shipment = 14
-                fuel = Fuel_pattern.objects.filter(id=id_shipment).first()
+                fuel = FuelPattern.objects.filter(id=id_shipment).first()
                 size = fuel.size * int(fuel_amount[0])
                 if size <= fleet.empty_hold:
                     amount_shipment = int(fuel_amount[0])
@@ -221,23 +221,23 @@ def fleet_hold(request):
                         error = 1
 
                 elif class_shipment == 10:
-                    warehouse_factory = Warehouse_factory.objects.filter(user_city=session_user_city,
+                    warehouse_factory = WarehouseFactory.objects.filter(user_city=session_user_city,
                                                                          factory_id=id_shipment).first()
                     if warehouse_factory.amount >= amount_shipment:
                         new_factory_amount = warehouse_factory.amount - amount_shipment
-                        warehouse_factory = Warehouse_factory.objects.filter(user_city=session_user_city,
+                        warehouse_factory = WarehouseFactory.objects.filter(user_city=session_user_city,
                                                                              factory_id=id_shipment).update(
                             amount=new_factory_amount)
                     else:
                         error = 1
 
                 elif 0 < class_shipment < 10 or class_shipment == 14:
-                    warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
+                    warehouse_element = WarehouseElement.objects.filter(user_city=session_user_city,
                                                                          element_class=class_shipment,
                                                                          element_id=id_shipment).first()
                     if warehouse_element.amount >= amount_shipment:
                         new_element_amount = warehouse_element.amount - amount_shipment
-                        warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
+                        warehouse_element = WarehouseElement.objects.filter(user_city=session_user_city,
                                                                              element_class=class_shipment,
                                                                              element_id=id_shipment).update(
                             amount=new_element_amount)
@@ -276,17 +276,17 @@ def fleet_hold(request):
             message = 'Флот не над планетой'
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
-        user_city = User_city.objects.filter(user=session_user).first()
+        basic_resources = BasicResource.objects.filter()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user,
                                                               user_city=session_user_city).order_by(
             'production_class', 'production_id')
-        warehouse_elements = Warehouse_element.objects.filter(user=session_user,
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user,
                                                               user_city=session_user_city).order_by(
             'element_class', 'element_id')
 

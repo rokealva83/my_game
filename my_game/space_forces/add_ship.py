@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Planet
+from my_game.models import MyUser, UserCity, Planet
 from my_game.models import Warehouse
-from my_game.models import Hull_pattern, Element_ship, Module_pattern, Engine_pattern, Generator_pattern, \
-    Shield_pattern, Weapon_pattern
-from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_engine, Fleet_energy_power, \
-    Fleet_parametr_resource_extraction, Fleet_parametr_build_repair
+from my_game.models import HullPattern, ElementShip, ModulePattern, EnginePattern, GeneratorPattern, \
+    ShieldPattern, WeaponPattern
+from my_game.models import ProjectShip, Ship, Fleet, FleetParametrScan, FleetEngine, FleetEnergyPower, \
+    FleetParametrResourceExtraction, FleetParametrBuildRepair
 from my_game import function
 
 
@@ -49,9 +49,9 @@ def add_ship(request):
         ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
                                    place_id=session_user_city).first()
         fleet = Fleet.objects.filter(id=fleet_id).first()
-        fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
-        fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).first()
-        user_city = User_city.objects.filter(id=session_user_city).first()
+        fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
+        fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).first()
+        user_city = UserCity.objects.filter(id=session_user_city).first()
         city_planet = int(user_city.planet_id)
         fleet_planet = int(Planet.objects.filter(system_id=fleet.system, planet_num=fleet.planet).first().id)
         if fleet.status == 0 and city_planet == fleet_planet:
@@ -59,9 +59,9 @@ def add_ship(request):
                 if int(ship.amount_ship) >= int(amount_ship):
                     ship_fleet = Ship.objects.filter(id_project_ship=ship.id_project_ship, user=session_user,
                                                      fleet_status=1, place_id=fleet_id).first()
-                    ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
-                    hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
-                    ship_elements = Element_ship.objects.filter(id_project_ship=ship.id_project_ship)
+                    ship_pattern = ProjectShip.objects.filter(id=ship.id_project_ship).first()
+                    hull_pattern = HullPattern.objects.filter(id=ship_pattern.hull_id).first()
+                    ship_elements = ElementShip.objects.filter(id_project_ship=ship.id_project_ship)
                     use_energy = hull_pattern.power_consuption
                     use_fuel_system = 0
                     use_fuel_intersystem = 0
@@ -71,11 +71,11 @@ def add_ship(request):
                     produced_energy = 0
                     for ship_element in ship_elements:
                         if ship_element.class_element == 3:
-                            element_pattern = Shield_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            element_pattern = ShieldPattern.objects.filter(id=ship_element.id_element_pattern).first()
                             use_energy = use_energy + element_pattern.power_consuption
 
                         if ship_element.class_element == 4:
-                            engine_pattern = Engine_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            engine_pattern = EnginePattern.objects.filter(id=ship_element.id_element_pattern).first()
                             if engine_pattern.system_power != 0:
                                 use_fuel_system = use_fuel_system + engine_pattern.power_consuption
                             if engine_pattern.intersystem_power != 0:
@@ -86,84 +86,84 @@ def add_ship(request):
                                 use_energy_null = use_energy_null + engine_pattern.power_consuption
 
                         if ship_element.class_element == 5:
-                            element_pattern = Generator_pattern.objects.filter(
+                            element_pattern = GeneratorPattern.objects.filter(
                                 id=ship_element.id_element_pattern).first()
                             use_fuel_generator = use_fuel_generator + element_pattern.fuel_necessary
                             produced_energy = produced_energy + element_pattern.produced_energy
 
                         if ship_element.class_element == 6:
-                            element_pattern = Weapon_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            element_pattern = WeaponPattern.objects.filter(id=ship_element.id_element_pattern).first()
                             use_energy = use_energy + element_pattern.power_consuption
 
                         if ship_element.class_element == 7:
-                            element_pattern = Weapon_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            element_pattern = WeaponPattern.objects.filter(id=ship_element.id_element_pattern).first()
                             use_energy = use_energy + element_pattern.power_consuption
 
                         if ship_element.class_element == 8:
-                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
                                                                             module_class=2).first()
                             if element_pattern:
                                 hold = hold + element_pattern.param1
                                 use_energy = use_energy + element_pattern.power_consuption
 
-                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
                                                                             module_class=3).first()
                             if element_pattern:
-                                fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+                                fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(
                                     fleet_id=fleet_id).first()
                                 if fleet_parametr_resource_extraction:
                                     extraction_per_minute = fleet_parametr_resource_extraction.extraction_per_minute + element_pattern.param1 * amount_ship
-                                    fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+                                    fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(
                                         fleet_id=fleet_id).update(extraction_per_minute=extraction_per_minute)
                                 else:
-                                    fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction(
+                                    fleet_parametr_resource_extraction = FleetParametrResourceExtraction(
                                         fleet_id=fleet_id,
                                         extraction_per_minute=element_pattern.param1 * amount_ship
                                     )
                                     fleet_parametr_resource_extraction.save()
                                 use_energy = use_energy + element_pattern.power_consuption
 
-                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
                                                                             module_class=5, param3=1).first()
                             if element_pattern:
-                                fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
                                                                                                   class_process=1).first()
                                 if fleet_parametr_build:
                                     new_process_per_minute = fleet_parametr_build.process_per_minute + element_pattern.param2 * amount_ship
-                                    fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                    fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
                                                                                                       class_process=1).update(
                                         process_per_minute=new_process_per_minute)
                                 else:
-                                    fleet_parametr_build = Fleet_parametr_build_repair(
+                                    fleet_parametr_build = FleetParametrBuildRepair(
                                         fleet_id=fleet_id,
                                         class_process=1,
                                         process_per_minute=element_pattern.param2 * amount_ship
                                     )
                                     fleet_parametr_build.save()
 
-                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
                                                                             module_class=5, param3=2).first()
                             if element_pattern:
-                                fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+                                fleet_parametr_repair = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
                                                                                                    class_process=2).first()
                                 if fleet_parametr_repair:
                                     new_process_per_minute = fleet_parametr_repair.process_per_minute + element_pattern.param2 * amount_ship
-                                    fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(
+                                    fleet_parametr_repair = FleetParametrBuildRepair.objects.filter(
                                         fleet_id=fleet_id,
                                         class_process=2).update(
                                         process_per_minute=new_process_per_minute)
                                 else:
-                                    fleet_parametr_repair = Fleet_parametr_build_repair(
+                                    fleet_parametr_repair = FleetParametrBuildRepair(
                                         fleet_id=fleet_id,
                                         class_process=2,
                                         process_per_minute=element_pattern.param2 * amount_ship
                                     )
                                     fleet_parametr_repair.save()
 
-                            element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
                                                                             module_class=6).first()
                             if element_pattern:
-                                fleet_parametr_scan = Fleet_parametr_scan(
+                                fleet_parametr_scan = FleetParametrScan(
                                     fleet_id=fleet_id,
                                     method_scanning=element_pattern.param3,
                                     time_scanning=element_pattern.param2,
@@ -192,7 +192,7 @@ def add_ship(request):
                                                               place_id=session_user_city).delete()
 
                             ship = Ship.objects.filter(place_id=fleet_id, fleet_status=1, user=session_user).first()
-                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            project_ship = ProjectShip.objects.filter(id=ship.id_project_ship).first()
 
                             system_power = int(project_ship.system_power) * amount_ship + int(fleet_engine.system_power)
                             intersystem_power = int(
@@ -225,7 +225,7 @@ def add_ship(request):
                                 free_fuel_tank=free_fuel_tank,
                             )
 
-                            fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
+                            fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).update(
                                 system_power=system_power,
                                 intersystem_power=intersystem_power,
                                 giper_power=giper_power,
@@ -234,7 +234,7 @@ def add_ship(request):
                                 null_accuracy=null_accuracy,
                             )
 
-                            fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
+                            fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).update(
                                 use_energy=use_energy, use_fuel_system=use_fuel_system,
                                 use_fuel_intersystem=use_fuel_intersystem, use_energy_giper=use_energy_giper,
                                 use_energy_null=use_energy_null, use_fuel_generator=use_fuel_generator,
@@ -252,7 +252,7 @@ def add_ship(request):
                                                               place_id=session_user_city).update(amount_ship=new_amount)
 
                             ship = Ship.objects.filter(place_id=fleet_id, fleet_status=1, user=session_user).first()
-                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            project_ship = ProjectShip.objects.filter(id=ship.id_project_ship).first()
 
                             system_power = int(project_ship.system_power) * amount_ship + int(fleet_engine.system_power)
                             intersystem_power = int(
@@ -284,7 +284,7 @@ def add_ship(request):
                                 free_fuel_tank=free_fuel_tank
                             )
 
-                            fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
+                            fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).update(
                                 system_power=system_power,
                                 intersystem_power=intersystem_power,
                                 giper_power=giper_power,
@@ -293,7 +293,7 @@ def add_ship(request):
                                 null_accuracy=null_accuracy,
                             )
 
-                            fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
+                            fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).update(
                                 use_energy=use_energy, use_fuel_system=use_fuel_system,
                                 use_fuel_intersystem=use_fuel_intersystem, use_energy_giper=use_energy_giper,
                                 use_energy_null=use_energy_null, use_fuel_generator=use_fuel_generator,
@@ -306,7 +306,7 @@ def add_ship(request):
                                                        place_id=session_user_city).update(fleet_status=1,
                                                                                           place_id=fleet_id)
                             ship = Ship.objects.filter(id=ship_id).first()
-                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            project_ship = ProjectShip.objects.filter(id=ship.id_project_ship).first()
                             ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
                             if ship_in_fleet:
                                 hold_empty = fleet.empty_hold + hold * amount_ship
@@ -331,7 +331,7 @@ def add_ship(request):
                                 giper_power = int(project_ship.giper_power) * amount_ship
                                 null_power = int(project_ship.null_power) * amount_ship
 
-                            fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
+                            fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).update(
                                 system_power=system_power,
                                 intersystem_power=intersystem_power,
                                 giper_power=giper_power,
@@ -347,7 +347,7 @@ def add_ship(request):
                                 free_fuel_tank=free_fuel_tank
                             )
 
-                            fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
+                            fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).update(
                                 use_energy=use_energy, use_fuel_system=use_fuel_system,
                                 use_fuel_intersystem=use_fuel_intersystem, use_energy_giper=use_energy_giper,
                                 use_energy_null=use_energy_null, use_fuel_generator=use_fuel_generator,
@@ -370,7 +370,7 @@ def add_ship(request):
                                                        place_id=session_user_city).update(amount_ship=new_amount)
                             ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
                                                        place_id=session_user_city).first()
-                            project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                            project_ship = ProjectShip.objects.filter(id=ship.id_project_ship).first()
                             ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
 
                             if ship_in_fleet:
@@ -396,7 +396,7 @@ def add_ship(request):
                                 giper_power = int(project_ship.giper_power) * amount_ship
                                 null_power = int(project_ship.null_power) * amount_ship
 
-                            fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
+                            fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).update(
                                 system_power=system_power,
                                 intersystem_power=intersystem_power,
                                 giper_power=giper_power,
@@ -412,7 +412,7 @@ def add_ship(request):
                                 free_fuel_tank=free_fuel_tank
                             )
 
-                            fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
+                            fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).update(
                                 use_energy=use_energy, use_fuel_system=use_fuel_system,
                                 use_fuel_intersystem=use_fuel_intersystem, use_energy_giper=use_energy_giper,
                                 use_energy_null=use_energy_null, use_fuel_generator=use_fuel_generator,
@@ -429,9 +429,9 @@ def add_ship(request):
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)

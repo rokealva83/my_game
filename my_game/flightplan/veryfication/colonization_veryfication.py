@@ -3,14 +3,14 @@
 from datetime import timedelta
 from django.utils import timezone
 from my_game.models import Planet
-from my_game.models import Flightplan, Ship, User_city, Flightplan_colonization
+from my_game.models import Flightplan, Ship, UserCity, FlightplanColonization
 from my_game.flightplan.fuel import need_fuel_process, minus_fuel
 
 
 def colonization_veryfication(*args):
     fleet = args[0]
     flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
-    flightplan_colonization = Flightplan_colonization.objects.filter(id_fleetplan=flightplan.id).first()
+    flightplan_colonization = FlightplanColonization.objects.filter(id_fleetplan=flightplan.id).first()
     finish_time = timezone.now()
     if flightplan_colonization:
         time = timezone.now()
@@ -24,7 +24,7 @@ def colonization_veryfication(*args):
                 planet = Planet.objects.filter(global_x=fleet.x, global_y=fleet.y, global_z=fleet.z,
                                                planet_free=1).first()
                 if planet:
-                    user_city = User_city(
+                    user_city = UserCity(
                         user=fleet.user,
                         system_id=planet.system_id,
                         planet=planet.id,
@@ -41,7 +41,7 @@ def colonization_veryfication(*args):
                 else:
                     message = ''
             else:
-                user_city = User_city(
+                user_city = UserCity(
                     user=fleet.user,
                     system_id=0,
                     planet=0,
@@ -59,6 +59,6 @@ def colonization_veryfication(*args):
         minus_fuel(fleet, need_fuel)
 
         flightplan_del = Flightplan.objects.filter(id=flightplan.id).delete()
-        flightplan_colonization_del = Flightplan_colonization.objects.filter(id=flightplan_colonization.id).delete()
+        flightplan_colonization_del = FlightplanColonization.objects.filter(id=flightplan_colonization.id).delete()
 
     return finish_time

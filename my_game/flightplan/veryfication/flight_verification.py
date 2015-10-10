@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.utils import timezone
 from my_game.models import Planet
 from my_game.models import Fleet
-from my_game.models import Flightplan, Flightplan_flight
+from my_game.models import Flightplan, FlightplanFlight
 from my_game.flightplan import fuel
 
 
@@ -13,7 +13,7 @@ def verification_flight(*args):
     flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
     if flightplan:
         finish_time = timezone.now()
-        flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).first()
+        flightplan_flight = FlightplanFlight.objects.filter(id_fleetplan=flightplan.id).first()
         if flightplan_flight:
             time = timezone.now()
             time_start = flightplan_flight.start_time
@@ -43,7 +43,7 @@ def verification_flight(*args):
                 need_fuel = fuel.fuel(fleet.id, flightplan_flight, fleet)
                 fuel.minus_fuel(fleet, need_fuel)
 
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleetplan=flightplan.id).delete()
+                flightplan_flight = FlightplanFlight.objects.filter(id_fleetplan=flightplan.id).delete()
                 flightplan = Flightplan.objects.filter(id=flightplan.id).delete()
             else:
                 new_x = flightplan_flight.start_x - (

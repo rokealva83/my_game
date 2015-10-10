@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from my_game.models import Flightplan, Flightplan_hold
+from my_game.models import Flightplan, FlightplanHold
 from my_game.flightplan.find_name import find_name
 
 
@@ -25,7 +25,7 @@ def upload_hold(*args):
     )
     flightplan.save()
 
-    flightplan_hold = Flightplan_hold(
+    flightplan_hold = FlightplanHold(
         user=session_user,
         id_fleet=fleet_id,
         id_command=1,

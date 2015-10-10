@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city
-from my_game.models import Warehouse, Warehouse_element, Fuel_pattern, Basic_fuel, Fuel_tank
+from my_game.models import MyUser, UserCity
+from my_game.models import Warehouse, WarehouseElement, FuelPattern, BasicFuel, FuelTank
 from my_game import function
 from my_game.models import Ship, Fleet
 
@@ -24,15 +24,15 @@ def fuel_tank(request):
 
             add_shipment = 0
             if int(fuel_amount) != 0 and add_shipment == 0 and fuel_pattern_id is not None:
-                fuel = Fuel_pattern.objects.filter(id=fuel_pattern_id).first()
+                fuel = FuelPattern.objects.filter(id=fuel_pattern_id).first()
                 size = fuel.size * int(fuel_amount)
                 if size <= fleet.free_fuel_tank:
-                    warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
+                    warehouse_element = WarehouseElement.objects.filter(user_city=session_user_city,
                                                                          element_class=14,
                                                                          element_id=fuel_pattern_id).first()
                     if warehouse_element.amount >= fuel_amount:
                         new_element_amount = warehouse_element.amount - fuel_amount
-                        warehouse_element = Warehouse_element.objects.filter(user_city=session_user_city,
+                        warehouse_element = WarehouseElement.objects.filter(user_city=session_user_city,
                                                                              element_class=14,
                                                                              element_id=fuel_pattern_id).update(
                             amount=new_element_amount)
@@ -41,16 +41,16 @@ def fuel_tank(request):
                         error = 1
 
                     if error == 0:
-                        fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id, fuel_class=fuel_pattern_id).first()
+                        fuel_tank = FuelTank.objects.filter(fleet_id=fleet_id, fuel_class=fuel_pattern_id).first()
                         if fuel_tank:
                             new_fuel_amount = fuel_amount + fuel_tank.amount_fuel
                             mass_fuel = fuel.mass * fuel_amount + fuel_tank.mass_fuel
                             size_fuel = fuel.size * fuel_amount + fuel_tank.size_fuel
-                            fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet_id, fuel_class=fuel_pattern_id).update(
+                            fuel_tank = FuelTank.objects.filter(fleet_id=fleet_id, fuel_class=fuel_pattern_id).update(
                                 amount_fuel=new_fuel_amount, mass_fuel=mass_fuel, size_fuel=size_fuel)
 
                         else:
-                            fuel_tank = Fuel_tank(
+                            fuel_tank = FuelTank(
                                 fleet_id=fleet_id,
                                 fuel_class=fuel_pattern_id,
                                 amount_fuel=fuel_amount,
@@ -76,16 +76,16 @@ def fuel_tank(request):
             message = 'Флот не над планетой'
 
         command = 4
-        warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city,
                                                               element_class=14).order_by('element_id')
-        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-        fuel_tanks = Fuel_tank.objects.filter(fleet_id=fleet_id)
+        fuel_patterns = FuelPattern.objects.filter(user=session_user)
+        fuel_tanks = FuelTank.objects.filter(fleet_id=fleet_id)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'id_resource')
-        basic_fuels = Basic_fuel.objects.all()
-        user_city = User_city.objects.filter(user=session_user).first()
+        basic_fuels = BasicFuel.objects.all()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)

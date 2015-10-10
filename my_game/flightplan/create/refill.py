@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from my_game.models import Flightplan, Flightplan_refill
+from my_game.models import Flightplan, FlightplanRefill
 from my_game.models import Hold
 from my_game.flightplan.find_name import find_name
 
@@ -81,7 +81,7 @@ def refill(*args):
     )
     flightplan.save()
 
-    flightplan_refill = Flightplan_refill(
+    flightplan_refill = FlightplanRefill(
         user=session_user,
         id_fleet=fleet_id,
         id_command=id_command,

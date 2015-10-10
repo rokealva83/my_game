@@ -1,0 +1,2 @@
+id,name,description,health,param1,param2,param3,mass,size,power_consuption,device_class,price_internal_currency,price_resource1,price_resource2,price_resource3,price_resource4,price_mineral1,price_mineral2,price_mineral3,price_mineral4,min_all_scientic,min_math,min_phis,min_biol,min_energy,min_radio,min_nanotech,min_astronomy,min_logist
+1,"device 1","device 1",10,10,10,10,10,10,10,1,10,10,10,10,10,10,10,10,10,50,10,10,10,101,10,10,10,10

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse
+from my_game.models import MyUser, UserCity, Warehouse
 from my_game import function
 from my_game.models import Ship, Fleet
 
@@ -22,9 +22,9 @@ def trade(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)

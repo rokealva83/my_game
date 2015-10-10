@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse, Turn_building, Turn_assembly_pieces
-from my_game.models import Factory_pattern, Building_pattern, Factory_installed, Basic_resource
-from my_game.models import Warehouse_factory
-from my_game.models import Manufacturing_complex, Warehouse_complex, Turn_complex_production
+from my_game.models import MyUser, UserCity, Warehouse, TurnBuilding, TurnAssemblyPieces
+from my_game.models import FactoryPattern, BuildingPattern, FactoryInstalled, BasicResource
+from my_game.models import WarehouseFactory
+from my_game.models import ManufacturingComplex, WarehouseComplex, TurnComplexProduction
 from my_game import function, verification_func
 from django.utils import timezone
 from my_game.building import build_function, assembly_line_workpieces
@@ -17,13 +17,13 @@ def building(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -49,91 +49,91 @@ def choice_build(request):
                       "mass", "power_consumption")
 
         if request.POST.get('housing_unit') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=10).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=10).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=10)
         if request.POST.get('mine') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=11).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=11).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=11)
         if request.POST.get('energy_unit') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=12).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=12).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=12)
         if request.POST.get('infrastructure') is not None:
-            building_patterns = Building_pattern.objects.filter(user=session_user).order_by('production_class',
+            building_patterns = BuildingPattern.objects.filter(user=session_user).order_by('production_class',
                                                                                             'production_id')
             attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                           "cost_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size",
                           "mass", "power_consumption", "max_warehouse")
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=13)
         if request.POST.get('hull') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=1).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=1).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=1)
         if request.POST.get('armor') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=2).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=2).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=2)
         if request.POST.get('shield') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=3).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=3).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=3)
         if request.POST.get('engine') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=4).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=4).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=4)
         if request.POST.get('generator') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=5).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=5).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=5)
         if request.POST.get('weapon') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=6).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=6).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=6)
         if request.POST.get('shell') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=7, ).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=7, ).order_by(
                 'production_class', 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=7)
         if request.POST.get('module') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=8).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=8).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=8)
         if request.POST.get('device') is not None:
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=9).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=9).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=9)
 
         if request.POST.get('fuel') is not None:
             user = session_user
             prod = 14
 
-            factory_patterns = Factory_pattern.objects.filter(user=session_user, production_class=14).order_by(
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=14).order_by(
                 'production_id')
-            warehouse_elements = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city,
+            warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=14)
 
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -185,13 +185,13 @@ def working(request):
             class_id = request.POST.get('hidden_class')
             message = build_function.install_factory_unit(session_user, session_user_city, pattern_id, class_id)
 
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -209,9 +209,9 @@ def create_complex(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         name = request.POST.get('complex_name')
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complex = Manufacturing_complex(
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        manufacturing_complex = ManufacturingComplex(
             user=session_user,
             user_city=session_user_city,
             name=name,
@@ -221,17 +221,17 @@ def create_complex(request):
         message = 'Комплекс создано'
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
-        factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
+        factory_installeds = FactoryInstalled.objects.filter(user=session_user, complex_status=0).order_by(
             'production_class', 'production_id')
-        complex_factorys = Factory_installed.objects.filter(user=session_user, complex_status=1,
+        complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_id')
-        warehouse_complexs = Warehouse_complex.objects.filter(id_complex=complex_id).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
-        user_city = User_city.objects.filter(user=session_user).first()
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        basic_resources = BasicResource.objects.filter()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -253,20 +253,20 @@ def management_complex(request):
         function.check_all_queues(session_user)
         complex_id = request.POST.get('complex_id')
         message = ''
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        factory_installeds = FactoryInstalled.objects.filter(user=session_user, complex_status=0).order_by(
             'production_class', 'production_id')
-        complex_factorys = Factory_installed.objects.filter(user=session_user, complex_status=1,
+        complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_id')
-        warehouse_complexs = Warehouse_complex.objects.filter(id_complex=complex_id).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -288,30 +288,30 @@ def add_in_complex(request):
         function.check_all_queues(session_user)
         complex_id = request.POST.get('complex_id')
         installed_factory_id = request.POST.get('factory_id')
-        complex_factory = Factory_installed.objects.filter(id=installed_factory_id).first()
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
+        complex_factory = FactoryInstalled.objects.filter(id=installed_factory_id).first()
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
         if complex_factory.user_city == manufacturing_complex.user_city:
-            complex_factory = Factory_installed.objects.filter(id=installed_factory_id).update(complex_status=1,
+            complex_factory = FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=1,
                                                                                                complex_id=complex_id)
             message = 'Производство добавлено в комплекс'
         else:
             message = 'Производство в комплекс не добавлено. Местоположение неверное'
 
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        factory_installeds = FactoryInstalled.objects.filter(user=session_user, complex_status=0).order_by(
             'production_class', 'production_id')
-        complex_factorys = Factory_installed.objects.filter(user=session_user, complex_status=1,
+        complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = Warehouse_complex.objects.filter(id_complex=complex_id).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -333,29 +333,29 @@ def remove_from_complex(request):
         function.check_all_queues(session_user)
         complex_id = request.POST.get('complex_id')
         installed_factory_id = request.POST.get('factory_id')
-        turn_production = Turn_complex_production.objects.filter(complex_id=complex_id,
+        turn_production = TurnComplexProduction.objects.filter(complex_id=complex_id,
                                                                  factory_id=installed_factory_id).first()
         if turn_production:
             message = 'Исключение невозможно. Идет производство'
         else:
-            complex_factory = Factory_installed.objects.filter(id=installed_factory_id).update(complex_status=0,
+            complex_factory = FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=0,
                                                                                                complex_id=0)
             message = 'Производство добавлено в комплекс'
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        factory_installeds = FactoryInstalled.objects.filter(user=session_user, complex_status=0).order_by(
             'production_class', 'production_id')
-        complex_factorys = Factory_installed.objects.filter(user=session_user, complex_status=1,
+        complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = Warehouse_complex.objects.filter(id_complex=complex_id).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -383,24 +383,24 @@ def percent_extraction(request):
         verification_func.verification_of_resources(session_user)
         complex_id = request.POST.get('complex_id')
         new_percent = request.POST.get('percent_extraction')
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).update(
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).update(
             extraction_parametr=new_percent)
         message = ''
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        factory_installeds = FactoryInstalled.objects.filter(user=session_user, complex_status=0).order_by(
             'production_class', 'production_id')
-        complex_factorys = Factory_installed.objects.filter(user=session_user, complex_status=1,
+        complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = Warehouse_complex.objects.filter(id_complex=complex_id).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
@@ -429,15 +429,15 @@ def complex_warehouse(request):
             new_amount = int(warehouse.amount) - int(resource_amount)
             warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                  id_resource=warehouse_resource).update(amount=new_amount)
-            warehouse_complex = Warehouse_complex.objects.filter(id_complex=complex_id,
+            warehouse_complex = WarehouseComplex.objects.filter(id_complex=complex_id,
                                                                  id_resource=warehouse_resource).first()
             if warehouse_complex:
                 new_amount = int(warehouse_complex.amount) + int(resource_amount)
-                warehouse_complex = Warehouse_complex.objects.filter(id_complex=complex_id,
+                warehouse_complex = WarehouseComplex.objects.filter(id_complex=complex_id,
                                                                      id_resource=warehouse_resource).update(
                     amount=new_amount)
             else:
-                warehouse_complex = Warehouse_complex(
+                warehouse_complex = WarehouseComplex(
                     id_complex=complex_id,
                     id_resource=warehouse_resource,
                     amount=int(resource_amount)
@@ -446,21 +446,21 @@ def complex_warehouse(request):
             message = 'Ресурсы переданы комплексу'
         else:
             message = 'Нехватает ресурсов на основном складе'
-        turn_assembly_piecess = Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city)
-        turn_buildings = Turn_building.objects.filter(user=session_user, user_city=session_user_city)
-        factory_installeds = Factory_installed.objects.filter(user=session_user, complex_status=0).order_by(
+        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        factory_installeds = FactoryInstalled.objects.filter(user=session_user, complex_status=0).order_by(
             'production_class', 'production_id')
-        complex_factorys = Factory_installed.objects.filter(user=session_user, complex_status=1,
+        complex_factorys = FactoryInstalled.objects.filter(user=session_user, complex_status=1,
                                                             complex_id=complex_id).order_by('production_class',
                                                                                             'production_id')
-        warehouse_complexs = Warehouse_complex.objects.filter(id_complex=complex_id).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
+        warehouse_complexs = WarehouseComplex.objects.filter(id_complex=complex_id).order_by('id_resource')
+        basic_resources = BasicResource.objects.filter()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
-        manufacturing_complex = Manufacturing_complex.objects.filter(id=complex_id).first()
-        user_city = User_city.objects.filter(user=session_user).first()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

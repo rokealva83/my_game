@@ -3,12 +3,12 @@
 from datetime import timedelta
 from django.utils import timezone
 import math
-from my_game.models import Planet, Warehouse, Warehouse_element, Warehouse_factory, Warehouse_ship
-from my_game.models import System, Asteroid_field, Flightplan_scan, Fleet_parametr_resource_extraction
-from my_game.models import Fleet, Fuel_pattern, Fuel_tank, Armor_pattern, Shield_pattern, Weapon_pattern, \
-    Engine_pattern, Generator_pattern, Shell_pattern, Module_pattern, Device_pattern
-from my_game.models import Flightplan, Flightplan_flight, Fleet_parametr_scan, Flightplan_production, Flightplan_hold
-from my_game.models import Mail, Hold, Ship, Project_ship, Hull_pattern, User_city, Factory_pattern
+from my_game.models import Planet, Warehouse, WarehouseElement, WarehouseFactory, WarehouseShip
+from my_game.models import System, AsteroidField, FlightplanScan, FleetParametrResourceExtraction
+from my_game.models import Fleet, FuelPattern, FuelTank, ArmorPattern, ShieldPattern, WeaponPattern, \
+    EnginePattern, GeneratorPattern, ShellPattern, ModulePattern, DevicePattern
+from my_game.models import Flightplan, FlightplanFlight, FleetParametrScan, FlightplanProduction, FlightplanHold
+from my_game.models import Mail, Hold, Ship, ProjectShip, HullPattern, UserCity, FactoryPattern
 from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
     start_repair_build, start_scaning, start_unload_hold, start_upload_hold
 from my_game.flightplan.veryfication.flight_verification import verification_flight

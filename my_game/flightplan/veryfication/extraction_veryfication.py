@@ -2,9 +2,9 @@
 
 from datetime import timedelta
 from django.utils import timezone
-from my_game.models import Asteroid_field, Fleet_parametr_resource_extraction
+from my_game.models import AsteroidField, FleetParametrResourceExtraction
 from my_game.models import Fleet, Ship
-from my_game.models import Flightplan, Flightplan_production, Hold
+from my_game.models import Flightplan, FlightplanProduction, Hold
 from my_game.flightplan.fuel import need_fuel_process, minus_fuel
 
 
@@ -12,7 +12,7 @@ from my_game.flightplan.fuel import need_fuel_process, minus_fuel
 def extraction_veryfication(*args):
     fleet = args[0]
     flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
-    flightplan_extraction = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).first()
+    flightplan_extraction = FlightplanProduction.objects.filter(id_fleetplan=flightplan.id).first()
     if flightplan_extraction:
 
         time = timezone.now()
@@ -28,7 +28,7 @@ def extraction_veryfication(*args):
             finish = new_delta - time_extraction
             finish_time = time - timedelta(seconds=finish)
 
-        fleet_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+        fleet_resource_extraction = FleetParametrResourceExtraction.objects.filter(
             fleet_id=fleet.id).first()
         extract_per_second = int(fleet_resource_extraction.extraction_per_minute) / 60
         extraction = delta * extract_per_second
@@ -36,16 +36,16 @@ def extraction_veryfication(*args):
         y = fleet.y
         z = fleet.z
 
-        asteroid_field = Asteroid_field.objects.filter(x=x, y=y, z=z).first()
+        asteroid_field = AsteroidField.objects.filter(x=x, y=y, z=z).first()
         if asteroid_field:
             if extraction > fleet.empty_hold:
                 extraction = fleet.empty_hold
                 if extraction > asteroid_field.size:
                     extraction = asteroid_field.size
-                    asteroid_field = Asteroid_field.objects.filter(x=x, y=y, z=z).delete()
+                    asteroid_field = AsteroidField.objects.filter(x=x, y=y, z=z).delete()
                 else:
                     new_size = asteroid_field.size - extraction
-                    asteroid_field = Asteroid_field.objects.filter(x=x, y=y, z=z).update(size=new_size)
+                    asteroid_field = AsteroidField.objects.filter(x=x, y=y, z=z).update(size=new_size)
 
             resource1 = extraction * asteroid_field.koef_res_1
             resource2 = extraction * asteroid_field.koef_res_2
@@ -82,11 +82,11 @@ def extraction_veryfication(*args):
                                                                 empty_hold=new_empty_hold)
             new_time = flightplan_extraction.time_extraction - delta
             if new_time > 0:
-                flightplan_extraction = Flightplan_production.objects.filter(id_fleetplan=flightplan.id).update(
+                flightplan_extraction = FlightplanProduction.objects.filter(id_fleetplan=flightplan.id).update(
                     start_time=time, time_extraction=new_time)
             else:
                 flightplan_del = Flightplan.objects.filter(id=flightplan.id).delete()
-                flightplan_extraction_del = Flightplan_production.objects.filter(id=flightplan_extraction.id).delete()
+                flightplan_extraction_del = FlightplanProduction.objects.filter(id=flightplan_extraction.id).delete()
 
             ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet.id)
             need_fuel = need_fuel_process(ship_in_fleets, flightplan, delta, fleet.id)

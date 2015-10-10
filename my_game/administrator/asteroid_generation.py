@@ -3,7 +3,7 @@
 
 import random
 from django.shortcuts import render
-from my_game.models import System, Asteroid_field
+from my_game.models import System, AsteroidField
 
 # функция генерации астероидных полей
 def asteroid_generation(request):
@@ -73,7 +73,7 @@ def asteroid_generation(request):
             koef_min_3 = round(round(random.uniform(0.2, 0.3), 3) * mineral_koef, 3)
             koef_min_4 = round(mineral_koef - (koef_min_1 + koef_min_2 + koef_min_3), 3)
 
-            asteroid_test = Asteroid_field.objects.filter(x=x, y=y, z=z).first()
+            asteroid_test = AsteroidField.objects.filter(x=x, y=y, z=z).first()
 
             if asteroid_test:
                 size = asteroid_test.size
@@ -86,7 +86,7 @@ def asteroid_generation(request):
                 koef_min_3 = asteroid_test.koef_min_3
                 koef_min_4 = asteroid_test.koef_min_4
 
-                asteroid = Asteroid_field(
+                asteroid = AsteroidField(
                     x=x,
                     y=y,
                     z=z,
@@ -103,7 +103,7 @@ def asteroid_generation(request):
                 )
                 asteroid.save()
             else:
-                asteroid = Asteroid_field(
+                asteroid = AsteroidField(
                     x=x,
                     y=y,
                     z=z,

@@ -2,15 +2,15 @@
 
 import math
 from my_game.models import System, Planet
-from my_game.models import Project_ship, Ship, Fleet, Fleet_engine
-from my_game.models import Flightplan, Flightplan_flight
+from my_game.models import ProjectShip, Ship, Fleet, FleetEngine
+from my_game.models import Flightplan, FlightplanFlight
 
 
 def flight_system(*args):
     session_user = args[0]
     request = args[2]
     fleet_id = int(request.POST.get('hidden_fleet'))
-    fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
+    fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
     fleet = Fleet.objects.filter(id=fleet_id).first()
     city = request.POST.get('city')
     coordinate = request.POST.get('coordinate')
@@ -25,7 +25,7 @@ def flight_system(*args):
         if target_planet:
             system = System.objects.filter(id=fleet.system).first()
 
-            flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
+            flightplan_flight = FlightplanFlight.objects.filter(id_fleet=fleet_id).last()
 
             if flightplan_flight:
                 xx1 = flightplan_flight.finish_x
@@ -54,7 +54,7 @@ def flight_system(*args):
             if fleet.system != 0:
                 system = System.objects.filter(id=fleet.system).first()
             else:
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
+                flightplan_flight = FlightplanFlight.objects.filter(id_fleet=fleet_id).last()
                 if flightplan_flight:
                     system = flightplan_flight.system
 
@@ -86,7 +86,7 @@ def flight_system(*args):
             )
             flightplan.save()
             id_fleetplan = flightplan.pk
-            flightplan_flight = Flightplan_flight(
+            flightplan_flight = FlightplanFlight(
                 user=session_user,
                 id_fleet=fleet_id,
                 id_fleetplan=id_fleetplan,
@@ -113,7 +113,7 @@ def flight_system(*args):
         coordinate_giper = request.POST.get('coordinate_giper')
         coordinate_null = request.POST.get('coordinate_null')
         fleet = Fleet.objects.filter(id=fleet_id).first()
-        flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).last()
+        flightplan_flight = FlightplanFlight.objects.filter(id_fleet=fleet_id).last()
 
         if flightplan_flight:
             xx1 = flightplan_flight.finish_x
@@ -156,7 +156,7 @@ def flight_system(*args):
         flightplan.save()
 
         id_fleetplan = flightplan.pk
-        flightplan_flight = Flightplan_flight(
+        flightplan_flight = FlightplanFlight(
             user=session_user,
             id_fleet=fleet_id,
             id_fleetplan=id_fleetplan,
@@ -183,12 +183,12 @@ def calculation(*args):
     coordinate_null = args[2]
     distance = args[3]
     fleet = Fleet.objects.filter(id=fleet_id).first()
-    fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
+    fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
     if coordinate_giper:
         fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
         check = 0
         for fleet_ship in fleet_ships:
-            project_ship = Project_ship.objects.filter(id=fleet_ship.id_project_ship).first()
+            project_ship = ProjectShip.objects.filter(id=fleet_ship.id_project_ship).first()
             if project_ship.giper_power == 0:
                 check = 1
         if check == 0:
@@ -203,7 +203,7 @@ def calculation(*args):
         fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
         check = 0
         for fleet_ship in fleet_ships:
-            project_ship = Project_ship.objects.filter(id=fleet_ship.id_project_ship).first()
+            project_ship = ProjectShip.objects.filter(id=fleet_ship.id_project_ship).first()
             if project_ship.giper_power == 0:
                 check = 1
         if check == 0:

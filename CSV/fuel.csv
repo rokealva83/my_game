@@ -1,0 +1,4 @@
+id,name,description,mass,size,efficiency,fuel_class,price_internal_currency,price_resource1,price_resource2,price_resource3,price_resource4,price_mineral1,price_mineral2,price_mineral3,price_mineral4,fuel_id
+1,"fuel 1","fuel 1",10,10,10,1,10,10,10,10,10,10,10,10,10,1
+2,"fuel 2","fuel 2",20,20,20,2,20,20,20,20,20,20,20,20,20,2
+3,"fuel 3","fuel 3",30,30,30,3,30,30,30,30,30,30,30,30,30,3

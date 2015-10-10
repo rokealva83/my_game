@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse
-from my_game.models import Manufacturing_complex, Turn_complex_production
-from my_game.models import Hull_pattern, Armor_pattern, Shield_pattern, Engine_pattern, Generator_pattern, \
-    Weapon_pattern, Shell_pattern, Module_pattern, Fuel_pattern, Device_pattern
-from my_game.models import Factory_installed
+from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import ManufacturingComplex, TurnComplexProduction
+from my_game.models import HullPattern, ArmorPattern, ShieldPattern, EnginePattern, GeneratorPattern, \
+    WeaponPattern, ShellPattern, ModulePattern, FuelPattern, DevicePattern
+from my_game.models import FactoryInstalled
 from my_game.factory import factory_function
 from my_game.building import assembly_line_workpieces
 from my_game import verification_func
@@ -24,27 +24,27 @@ def complex_production(request):
         complex_id = request.GET.get('complex_id')
         verification_func.verification_of_resources(session_user)
         message = factory_function.complex_production_module(complex_id, factory_id, element_id, 0)
-        factory_installeds = Factory_installed.objects.filter(user=session_user, user_city=session_user_city,
+        factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                               complex_status=0).order_by('production_class',
                                                                                          'production_id')
-        complex_factorys = Factory_installed.objects.filter(complex_id=complex_id).order_by('production_class')
-        hull_patterns = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        armor_patterns = Armor_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        shield_patterns = Shield_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        engine_patterns = Engine_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        generator_patterns = Generator_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        weapon_patterns = Weapon_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        shell_patterns = Shell_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        module_patterns = Module_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        device_patterns = Device_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        fuel_patterns = Fuel_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        complex_factorys = FactoryInstalled.objects.filter(complex_id=complex_id).order_by('production_class')
+        hull_patterns = HullPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        armor_patterns = ArmorPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        shield_patterns = ShieldPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        engine_patterns = EnginePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        shell_patterns = ShellPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        module_patterns = ModulePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        device_patterns = DevicePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        fuel_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
-        turn_complex_productions = Turn_complex_production.objects.filter(complex_id=complex_id)
-        manufacturing_complexs = Manufacturing_complex.objects.filter(user=session_user, user_city=session_user_city)
+        turn_complex_productions = TurnComplexProduction.objects.filter(complex_id=complex_id)
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

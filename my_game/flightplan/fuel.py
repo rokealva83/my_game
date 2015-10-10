@@ -3,11 +3,11 @@
 
 from my_game.flightplan.create.flight import calculation
 import math
-from my_game.models import Fleet_energy_power
-from my_game.models import Flightplan_flight
-from my_game.models import Fleet_engine
-from my_game.models import Ship, Element_ship, Module_pattern, Hull_pattern, Project_ship
-from my_game.models import Fleet, Fuel_pattern, Fuel_tank
+from my_game.models import FleetEnergyPower
+from my_game.models import FlightplanFlight
+from my_game.models import FleetEngine
+from my_game.models import Ship, ElementShip, ModulePattern, HullPattern, ProjectShip
+from my_game.models import Fleet, FuelPattern, FuelTank
 
 
 def fuel(*args):
@@ -15,8 +15,8 @@ def fuel(*args):
     flightplan_flight = args[1]
     fleet = args[2]
 
-    fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
-    fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).first()
+    fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
+    fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).first()
 
     x1 = int(flightplan_flight.start_x)
     y1 = int(flightplan_flight.start_y)
@@ -52,13 +52,13 @@ def fuel(*args):
         flight_time = int(answer['flight_time'])
 
     if flightplan_flight.flight_time != flight_time:
-        new_time = Flightplan_flight.objects.filter(id=flightplan_flight.pk).update(flight_time=flight_time)
+        new_time = FlightplanFlight.objects.filter(id=flightplan_flight.pk).update(flight_time=flight_time)
 
     ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet_id)
     hull_energy = 0
     for ship in ship_in_fleets:
-        project = Project_ship.objects.filter(id=ship.id_project_ship).first()
-        hull = Hull_pattern.objects.filter(id=project.hull_id).first()
+        project = ProjectShip.objects.filter(id=ship.id_project_ship).first()
+        hull = HullPattern.objects.filter(id=project.hull_id).first()
         hull_energy = hull_energy + hull.power_consuption * ship.amount_ship
 
     need_energy = need_energy + hull_energy
@@ -93,17 +93,17 @@ def need_fuel_process(*args):
     flightplan = args[1]
     time_process = args[2]
     fleet_id = args[3]
-    fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).first()
+    fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).first()
     find = 0
     hull_energy = 0
     need_energy = 0
 
     for ship in ship_in_fleets:
         if flightplan.class_command == 3:
-            element_ships = Element_ship.objects.filter(id_project_ship=ship.id_project_ship)
+            element_ships = ElementShip.objects.filter(id_project_ship=ship.id_project_ship)
             for element_ship in element_ships:
                 if element_ship.class_element == 8:
-                    element_pattern = Module_pattern.objects.filter(id=element_ship.id_element_pattern).first()
+                    element_pattern = ModulePattern.objects.filter(id=element_ship.id_element_pattern).first()
 
                     if flightplan.class_command == 3:
                         if element_pattern.module_class == 3:
@@ -114,8 +114,8 @@ def need_fuel_process(*args):
                             find = 1
                         need_energy = element_pattern.power_consuption
 
-        project = Project_ship.objects.filter(id=ship.id_project_ship).first()
-        hull = Hull_pattern.objects.filter(id=project.hull_id).first()
+        project = ProjectShip.objects.filter(id=ship.id_project_ship).first()
+        hull = HullPattern.objects.filter(id=project.hull_id).first()
         hull_energy = hull_energy + hull.power_consuption * ship.amount_ship
         if flightplan.class_command != 6:
             need_energy = need_energy * ship.amount_ship
@@ -131,8 +131,8 @@ def minus_fuel(*args):
     fleet = args[0]
     need_fuel = args[1]
 
-    fuel_tank = Fuel_tank.objects.filter(fleet_id=fleet.id).first()
-    fuel_pattern = Fuel_pattern.objects.filter(user=fleet.user, fuel_class=fuel_tank.fuel_class).first()
+    fuel_tank = FuelTank.objects.filter(fleet_id=fleet.id).first()
+    fuel_pattern = FuelPattern.objects.filter(user=fleet.user, fuel_class=fuel_tank.fuel_class).first()
 
     need_fuel = need_fuel / fuel_pattern.efficiency
 
@@ -142,7 +142,7 @@ def minus_fuel(*args):
     new_fleet_tank = int(fleet.free_fuel_tank + need_fuel)
     new_fleet_mass = int(fleet.ship_empty_mass - need_fuel * fuel_pattern.mass)
 
-    fuel_tank = Fuel_tank.objects.filter(id=fuel_tank.id, fleet_id=fleet.id).update(amount_fuel=new_fuel,
+    fuel_tank = FuelTank.objects.filter(id=fuel_tank.id, fleet_id=fleet.id).update(amount_fuel=new_fuel,
                                                                                     mass_fuel=new_mass,
                                                                                     size_fuel=new_size)
     fleet_up = Fleet.objects.filter(id=fleet.id).update(free_fuel_tank=new_fleet_tank,

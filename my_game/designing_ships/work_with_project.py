@@ -2,11 +2,11 @@
 
 from datetime import datetime, timedelta
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse
-from my_game.models import Warehouse_element
+from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import WarehouseElement
 from my_game import function
-from my_game.models import Project_ship, Element_ship, Turn_ship_build
-from my_game.models import Hull_pattern
+from my_game.models import ProjectShip, ElementShip, TurnShipBuild
+from my_game.models import HullPattern
 
 
 def work_with_project(request):
@@ -20,16 +20,16 @@ def work_with_project(request):
         if request.POST.get('create_ship'):
             ship_id = int(request.POST.get('hidden_ship'))
             amount_ship = int(request.POST.get('amount'))
-            len_turn_create_ship = len(Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city))
+            len_turn_create_ship = len(TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city))
             if len_turn_create_ship < 5:
-                ship_pattern = Project_ship.objects.filter(id=ship_id).first()
-                warehouse_hull = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city,
+                ship_pattern = ProjectShip.objects.filter(id=ship_id).first()
+                warehouse_hull = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city,
                                                                   element_class=1,
                                                                   element_id=ship_pattern.hull_id).first()
                 if warehouse_hull is not None and warehouse_hull.amount >= amount_ship:
                     error = 0
                     for i in range(2, 9):
-                        element_ships = Element_ship.objects.filter(id_project_ship=ship_id, class_element=i).order_by(
+                        element_ships = ElementShip.objects.filter(id_project_ship=ship_id, class_element=i).order_by(
                             'id_element_pattern')
                         work_element_id = 0
                         if element_ships:
@@ -37,13 +37,13 @@ def work_with_project(request):
                                 id_element = element_ship.id_element_pattern
                                 if id_element != work_element_id:
                                     number_element = len(
-                                        Element_ship.objects.filter(id_project_ship=ship_id, class_element=i,
+                                        ElementShip.objects.filter(id_project_ship=ship_id, class_element=i,
                                                                     id_element_pattern=id_element))
                                     j = i
                                     if i == 7:
                                         j = 6
 
-                                    warehouse_element = Warehouse_element.objects.filter(user=session_user,
+                                    warehouse_element = WarehouseElement.objects.filter(user=session_user,
                                                                                          user_city=session_user_city,
                                                                                          element_class=j,
                                                                                          element_id=id_element).first()
@@ -52,16 +52,16 @@ def work_with_project(request):
                                     work_element_id = id_element
 
                     if error == 0:
-                        last_ship_build = Turn_ship_build.objects.filter(user=session_user,
+                        last_ship_build = TurnShipBuild.objects.filter(user=session_user,
                                                                          user_city=session_user_city).last()
                         if last_ship_build is not None:
                             start_time = last_ship_build.finish_time_build
                         else:
                             start_time = datetime.now()
 
-                        ship_pattern = Project_ship.objects.filter(id=ship_id).first()
+                        ship_pattern = ProjectShip.objects.filter(id=ship_id).first()
                         finish_time = start_time + timedelta(seconds=(ship_pattern.time_build * amount_ship))
-                        turn_create_ship = Turn_ship_build(
+                        turn_create_ship = TurnShipBuild(
                             user=session_user,
                             user_city=session_user_city,
                             ship_pattern=ship_id,
@@ -71,16 +71,16 @@ def work_with_project(request):
                             process_id=1
                         )
                         turn_create_ship.save()
-                        warehouse_hull = Warehouse_element.objects.filter(user=session_user,
+                        warehouse_hull = WarehouseElement.objects.filter(user=session_user,
                                                                           user_city=session_user_city, element_class=1,
                                                                           element_id=ship_pattern.hull_id).first()
                         new_amount = warehouse_hull.amount - amount_ship
-                        warehouse_hull = Warehouse_element.objects.filter(user=session_user,
+                        warehouse_hull = WarehouseElement.objects.filter(user=session_user,
                                                                           user_city=session_user_city, element_class=1,
                                                                           element_id=ship_pattern.hull_id).update(
                             amount=new_amount)
 
-                        element_ships = Element_ship.objects.filter(id_project_ship=ship_id).order_by('class_element')
+                        element_ships = ElementShip.objects.filter(id_project_ship=ship_id).order_by('class_element')
                         for element_ship in element_ships:
                             if element_ship.class_element != 7:
                                 class_element = element_ship.class_element
@@ -93,12 +93,12 @@ def work_with_project(request):
                             element_class = int(class_element)
                             element_id = int(id_element)
 
-                            warehouse_element = Warehouse_element.objects.filter(user=session_user,
+                            warehouse_element = WarehouseElement.objects.filter(user=session_user,
                                                                                  user_city=session_user_city,
                                                                                  element_class=class_element,
                                                                                  element_id=id_element).first()
                             new_amount = warehouse_element.amount - amount_ship
-                            warehouse_element = Warehouse_element.objects.filter(user=session_user,
+                            warehouse_element = WarehouseElement.objects.filter(user=session_user,
                                                                                  user_city=session_user_city,
                                                                                  element_class=class_element,
                                                                                  element_id=id_element).update(
@@ -115,17 +115,17 @@ def work_with_project(request):
 
         if request.POST.get('delete_pattern'):
             ship_id = request.POST.get('hidden_ship')
-            delete_ship_pattern = Project_ship.objects.filter(id=ship_id).delete()
-            delete_ship_element = Element_ship.objects.filter(id_project_ship=ship_id).all().delete()
+            delete_ship_pattern = ProjectShip.objects.filter(id=ship_id).delete()
+            delete_ship_element = ElementShip.objects.filter(id_project_ship=ship_id).all().delete()
             message = 'Проект удален'
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
-        hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
-        turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
+        user_citys = UserCity.objects.filter(user=int(session_user))
+        hulls = HullPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
+        turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

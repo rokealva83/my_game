@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse
-from my_game.models import Hull_pattern
+from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import HullPattern
 from my_game import function
-from my_game.models import Project_ship, Turn_ship_build
+from my_game.models import ProjectShip, TurnShipBuild
 
 
 def designingships(request):
@@ -15,12 +15,12 @@ def designingships(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
-        hulls = Hull_pattern.objects.filter(user=session_user).order_by('basic_id', 'id')
-        project_ships = Project_ship.objects.filter(user=session_user).order_by('id')
-        turn_ship_builds = Turn_ship_build.objects.filter(user=session_user, user_city=session_user_city)
+        user_citys = UserCity.objects.filter(user=int(session_user))
+        hulls = HullPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
+        turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

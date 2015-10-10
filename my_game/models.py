@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class MyUser(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'my_user'
         verbose_name = u'Пользователь'
         verbose_name_plural = u'Пользователи'
@@ -33,7 +33,7 @@ class MyUser(models.Model):
 
 
 class Galaxy(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'galaxy'
 
     x = models.IntegerField()
@@ -42,7 +42,7 @@ class Galaxy(models.Model):
 
 
 class System(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'system'
 
     galaxy = models.ForeignKey(Galaxy)
@@ -55,7 +55,7 @@ class System(models.Model):
 
 
 class Planet(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'planet'
 
     system = models.ForeignKey(System)
@@ -80,8 +80,8 @@ class Planet(models.Model):
         return self.planet_name
 
 
-class Planet_type(models.Model):
-    class Meta():
+class PlanetType(models.Model):
+    class Meta:
         db_table = 'planet_type'
 
     description = models.CharField(max_length=500)
@@ -90,7 +90,7 @@ class Planet_type(models.Model):
 
 
 class Warehouse(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'warehouse'
 
     user = models.IntegerField(db_index=True)
@@ -99,8 +99,8 @@ class Warehouse(models.Model):
     amount = models.IntegerField(default=125000)
 
 
-class User_city(models.Model):
-    class Meta():
+class UserCity(models.Model):
+    class Meta:
         db_table = 'user_city'
 
     user = models.IntegerField(db_index=True)
@@ -120,7 +120,7 @@ class User_city(models.Model):
 
 
 class Race(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'race'
         verbose_name = u'Раса'
         verbose_name_plural = u'Расы'
@@ -142,14 +142,14 @@ class Race(models.Model):
     image_ig = models.IntegerField()
 
 
-class Basic_scientic(models.Model):
-    class Meta():
+class BasicScientic(models.Model):
+    class Meta:
         db_table = 'basic_scientic'
         verbose_name = u'Базовая наука'
         verbose_name_plural = u'Базовая наука'
 
     scientic_id = models.AutoField(primary_key=True)
-    name = description = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
     description = models.CharField(max_length=4096)
     time_study = models.IntegerField()
     cost_internal_currency = models.IntegerField(default=25)
@@ -166,8 +166,8 @@ class Basic_scientic(models.Model):
         return self.description
 
 
-class Basic_factory(models.Model):
-    class Meta():
+class BasicFactory(models.Model):
+    class Meta:
         db_table = 'basic_factory'
         verbose_name = u'Базовое производство'
         verbose_name_plural = u'Базовые производства'
@@ -197,8 +197,8 @@ class Basic_factory(models.Model):
         return self.name
 
 
-class Basic_hull(models.Model):
-    class Meta():
+class BasicHull(models.Model):
+    class Meta:
         db_table = 'basic_hull'
 
     name = models.CharField(max_length=50)
@@ -239,8 +239,8 @@ class Basic_hull(models.Model):
         return self.name
 
 
-class Basic_engine(models.Model):
-    class Meta():
+class BasicEngine(models.Model):
+    class Meta:
         db_table = 'basic_engine'
 
     name = models.CharField(max_length=50)
@@ -276,8 +276,8 @@ class Basic_engine(models.Model):
         return self.name
 
 
-class Basic_generator(models.Model):
-    class Meta():
+class BasicGenerator(models.Model):
+    class Meta:
         db_table = 'basic_generator'
 
     name = models.CharField(max_length=50)
@@ -310,8 +310,8 @@ class Basic_generator(models.Model):
         return self.name
 
 
-class Basic_shield(models.Model):
-    class Meta():
+class BasicShield(models.Model):
+    class Meta:
         db_table = 'basic_shield'
 
     name = models.CharField(max_length=50)
@@ -347,8 +347,8 @@ class Basic_shield(models.Model):
         return self.name
 
 
-class Basic_weapon(models.Model):
-    class Meta():
+class BasicWeapon(models.Model):
+    class Meta:
         db_table = 'basic_weapon'
 
     name = models.CharField(max_length=50)
@@ -386,8 +386,8 @@ class Basic_weapon(models.Model):
         return self.name
 
 
-class Basic_armor(models.Model):
-    class Meta():
+class BasicArmor(models.Model):
+    class Meta:
         db_table = 'basic_armor'
 
     name = models.CharField(max_length=50)
@@ -421,8 +421,8 @@ class Basic_armor(models.Model):
         return self.name
 
 
-class Basic_shell(models.Model):
-    class Meta():
+class BasicShell(models.Model):
+    class Meta:
         db_table = 'basic_shell'
 
     name = models.CharField(max_length=50)
@@ -454,8 +454,8 @@ class Basic_shell(models.Model):
         return self.name
 
 
-class Basic_module(models.Model):
-    class Meta():
+class BasicModule(models.Model):
+    class Meta:
         db_table = 'basic_module'
 
     name = models.CharField(max_length=50)
@@ -491,8 +491,8 @@ class Basic_module(models.Model):
         return self.name
 
 
-class Basic_fuel(models.Model):
-    class Meta():
+class BasicFuel(models.Model):
+    class Meta:
         db_table = 'basic_fuel'
 
     name = models.CharField(max_length=50)
@@ -516,8 +516,8 @@ class Basic_fuel(models.Model):
         return self.name
 
 
-class Basic_device(models.Model):
-    class Meta():
+class BasicDevice(models.Model):
+    class Meta:
         db_table = 'basic_device'
 
     name = models.CharField(max_length=50)
@@ -553,8 +553,8 @@ class Basic_device(models.Model):
         return self.name
 
 
-class Factory_pattern(models.Model):
-    class Meta():
+class FactoryPattern(models.Model):
+    class Meta:
         db_table = 'factory_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -581,8 +581,8 @@ class Factory_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Hull_pattern(models.Model):
-    class Meta():
+class HullPattern(models.Model):
+    class Meta:
         db_table = 'hull_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -613,8 +613,8 @@ class Hull_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Engine_pattern(models.Model):
-    class Meta():
+class EnginePattern(models.Model):
+    class Meta:
         db_table = 'engine_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -640,8 +640,8 @@ class Engine_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Generator_pattern(models.Model):
-    class Meta():
+class GeneratorPattern(models.Model):
+    class Meta:
         db_table = 'generator_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -664,8 +664,8 @@ class Generator_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Shield_pattern(models.Model):
-    class Meta():
+class ShieldPattern(models.Model):
+    class Meta:
         db_table = 'shield_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -691,8 +691,8 @@ class Shield_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Weapon_pattern(models.Model):
-    class Meta():
+class WeaponPattern(models.Model):
+    class Meta:
         db_table = 'weapon_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -720,8 +720,8 @@ class Weapon_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Armor_pattern(models.Model):
-    class Meta():
+class ArmorPattern(models.Model):
+    class Meta:
         db_table = 'armor_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -745,8 +745,8 @@ class Armor_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Shell_pattern(models.Model):
-    class Meta():
+class ShellPattern(models.Model):
+    class Meta:
         db_table = 'shell_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -768,8 +768,8 @@ class Shell_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Module_pattern(models.Model):
-    class Meta():
+class ModulePattern(models.Model):
+    class Meta:
         db_table = 'module_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -795,8 +795,8 @@ class Module_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Fuel_pattern(models.Model):
-    class Meta():
+class FuelPattern(models.Model):
+    class Meta:
         db_table = 'fuel_pattern'
 
     user = models.IntegerField(db_index=True, default=2)
@@ -821,8 +821,8 @@ class Fuel_pattern(models.Model):
         return self.name
 
 
-class Device_pattern(models.Model):
-    class Meta():
+class DevicePattern(models.Model):
+    class Meta:
         db_table = 'device_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -848,8 +848,8 @@ class Device_pattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class Factory_installed(models.Model):
-    class Meta():
+class FactoryInstalled(models.Model):
+    class Meta:
         db_table = 'factory_installed'
 
     user = models.IntegerField(db_index=True)
@@ -867,8 +867,8 @@ class Factory_installed(models.Model):
     complex_id = models.IntegerField(default=0)
 
 
-class Manufacturing_complex(models.Model):
-    class Meta():
+class ManufacturingComplex(models.Model):
+    class Meta:
         db_table = 'manufacturing_complex'
 
     user = models.IntegerField(db_index=True)
@@ -877,8 +877,8 @@ class Manufacturing_complex(models.Model):
     extraction_parametr = models.IntegerField(default=0)
 
 
-class Warehouse_factory_resource(models.Model):
-    class Meta():
+class WarehouseFactoryResource(models.Model):
+    class Meta:
         db_table = 'warehouse_factory_resource'
 
     id_factory = models.IntegerField(db_index=True)
@@ -886,8 +886,8 @@ class Warehouse_factory_resource(models.Model):
     amount = models.IntegerField()
 
 
-class Warehouse_complex(models.Model):
-    class Meta():
+class WarehouseComplex(models.Model):
+    class Meta:
         db_table = 'warehouse_complex'
 
     id_complex = models.IntegerField(db_index=True)
@@ -895,8 +895,8 @@ class Warehouse_complex(models.Model):
     amount = models.IntegerField()
 
 
-class Warehouse_factory(models.Model):
-    class Meta():
+class WarehouseFactory(models.Model):
+    class Meta:
         db_table = 'warehouse_factory'
 
     user = models.IntegerField(default=5, db_index=True)
@@ -911,8 +911,8 @@ class Warehouse_factory(models.Model):
     power_consumption = models.IntegerField(default=0)
 
 
-class Warehouse_element(models.Model):
-    class Meta():
+class WarehouseElement(models.Model):
+    class Meta:
         db_table = 'warehouse_element'
 
     user = models.IntegerField(default=5, db_index=True)
@@ -922,8 +922,8 @@ class Warehouse_element(models.Model):
     amount = models.IntegerField(default=0)
 
 
-class Warehouse_ship(models.Model):
-    class Meta():
+class WarehouseShip(models.Model):
+    class Meta:
         db_table = 'warehouse_ship'
 
     user = models.IntegerField(default=5, db_index=True)
@@ -932,8 +932,8 @@ class Warehouse_ship(models.Model):
     amount = models.IntegerField(default=0)
 
 
-class User_scientic(models.Model):
-    class Meta():
+class UserScientic(models.Model):
+    class Meta:
         db_table = 'user_scientic'
 
     user = models.IntegerField(db_index=True)
@@ -956,8 +956,8 @@ class User_scientic(models.Model):
     all_scientic = models.IntegerField(default=0)
 
 
-class Turn_building(models.Model):
-    class Meta():
+class TurnBuilding(models.Model):
+    class Meta:
         db_table = 'turn_building'
 
     user = models.IntegerField(db_index=True)
@@ -971,8 +971,8 @@ class Turn_building(models.Model):
     finish_time_deployment = models.DateTimeField()
 
 
-class Turn_scientic(models.Model):
-    class Meta():
+class TurnScientic(models.Model):
+    class Meta:
         db_table = 'turn_scientic'
 
     user = models.IntegerField(db_index=True)
@@ -988,8 +988,8 @@ class Turn_scientic(models.Model):
     finish_time_science = models.DateTimeField()
 
 
-class Turn_production(models.Model):
-    class Meta():
+class TurnProduction(models.Model):
+    class Meta:
         db_table = 'turn_production'
 
     user = models.IntegerField(db_index=True)
@@ -1001,8 +1001,8 @@ class Turn_production(models.Model):
     finish_time_production = models.DateTimeField()
 
 
-class Turn_complex_production(models.Model):
-    class Meta():
+class TurnComplexProduction(models.Model):
+    class Meta:
         db_table = 'turn_complex_production'
 
     complex_id = models.IntegerField(db_index=True)
@@ -1012,8 +1012,8 @@ class Turn_complex_production(models.Model):
     time = models.IntegerField()
 
 
-class Turn_assembly_pieces(models.Model):
-    class Meta():
+class TurnAssemblyPieces(models.Model):
+    class Meta:
         db_table = 'turn_assembly_pieces'
 
     user = models.IntegerField(db_index=True)
@@ -1025,8 +1025,8 @@ class Turn_assembly_pieces(models.Model):
     finish_time_assembly = models.DateTimeField()
 
 
-class Project_ship(models.Model):
-    class Meta():
+class ProjectShip(models.Model):
+    class Meta:
         db_table = 'project_ship'
 
     user = models.IntegerField(db_index=True)
@@ -1049,8 +1049,8 @@ class Project_ship(models.Model):
     mass = models.IntegerField(default=500)
 
 
-class Element_ship(models.Model):
-    class Meta():
+class ElementShip(models.Model):
+    class Meta:
         db_table = 'element_ship'
 
     id_project_ship = models.IntegerField(db_index=True)
@@ -1061,7 +1061,7 @@ class Element_ship(models.Model):
 
 
 class Ship(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'ship'
 
     user = models.IntegerField(db_index=True)
@@ -1072,8 +1072,8 @@ class Ship(models.Model):
     place_id = models.IntegerField()
 
 
-class Damage_ship(models.Model):
-    class Meta():
+class DamageShip(models.Model):
+    class Meta:
         db_table = 'damage_ship'
 
     user = models.IntegerField(db_index=True)
@@ -1081,8 +1081,8 @@ class Damage_ship(models.Model):
     id_project = models.IntegerField()
 
 
-class Damage_element(models.Model):
-    class Meta():
+class DamageElement(models.Model):
+    class Meta:
         db_table = 'damage_element'
 
     id_damage_ship = models.IntegerField(db_index=True)
@@ -1091,7 +1091,7 @@ class Damage_element(models.Model):
 
 
 class Fleet(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'fleet'
 
     user = models.IntegerField(db_index=True)
@@ -1110,8 +1110,8 @@ class Fleet(models.Model):
     free_fuel_tank = models.IntegerField(default=0)
 
 
-class Fleet_engine(models.Model):
-    class Meta():
+class FleetEngine(models.Model):
+    class Meta:
         db_table = 'fleet_engine'
 
     fleet_id = models.IntegerField(db_index=True)
@@ -1124,8 +1124,8 @@ class Fleet_engine(models.Model):
     maneuverability = models.FloatField(default=0)
 
 
-class Fleet_energy_power(models.Model):
-    class Meta():
+class FleetEnergyPower(models.Model):
+    class Meta:
         db_table = 'fleet_energy_power'
 
     fleet_id = models.IntegerField(db_index=True)
@@ -1138,8 +1138,8 @@ class Fleet_energy_power(models.Model):
     use_fuel_generator = models.IntegerField(default=0)
 
 
-class Fleet_parametr_scan(models.Model):
-    class Meta():
+class FleetParametrScan(models.Model):
+    class Meta:
         db_table = 'fleet_parametr_scan'
 
     fleet_id = models.IntegerField(db_index=True)
@@ -1148,16 +1148,16 @@ class Fleet_parametr_scan(models.Model):
     range_scanning = models.IntegerField(default=0)
 
 
-class Fleet_parametr_resource_extraction(models.Model):
-    class Meta():
+class FleetParametrResourceExtraction(models.Model):
+    class Meta:
         db_table = 'fleet_parametr_resource_extraction'
 
     fleet_id = models.IntegerField()
     extraction_per_minute = models.IntegerField(default=0)
 
 
-class Fleet_parametr_build_repair(models.Model):
-    class Meta():
+class FleetParametrBuildRepair(models.Model):
+    class Meta:
         db_table = 'fleet_parametr_build_repair'
 
     fleet_id = models.IntegerField()
@@ -1166,7 +1166,7 @@ class Fleet_parametr_build_repair(models.Model):
 
 
 class Hold(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'hold'
 
     fleet_id = models.IntegerField(db_index=True)
@@ -1177,8 +1177,8 @@ class Hold(models.Model):
     size_shipment = models.IntegerField()
 
 
-class Fuel_tank(models.Model):
-    class Meta():
+class FuelTank(models.Model):
+    class Meta:
         db_table = 'fuel_tank'
 
     fleet_id = models.IntegerField(db_index=True)
@@ -1189,8 +1189,8 @@ class Fuel_tank(models.Model):
     size_fuel = models.IntegerField()
 
 
-class Turn_ship_build(models.Model):
-    class Meta():
+class TurnShipBuild(models.Model):
+    class Meta:
         db_table = 'turn_ship_build'
 
     user = models.IntegerField(db_index=True)
@@ -1202,8 +1202,8 @@ class Turn_ship_build(models.Model):
     finish_time_build = models.DateTimeField()
 
 
-class User_variables(models.Model):
-    class Meta():
+class UserVariables(models.Model):
+    class Meta:
         db_table = 'user_variables'
 
     registr_internal_currency = models.IntegerField()
@@ -1235,7 +1235,7 @@ class User_variables(models.Model):
 
 
 class Flightplan(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'flightplan'
 
     user = models.IntegerField(db_index=True)
@@ -1245,8 +1245,8 @@ class Flightplan(models.Model):
     status = models.IntegerField()
 
 
-class Flightplan_flight(models.Model):
-    class Meta():
+class FlightplanFlight(models.Model):
+    class Meta:
         db_table = 'flightplan_flight'
 
     user = models.IntegerField(db_index=True)
@@ -1266,8 +1266,8 @@ class Flightplan_flight(models.Model):
     planet = models.IntegerField(default=0)
 
 
-class Flightplan_hold(models.Model):
-    class Meta():
+class FlightplanHold(models.Model):
+    class Meta:
         db_table = 'flightplan_hold'
 
     user = models.IntegerField(db_index=True)
@@ -1282,8 +1282,8 @@ class Flightplan_hold(models.Model):
     name = models.CharField(max_length=50, default='')
 
 
-class Flightplan_production(models.Model):
-    class Meta():
+class FlightplanProduction(models.Model):
+    class Meta:
         db_table = 'flightplan_production'
 
     user = models.IntegerField(db_index=True)
@@ -1295,8 +1295,8 @@ class Flightplan_production(models.Model):
     time_extraction = models.IntegerField(default=0)
 
 
-class Flightplan_refill(models.Model):
-    class Meta():
+class FlightplanRefill(models.Model):
+    class Meta:
         db_table = 'flightplan_refill'
 
     user = models.IntegerField(db_index=True)
@@ -1313,8 +1313,8 @@ class Flightplan_refill(models.Model):
     name = models.CharField(max_length=50, default='')
 
 
-class Flightplan_build_repair(models.Model):
-    class Meta():
+class FlightplanBuildRepair(models.Model):
+    class Meta:
         db_table = 'flightplan_build_repair'
 
     id_fleet = models.IntegerField(db_index=True)
@@ -1325,8 +1325,8 @@ class Flightplan_build_repair(models.Model):
     time = models.IntegerField(default=0)
 
 
-class Flightplan_scan(models.Model):
-    class Meta():
+class FlightplanScan(models.Model):
+    class Meta:
         db_table = 'flightplan_scan'
 
     user = models.IntegerField(db_index=True)
@@ -1338,8 +1338,8 @@ class Flightplan_scan(models.Model):
     time_scanning = models.IntegerField(default=0)
 
 
-class Flightplan_colonization(models.Model):
-    class Meta():
+class FlightplanColonization(models.Model):
+    class Meta:
         db_table = 'flightplan_colonization'
 
     id_fleet = models.IntegerField(db_index=True)
@@ -1349,8 +1349,8 @@ class Flightplan_colonization(models.Model):
     time = models.IntegerField()
 
 
-class Flightplan_fight(models.Model):
-    class Meta():
+class FlightplanFight(models.Model):
+    class Meta:
         db_table = 'flightplan_fight'
 
     user = models.IntegerField(db_index=True)
@@ -1361,8 +1361,8 @@ class Flightplan_fight(models.Model):
     id_fight = models.IntegerField()
 
 
-class Asteroid_field(models.Model):
-    class Meta():
+class AsteroidField(models.Model):
+    class Meta:
         db_table = 'asteroid_field'
 
     x = models.IntegerField(db_index=True)
@@ -1381,8 +1381,8 @@ class Asteroid_field(models.Model):
     artifact = models.IntegerField()
 
 
-class Trade_element(models.Model):
-    class Meta():
+class TradeElement(models.Model):
+    class Meta:
         db_table = 'trade_element'
 
     name = models.CharField(max_length=50)
@@ -1405,8 +1405,8 @@ class Trade_element(models.Model):
     size_element = models.IntegerField(default=0)
 
 
-class Trade_space(models.Model):
-    class Meta():
+class TradeSpace(models.Model):
+    class Meta:
         db_table = 'trade_space'
 
     name = models.CharField(max_length=50)
@@ -1416,7 +1416,7 @@ class Trade_space(models.Model):
 
 
 class Mail(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'mail'
 
     user = models.IntegerField(db_index=True)
@@ -1429,8 +1429,8 @@ class Mail(models.Model):
     message = models.CharField(max_length=8192)
 
 
-class Basic_building(models.Model):
-    class Meta():
+class BasicBuilding(models.Model):
+    class Meta:
         db_table = 'basic_building'
 
     name = models.CharField(max_length=50)
@@ -1460,8 +1460,8 @@ class Basic_building(models.Model):
         return self.name
 
 
-class Building_pattern(models.Model):
-    class Meta():
+class BuildingPattern(models.Model):
+    class Meta:
         db_table = 'building_pattern'
 
     user = models.IntegerField(db_index=True)
@@ -1489,8 +1489,8 @@ class Building_pattern(models.Model):
     power_consumption = models.IntegerField(default=0)
 
 
-class Building_installed(models.Model):
-    class Meta():
+class BuildingInstalled(models.Model):
+    class Meta:
         db_table = 'building_installed'
 
     user = models.IntegerField(db_index=True)
@@ -1508,16 +1508,16 @@ class Building_installed(models.Model):
     power_consumption = models.IntegerField(default=0)
 
 
-class Basic_resource(models.Model):
-    class Meta():
+class BasicResource(models.Model):
+    class Meta:
         db_table = 'basic_resource'
 
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
 
 
-class Delivery_queue(models.Model):
-    class Meta():
+class DeliveryQueue(models.Model):
+    class Meta:
         db_table = 'delivery_queue'
 
     user = models.IntegerField(db_index=True)
@@ -1535,8 +1535,8 @@ class Delivery_queue(models.Model):
     size_element = models.IntegerField(default=0)
 
 
-class Trade_teleport(models.Model):
-    class Meta():
+class TradeReleport(models.Model):
+    class Meta:
         db_table = 'trade_teleport'
 
     user = models.IntegerField(db_index=True)
@@ -1549,8 +1549,8 @@ class Trade_teleport(models.Model):
     finish_teleport = models.DateTimeField()
 
 
-class Trade_flight(models.Model):
-    class Meta():
+class TradeFlight(models.Model):
+    class Meta:
         db_table = 'trade_flight'
 
     user = models.IntegerField(db_index=True)
@@ -1577,7 +1577,7 @@ class Trade_flight(models.Model):
 
 
 class Chat(models.Model):
-    class Meta():
+    class Meta:
         db_table = 'chat'
 
     user = models.CharField(max_length=20)
@@ -1586,8 +1586,8 @@ class Chat(models.Model):
     time = models.DateTimeField(default=datetime.now, blank=True)
 
 
-class Chat_private(models.Model):
-    class Meta():
+class ChatPrivate(models.Model):
+    class Meta:
         db_table = 'chat_private'
 
     user_id = models.IntegerField(default=1)
@@ -1597,8 +1597,8 @@ class Chat_private(models.Model):
     text = models.CharField(max_length=64)
 
 
-class User_chat_online(models.Model):
-    class Meta():
+class UserChatOnline(models.Model):
+    class Meta:
         db_table = 'user_chat_online'
 
     user_id = models.IntegerField(db_index=True)

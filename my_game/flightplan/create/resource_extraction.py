@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from my_game.models import Fleet_parametr_resource_extraction
-from my_game.models import Flightplan, Flightplan_production
+from my_game.models import FleetParametrResourceExtraction
+from my_game.models import Flightplan, FlightplanProduction
 
 
 def resource_extraction(*args):
@@ -12,7 +12,7 @@ def resource_extraction(*args):
     time_extraction *= 60
     full_hold = args[4]
 
-    fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+    fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(
         fleet_id=fleet_id).first()
     if full_hold:
         time_extraction = int(fleet.empty_hold / fleet_parametr_resource_extraction.extraction_per_minute)*60
@@ -26,7 +26,7 @@ def resource_extraction(*args):
     )
     flightplan.save()
 
-    flightplan_production = Flightplan_production(
+    flightplan_production = FlightplanProduction(
         user=session_user,
         id_fleet=fleet_id,
         id_fleetplan=flightplan.id,

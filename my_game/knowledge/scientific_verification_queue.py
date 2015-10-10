@@ -2,10 +2,10 @@
 
 from django.utils import timezone
 from datetime import datetime
-from my_game.models import MyUser, User_scientic, Basic_building, Building_pattern
-from my_game.models import Turn_scientic
+from my_game.models import MyUser, UserScientic, BasicBuilding, BuildingPattern
+from my_game.models import TurnScientic
 import my_game.knowledge.scientic_func as scientic_func
-from my_game.models import User_variables
+from my_game.models import UserVariables
 import random
 
 
@@ -13,8 +13,8 @@ def check_scientific_verification_queue(request):
     user = int(request)
     time = timezone.now()
     time_update = MyUser.objects.filter(user_id=user).first().last_time_check
-    turn_scientics = Turn_scientic.objects.filter(user=user)
-    user_variables = User_variables.objects.filter(id=1).first()
+    turn_scientics = TurnScientic.objects.filter(user=user)
+    user_variables = UserVariables.objects.filter(id=1).first()
     if turn_scientics:
         for turn_scientic in turn_scientics:
             scin_id = turn_scientic.id
@@ -24,11 +24,11 @@ def check_scientific_verification_queue(request):
             delta_time = turn_scientic.finish_time_science - turn_scientic.start_time_science
             delta = delta_time.seconds
             if new_delta > delta:
-                scientic = User_scientic.objects.filter(user=user).first()
+                scientic = UserScientic.objects.filter(user=user).first()
                 all_scient = scientic.mathematics_up + scientic.phisics_up + scientic.biologic_chimics_up + \
                              scientic.energetics_up + scientic.radionics_up + scientic.nanotech_up + \
                              scientic.astronomy_up + scientic.logistic_up
-                user_scientic = User_scientic.objects.filter(user=user).update(
+                user_scientic = UserScientic.objects.filter(user=user).update(
                     mathematics_up=scientic.mathematics_up + turn_scientic.mathematics_up,
                     phisics_up=scientic.phisics_up + turn_scientic.phisics_up,
                     biologic_chimics_up=scientic.biologic_chimics_up + turn_scientic.biologic_chimics_up,
@@ -38,12 +38,12 @@ def check_scientific_verification_queue(request):
                     astronomy_up=scientic.astronomy_up + turn_scientic.astronomy_up,
                     logistic_up=scientic.logistic_up + turn_scientic.logistic_up,
                 )
-                Turn_scientic.objects.filter(id=scin_id).delete()
-                user_scientic = User_scientic.objects.filter(user=user).first()
+                TurnScientic.objects.filter(id=scin_id).delete()
+                user_scientic = UserScientic.objects.filter(user=user).first()
                 all_scient = user_scientic.mathematics_up + user_scientic.phisics_up + user_scientic.biologic_chimics_up + \
                              user_scientic.energetics_up + user_scientic.radionics_up + user_scientic.nanotech_up + \
                              user_scientic.astronomy_up + user_scientic.logistic_up
-                user_scientic = User_scientic.objects.filter(user=user).update(all_scientic=all_scient)
+                user_scientic = UserScientic.objects.filter(user=user).update(all_scientic=all_scient)
 
     # the addition of new technology
     my_user = MyUser.objects.filter(user_id=user).first()
@@ -52,7 +52,7 @@ def check_scientific_verification_queue(request):
     delta_time = delta.seconds
 
     if delta_time > user_variables.time_check_new_technology:
-        all_scientic = User_scientic.objects.filter(user=user).first()
+        all_scientic = UserScientic.objects.filter(user=user).first()
         if all_scientic.all_scientic > 10:
             new_technology = random.random()
 
@@ -89,13 +89,13 @@ def check_scientific_verification_queue(request):
                                          0)
         MyUser.objects.filter(user_id=user).update(last_time_scan_scient=last_time_scan_scient)
 
-    user_scientic = User_scientic.objects.filter(user=user).first()
+    user_scientic = UserScientic.objects.filter(user=user).first()
 
     if int(user_scientic.all_scientic) > 50:
-        building = Building_pattern.objects.filter(production_class=13).first()
+        building = BuildingPattern.objects.filter(production_class=13).first()
         if building is None:
-            building = Basic_building.objects.filter(production_class=13).first()
-            building_pattern = Building_pattern(
+            building = BasicBuilding.objects.filter(production_class=13).first()
+            building_pattern = BuildingPattern(
                 name=building.name,
                 user=user,
                 production_class=13,

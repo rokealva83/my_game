@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 
-from my_game.models import Basic_resource
-from my_game.models import Shield_pattern, Generator_pattern, Engine_pattern, Armor_pattern, Weapon_pattern, \
-    Shell_pattern, Factory_pattern, Device_pattern
-from my_game.models import Warehouse_element, Warehouse_factory
-from my_game.models import Trade_element, Trade_space, Building_installed, Delivery_queue
+from my_game.models import BasicResource
+from my_game.models import ShieldPattern, GeneratorPattern, EnginePattern, ArmorPattern, WeaponPattern, \
+    ShellPattern, FactoryPattern, DevicePattern
+from my_game.models import WarehouseElement, WarehouseFactory
+from my_game.models import TradeElement, TradeSpace, BuildingInstalled, DeliveryQueue
 from django.shortcuts import render
-from my_game.models import MyUser, User_city
+from my_game.models import MyUser, UserCity
 from my_game.models import Warehouse
-from my_game.models import Hull_pattern, Element_ship, Module_pattern
-from my_game.models import Project_ship, Ship, Fleet, Fleet_parametr_scan, Fleet_energy_power, Fleet_engine
+from my_game.models import HullPattern, ElementShip, ModulePattern
+from my_game.models import ProjectShip, Ship, Fleet, FleetParametrScan, FleetEnergyPower, FleetEngine
 from my_game import function
 
 
@@ -40,7 +40,7 @@ def create_trade_fleet(request):
                                    place_id=session_user_city).first()
 
         if int(ship.amount_ship) >= int(amount_ship):
-            user_city = User_city.objects.filter(id=session_user_city).first()
+            user_city = UserCity.objects.filter(id=session_user_city).first()
             fleet = Fleet(
                 user=session_user,
                 name='Trade',
@@ -53,21 +53,21 @@ def create_trade_fleet(request):
             fleet.save()
             fleet_id = fleet.pk
 
-            fleet_energy = Fleet_energy_power(
+            fleet_energy = FleetEnergyPower(
                 fleet_id=fleet_id
             )
             fleet_energy.save()
 
-            fleet_engine = Fleet_engine(
+            fleet_engine = FleetEngine(
                 fleet_id=fleet_id
             )
             fleet_engine.save()
 
-            ship_pattern = Project_ship.objects.filter(id=ship.id_project_ship).first()
-            hull_pattern = Hull_pattern.objects.filter(id=ship_pattern.hull_id).first()
-            fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
-            fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).first()
-            ship_elements = Element_ship.objects.filter(id_project_ship=ship.id_project_ship)
+            ship_pattern = ProjectShip.objects.filter(id=ship.id_project_ship).first()
+            hull_pattern = HullPattern.objects.filter(id=ship_pattern.hull_id).first()
+            fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
+            fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).first()
+            ship_elements = ElementShip.objects.filter(id_project_ship=ship.id_project_ship)
             use_energy = hull_pattern.power_consuption
             use_fuel_system = 0
             use_fuel_intersystem = 0
@@ -77,11 +77,11 @@ def create_trade_fleet(request):
             produced_energy = 0
             for ship_element in ship_elements:
                 if ship_element.class_element == 3:
-                    element_pattern = Shield_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                    element_pattern = ShieldPattern.objects.filter(id=ship_element.id_element_pattern).first()
                     use_energy = use_energy + element_pattern.power_consuption
 
                 if ship_element.class_element == 4:
-                    engine_pattern = Engine_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                    engine_pattern = EnginePattern.objects.filter(id=ship_element.id_element_pattern).first()
                     if engine_pattern.system_power != 0:
                         use_fuel_system = use_fuel_system + engine_pattern.power_consuption
                     if engine_pattern.intersystem_power != 0:
@@ -92,29 +92,29 @@ def create_trade_fleet(request):
                         use_energy_null = use_energy_null + engine_pattern.power_consuption
 
                 if ship_element.class_element == 5:
-                    element_pattern = Generator_pattern.objects.filter(
+                    element_pattern = GeneratorPattern.objects.filter(
                         id=ship_element.id_element_pattern).first()
                     use_fuel_generator = use_fuel_generator + element_pattern.fuel_necessary
                     produced_energy = produced_energy + element_pattern.produced_energy
 
                 if ship_element.class_element == 6:
-                    element_pattern = Weapon_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                    element_pattern = WeaponPattern.objects.filter(id=ship_element.id_element_pattern).first()
                     use_energy = use_energy + element_pattern.power_consuption
 
                 if ship_element.class_element == 7:
-                    element_pattern = Weapon_pattern.objects.filter(id=ship_element.id_element_pattern).first()
+                    element_pattern = WeaponPattern.objects.filter(id=ship_element.id_element_pattern).first()
                     use_energy = use_energy + element_pattern.power_consuption
 
                 if ship_element.class_element == 8:
-                    element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                    element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
                                                                     module_class=2).first()
                     if element_pattern:
                         hold = hold + element_pattern.param1
                         use_energy = use_energy + element_pattern.power_consuption
-                    element_pattern = Module_pattern.objects.filter(id=ship_element.id_element_pattern,
+                    element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
                                                                     module_class=6).first()
                     if element_pattern:
-                        fleet_parametr_scan = Fleet_parametr_scan(
+                        fleet_parametr_scan = FleetParametrScan(
                             fleet_id=fleet_id,
                             method_scanning=element_pattern.param3,
                             time_scanning=element_pattern.param2,
@@ -136,7 +136,7 @@ def create_trade_fleet(request):
                                            place_id=session_user_city).update(fleet_status=1,
                                                                               place_id=fleet_id)
                 ship = Ship.objects.filter(id=ship_id).first()
-                project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                project_ship = ProjectShip.objects.filter(id=ship.id_project_ship).first()
                 ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
                 if ship_in_fleet:
                     hold_empty = fleet.empty_hold + hold * amount_ship
@@ -157,7 +157,7 @@ def create_trade_fleet(request):
                     giper_power = int(project_ship.giper_power) * amount_ship
                     null_power = int(project_ship.null_power) * amount_ship
 
-                fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
+                fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).update(
                     system_power=system_power,
                     intersystem_power=intersystem_power,
                     giper_power=giper_power,
@@ -171,7 +171,7 @@ def create_trade_fleet(request):
                     empty_hold=hold_empty
                 )
 
-                fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
+                fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).update(
                     use_energy=use_energy, use_fuel_system=use_fuel_system,
                     use_fuel_intersystem=use_fuel_intersystem, use_energy_giper=use_energy_giper,
                     use_energy_null=use_energy_null, use_fuel_generator=use_fuel_generator,
@@ -194,7 +194,7 @@ def create_trade_fleet(request):
                                            place_id=session_user_city).update(amount_ship=new_amount)
                 ship = Ship.objects.filter(id=ship_id, user=session_user, fleet_status=0,
                                            place_id=session_user_city).first()
-                project_ship = Project_ship.objects.filter(id=ship.id_project_ship).first()
+                project_ship = ProjectShip.objects.filter(id=ship.id_project_ship).first()
                 ship_in_fleet = Ship.objects.filter(place_id=fleet_id).first()
 
                 if ship_in_fleet:
@@ -216,7 +216,7 @@ def create_trade_fleet(request):
                     giper_power = int(project_ship.giper_power) * amount_ship
                     null_power = int(project_ship.null_power) * amount_ship
 
-                fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).update(
+                fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).update(
                     system_power=system_power,
                     intersystem_power=intersystem_power,
                     giper_power=giper_power,
@@ -230,7 +230,7 @@ def create_trade_fleet(request):
                     empty_hold=hold_empty
                 )
 
-                fleet_energy_power = Fleet_energy_power.objects.filter(fleet_id=fleet_id).update(
+                fleet_energy_power = FleetEnergyPower.objects.filter(fleet_id=fleet_id).update(
                     use_energy=use_energy, use_fuel_system=use_fuel_system,
                     use_fuel_intersystem=use_fuel_intersystem, use_energy_giper=use_energy_giper,
                     use_energy_null=use_energy_null, use_fuel_generator=use_fuel_generator,
@@ -241,33 +241,33 @@ def create_trade_fleet(request):
             message = 'Недостаточно корблей'
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
-        user_city = User_city.objects.filter(user=session_user).first()
+        basic_resources = BasicResource.objects.filter()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
-        warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        user_citys = UserCity.objects.filter(user=int(session_user))
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'element_class', 'element_id')
-        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'production_class', 'production_id')
-        factory_patterns = Factory_pattern.objects.filter(user=session_user)
-        hull_patterns = Hull_pattern.objects.filter(user=session_user)
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
-        shield_patterns = Shield_pattern.objects.filter(user=session_user)
-        engine_patterns = Engine_pattern.objects.filter(user=session_user)
-        generator_patterns = Generator_pattern.objects.filter(user=session_user)
-        weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
-        shell_patterns = Shell_pattern.objects.filter(user=session_user)
-        module_patterns = Module_pattern.objects.filter(user=session_user)
-        device_patterns = Device_pattern.objects.filter(user=session_user)
-        trade_spaces = Trade_space.objects.filter()
+        factory_patterns = FactoryPattern.objects.filter(user=session_user)
+        hull_patterns = HullPattern.objects.filter(user=session_user)
+        armor_patterns = ArmorPattern.objects.filter(user=session_user)
+        shield_patterns = ShieldPattern.objects.filter(user=session_user)
+        engine_patterns = EnginePattern.objects.filter(user=session_user)
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user)
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user)
+        shell_patterns = ShellPattern.objects.filter(user=session_user)
+        module_patterns = ModulePattern.objects.filter(user=session_user)
+        device_patterns = DevicePattern.objects.filter(user=session_user)
+        trade_spaces = TradeSpace.objects.filter()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-        project_ships = Project_ship.objects.filter(user=session_user)
+        project_ships = ProjectShip.objects.filter(user=session_user)
         users = MyUser.objects.filter()
-        trade_elements = Trade_element.objects.filter(trade_space=1)
-        user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user=session_user)
-        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+        trade_elements = TradeElement.objects.filter(trade_space=1)
+        user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user)
+        trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                            production_class=13).first()
-        delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
+        delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

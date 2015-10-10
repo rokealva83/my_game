@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
-from my_game.models import MyUser, User_city, Warehouse, Turn_building, Turn_assembly_pieces
-from my_game.models import Factory_pattern, Factory_installed, Building_pattern
-from my_game.models import Warehouse_factory
+from my_game.models import MyUser, UserCity, Warehouse, TurnBuilding, TurnAssemblyPieces
+from my_game.models import FactoryPattern, FactoryInstalled, BuildingPattern
+from my_game.models import WarehouseFactory
 
 #Переименовани шаблона фибрики
 def rename_factory_pattern(*args):
@@ -11,9 +11,9 @@ def rename_factory_pattern(*args):
     pattern_id = args[1]
     class_id = args[2]
     if class_id != 13:
-        name_factory = Factory_pattern.objects.filter(id=pattern_id).update(name=new_name)
+        name_factory = FactoryPattern.objects.filter(id=pattern_id).update(name=new_name)
     else:
-        name_factory = Building_pattern.objects.filter(id=pattern_id).update(name=new_name)
+        name_factory = BuildingPattern.objects.filter(id=pattern_id).update(name=new_name)
     message = 'Шаблон переименован'
     return message
 
@@ -22,9 +22,9 @@ def upgrade_factory_pattern(*args):
     pattern_id = int(args[2])
     class_id = int(args[3])
     if class_id != 13:
-        old_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
+        old_pattern = FactoryPattern.objects.filter(id=pattern_id).first()
     else:
-        old_pattern = Building_pattern.objects.filter(id=pattern_id).first()
+        old_pattern = BuildingPattern.objects.filter(id=pattern_id).first()
     number = int(args[0])
     if old_pattern.production_class == 12 or old_pattern.production_class == 14:
         speed = 1
@@ -44,7 +44,7 @@ def upgrade_factory_pattern(*args):
         koef_number = int(number) * 1.6
 
     if class_id != 13:
-        new_pattern = Factory_pattern(
+        new_pattern = FactoryPattern(
             user=old_pattern.user,
             basic_id=old_pattern.basic_id,
             name=old_pattern.name,
@@ -70,7 +70,7 @@ def upgrade_factory_pattern(*args):
         new_pattern.save()
         new_pattern_id = new_pattern.pk
     else:
-        new_pattern = Building_pattern(
+        new_pattern = BuildingPattern(
 
             user=old_pattern.user,
             basic_id=old_pattern.basic_id,
@@ -102,7 +102,7 @@ def upgrade_factory_pattern(*args):
     if new_pattern.production_class == 12:
         old_pattern_power = old_pattern.power_consumption
         new_power_consumption = old_pattern_power * number
-        new_pattern = Factory_pattern.objects.filter(id=new_pattern_id).update(power_consumption=new_power_consumption)
+        new_pattern = FactoryPattern.objects.filter(id=new_pattern_id).update(power_consumption=new_power_consumption)
     message = 'Шаблон улучшен'
     return message
 
@@ -110,14 +110,14 @@ def upgrade_factory_pattern(*args):
 def delete_factory_pattern(*args):
     pattern_id = int(args[0])
     class_id = int(args[1])
-    factory = Factory_installed.objects.filter(factory_pattern_id=pattern_id).first()
+    factory = FactoryInstalled.objects.filter(factory_pattern_id=pattern_id).first()
     if factory is not None:
         message = 'Шаблон не может быть удален'
     else:
         if class_id != 13:
-            delete_pattern = Factory_pattern.objects.filter(id=pattern_id).delete()
+            delete_pattern = FactoryPattern.objects.filter(id=pattern_id).delete()
         else:
-            delete_pattern = Building_pattern.objects.filter(id=pattern_id).delete()
+            delete_pattern = BuildingPattern.objects.filter(id=pattern_id).delete()
 
         message = 'Шаблон удален'
     return message
@@ -142,10 +142,10 @@ def making_factory_unit(*args):
     user = MyUser.objects.filter(user_id=session_user).first()
     warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
     if class_id != 13:
-        factory_pattern_making = Factory_pattern.objects.filter(id=pattern_id).first()
+        factory_pattern_making = FactoryPattern.objects.filter(id=pattern_id).first()
     else:
-        factory_pattern_making = Building_pattern.objects.filter(id=pattern_id).first()
-    turn_assembly_pieces = len(Turn_assembly_pieces.objects.filter(user=session_user, user_city=session_user_city))
+        factory_pattern_making = BuildingPattern.objects.filter(id=pattern_id).first()
+    turn_assembly_pieces = len(TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city))
 
     if turn_assembly_pieces < 3:
         #Проверка наличия ресурсов
@@ -214,7 +214,7 @@ def making_factory_unit(*args):
                                                          id_resource=8).update(amount=new_mineral4)
 
             user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
-            turn_assembly_piece = Turn_assembly_pieces.objects.filter(user=session_user,
+            turn_assembly_piece = TurnAssemblyPieces.objects.filter(user=session_user,
                                                                       user_city=session_user_city).last()
             if turn_assembly_piece is not None:
                 start_making = turn_assembly_piece.finish_time_assembly
@@ -222,7 +222,7 @@ def making_factory_unit(*args):
                 start_making = datetime.now()
             build_time = factory_pattern_making.assembly_workpiece * amount_factory_unit
             finish_making = start_making + timedelta(seconds=build_time)
-            turn_assembly_pieces = Turn_assembly_pieces(
+            turn_assembly_pieces = TurnAssemblyPieces(
                 user=session_user,
                 user_city=session_user_city,
                 pattern_id=pattern_id,
@@ -245,13 +245,13 @@ def install_factory_unit(*args):
     session_user_city = args[1]
     pattern_id = args[2]
     class_id = int(args[3])
-    user_city = User_city.objects.filter(id=session_user_city).first()
+    user_city = UserCity.objects.filter(id=session_user_city).first()
     if class_id != 13:
-        factory_pattern = Factory_pattern.objects.filter(id=pattern_id).first()
+        factory_pattern = FactoryPattern.objects.filter(id=pattern_id).first()
     else:
-        factory_pattern = Building_pattern.objects.filter(id=pattern_id).first()
+        factory_pattern = BuildingPattern.objects.filter(id=pattern_id).first()
     free_energy = user_city.power - user_city.use_energy
-    len_turn_building = len(Turn_building.objects.filter(user=session_user, user_city=session_user_city))
+    len_turn_building = len(TurnBuilding.objects.filter(user=session_user, user_city=session_user_city))
     if len_turn_building < 3:
 
         if factory_pattern.production_class == 12:
@@ -261,14 +261,14 @@ def install_factory_unit(*args):
             power_consumption = factory_pattern.power_consumption
 
         if factory_pattern.cost_expert_deployment < user_city.population and free_energy > power_consumption:
-            last_building = Turn_building.objects.filter(user=session_user, user_city=session_user_city).last()
+            last_building = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city).last()
             if last_building is not None:
                 start_time = last_building.finish_time_deployment
             else:
                 start_time = datetime.now()
 
             finish_time = start_time + timedelta(seconds=factory_pattern.time_deployment)
-            turn_building = Turn_building(
+            turn_building = TurnBuilding(
                 user=session_user,
                 user_city=session_user_city,
                 factory_id=pattern_id,
@@ -280,15 +280,15 @@ def install_factory_unit(*args):
                 finish_time_deployment=finish_time,
             )
             turn_building.save()
-            install_factory = Warehouse_factory.objects.filter(user=session_user, factory_id=pattern_id,
+            install_factory = WarehouseFactory.objects.filter(user=session_user, factory_id=pattern_id,
                                                                production_class=class_id).first()
             new_amount = install_factory.amount - 1
-            install_factory = Warehouse_factory.objects.filter(user=session_user, factory_id=pattern_id,
+            install_factory = WarehouseFactory.objects.filter(user=session_user, factory_id=pattern_id,
                                                                production_class=class_id).update(amount=new_amount)
             if factory_pattern.production_class != 10:
-                user_city = User_city.objects.filter(user=session_user, id=session_user_city).first()
+                user_city = UserCity.objects.filter(user=session_user, id=session_user_city).first()
                 new_population = user_city.population - factory_pattern.cost_expert_deployment
-                user_city = User_city.objects.filter(id=user_city.id).update(population=new_population)
+                user_city = UserCity.objects.filter(id=user_city.id).update(population=new_population)
             message = 'Развертывание начато'
         else:
             message = 'Нехватает инженеров или энергии'

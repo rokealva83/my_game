@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse
+from my_game.models import MyUser, UserCity, Warehouse
 from my_game import function
 from my_game.models import Mail
 
@@ -16,8 +16,8 @@ def diplomacy(request):
         mails = Mail.objects.filter(user=session_user).order_by('category', '-time')
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_city = User_city.objects.filter(user=int(session_user)).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_city = UserCity.objects.filter(user=int(session_user)).first()
+        user_citys = UserCity.objects.filter(user=int(session_user))
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

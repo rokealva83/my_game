@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city
+from my_game.models import MyUser, UserCity
 from my_game.models import Warehouse
 from my_game import function
 from my_game.models import Ship, Fleet
-from my_game.models import Flightplan, Flightplan_flight, Flightplan_scan, Flightplan_hold, Flightplan_production
-from my_game.models import Hull_pattern, Armor_pattern, Shell_pattern, Shield_pattern, Weapon_pattern, \
-    Warehouse_factory, Warehouse_element, Factory_pattern, Engine_pattern, Generator_pattern, Module_pattern, \
-    Basic_resource, Hold, Fleet_engine, Fleet_parametr_scan, Fleet_parametr_resource_extraction, Fuel_pattern, \
-    Flightplan_build_repair, Flightplan_refill, Fleet_parametr_build_repair, Flightplan_colonization
+from my_game.models import Flightplan, FlightplanFlight, FlightplanScan, FlightplanHold, FlightplanProduction
+from my_game.models import HullPattern, ArmorPattern, ShellPattern, ShieldPattern, WeaponPattern, \
+    WarehouseFactory, WarehouseElement, FactoryPattern, EnginePattern, GeneratorPattern, ModulePattern, \
+    BasicResource, Hold, FleetEngine, FleetParametrScan, FleetParametrResourceExtraction, FuelPattern, \
+    FlightplanBuildRepair, FlightplanRefill, FleetParametrBuildRepair, FlightplanColonization
 from my_game.flightplan.starting_flight import starting_flight
 
 
@@ -34,54 +34,54 @@ def start_flightplan(request):
             flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
             if flightplan.status == 0:
                 flightplan = Flightplan.objects.filter(id_fleet=fleet_id).delete()
-                flightplan_flight = Flightplan_flight.objects.filter(id_fleet=fleet_id).delete()
-                flightplan_scan = Flightplan_scan.objects.filter(id_fleet=fleet_id).delete()
-                flightplan_production = Flightplan_production.objects.filter(id_fleet=fleet_id).delete()
-                flightplan_hold = Flightplan_hold.objects.filter(id_fleet=fleet_id).delete()
-                flightplan_refill = Flightplan_refill.objects.filter(id_fleet=fleet_id).delete()
-                flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_flight = FlightplanFlight.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_scan = FlightplanScan.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_production = FlightplanProduction.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_hold = FlightplanHold.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_refill = FlightplanRefill.objects.filter(id_fleet=fleet_id).delete()
+                flightplan_colonization = FlightplanColonization.objects.filter(id_fleet=fleet_id).delete()
                 message = ''
                 command = 3
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        user_city = User_city.objects.filter(user=session_user).first()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=int(session_user))
         user_fleets = Fleet.objects.filter(user=session_user)
         ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
         fleet = Fleet.objects.filter(user=session_user)
         flightplans = Flightplan.objects.filter(id_fleet=fleet_id)
-        flightplan_flights = Flightplan_flight.objects.filter(id_fleet=fleet_id)
-        flightplan_scans = Flightplan_scan.objects.filter(id_fleet=fleet_id)
-        flightplan_productions = Flightplan_production.objects.filter(id_fleet=fleet_id)
-        flightplan_refills = Flightplan_refill.objects.filter(id_fleet=fleet_id).order_by('id')
-        flightplan_build_repairs = Flightplan_build_repair.objects.filter(id_fleet=fleet_id).order_by('id')
-        flightplan_colonization = Flightplan_colonization.objects.filter(id_fleet=fleet_id).order_by('id')
-        fleet_engine = Fleet_engine.objects.filter(fleet_id=fleet_id).first()
-        fleet_parametr_scans = Fleet_parametr_scan.objects.filter(fleet_id=fleet_id)
-        fleet_parametr_resource_extraction = Fleet_parametr_resource_extraction.objects.filter(
+        flightplan_flights = FlightplanFlight.objects.filter(id_fleet=fleet_id)
+        flightplan_scans = FlightplanScan.objects.filter(id_fleet=fleet_id)
+        flightplan_productions = FlightplanProduction.objects.filter(id_fleet=fleet_id)
+        flightplan_refills = FlightplanRefill.objects.filter(id_fleet=fleet_id).order_by('id')
+        flightplan_build_repairs = FlightplanBuildRepair.objects.filter(id_fleet=fleet_id).order_by('id')
+        flightplan_colonization = FlightplanColonization.objects.filter(id_fleet=fleet_id).order_by('id')
+        fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
+        fleet_parametr_scans = FleetParametrScan.objects.filter(fleet_id=fleet_id)
+        fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(
             fleet_id=fleet_id).first()
-        fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+        fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
                                                                           class_process=1).first()
-        fleet_parametr_repair = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+        fleet_parametr_repair = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
                                                                            class_process=2).first()
-        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user,
                                                               user_city=session_user_city).order_by(
             'production_class', 'production_id')
-        warehouse_elements = Warehouse_element.objects.filter(user=session_user,
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user,
                                                               user_city=session_user_city).order_by(
             'element_class', 'element_id')
-        factory_patterns = Factory_pattern.objects.filter(user=session_user)
-        hull_patterns = Hull_pattern.objects.filter(user=session_user)
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
-        shield_patterns = Shield_pattern.objects.filter(user=session_user)
-        engine_patterns = Engine_pattern.objects.filter(user=session_user)
-        generator_patterns = Generator_pattern.objects.filter(user=session_user)
-        weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
-        shell_patterns = Shell_pattern.objects.filter(user=session_user)
-        module_patterns = Module_pattern.objects.filter(user=session_user)
-        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
-        basic_resources = Basic_resource.objects.all()
+        factory_patterns = FactoryPattern.objects.filter(user=session_user)
+        hull_patterns = HullPattern.objects.filter(user=session_user)
+        armor_patterns = ArmorPattern.objects.filter(user=session_user)
+        shield_patterns = ShieldPattern.objects.filter(user=session_user)
+        engine_patterns = EnginePattern.objects.filter(user=session_user)
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user)
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user)
+        shell_patterns = ShellPattern.objects.filter(user=session_user)
+        module_patterns = ModulePattern.objects.filter(user=session_user)
+        fuel_patterns = FuelPattern.objects.filter(user=session_user)
+        basic_resources = BasicResource.objects.all()
         # device_patterns = Device_pattern.objects.filter(user = session_user)
         ship_holds = Hold.objects.filter(fleet_id=fleet_id).order_by('class_shipment')
         add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)

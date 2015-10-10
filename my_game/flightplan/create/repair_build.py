@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from my_game.models import Flightplan, Flightplan_build_repair, Fleet_parametr_build_repair
-from my_game.models import Factory_pattern, Hold
+from my_game.models import Flightplan, FlightplanBuildRepair, FleetParametrBuildRepair
+from my_game.models import FactoryPattern, Hold
 
 
 def repair_build(*args):
@@ -21,8 +21,8 @@ def repair_build(*args):
         id_command = 5
         fleet_repair = 0
         hold = Hold.objects.filter(id=id_hold_factory).first()
-        factory = Factory_pattern.objects.filter(id=hold.id_shipment).first().time_deployment
-        fleet_parametr_build = Fleet_parametr_build_repair.objects.filter(fleet_id=fleet_id,
+        factory = FactoryPattern.objects.filter(id=hold.id_shipment).first().time_deployment
+        fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
                                                                           class_process=1).first().process_per_minute
         time = factory * fleet_parametr_build
 
@@ -43,7 +43,7 @@ def repair_build(*args):
     )
     flightplan.save()
 
-    flightplan_build_repair = Flightplan_build_repair(
+    flightplan_build_repair = FlightplanBuildRepair(
         id_fleet=fleet_id,
         id_fleetplan=flightplan.id,
         id_command=id_command,

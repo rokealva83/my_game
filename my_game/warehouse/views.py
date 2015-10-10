@@ -2,10 +2,10 @@
 
 from django.shortcuts import render
 
-from my_game.models import MyUser, User_city, Warehouse
-from my_game.models import Hull_pattern, Shell_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Factory_pattern, Weapon_pattern, Fuel_pattern, Device_pattern
-from my_game.models import Warehouse_factory, Warehouse_element, Basic_resource
+from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import HullPattern, ShellPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
+    ArmorPattern, ModulePattern, FactoryPattern, WeaponPattern, FuelPattern, DevicePattern
+from my_game.models import WarehouseFactory, WarehouseElement, BasicResource
 from my_game import function
 
 
@@ -17,25 +17,25 @@ def warehouse(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
+        basic_resources = BasicResource.objects.filter()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_city = User_city.objects.filter(user=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
-        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        user_city = UserCity.objects.filter(user=session_user).first()
+        user_citys = UserCity.objects.filter(user=int(session_user))
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'production_class', 'production_id')
-        factory_patterns = Factory_pattern.objects.filter(user=session_user)
-        warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        factory_patterns = FactoryPattern.objects.filter(user=session_user)
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'element_class', 'element_id')
-        hull_patterns = Hull_pattern.objects.filter(user=session_user)
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
-        shield_patterns = Shield_pattern.objects.filter(user=session_user)
-        engine_patterns = Engine_pattern.objects.filter(user=session_user)
-        generator_patterns = Generator_pattern.objects.filter(user=session_user)
-        weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
-        shell_patterns = Shell_pattern.objects.filter(user=session_user)
-        module_patterns = Module_pattern.objects.filter(user=session_user)
-        device_patterns = Device_pattern.objects.filter(user=session_user)
-        fuel_patterns = Fuel_pattern.objects.filter(user=session_user)
+        hull_patterns = HullPattern.objects.filter(user=session_user)
+        armor_patterns = ArmorPattern.objects.filter(user=session_user)
+        shield_patterns = ShieldPattern.objects.filter(user=session_user)
+        engine_patterns = EnginePattern.objects.filter(user=session_user)
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user)
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user)
+        shell_patterns = ShellPattern.objects.filter(user=session_user)
+        module_patterns = ModulePattern.objects.filter(user=session_user)
+        device_patterns = DevicePattern.objects.filter(user=session_user)
+        fuel_patterns = FuelPattern.objects.filter(user=session_user)
 
         attribute_factorys = (
         "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", "production_id",

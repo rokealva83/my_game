@@ -3,14 +3,14 @@
 from django.shortcuts import render
 from datetime import datetime, timedelta
 import math
-from my_game.models import MyUser, User_city, Warehouse, Basic_resource
-from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
-from my_game.models import Warehouse_element, Warehouse_factory
+from my_game.models import MyUser, UserCity, Warehouse, BasicResource
+from my_game.models import HullPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
+    ArmorPattern, ModulePattern, WeaponPattern, ShellPattern, FactoryPattern, DevicePattern
+from my_game.models import WarehouseElement, WarehouseFactory
 from my_game import function
 from my_game.trade import trade_function
-from my_game.models import Project_ship, Ship, Fleet
-from my_game.models import Trade_space, Delivery_queue, Building_installed, Trade_teleport, Trade_element, Trade_flight
+from my_game.models import ProjectShip, Ship, Fleet
+from my_game.models import TradeSpace, DeliveryQueue, BuildingInstalled, TradeReleport, TradeElement, TradeFlight
 
 
 def delivery(request):
@@ -31,9 +31,9 @@ def delivery(request):
         method = int(method[0])
         id_element = myDict.get('deliver')
         id_element = int(id_element[0])
-        delivery_element = Delivery_queue.objects.filter(id=id_element).first()
+        delivery_element = DeliveryQueue.objects.filter(id=id_element).first()
         amount = delivery_element.amount
-        user_city = User_city.objects.filter(id=session_user_city).first()
+        user_city = UserCity.objects.filter(id=session_user_city).first()
         distance = math.sqrt(
             (delivery_element.x - user_city.x) ** 2 + (delivery_element.y - user_city.y) ** 2 + (
                 delivery_element.z - user_city.z) ** 2)
@@ -42,13 +42,13 @@ def delivery(request):
             mass_element = delivery_element.mass_element
             mass = amount * mass_element
             energy = math.sqrt(mass * distance / 20000)
-            trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+            trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                                production_class=13).first()
             if trade_building.warehouse >= energy:
                 time = math.sqrt(mass * distance * energy / 10000)
                 start_time = datetime.now()
                 finish_time = start_time + timedelta(seconds=time)
-                trade_teleport = Trade_teleport(
+                trade_teleport = TradeReleport(
                     user=session_user,
                     user_city=session_user_city,
                     name=delivery_element.name,
@@ -59,15 +59,15 @@ def delivery(request):
                     finish_teleport=finish_time
                 )
                 trade_teleport.save()
-                delivery_element = Delivery_queue.objects.filter(id=id_element).delete()
+                delivery_element = DeliveryQueue.objects.filter(id=id_element).delete()
                 new_energy = trade_building.warehouse - energy
-                trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+                trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                                    production_class=13).update(warehouse=new_energy)
             else:
                 message = 'Нехватает энергии'
             time = mass * energy / 20000 * distance
         elif method == 2:
-            user_city = User_city.objects.filter(id=session_user_city).first()
+            user_city = UserCity.objects.filter(id=session_user_city).first()
             fleet = Fleet.objects.filter(user=session_user, name='Trade', status=0,
                                          planet=user_city.planet_id).first()
             if fleet:
@@ -100,17 +100,17 @@ def delivery(request):
                                                                        delivery_element, lot)
                 new_amount = delivery_element.amount - amount
                 if new_amount == 0:
-                    delivery_element = Delivery_queue.objects.filter(id=id_element).delete()
+                    delivery_element = DeliveryQueue.objects.filter(id=id_element).delete()
                 else:
-                    delivery_element = Delivery_queue.objects.filter(id=id_element).update(amount=new_amount)
+                    delivery_element = DeliveryQueue.objects.filter(id=id_element).update(amount=new_amount)
                 fleet = Fleet.objects.filter(id=id_fleet).update(status=1, planet_status=0, planet=0, system=0)
-                trade_fligth = Trade_flight.objects.filter(id_fleet=id_fleet).first()
-                trade_fligth = Trade_flight.objects.filter(id=trade_fligth.id).update(status=1)
+                trade_fligth = TradeFlight.objects.filter(id_fleet=id_fleet).first()
+                trade_fligth = TradeFlight.objects.filter(id=trade_fligth.id).update(status=1)
 
             else:
                 message = 'Ваши флота все заняты.'
         elif method == 3:
-            user_city = User_city.objects.filter(id=session_user_city).first()
+            user_city = UserCity.objects.filter(id=session_user_city).first()
             fleet = Fleet.objects.filter(user=delivery_element.user, name='Trade', status=0,
                                          planet=delivery_element.user_city).first()
             if fleet:
@@ -142,42 +142,42 @@ def delivery(request):
                     trade_function.flight_record_sheet_flight(session_user, session_user_city, user_city, id_fleet,
                                                               delivery_element, 0, fleet, 0, distance)
                 new_amount = delivery_element.amount - amount
-                delivery_element = Delivery_queue.objects.filter(id=id_element).update(amount=new_amount)
+                delivery_element = DeliveryQueue.objects.filter(id=id_element).update(amount=new_amount)
                 fleet = Fleet.objects.filter(id=id_fleet).update(status=1, planet_status=0, planet=0, system=0)
-                trade_fligth = Trade_flight.objects.filter(id_fleet=id_fleet).first()
-                trade_fligth = Trade_flight.objects.filter(id=trade_fligth.id).update(status=1)
+                trade_fligth = TradeFlight.objects.filter(id_fleet=id_fleet).first()
+                trade_fligth = TradeFlight.objects.filter(id=trade_fligth.id).update(status=1)
 
             else:
                 message = 'Флота продавца все заняты.'
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
-        user_city = User_city.objects.filter(user=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
+        basic_resources = BasicResource.objects.filter()
+        user_city = UserCity.objects.filter(user=session_user).first()
+        user_citys = UserCity.objects.filter(user=int(session_user))
         user = MyUser.objects.filter(user_id=session_user).first()
-        warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'element_class', 'element_id')
-        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'production_class', 'production_id')
-        factory_patterns = Factory_pattern.objects.filter(user=session_user)
-        hull_patterns = Hull_pattern.objects.filter(user=session_user)
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
-        shield_patterns = Shield_pattern.objects.filter(user=session_user)
-        engine_patterns = Engine_pattern.objects.filter(user=session_user)
-        generator_patterns = Generator_pattern.objects.filter(user=session_user)
-        weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
-        shell_patterns = Shell_pattern.objects.filter(user=session_user)
-        module_patterns = Module_pattern.objects.filter(user=session_user)
-        device_patterns = Device_pattern.objects.filter(user=session_user)
-        trade_spaces = Trade_space.objects.filter()
+        factory_patterns = FactoryPattern.objects.filter(user=session_user)
+        hull_patterns = HullPattern.objects.filter(user=session_user)
+        armor_patterns = ArmorPattern.objects.filter(user=session_user)
+        shield_patterns = ShieldPattern.objects.filter(user=session_user)
+        engine_patterns = EnginePattern.objects.filter(user=session_user)
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user)
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user)
+        shell_patterns = ShellPattern.objects.filter(user=session_user)
+        module_patterns = ModulePattern.objects.filter(user=session_user)
+        device_patterns = DevicePattern.objects.filter(user=session_user)
+        trade_spaces = TradeSpace.objects.filter()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-        project_ships = Project_ship.objects.filter(user=session_user)
+        project_ships = ProjectShip.objects.filter(user=session_user)
         users = MyUser.objects.filter()
-        trade_space = Trade_space.objects.filter(id=trade_space_id).first()
-        trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
-        user_trade_elements = Trade_element.objects.filter(user=session_user)
-        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+        trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
+        trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
+        user_trade_elements = TradeElement.objects.filter(user=session_user)
+        trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                            production_class=13).first()
-        delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
+        delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

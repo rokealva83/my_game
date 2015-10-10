@@ -2,14 +2,14 @@
 
 
 from django.shortcuts import render
-from my_game.models import MyUser, User_city, Warehouse, Basic_resource
+from my_game.models import MyUser, UserCity, Warehouse, BasicResource
 from my_game.models import Race, Planet
-from my_game.models import Hull_pattern, Shield_pattern, Generator_pattern, Engine_pattern, \
-    Armor_pattern, Module_pattern, Weapon_pattern, Shell_pattern, Factory_pattern, Device_pattern
-from my_game.models import Warehouse_element, Warehouse_factory
+from my_game.models import HullPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
+    ArmorPattern, ModulePattern, WeaponPattern, ShellPattern, FactoryPattern, DevicePattern
+from my_game.models import WarehouseElement, WarehouseFactory
 from my_game import function
-from my_game.models import Project_ship, Ship
-from my_game.models import Trade_element, Trade_space, Building_installed, Delivery_queue
+from my_game.models import ProjectShip, Ship
+from my_game.models import TradeElement, TradeSpace, BuildingInstalled, DeliveryQueue
 
 
 def trade(request):
@@ -19,54 +19,54 @@ def trade(request):
         session_user = int(request.session['userid'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
-        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+        trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                            production_class=13).first()
         if trade_building:
             message = ''
             trade_space_id = 1
             warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
                 'id_resource')
-            basic_resources = Basic_resource.objects.filter()
-            user_city = User_city.objects.filter(user=session_user).first()
+            basic_resources = BasicResource.objects.filter()
+            user_city = UserCity.objects.filter(user=session_user).first()
             user = MyUser.objects.filter(user_id=session_user).first()
-            user_citys = User_city.objects.filter(user=int(session_user))
-            warehouse_elements = Warehouse_element.objects.filter(user=session_user,
+            user_citys = UserCity.objects.filter(user=int(session_user))
+            warehouse_elements = WarehouseElement.objects.filter(user=session_user,
                                                                   user_city=session_user_city).order_by(
                 'element_class', 'element_id')
-            warehouse_factorys = Warehouse_factory.objects.filter(user=session_user,
+            warehouse_factorys = WarehouseFactory.objects.filter(user=session_user,
                                                                   user_city=session_user_city).order_by(
                 'production_class', 'production_id')
-            factory_patterns = Factory_pattern.objects.filter(user=session_user)
-            hull_patterns = Hull_pattern.objects.filter(user=session_user)
-            armor_patterns = Armor_pattern.objects.filter(user=session_user)
-            shield_patterns = Shield_pattern.objects.filter(user=session_user)
-            engine_patterns = Engine_pattern.objects.filter(user=session_user)
-            generator_patterns = Generator_pattern.objects.filter(user=session_user)
-            weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
-            shell_patterns = Shell_pattern.objects.filter(user=session_user)
-            module_patterns = Module_pattern.objects.filter(user=session_user)
-            device_patterns = Device_pattern.objects.filter(user=session_user)
-            trade_spaces = Trade_space.objects.filter()
-            trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+            factory_patterns = FactoryPattern.objects.filter(user=session_user)
+            hull_patterns = HullPattern.objects.filter(user=session_user)
+            armor_patterns = ArmorPattern.objects.filter(user=session_user)
+            shield_patterns = ShieldPattern.objects.filter(user=session_user)
+            engine_patterns = EnginePattern.objects.filter(user=session_user)
+            generator_patterns = GeneratorPattern.objects.filter(user=session_user)
+            weapon_patterns = WeaponPattern.objects.filter(user=session_user)
+            shell_patterns = ShellPattern.objects.filter(user=session_user)
+            module_patterns = ModulePattern.objects.filter(user=session_user)
+            device_patterns = DevicePattern.objects.filter(user=session_user)
+            trade_spaces = TradeSpace.objects.filter()
+            trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                                production_class=13).first()
-            delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
+            delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
             ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-            project_ships = Project_ship.objects.filter(user=session_user)
+            project_ships = ProjectShip.objects.filter(user=session_user)
             users = MyUser.objects.filter()
             trade_id = request.POST.get('trade_space_id')
             if trade_id is not None:
                 password = request.POST.get('password')
-                trade_space = Trade_space.objects.filter(id=trade_id).first()
+                trade_space = TradeSpace.objects.filter(id=trade_id).first()
                 trade_pass = trade_space.password
                 if password == trade_space.password:
                     message = 'Правильный пароль'
                     trade_space_id = trade_id
-                    trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
-                    user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user=session_user)
+                    trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
+                    user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user)
                 else:
                     message = 'Неправильный пароль'
-                    trade_elements = Trade_element.objects.filter(trade_space=1)
-                    user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user=session_user)
+                    trade_elements = TradeElement.objects.filter(trade_space=1)
+                    user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user)
 
                 request.session['userid'] = session_user
                 request.session['user_city'] = session_user_city
@@ -85,9 +85,9 @@ def trade(request):
                           'trade_building': trade_building, 'delivery_queues': delivery_queues}
                 return render(request, "trade.html", output)
 
-            trade_space = Trade_space.objects.filter(id=trade_space_id).first()
-            trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
-            user_trade_elements = Trade_element.objects.filter(user=session_user)
+            trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
+            trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
+            user_trade_elements = TradeElement.objects.filter(user=session_user)
             request.session['userid'] = session_user
             request.session['user_city'] = session_user_city
             request.session['live'] = True
@@ -109,8 +109,8 @@ def trade(request):
             warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by(
                 'id_resource')
             user = MyUser.objects.filter(user_id=session_user).first()
-            user_city = User_city.objects.filter(user=int(session_user)).first()
-            user_citys = User_city.objects.filter(user=int(session_user))
+            user_city = UserCity.objects.filter(user=int(session_user)).first()
+            user_citys = UserCity.objects.filter(user=int(session_user))
             planet = Planet.objects.filter(id=user_city.planet_id).first()
             race = Race.objects.filter(id=user.race_id).first()
             planets = Planet.objects.filter(id=user_city.planet_id)
@@ -135,7 +135,7 @@ def new_trade_space(request):
         name = request.POST.get('name')
         password = request.POST.get('pass')
         tax = request.POST.get('tax')
-        trade_space = Trade_space(
+        trade_space = TradeSpace(
             name=name,
             user=session_user,
             password=password,
@@ -144,34 +144,34 @@ def new_trade_space(request):
 
         trade_space.save()
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
-        basic_resources = Basic_resource.objects.filter()
-        user_city = User_city.objects.filter(user=session_user).first()
+        basic_resources = BasicResource.objects.filter()
+        user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = User_city.objects.filter(user=int(session_user))
-        warehouse_elements = Warehouse_element.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        user_citys = UserCity.objects.filter(user=int(session_user))
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'element_class', 'element_id')
-        warehouse_factorys = Warehouse_factory.objects.filter(user=session_user, user_city=session_user_city).order_by(
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'production_class', 'production_id')
-        factory_patterns = Factory_pattern.objects.filter(user=session_user)
-        hull_patterns = Hull_pattern.objects.filter(user=session_user)
-        armor_patterns = Armor_pattern.objects.filter(user=session_user)
-        shield_patterns = Shield_pattern.objects.filter(user=session_user)
-        engine_patterns = Engine_pattern.objects.filter(user=session_user)
-        generator_patterns = Generator_pattern.objects.filter(user=session_user)
-        weapon_patterns = Weapon_pattern.objects.filter(user=session_user)
-        shell_patterns = Shell_pattern.objects.filter(user=session_user)
-        module_patterns = Module_pattern.objects.filter(user=session_user)
-        device_patterns = Device_pattern.objects.filter(user=session_user)
-        trade_elements = Trade_element.objects.filter(trade_space=trade_space_id)
-        user_trade_elements = Trade_element.objects.filter(trade_space=trade_space_id, user=session_user)
+        factory_patterns = FactoryPattern.objects.filter(user=session_user)
+        hull_patterns = HullPattern.objects.filter(user=session_user)
+        armor_patterns = ArmorPattern.objects.filter(user=session_user)
+        shield_patterns = ShieldPattern.objects.filter(user=session_user)
+        engine_patterns = EnginePattern.objects.filter(user=session_user)
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user)
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user)
+        shell_patterns = ShellPattern.objects.filter(user=session_user)
+        module_patterns = ModulePattern.objects.filter(user=session_user)
+        device_patterns = DevicePattern.objects.filter(user=session_user)
+        trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
+        user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user)
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-        project_ships = Project_ship.objects.filter(user=session_user)
+        project_ships = ProjectShip.objects.filter(user=session_user)
         users = MyUser.objects.filter()
-        trade_spaces = Trade_space.objects.filter()
-        trade_space = Trade_space.objects.filter(id=trade_space_id).first()
-        trade_building = Building_installed.objects.filter(user=session_user, user_city=session_user_city,
+        trade_spaces = TradeSpace.objects.filter()
+        trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
+        trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                            production_class=13).first()
-        delivery_queues = Delivery_queue.objects.filter(user=session_user, user_city=session_user_city)
+        delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True

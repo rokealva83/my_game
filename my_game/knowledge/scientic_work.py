@@ -3,7 +3,7 @@
 import math
 from datetime import datetime, timedelta
 from my_game.models import MyUser, Warehouse
-from my_game.models import Basic_scientic, Turn_scientic
+from my_game.models import BasicScientic, TurnScientic
 
 
 def scien_up(*args):
@@ -11,7 +11,7 @@ def scien_up(*args):
     level_up = int(args[1])
     scientic = int(args[2])
     session_user_city = int(args[3])
-    number_scientic = len(Turn_scientic.objects.filter(user=session_user))
+    number_scientic = len(TurnScientic.objects.filter(user=session_user))
 
     resource1=0
     resource2=0
@@ -26,7 +26,7 @@ def scien_up(*args):
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('id_resource')
         user = MyUser.objects.filter(user_id=session_user).first()
 
-        scien = Basic_scientic.objects.get(scientic_id=scientic)
+        scien = BasicScientic.objects.get(scientic_id=scientic)
         time_studys = int(scien.time_study)
         if level_up == 1:
             time_study_turn = time_studys
@@ -111,63 +111,63 @@ def scien_up(*args):
                                                          id_resource=8).update(amount=new_mineral4)
             user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
 
-            turn_scientic = Turn_scientic.objects.filter(user=session_user).last()
+            turn_scientic = TurnScientic.objects.filter(user=session_user).last()
             if turn_scientic:
                 finish_time = turn_scientic.finish_time_science + timedelta(seconds=time_study_turn)
             else:
                 finish_time = datetime.now() + timedelta(seconds=time_study_turn)
 
             if scientic == 1:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     mathematics_up=level_up,
                     start_time_science=datetime.now(),
                     finish_time_science=finish_time,
                 )
             if scientic == 2:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     phisics_up=level_up,
                     start_time_science=datetime.now(),
                     finish_time_science=finish_time,
                 )
             if scientic == 3:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     biologic_chimics_up=level_up,
                     start_time_science=datetime.now(),
                     finish_time_science=finish_time,
                 )
             if scientic == 4:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     energetics_up=level_up,
                     start_time_science=datetime.now(),
                     finish_time_science=finish_time,
                 )
             if scientic == 5:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     radionics_up=level_up,
                     start_time_science=datetime.now(),
                     finish_time_science=finish_time,
                 )
             if scientic == 6:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     nanotech_up=level_up,
                     start_time_science=datetime.now(),
                     finish_time_science=finish_time,
                 )
             if scientic == 7:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     astronomy_up=level_up,
                     start_time_science=datetime.now(),
                     finish_time_science=finish_time,
                 )
             if scientic == 8:
-                turn_scientic = Turn_scientic(
+                turn_scientic = TurnScientic(
                     user=session_user,
                     logistic_up=level_up,
                     start_time_science=datetime.now(),
