@@ -85,21 +85,21 @@ def production_module(*args):
             mineral4 = 0
 
             for warehouse in warehouses:
-                if warehouse.id_resource == 1:
+                if warehouse.resource == 1:
                     resource1 = warehouse.amount
-                elif warehouse.id_resource == 2:
+                elif warehouse.resource == 2:
                     resource2 = warehouse.amount
-                elif warehouse.id_resource == 3:
+                elif warehouse.resource == 3:
                     resource3 = warehouse.amount
-                elif warehouse.id_resource == 4:
+                elif warehouse.resource == 4:
                     resource4 = warehouse.amount
-                elif warehouse.id_resource == 5:
+                elif warehouse.resource == 5:
                     mineral1 = warehouse.amount
-                elif warehouse.id_resource == 6:
+                elif warehouse.resource == 6:
                     mineral2 = warehouse.amount
-                elif warehouse.id_resource == 7:
+                elif warehouse.resource == 7:
                     mineral3 = warehouse.amount
-                elif warehouse.id_resource == 8:
+                elif warehouse.resource == 8:
                     mineral4 = warehouse.amount
 
             if user.internal_currency >= module_which_produces.price_internal_currency * int(amount_element) and \
@@ -124,32 +124,32 @@ def production_module(*args):
                 new_mineral4 = mineral4 - module_which_produces.price_mineral4 * int(amount_element)
 
                 for warehouse in warehouses:
-                    if warehouse.id_resource == 1:
+                    if warehouse.resource == 1:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=1).update(
                             amount=new_resource1)
-                    elif warehouse.id_resource == 2:
+                    elif warehouse.resource == 2:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=2).update(
                             amount=new_resource2)
-                    elif warehouse.id_resource == 3:
+                    elif warehouse.resource == 3:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=3).update(
                             amount=new_resource3)
-                    elif warehouse.id_resource == 4:
+                    elif warehouse.resource == 4:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=4).update(
                             amount=new_resource4)
-                    elif warehouse.id_resource == 5:
+                    elif warehouse.resource == 5:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=5).update(amount=new_mineral1)
-                    elif warehouse.id_resource == 6:
+                    elif warehouse.resource == 6:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=6).update(amount=new_mineral2)
-                    elif warehouse.id_resource == 7:
+                    elif warehouse.resource == 7:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=7).update(amount=new_mineral3)
-                    elif warehouse.id_resource == 8:
+                    elif warehouse.resource == 8:
                         warehouse = WarehouseFactoryResource.objects.filter(id_factory=factory_id,
                                                                               id_resource=8).update(amount=new_mineral4)
 
@@ -231,21 +231,21 @@ def complex_production_module(*args):
         mineral4 = 0
 
         for warehouse in warehouses:
-            if warehouse.id_resource == 1:
+            if warehouse.resource_id == 1:
                 resource1 = warehouse.amount
-            elif warehouse.id_resource == 2:
+            elif warehouse.resource_id == 2:
                 resource2 = warehouse.amount
-            elif warehouse.id_resource == 3:
+            elif warehouse.resource_id == 3:
                 resource3 = warehouse.amount
-            elif warehouse.id_resource == 4:
+            elif warehouse.resource_id == 4:
                 resource4 = warehouse.amount
-            elif warehouse.id_resource == 5:
+            elif warehouse.resource_id == 5:
                 mineral1 = warehouse.amount
-            elif warehouse.id_resource == 6:
+            elif warehouse.resource_id == 6:
                 mineral2 = warehouse.amount
-            elif warehouse.id_resource == 7:
+            elif warehouse.resource_id == 7:
                 mineral3 = warehouse.amount
-            elif warehouse.id_resource == 8:
+            elif warehouse.resource_id == 8:
                 mineral4 = warehouse.amount
 
         if user.internal_currency >= module_which_produces.price_internal_currency and \
@@ -269,28 +269,28 @@ def complex_production_module(*args):
             new_mineral4 = mineral4 - module_which_produces.price_mineral4
 
             for warehouse in warehouses:
-                if warehouse.id_resource == 1:
+                if warehouse.resource_id == 1:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=1).update(
                         amount=new_resource1)
-                elif warehouse.id_resource == 2:
+                elif warehouse.resource_id == 2:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=2).update(
                         amount=new_resource2)
-                elif warehouse.id_resource == 3:
+                elif warehouse.resource_id == 3:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=3).update(
                         amount=new_resource3)
-                elif warehouse.id_resource == 4:
+                elif warehouse.resource_id == 4:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=4).update(
                         amount=new_resource4)
-                elif warehouse.id_resource == 5:
+                elif warehouse.resource_id == 5:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=5).update(
                         amount=new_mineral1)
-                elif warehouse.id_resource == 6:
+                elif warehouse.resource_id == 6:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=6).update(
                         amount=new_mineral2)
-                elif warehouse.id_resource == 7:
+                elif warehouse.resource_id == 7:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=7).update(
                         amount=new_mineral3)
-                elif warehouse.id_resource == 8:
+                elif warehouse.resource_id == 8:
                     warehouse = WarehouseComplex.objects.filter(id_complex=complex_id, id_resource=8).update(
                         amount=new_mineral4)
 

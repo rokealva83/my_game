@@ -57,7 +57,7 @@ def fuel(*args):
     ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet_id)
     hull_energy = 0
     for ship in ship_in_fleets:
-        project = ProjectShip.objects.filter(id=ship.id_project_ship).first()
+        project = ProjectShip.objects.filter(id=ship.project_ship).first()
         hull = HullPattern.objects.filter(id=project.hull_id).first()
         hull_energy = hull_energy + hull.power_consuption * ship.amount_ship
 
@@ -103,7 +103,7 @@ def need_fuel_process(*args):
             element_ships = ElementShip.objects.filter(id_project_ship=ship.id_project_ship)
             for element_ship in element_ships:
                 if element_ship.class_element == 8:
-                    element_pattern = ModulePattern.objects.filter(id=element_ship.id_element_pattern).first()
+                    element_pattern = ModulePattern.objects.filter(id=element_ship.element_pattern_id).first()
 
                     if flightplan.class_command == 3:
                         if element_pattern.module_class == 3:

@@ -71,11 +71,11 @@ def add_ship(request):
                     produced_energy = 0
                     for ship_element in ship_elements:
                         if ship_element.class_element == 3:
-                            element_pattern = ShieldPattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            element_pattern = ShieldPattern.objects.filter(id=ship_element.element_pattern_id).first()
                             use_energy = use_energy + element_pattern.power_consuption
 
                         if ship_element.class_element == 4:
-                            engine_pattern = EnginePattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            engine_pattern = EnginePattern.objects.filter(id=ship_element.element_pattern_id).first()
                             if engine_pattern.system_power != 0:
                                 use_fuel_system = use_fuel_system + engine_pattern.power_consuption
                             if engine_pattern.intersystem_power != 0:
@@ -87,26 +87,26 @@ def add_ship(request):
 
                         if ship_element.class_element == 5:
                             element_pattern = GeneratorPattern.objects.filter(
-                                id=ship_element.id_element_pattern).first()
+                                id=ship_element.element_pattern_id).first()
                             use_fuel_generator = use_fuel_generator + element_pattern.fuel_necessary
                             produced_energy = produced_energy + element_pattern.produced_energy
 
                         if ship_element.class_element == 6:
-                            element_pattern = WeaponPattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            element_pattern = WeaponPattern.objects.filter(id=ship_element.element_pattern_id).first()
                             use_energy = use_energy + element_pattern.power_consuption
 
                         if ship_element.class_element == 7:
-                            element_pattern = WeaponPattern.objects.filter(id=ship_element.id_element_pattern).first()
+                            element_pattern = WeaponPattern.objects.filter(id=ship_element.element_pattern_id).first()
                             use_energy = use_energy + element_pattern.power_consuption
 
                         if ship_element.class_element == 8:
-                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.element_pattern_id,
                                                                             module_class=2).first()
                             if element_pattern:
                                 hold = hold + element_pattern.param1
                                 use_energy = use_energy + element_pattern.power_consuption
 
-                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.element_pattern_id,
                                                                             module_class=3).first()
                             if element_pattern:
                                 fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(
@@ -123,7 +123,7 @@ def add_ship(request):
                                     fleet_parametr_resource_extraction.save()
                                 use_energy = use_energy + element_pattern.power_consuption
 
-                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.element_pattern_id,
                                                                             module_class=5, param3=1).first()
                             if element_pattern:
                                 fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
@@ -141,7 +141,7 @@ def add_ship(request):
                                     )
                                     fleet_parametr_build.save()
 
-                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.element_pattern_id,
                                                                             module_class=5, param3=2).first()
                             if element_pattern:
                                 fleet_parametr_repair = FleetParametrBuildRepair.objects.filter(fleet_id=fleet_id,
@@ -160,7 +160,7 @@ def add_ship(request):
                                     )
                                     fleet_parametr_repair.save()
 
-                            element_pattern = ModulePattern.objects.filter(id=ship_element.id_element_pattern,
+                            element_pattern = ModulePattern.objects.filter(id=ship_element.element_pattern_id,
                                                                             module_class=6).first()
                             if element_pattern:
                                 fleet_parametr_scan = FleetParametrScan(

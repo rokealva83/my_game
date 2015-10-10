@@ -14,13 +14,13 @@ class MyUserAdmin(admin.ModelAdmin):
 
 
 class MyRaceAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+    list_display = ['race_name', 'description']
 
 class MyScienticAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+    list_display = ['scientic_name', 'description']
 
 class MyFactoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+    list_display = ['factory_name', 'description']
 
 admin.site.register(MyUser, MyUserAdmin)
 admin.site.register(Race, MyRaceAdmin)

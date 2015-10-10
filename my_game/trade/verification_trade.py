@@ -20,7 +20,7 @@ def verification_trade(request):
         for trade_flight in trade_flights:
             user_city = UserCity.objects.filter(id=trade_flight.user_city).first()
             if trade_flight.status == 1:
-                if trade_flight.id_flight == 1:
+                if trade_flight.flightplan == 1:
                     time_start = trade_flight.start_time
                     delta_time = time - time_start
                     new_delta = delta_time.seconds
@@ -34,16 +34,16 @@ def verification_trade(request):
                         trade_flight = TradeFlight.objects.filter(id=trade_flight.id).delete()
                         trade_flight = TradeFlight.objects.filter(id_fleet=fleet.id).first()
                         trade_flight = TradeFlight.objects.filter(id=trade_flight.id).update(status=1)
-                elif trade_flight.id_flight == 2:
+                elif trade_flight.flightplan == 2:
                     time_start = trade_flight.start_time
                     delta_time = time - time_start
                     new_delta = delta_time.seconds
                     delta = trade_flight.flight_time
                     if new_delta > delta:
                         hold = Hold(
-                            fleet_id=trade_flight.id_fleet,
+                            fleet_id=trade_flight.fleet,
                             class_shipment=trade_flight.class_element,
-                            id_shipment=trade_flight.id_element,
+                            id_shipment=trade_flight.element_id,
                             amount_shipment=trade_flight.amount,
                             mass_shipment=trade_flight.mass,
                             size_shipment=trade_flight.size
@@ -69,7 +69,7 @@ def verification_trade(request):
                                                                              system=user_city.system_id, status=0,
                                                                              planet_status=planet_status)
 
-                elif trade_flight.id_flight == 3:
+                elif trade_flight.flightplan == 3:
                     time_start = trade_flight.start_time
                     delta_time = time - time_start
                     new_delta = delta_time.seconds
@@ -79,49 +79,49 @@ def verification_trade(request):
 
                         if hold.class_shipment == 0:
                             warehouse = Warehouse.objects.filter(user=user, user_city=trade_flight.user_city,
-                                                                 id_resource=trade_flight.id_element).first()
+                                                                 id_resource=trade_flight.element_id).first()
                             new_amount = warehouse.amount + trade_flight.amount
                             warehouse = Warehouse.objects.filter(user=user, user_city=trade_flight.user_city,
-                                                                 id_resource=trade_flight.id_element).update(
+                                                                 id_resource=trade_flight.element_id).update(
                                 amount=new_amount)
 
                         elif 0 < hold.class_shipment < 10:
                             warehouse = WarehouseElement.objects.filter(user=user, user_city=trade_flight.user_city,
                                                                          element_class=trade_flight.class_element,
-                                                                         element_id=trade_flight.id_element).first()
+                                                                         element_id=trade_flight.element_id).first()
                             if warehouse:
                                 new_amount = warehouse.amount + trade_flight.amount
                                 warehouse = WarehouseElement.objects.filter(user=user,
                                                                              user_city=trade_flight.user_city,
                                                                              element_class=trade_flight.class_element,
-                                                                             element_id=trade_flight.id_element).update(
+                                                                             element_id=trade_flight.element_id).update(
                                     amount=new_amount)
                             else:
                                 warehouse = WarehouseElement(
                                     user=user,
                                     user_city=trade_flight.user_city,
                                     element_class=trade_flight.class_element,
-                                    element_id=trade_flight.id_element,
+                                    element_id=trade_flight.element_id,
                                     amount=trade_flight.amount
                                 )
                         elif hold.class_shipment > 10:
                             warehouse = WarehouseFactory.objects.filter(user=user, user_city=trade_flight.user_city,
                                                                          production_class__lt=13,
-                                                                         factory_id=trade_flight.id_element).first()
+                                                                         factory_id=trade_flight.element_id).first()
                             if warehouse:
                                 new_amount = warehouse.amount + trade_flight.amount
                                 warehouse = WarehouseFactory.objects.filter(user=user,
                                                                              user_city=trade_flight.user_city,
                                                                              production_class__lt=13,
-                                                                             factory_id=trade_flight.id_element).update(
+                                                                             factory_id=trade_flight.element_id).update(
                                     amount=new_amount)
                             else:
-                                factory_rattern = FactoryPattern.objects.filter(id=trade_flight.id_element).first()
+                                factory_rattern = FactoryPattern.objects.filter(id=trade_flight.element_id).first()
 
                                 warehouse = WarehouseFactory(
                                     user=user,
                                     user_city=trade_flight.user_city,
-                                    factory_id=trade_flight.id_element,
+                                    factory_id=trade_flight.element_id,
                                     production_class=factory_rattern.production_class,
                                     production_id=factory_rattern.production_id,
                                     time_production=factory_rattern.time_production,
@@ -163,46 +163,46 @@ def verification_trade(request):
 
             if teleport.class_element == 0:
                 warehouse = Warehouse.objects.filter(user=user, user_city=teleport.user_city,
-                                                     id_resource=teleport.id_element).first()
+                                                     id_resource=teleport.element_id).first()
                 new_amount = warehouse.amount + teleport.amount
                 warehouse = Warehouse.objects.filter(user=user, user_city=teleport.user_city,
-                                                     id_resource=teleport.id_element).update(amount=new_amount)
+                                                     id_resource=teleport.element_id).update(amount=new_amount)
 
             elif 0 < teleport.class_element < 10:
                 warehouse = WarehouseElement.objects.filter(user=user, user_city=teleport.user_city,
                                                              element_class=teleport.class_element,
-                                                             element_id=teleport.id_element).first()
+                                                             element_id=teleport.element_id).first()
                 if warehouse:
                     new_amount = warehouse.amount + teleport.amount
                     warehouse = WarehouseElement.objects.filter(user=user, user_city=teleport.user_city,
                                                                  element_class=teleport.class_element,
-                                                                 element_id=teleport.id_element).update(
+                                                                 element_id=teleport.element_id).update(
                         amount=new_amount)
                 else:
                     warehouse = WarehouseElement(
                         user=user,
                         user_city=teleport.user_city,
                         element_class=teleport.class_element,
-                        element_id=teleport.id_element,
+                        element_id=teleport.element_id,
                         amount=teleport.amount
                     )
             elif teleport.class_shipment > 10:
                 warehouse = WarehouseFactory.objects.filter(user=user, user_city=teleport.user_city,
                                                              production_class__lt=13,
-                                                             factory_id=teleport.id_element).first()
+                                                             factory_id=teleport.element_id).first()
                 if warehouse:
                     new_amount = warehouse.amount + teleport.amount
                     warehouse = WarehouseFactory.objects.filter(user=user, user_city=teleport.user_city,
                                                                  production_class__lt=13,
-                                                                 factory_id=teleport.id_element).update(
+                                                                 factory_id=teleport.element_id).update(
                         amount=new_amount)
                 else:
-                    factory_rattern = FactoryPattern.objects.filter(id=teleport.id_element).first()
+                    factory_rattern = FactoryPattern.objects.filter(id=teleport.element_id).first()
 
                     warehouse = WarehouseFactory(
                         user=user,
                         user_city=teleport.user_city,
-                        factory_id=teleport.id_element,
+                        factory_id=teleport.element_id,
                         production_class=factory_rattern.production_class,
                         production_id=factory_rattern.production_id,
                         time_production=factory_rattern.time_production,

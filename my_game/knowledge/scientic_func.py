@@ -14,7 +14,7 @@ def hull_upgrade(request):
     number_hull = len(b_hull) - 1
     number_hull_scient = random.randint(0, number_hull)
     hull_scient = b_hull[number_hull_scient]
-    u_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id).last()
+    u_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
     if u_hull is None:
         koef = element_open(user, hull_scient)
 
@@ -26,9 +26,9 @@ def hull_upgrade(request):
         if 0 < new_hull < upper_scope:
             hull_pattern = HullPattern(
                 user=user,
-                basic_id=hull_scient.id,
-                name=hull_scient.name,
-                health=hull_scient.health,
+                basic_hull=hull_scient,
+                hull_name=hull_scient.name,
+                hull_health=hull_scient.health,
                 generator=hull_scient.generator,
                 engine=hull_scient.engine,
                 weapon=hull_scient.weapon,
@@ -37,8 +37,8 @@ def hull_upgrade(request):
                 module=hull_scient.module,
                 main_weapon=hull_scient.main_weapon,
                 hold_size=hull_scient.hold_size,
-                mass=hull_scient.mass,
-                size=hull_scient.size,
+                hull_mass=hull_scient.mass,
+                hull_size=hull_scient.size,
                 fuel_tank=hull_scient.fuel_tank,
                 power_consuption=hull_scient.power_consuption,
                 price_internal_currency=hull_scient.price_internal_currency,
@@ -52,7 +52,7 @@ def hull_upgrade(request):
                 price_mineral4=hull_scient.price_mineral4,
             )
             hull_pattern.save()
-            new_factory_pattern(user, 1, hull_scient.id)
+            new_factory_pattern(user, 1, hull_scient)
 
     else:
         studied_hull = HullPattern.objects.filter(user=user, basic_id=hull_scient.id, bought_template=0)
@@ -854,8 +854,7 @@ def element_open(*args):
     else:
         koef_logist = 0
 
-    luckyness = MyUser.objects.filter(user_id=user).first()
-    lucky = luckyness.user_luckyness
+    lucky = user.user_luckyness
     koef = (1 + (
         koef_all + koef_math + koef_phis + koef_biol + koef_energy + koef_radio + koef_nanotech + koef_astronomy + koef_logist)) * (
                1 + lucky / 100.0)
@@ -888,13 +887,13 @@ def price_increase(*args):
 
 def new_factory_pattern(*args):
     new_factory_patt = args
-    user = int(new_factory_patt[0])
+    user = new_factory_patt[0]
     prod_class = int(new_factory_patt[1])
-    prod_id = int(new_factory_patt[2])
+    prod_id = new_factory_patt[2]
     new_factory = BasicFactory.objects.filter(production_class=prod_class, production_id=prod_id).first()
     user_factory = FactoryPattern(
         user=user,
-        basic_id=new_factory.id,
+        basic_factory=new_factory,
         name=new_factory.name,
         price_internal_currency=new_factory.price_internal_currency,
         price_resource1=new_factory.price_resource1,

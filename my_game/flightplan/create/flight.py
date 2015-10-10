@@ -65,11 +65,11 @@ def flight_system(*args):
                     id_command = 1
                 else:
                     answer = calculation(fleet_id, planet_giper, planet_null, distance)
-                    id_command = answer['id_command']
+                    id_command = answer['command_id']
                     flight_time = answer['flight_time']
             else:
                 answer = calculation(fleet_id, planet_giper, planet_null, distance)
-                id_command = answer['id_command']
+                id_command = answer['command_id']
                 flight_time = answer['flight_time']
 
             if id_command != 1:
@@ -130,7 +130,7 @@ def flight_system(*args):
         distance = math.sqrt((xx1 - xx2) ** 2 + (yy1 - yy2) ** 2 + (zz1 - zz2) ** 2)
 
         answer = calculation(fleet_id, coordinate_giper, coordinate_null, distance)
-        id_command = answer['id_command']
+        id_command = answer['command_id']
         flight_time = answer['flight_time']
 
         system = 0
@@ -188,7 +188,7 @@ def calculation(*args):
         fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
         check = 0
         for fleet_ship in fleet_ships:
-            project_ship = ProjectShip.objects.filter(id=fleet_ship.id_project_ship).first()
+            project_ship = ProjectShip.objects.filter(id=fleet_ship.project_ship).first()
             if project_ship.giper_power == 0:
                 check = 1
         if check == 0:
@@ -203,7 +203,7 @@ def calculation(*args):
         fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
         check = 0
         for fleet_ship in fleet_ships:
-            project_ship = ProjectShip.objects.filter(id=fleet_ship.id_project_ship).first()
+            project_ship = ProjectShip.objects.filter(id=fleet_ship.project_ship).first()
             if project_ship.giper_power == 0:
                 check = 1
         if check == 0:
@@ -218,4 +218,4 @@ def calculation(*args):
         flight_time = math.sqrt(
             distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.intersystem_power)) * 2
         id_command = 2
-    return {'flight_time': flight_time, 'id_command': id_command}
+    return {'flight_time': flight_time, 'command_id': id_command}

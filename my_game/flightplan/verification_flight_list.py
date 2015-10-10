@@ -53,7 +53,7 @@ def verification_flight_list(request):
                         start_flight.start_flight(fleet.id, finish_time)
 
                     elif flightplan.class_command == 2:
-                        if flightplan.id_command == 1:
+                        if flightplan.command_id == 1:
                             start_upload_hold.start_upload(fleet.id, finish_time)
                         else:
                             start_unload_hold.start_unload(fleet.id, finish_time)

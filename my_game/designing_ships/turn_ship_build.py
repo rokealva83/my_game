@@ -44,10 +44,10 @@ def verification_turn_ship_build(request):
                     element_ships = ElementShip.objects.filter(id_project_ship=turn_ship_build.ship_pattern)
                     for element_ship in element_ships:
                         warehouse_element = WarehouseElement.objects.filter(element_class=element_ship.class_element,
-                                                                             element_id=element_ship.id_element_pattern).first()
+                                                                             element_id=element_ship.element_pattern_id).first()
                         new_amount = warehouse_element.amount + (1 * turn_ship_build.amount)
                         warehouse_element = WarehouseElement.objects.filter(element_class=element_ship.class_element,
-                                                                             element_id=element_ship.id_element_pattern).update(
+                                                                             element_id=element_ship.element_pattern_id).update(
                             amount=new_amount)
 
                 elif turn_ship_build.process_id == 3:
@@ -58,11 +58,11 @@ def verification_turn_ship_build(request):
                         else:
                             class_element = element_ship.class_element
                         warehouse_element = WarehouseElement.objects.filter(element_class=class_element,
-                                                                             element_id=element_ship.id_element_pattern).first()
+                                                                             element_id=element_ship.element_pattern_id).first()
 
                         new_amount = warehouse_element.amount + (1 * turn_ship_build.amount)
                         warehouse_element = WarehouseElement.objects.filter(element_class=class_element,
-                                                                             element_id=element_ship.id_element_pattern).update(
+                                                                             element_id=element_ship.element_pattern_id).update(
                             amount=new_amount)
                     dock = Ship.objects.filter(id_project_ship=turn_ship_build.ship_pattern).first()
                     create_ship = ProjectShip.objects.filter(user=user, id=turn_ship_build.ship_pattern).first()

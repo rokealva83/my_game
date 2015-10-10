@@ -23,7 +23,7 @@ def start_colonization(*args):
     if planet:
         if fleet.planet != 0 and flightplan.id_command == 1:
             for hold_module in hold_modules:
-                device = int(DevicePattern.objects.filter(id=hold_module.id_shipment).first().param3)
+                device = int(DevicePattern.objects.filter(id=hold_module.shipment_id).first().param3)
                 if device == 1:
                     error = 0
                     message = 'Колонизация начата'
@@ -32,7 +32,7 @@ def start_colonization(*args):
 
     if fleet.planet == 0 and flightplan.id_command == 2:
         for hold_module in hold_modules:
-            device = int(DevicePattern.objects.filter(id=hold_module.id_shipment).first().param3)
+            device = int(DevicePattern.objects.filter(id=hold_module.shipment_id).first().param3)
             if device == 2:
                 error = 0
                 message = 'Развертка основы базы начата'

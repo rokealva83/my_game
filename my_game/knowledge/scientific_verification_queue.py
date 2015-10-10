@@ -10,9 +10,9 @@ import random
 
 
 def check_scientific_verification_queue(request):
-    user = int(request)
+    user = request
     time = timezone.now()
-    time_update = MyUser.objects.filter(user_id=user).first().last_time_check
+    time_update = user.last_time_check
     turn_scientics = TurnScientic.objects.filter(user=user)
     user_variables = UserVariables.objects.filter(id=1).first()
     if turn_scientics:
@@ -46,8 +46,7 @@ def check_scientific_verification_queue(request):
                 user_scientic = UserScientic.objects.filter(user=user).update(all_scientic=all_scient)
 
     # the addition of new technology
-    my_user = MyUser.objects.filter(user_id=user).first()
-    table_scan_time = my_user.last_time_scan_scient
+    table_scan_time = user.last_time_scan_scient
     delta = time - table_scan_time
     delta_time = delta.seconds
 

@@ -25,7 +25,7 @@ def verification_complex_stage(request):
                 delta = turn_production.time
                 if new_delta > delta:
 
-                    work_factory = FactoryInstalled.objects.filter(id=turn_production.factory_id).first()
+                    work_factory = FactoryInstalled.objects.filter(id=turn_production.factory).first()
                     warehouse = WarehouseElement.objects.filter(user_city=manufacturing_complex.user_city,
                                                                  element_id=turn_production.element_id,
                                                                  element_class=work_factory.production_class).first()
@@ -41,8 +41,8 @@ def verification_complex_stage(request):
                             amount=1
                         )
                         warehouse.save()
-                    complex_id = turn_production.complex_id
-                    factory_id = turn_production.factory_id
+                    complex_id = turn_production.complex
+                    factory_id = turn_production.factory
                     element_id = turn_production.element_id
                     time_start = turn_production.start_time_production + timedelta(seconds=turn_production.time)
                     turn_production_delete = TurnComplexProduction.objects.filter(id=turn_production.id).delete()

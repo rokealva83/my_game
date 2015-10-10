@@ -83,7 +83,7 @@ def verification_of_resources(request):
         check_all_user_factorys = FactoryInstalled.objects.filter(user=user, user_city=city_id)
         total_number_specialists = 0
         for check_all_user_factory in check_all_user_factorys:
-            install_factory = FactoryPattern.objects.filter(id=check_all_user_factory.factory_pattern_id).first()
+            install_factory = FactoryPattern.objects.filter(id=check_all_user_factory.factory_pattern).first()
             if install_factory:
                 total_number_specialists = total_number_specialists + install_factory.cost_expert_deployment
         increase_internal_currency = total_number_specialists * elapsed_time_seconds * tax

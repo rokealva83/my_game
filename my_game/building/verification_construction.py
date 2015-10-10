@@ -23,11 +23,11 @@ def verification_phase_of_construction(request):
         if new_delta > delta:
             verification_func.verification_of_resources(user)
             if turn_building.class_id != 13:
-                factory_pattern = FactoryPattern.objects.filter(id=turn_building.factory_id).first()
+                factory_pattern = FactoryPattern.objects.filter(id=turn_building.factory).first()
                 factory_installed = FactoryInstalled(
                     user=user,
                     user_city=user_city.id,
-                    factory_pattern_id=turn_building.factory_id,
+                    factory_pattern_id=turn_building.factory,
                     name=factory_pattern.name,
                     time_deployment=factory_pattern.time_deployment,
                     production_class=factory_pattern.production_class,
@@ -39,11 +39,11 @@ def verification_phase_of_construction(request):
                 )
                 factory_installed.save()
             else:
-                factory_pattern = BuildingPattern.objects.filter(id=turn_building.factory_id).first()
+                factory_pattern = BuildingPattern.objects.filter(id=turn_building.factory).first()
                 factory_installed = BuildingInstalled(
                     user=user,
                     user_city=user_city.id,
-                    building_pattern_id=turn_building.factory_id,
+                    building_pattern_id=turn_building.factory,
                     name=factory_pattern.name,
                     time_deployment=factory_pattern.time_deployment,
                     production_class=factory_pattern.production_class,

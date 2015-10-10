@@ -34,7 +34,7 @@ def work_with_project(request):
                         work_element_id = 0
                         if element_ships:
                             for element_ship in element_ships:
-                                id_element = element_ship.id_element_pattern
+                                id_element = element_ship.element_pattern_id
                                 if id_element != work_element_id:
                                     number_element = len(
                                         ElementShip.objects.filter(id_project_ship=ship_id, class_element=i,
@@ -86,7 +86,7 @@ def work_with_project(request):
                                 class_element = element_ship.class_element
                             else:
                                 class_element = 6
-                            id_element = element_ship.id_element_pattern
+                            id_element = element_ship.element_pattern_id
 
                             user = int(session_user)
                             user_city = int(session_user_city)

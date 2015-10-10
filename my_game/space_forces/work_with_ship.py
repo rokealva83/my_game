@@ -188,7 +188,7 @@ def action_modificate_ship(request):
             for i in range(len_modificate_ship_elements):
                 new_ship_element = new_ship_elements[i]
                 modificate_ship_element = modificate_ship_elements[i]
-                if modificate_ship_element.position != new_ship_element.position or modificate_ship_element.id_element_pattern != new_ship_element.id_element_pattern:
+                if modificate_ship_element.position != new_ship_element.position or modificate_ship_element.element_pattern_id != new_ship_element.element_pattern_id:
                     time_build = time_build * 1.15
                 error = error_function(session_user_city, new_ship_element, new_ship_project, ship_amount)
                 if error == True:
@@ -208,7 +208,7 @@ def action_modificate_ship(request):
             for i in range(len_modificate_ship_elements):
                 new_ship_element = new_ship_elements[i]
                 modificate_ship_element = modificate_ship_elements[i]
-                if modificate_ship_element.position != new_ship_element.position or modificate_ship_element.id_element_pattern != new_ship_element.id_element_pattern:
+                if modificate_ship_element.position != new_ship_element.position or modificate_ship_element.element_pattern_id != new_ship_element.element_pattern_id:
                     time_build = time_build * 1.15
                 difference = len_new_ship_elements - len_modificate_ship_elements
                 time_build = time_build * math.pow(1.1, difference)
@@ -243,7 +243,7 @@ def action_modificate_ship(request):
             for i in range(len_new_ship_elements):
                 new_ship_element = new_ship_elements[i]
                 modificate_ship_element = modificate_ship_elements[i]
-                if modificate_ship_element.position != new_ship_element.position or modificate_ship_element.id_element_pattern != new_ship_element.id_element_pattern:
+                if modificate_ship_element.position != new_ship_element.position or modificate_ship_element.element_pattern_id != new_ship_element.element_pattern_id:
                     time_build = time_build * 1.15
                 difference = len_modificate_ship_elements - len_new_ship_elements
                 time_build = time_build * math.pow(1.05, difference)
@@ -263,11 +263,11 @@ def action_modificate_ship(request):
     for new_ship_element in new_ship_elements:
         warehouse_element = WarehouseElement.objects.filter(user_city=session_user_city,
                                                              element_class=new_ship_element.class_element,
-                                                             element_id=new_ship_element.id_element_pattern).first()
+                                                             element_id=new_ship_element.element_pattern_id).first()
         new_amount = warehouse_element.amount - (1 * ship_amount)
         warehouse_element = WarehouseElement.objects.filter(user_city=session_user_city,
                                                              element_class=new_ship_element.class_element,
-                                                             element_id=new_ship_element.id_element_pattern).update(
+                                                             element_id=new_ship_element.element_pattern_id).update(
             amount=new_amount)
         ship = Ship.objects.filter(place_id=session_user_city, id_project_ship=modificate_ship_id).first()
         new_amount = ship.amount_ship - ship_amount

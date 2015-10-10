@@ -16,6 +16,7 @@ from my_game import function
 def registration(request):
     return render(request, "registration.html", {})
 
+
 # функция добавления нового игрока
 def add_user(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
@@ -40,14 +41,13 @@ def add_user(request):
             user_lucky = random.randint(1, 10)
             time_check = user.last_login
             last_time_check = datetime(time_check.year, time_check.month, time_check.day, 0, 0, 0, 0)
+            race = Race.objects.filter(id=request.POST.get('rac')).first()
 
             myuser = MyUser(
                 user_id=id_user,
                 user_name=request.POST.get('name'),
                 password=request.POST.get('pass'),
-                race_id=request.POST.get('rac'),
-                alliance_id=0,
-                union_id=0,
+                race=race,
                 internal_currency=user_variables.registr_internal_currency,
                 e_mail=ma,
                 referal_code=request.POST.get('name'),
@@ -59,7 +59,7 @@ def add_user(request):
 
             # добавление пользователю науки
             scientic = UserScientic(
-                user=id_user,
+                user=myuser,
                 time_study_math=BasicScientic.objects.get(scientic_id=1).time_study,
                 time_study_phis=BasicScientic.objects.get(scientic_id=2).time_study,
                 time_study_biol=BasicScientic.objects.get(scientic_id=3).time_study,
@@ -70,77 +70,75 @@ def add_user(request):
                 time_study_logis=BasicScientic.objects.get(scientic_id=4).time_study,
             )
             scientic.save()
-            planeta = Planet.objects.filter(planet_type=int(request.POST.get('rac')), planet_free=1).first()
+            planet = Planet.objects.filter(planet_type=int(request.POST.get('rac')), planet_free=1).first()
             # установка начального города и добавление склада. Добавление начальных строений
             user_city = UserCity(
-                user=id_user,
-                system_id=planeta.system_id,
-                planet=planeta,
-                x=planeta.global_x,
-                y=planeta.global_y,
-                z=planeta.global_z,
-                city_size_free=planeta.work_area_planet,
+                user=myuser,
+                system=planet.system,
+                planet=planet,
+                x=planet.global_x,
+                y=planet.global_y,
+                z=planet.global_z,
+                city_size_free=planet.work_area_planet,
                 founding_date=datetime.today(),
                 extraction_date=datetime.today()
             )
             user_city.save()
-            busy_id = planeta.id
-            planet = Planet.objects.filter(pk=busy_id).update(planet_free=0)
-            user_city = UserCity.objects.filter(user=id_user).first()
+            planet = Planet.objects.filter(pk=user_city.planet.id).update(planet_free=0)
 
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=1,
+                user=myuser,
+                user_city=user_city,
+                resource_id=1,
                 amount=user_variables.registr_resource1
             )
             warehouse.save()
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=2,
+                user=myuser,
+                user_city=user_city,
+                resource_id=2,
                 amount=user_variables.registr_resource2
             )
             warehouse.save()
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=3,
+                user=myuser,
+                user_city=user_city,
+                resource_id=3,
                 amount=user_variables.registr_resource3
             )
             warehouse.save()
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=4,
+                user=myuser,
+                user_city=user_city,
+                resource_id=4,
                 amount=user_variables.registr_resource4
             )
             warehouse.save()
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=5,
+                user=myuser,
+                user_city=user_city,
+                resource_id=5,
                 amount=user_variables.registr_mineral1
             )
             warehouse.save()
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=6,
+                user=myuser,
+                user_city=user_city,
+                resource_id=6,
                 amount=user_variables.registr_mineral2
             )
             warehouse.save()
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=7,
+                user=myuser,
+                user_city=user_city,
+                resource_id=7,
                 amount=user_variables.registr_mineral3
             )
             warehouse.save()
             warehouse = Warehouse(
-                user=id_user,
-                user_city=user_city.id,
-                id_resource=8,
+                user=myuser,
+                user_city=user_city,
+                resource_id=8,
                 amount=user_variables.registr_mineral4
             )
             warehouse.save()
@@ -149,9 +147,9 @@ def add_user(request):
             for basic_factory in basic_factorys:
                 if basic_factory.production_class > 9:
                     factory_pattern = FactoryPattern(
-                        user=id_user,
-                        basic_id=basic_factory.id,
-                        name=basic_factory.name,
+                        user=myuser,
+                        basic_factory=basic_factory,
+                        factory_name=basic_factory.factory_name,
                         price_internal_currency=basic_factory.price_internal_currency,
                         price_resource1=basic_factory.price_resource1,
                         price_resource2=basic_factory.price_resource2,
@@ -167,44 +165,36 @@ def add_user(request):
                         production_class=basic_factory.production_class,
                         production_id=basic_factory.production_id,
                         time_production=basic_factory.time_production,
-                        size=basic_factory.size,
-                        mass=basic_factory.mass,
+                        factory_size=basic_factory.factory_size,
+                        factory_mass=basic_factory.factory_mass,
                         power_consumption=basic_factory.power_consumption
                     )
                     factory_pattern.save()
-            factory_patterns = FactoryPattern.objects.filter(user=id_user)
+            factory_patterns = FactoryPattern.objects.filter(user=myuser)
             for factory_pattern in factory_patterns:
                 if factory_pattern.production_id == 1 or factory_pattern.production_id == 2:
                     factory_instelled = FactoryInstalled(
-                        user=id_user,
-                        user_city=user_city.id,
-                        factory_pattern_id=factory_pattern.id,
-                        name=factory_pattern.name,
-                        time_deployment=factory_pattern.time_deployment,
-                        production_class=factory_pattern.production_class,
-                        production_id=factory_pattern.production_id,
-                        time_production=factory_pattern.time_production,
-                        size=factory_pattern.size,
-                        mass=factory_pattern.mass,
-                        power_consumption=factory_pattern.power_consumption
+                        user=myuser,
+                        user_city=user_city,
+                        factory_pattern=factory_pattern,
                     )
                     factory_instelled.save()
-            factory_instelleds = FactoryInstalled.objects.filter(user=id_user)
+            factory_instelleds = FactoryInstalled.objects.filter(user=myuser)
             use_energy = 0
             use_area = 0
             for factory_instelled in factory_instelleds:
                 use_area = factory_instelled.size + use_area
                 if factory_instelled.production_class == 12:
-                    user_city = UserCity.objects.filter(user=id_user).update(power=factory_instelled.power_consumption)
+                    user_city = UserCity.objects.filter(user=myuser).update(power=factory_instelled.power_consumption)
                 else:
                     use_energy = use_energy + factory_instelled.power_consumption
-            user_city = UserCity.objects.filter(user=id_user).first()
             free_area = user_city.city_size_free - use_area
-            user_city = UserCity.objects.filter(user=id_user).update(use_energy=use_energy, city_size_free=free_area)
+            user_city = UserCity.objects.filter(user=myuser).update(use_energy=use_energy, city_size_free=free_area)
 
     elif request.POST.get('cancel_button') is not None:
         return render(request, "index.html", {})
     return render(request, "index.html", {})
+
 
 # функция авторизациир
 def auth(request):
@@ -215,21 +205,16 @@ def auth(request):
         if user_name_auth is not None:
             if user_name_auth.password == password_post:
                 user = MyUser.objects.filter(user_id=user_name_auth.id).first()
-                user_id = user.user_id
-                user_city = UserCity.objects.filter(user=user_id).first()
-                warehouses = Warehouse.objects.filter(user=user_id, user_city=user_city.id).order_by('id_resource')
-                user_city = UserCity.objects.filter(user=int(user_name_auth.id)).first()
-                user_citys = UserCity.objects.filter(user=int(user_name_auth.id))
-                planet = Planet.objects.filter(id=user_city.planet_id).first()
-                race = Race.objects.filter(id=user.race_id).first()
-                planets = Planet.objects.filter(id=user_city.planet_id)
-                len_planet = len(planets)
-                function.check_all_queues(user_id)
+                user_city = UserCity.objects.filter(user=user).first()
+                warehouses = Warehouse.objects.filter(user=user, user_city=user_city).order_by('resource_id')
+                user_citys = UserCity.objects.filter(user=user)
+                planet = user_city.planet
+                race = user.race
+                # function.check_all_queues(user)
                 output = {'user': user, 'race': race, 'warehouses': warehouses, 'user_city': user_city,
-                          'user_citys': user_citys,
-                          'planet': planet, 'len_planet': len_planet}
-                request.session['userid'] = user_name_auth.id
-                request.session['user_city'] = user_city.id
+                          'user_citys': user_citys, 'planet': planet}
+                request.session['user'] = user
+                request.session['user_city'] = user_city
                 request.session['live'] = True
                 return render(request, "civilization.html", output)
             else:

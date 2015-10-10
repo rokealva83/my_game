@@ -52,21 +52,21 @@ def scien_up(*args):
             cost_study_mineral4 = int(scien.cost_mineral4 * math.exp(level_up) / 5)
 
         for warehouse in warehouses:
-            if warehouse.id_resource == 1:
+            if warehouse.resource_id == 1:
                 resource1 = warehouse.amount
-            elif warehouse.id_resource == 2:
+            elif warehouse.resource_id == 2:
                 resource2 = warehouse.amount
-            elif warehouse.id_resource == 3:
+            elif warehouse.resource_id == 3:
                 resource3 = warehouse.amount
-            elif warehouse.id_resource == 4:
+            elif warehouse.resource_id == 4:
                 resource4 = warehouse.amount
-            elif warehouse.id_resource == 5:
+            elif warehouse.resource_id == 5:
                 mineral1 = warehouse.amount
-            elif warehouse.id_resource == 6:
+            elif warehouse.resource_id == 6:
                 mineral2 = warehouse.amount
-            elif warehouse.id_resource == 7:
+            elif warehouse.resource_id == 7:
                 mineral3 = warehouse.amount
-            elif warehouse.id_resource == 8:
+            elif warehouse.resource_id == 8:
                 mineral4 = warehouse.amount
 
         if user.internal_currency >= cost_study_internal_currency and resource1 >= cost_study_resource1 and \
@@ -85,28 +85,28 @@ def scien_up(*args):
             new_mineral4 = mineral4 - cost_study_mineral4
 
             for warehouse in warehouses:
-                if warehouse.id_resource == 1:
+                if warehouse.resource_id == 1:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=1).update(amount=new_resource1)
-                elif warehouse.id_resource == 2:
+                elif warehouse.resource_id == 2:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=2).update(amount=new_resource2)
-                elif warehouse.id_resource == 3:
+                elif warehouse.resource_id == 3:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=3).update(amount=new_resource3)
-                elif warehouse.id_resource == 4:
+                elif warehouse.resource_id == 4:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=4).update(amount=new_resource4)
-                elif warehouse.id_resource == 5:
+                elif warehouse.resource_id == 5:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=5).update(amount=new_mineral1)
-                elif warehouse.id_resource == 6:
+                elif warehouse.resource_id == 6:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=6).update(amount=new_mineral2)
-                elif warehouse.id_resource == 7:
+                elif warehouse.resource_id == 7:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=7).update(amount=new_mineral3)
-                elif warehouse.id_resource == 8:
+                elif warehouse.resource_id == 8:
                     warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
                                                          id_resource=8).update(amount=new_mineral4)
             user = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)

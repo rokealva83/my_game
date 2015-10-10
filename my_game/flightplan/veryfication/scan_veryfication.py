@@ -126,7 +126,7 @@ def scan_veryfication(*args):
             elif flightplan_scan.id_command == 4:
                 flightplans = Flightplan.objects.filter(status=1, class_command=1, id_commant=4)
                 for flightplan in flightplans:
-                    fleet = Fleet.objects.filter(id=flightplan.id_fleet).first()
+                    fleet = Fleet.objects.filter(id=flightplan.fleet).first()
                     verification_flight(fleet)
                     mail_subject = u'Сканирование гиперпространства \n'
                     fleet_mail = u'Флот произвел сканирование, находясь на координатам %s : %s : %s.\n  Координаты найденых в гипере флотов: \n' % (
