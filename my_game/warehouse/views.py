@@ -38,7 +38,7 @@ def warehouse(request):
         fuel_patterns = FuelPattern.objects.filter(user=session_user)
 
         attribute_factorys = (
-        "cost_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", "production_id",
+        "price_expert_deployment", "assembly_workpiece", "time_deployment", "production_class", "production_id",
         "time_production", "size", "mass", "power_consumption")
 
         attribute_hulls = (

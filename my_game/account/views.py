@@ -8,8 +8,7 @@ from datetime import datetime
 from my_game.models import Planet
 from my_game.models import UserVariables
 from my_game.models import MyUser, Race
-from my_game.models import UserCity, Warehouse, UserScientic, BasicScientic, BasicFactory, FactoryPattern, \
-    FactoryInstalled
+from my_game.models import UserCity, Warehouse, UserScientic, BasicScientic, BasicFactory, FactoryPattern, FactoryInstalled
 from my_game import function
 
 
@@ -159,7 +158,7 @@ def add_user(request):
                         price_mineral2=basic_factory.price_mineral2,
                         price_mineral3=basic_factory.price_mineral3,
                         price_mineral4=basic_factory.price_mineral4,
-                        cost_expert_deployment=basic_factory.cost_expert_deployment,
+                        cost_expert_deployment=basic_factory.price_expert_deployment,
                         assembly_workpiece=basic_factory.assembly_workpiece,
                         time_deployment=basic_factory.time_deployment,
                         production_class=basic_factory.production_class,

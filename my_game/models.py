@@ -8,33 +8,35 @@ from datetime import datetime
 class UserVariables(models.Model):
     class Meta:
         db_table = 'user_variables'
+        verbose_name = u'Глобальная переменная'
+        verbose_name_plural = u'Глобальные переменные'
 
-    registr_internal_currency = models.IntegerField()
-    registr_resource1 = models.IntegerField()
-    registr_resource2 = models.IntegerField()
-    registr_resource3 = models.IntegerField()
-    registr_resource4 = models.IntegerField()
-    registr_mineral1 = models.IntegerField()
-    registr_mineral2 = models.IntegerField()
-    registr_mineral3 = models.IntegerField()
-    registr_mineral4 = models.IntegerField()
-    basic_time_build_ship = models.IntegerField()
-    koef_ship_element_time = models.FloatField()
-    minimum_scan_time = models.IntegerField()
-    max_turn_assembly_pieces_basic = models.IntegerField()
-    max_turn_assembly_pieces_premium = models.IntegerField()
-    max_turn_building_basic = models.IntegerField()
-    max_turn_building_premium = models.IntegerField()
-    max_turn_production_basic = models.IntegerField()
-    max_turn_production_premium = models.IntegerField()
-    max_turn_scientic_basic = models.IntegerField()
-    max_turn_scientic_premium = models.IntegerField()
-    max_turn_ship_build_basic = models.IntegerField()
-    max_turn_ship_build_premium = models.IntegerField()
-    time_check_new_technology = models.IntegerField()
-    min_scientic_level = models.IntegerField()
-    tax_per_person = models.FloatField()
-    koef_price_increace_modern_element = models.FloatField()
+    registr_internal_currency = models.IntegerField(verbose_name=u'Валюта при регистрации')
+    registr_resource1 = models.IntegerField(verbose_name=u'Ресурс при регистраци')
+    registr_resource2 = models.IntegerField(verbose_name=u'Ресурс при регистраци')
+    registr_resource3 = models.IntegerField(verbose_name=u'Ресурс при регистраци')
+    registr_resource4 = models.IntegerField(verbose_name=u'Ресурс при регистраци')
+    registr_mineral1 = models.IntegerField(verbose_name=u'Минерал при регистраци')
+    registr_mineral2 = models.IntegerField(verbose_name=u'Минерал при регистраци')
+    registr_mineral3 = models.IntegerField(verbose_name=u'Минерал при регистраци')
+    registr_mineral4 = models.IntegerField(verbose_name=u'Минерал при регистраци')
+    basic_time_build_ship = models.IntegerField(verbose_name=u'Базовое время сборки корабля')
+    koef_ship_element_time = models.FloatField(verbose_name=u'Коефициент увеличения времени сборки корабля')
+    minimum_scan_time = models.IntegerField(verbose_name=u'Минимальное время сканирования')
+    max_turn_assembly_pieces_basic = models.IntegerField(verbose_name=u'Базовая очередь сборки заготовок')
+    max_turn_assembly_pieces_premium = models.IntegerField(verbose_name=u'Премиумная очередь сборки заготовок')
+    max_turn_building_basic = models.IntegerField(verbose_name=u'Базовая очередь строительства')
+    max_turn_building_premium = models.IntegerField(verbose_name=u'Премиумная очередь строительства')
+    max_turn_production_basic = models.IntegerField(verbose_name=u'Базовая очередь производства')
+    max_turn_production_premium = models.IntegerField(verbose_name=u'Премиумная очередь производства')
+    max_turn_scientic_basic = models.IntegerField(verbose_name=u'Базовая очередь иследований')
+    max_turn_scientic_premium = models.IntegerField(verbose_name=u'Премиумная очередь иследований')
+    max_turn_ship_build_basic = models.IntegerField(verbose_name=u'Базовая очередь сборки кораблей')
+    max_turn_ship_build_premium = models.IntegerField(verbose_name=u'Премиумная очередь сборки кораблей')
+    time_check_new_technology = models.IntegerField(verbose_name=u'Период открытия новой технологии')
+    min_scientic_level = models.IntegerField(verbose_name=u'Минимальный научный уровень')
+    tax_per_person = models.FloatField(verbose_name=u'Налог')
+    koef_price_increace_modern_element = models.FloatField(verbose_name=u'Коефициент увеличения цены при модернизации')
 
 
 class Race(models.Model):
@@ -45,28 +47,19 @@ class Race(models.Model):
 
     race_name = models.CharField(max_length=50, default='Race', verbose_name=u'Название')
     description = models.CharField(max_length=4096, verbose_name=u'Описание')
-    engine_system = models.FloatField()
-    engine_intersystem = models.FloatField()
-    engine_giper = models.FloatField()
-    engine_null = models.FloatField()
-    generator = models.FloatField()
-    armor = models.FloatField()
-    shield = models.FloatField()
-    weapon_attack = models.FloatField()
-    weapon_defense = models.FloatField()
-    exploration = models.FloatField()
-    disguse = models.FloatField()
-    auximilary = models.FloatField()
-    image_ig = models.IntegerField()
-
-
-class Alliance(models.Model):
-    class Meta:
-        db_table = 'alliance'
-        verbose_name = u'Альянс'
-        verbose_name_plural = u'Альянсы'
-
-    alliance_name = models.CharField(max_length=32, default='', verbose_name=u'Название')
+    engine_system = models.FloatField(verbose_name=u'Системные двигатели')
+    engine_intersystem = models.FloatField(verbose_name=u'Межсистемные двигатели')
+    engine_giper = models.FloatField(verbose_name=u'Гиперпространственные двигатели')
+    engine_null = models.FloatField(verbose_name=u'Двигатели Нуль-Т перехода')
+    generator = models.FloatField(verbose_name=u'Генераторы')
+    armor = models.FloatField(verbose_name=u'Броня')
+    shield = models.FloatField(verbose_name=u'Щиты')
+    weapon_attack = models.FloatField(verbose_name=u'Оружие атаки')
+    weapon_defense = models.FloatField(verbose_name=u'Оружие защиты')
+    exploration = models.FloatField(verbose_name=u'Исследования')
+    disguse = models.FloatField(verbose_name=u'Маскировка')
+    auximilary = models.FloatField(verbose_name=u'Устройства')
+    image = models.ImageField(upload_to='race', verbose_name=u'Картинка')
 
 
 class Union(models.Model):
@@ -78,6 +71,16 @@ class Union(models.Model):
     union_name = models.CharField(max_length=50, default='', verbose_name=u'Название')
 
 
+class Alliance(models.Model):
+    class Meta:
+        db_table = 'alliance'
+        verbose_name = u'Альянс'
+        verbose_name_plural = u'Альянсы'
+
+    alliance_name = models.CharField(max_length=32, default='', verbose_name=u'Название')
+    union = models.ForeignKey(Union, null=True, default=None, verbose_name=u'Союз')
+
+
 class MyUser(models.Model):
     class Meta:
         db_table = 'my_user'
@@ -86,18 +89,18 @@ class MyUser(models.Model):
 
     user_id = models.IntegerField(db_index=True)
     user_name = models.CharField(db_index=True, max_length=20, unique=True, verbose_name=u'Имя игрока')
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=50, verbose_name=u'Пароль')
     race = models.ForeignKey(Race, verbose_name=u'Раса')
-    alliance = models.ForeignKey(Alliance, null=True, default=None)
-    union = models.ForeignKey(Union, null=True, default=None)
+    alliance = models.ForeignKey(Alliance, null=True, default=None, verbose_name=u'Альянс')
+    union = models.ForeignKey(Union, null=True, default=None, verbose_name=u'Союз')
     internal_currency = models.IntegerField(default=0, verbose_name=u'Внутренняя валюта')
     foreigh_currency = models.IntegerField(default=0, verbose_name=u'Внешняя валюта')
     real_currency = models.IntegerField(default=0, verbose_name=u'Реальная валюта')
     e_mail = models.CharField(db_index=True, max_length=50, unique=True, verbose_name=u'Почта')
-    referal_code = models.CharField(max_length=50)
-    user_luckyness = models.IntegerField()
-    last_time_check = models.DateTimeField()
-    last_time_scan_scient = models.DateTimeField()
+    referal_code = models.CharField(max_length=50, verbose_name=u'Реферальная ссылка')
+    user_luckyness = models.IntegerField(verbose_name=u'Удача')
+    last_time_check = models.DateTimeField(verbose_name=u'Последня проверка добычи')
+    last_time_scan_scient = models.DateTimeField(verbose_name=u'Последняя проверка исследований')
     premium_account = models.BooleanField(default=0, verbose_name=u'Премиум аккаунт')
     time_left_premium = models.DateTimeField(default=timezone.now, verbose_name=u'Время действия преемиум аккаунта')
 
@@ -118,7 +121,7 @@ class System(models.Model):
     class Meta:
         db_table = 'system'
 
-    galaxy = models.ForeignKey(Galaxy)
+    galaxy = models.ForeignKey(Galaxy, )
     x = models.IntegerField(db_index=True)
     y = models.IntegerField(db_index=True)
     z = models.IntegerField(db_index=True)
@@ -131,7 +134,7 @@ class Planet(models.Model):
     class Meta:
         db_table = 'planet'
 
-    system = models.ForeignKey(System)
+    system = models.ForeignKey(System, )
     global_x = models.IntegerField(db_index=True)
     global_y = models.IntegerField(db_index=True)
     global_z = models.IntegerField(db_index=True)
@@ -157,29 +160,29 @@ class PlanetType(models.Model):
     class Meta:
         db_table = 'planet_type'
 
-    description = models.CharField(max_length=500)
-    gravity = models.CharField(max_length=20)
-    atmosphere = models.CharField(max_length=20)
+    description = models.CharField(max_length=500, verbose_name=u'')
+    gravity = models.CharField(max_length=20, verbose_name=u'')
+    atmosphere = models.CharField(max_length=20, verbose_name=u'')
 
 
 class UserCity(models.Model):
     class Meta:
         db_table = 'user_city'
 
-    user = models.ForeignKey(MyUser, db_index=True)
-    system = models.ForeignKey(System, db_index=True, null=True, default=None)
-    planet = models.ForeignKey(Planet, db_index=True, null=True, default=None)
+    user = models.ForeignKey(MyUser, db_index=True, verbose_name=u'Город')
+    system = models.ForeignKey(System, db_index=True, null=True, default=None, verbose_name=u'')
+    planet = models.ForeignKey(Planet, db_index=True, null=True, default=None, verbose_name=u'')
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
-    name_city = models.CharField(db_index=True, max_length=20, default='New City')
-    city_size_free = models.IntegerField()
-    population = models.IntegerField(default=150)
-    max_population = models.IntegerField(default=500)
-    founding_date = models.DateTimeField()
-    extraction_date = models.DateTimeField()
-    power = models.IntegerField(default=0)
-    use_energy = models.IntegerField(default=0)
+    name_city = models.CharField(db_index=True, max_length=20, default='New City', verbose_name=u'')
+    city_size_free = models.IntegerField(verbose_name=u'')
+    population = models.IntegerField(default=150, verbose_name=u'')
+    max_population = models.IntegerField(default=500, verbose_name=u'')
+    founding_date = models.DateTimeField(verbose_name=u'')
+    extraction_date = models.DateTimeField(verbose_name=u'')
+    power = models.IntegerField(default=0, verbose_name=u'')
+    use_energy = models.IntegerField(default=0, verbose_name=u'')
 
 
 class Warehouse(models.Model):
@@ -195,30 +198,32 @@ class Warehouse(models.Model):
 class BasicResource(models.Model):
     class Meta:
         db_table = 'basic_resource'
+        verbose_name = u'Ресурс'
+        verbose_name_plural = u'Ресурсы'
 
-    resource_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=1000)
+    resource_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=1000, verbose_name=u'Описание')
 
 
 class BasicScientic(models.Model):
     class Meta:
         db_table = 'basic_scientic'
-        verbose_name = u'Базовая наука'
-        verbose_name_plural = u'Базовая наука'
+        verbose_name = u'Наука'
+        verbose_name_plural = u'Науки'
 
     scientic_id = models.AutoField(primary_key=True)
-    scientic_name = models.CharField(max_length=128)
-    description = models.CharField(max_length=4096)
-    time_study = models.IntegerField()
-    cost_internal_currency = models.IntegerField(default=25)
-    cost_resource1 = models.IntegerField(default=10)
-    cost_resource2 = models.IntegerField(default=20)
-    cost_resource3 = models.IntegerField(default=20)
-    cost_resource4 = models.IntegerField(default=10)
-    cost_mineral1 = models.IntegerField(default=5)
-    cost_mineral2 = models.IntegerField(default=3)
-    cost_mineral3 = models.IntegerField(default=2)
-    cost_mineral4 = models.IntegerField(default=5)
+    scientic_name = models.CharField(max_length=128, verbose_name=u'Название')
+    description = models.CharField(max_length=4096, verbose_name=u'Описание')
+    time_study = models.IntegerField(verbose_name=u'Время изучения')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
 
     def __unicode__(self):
         return self.description
@@ -251,29 +256,30 @@ class UserScientic(models.Model):
 class BasicFactory(models.Model):
     class Meta:
         db_table = 'basic_factory'
-        verbose_name = u'Базовое производство'
-        verbose_name_plural = u'Базовые производства'
+        verbose_name = u'Фабрика'
+        verbose_name_plural = u'Фабрики'
 
-    factory_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    cost_expert_deployment = models.IntegerField(default=10)
-    assembly_workpiece = models.IntegerField(default=10)
-    time_deployment = models.IntegerField()
-    production_class = models.IntegerField()
-    production_id = models.IntegerField()
-    time_production = models.IntegerField()
-    factory_size = models.IntegerField()
-    factory_mass = models.IntegerField()
-    power_consumption = models.IntegerField(default=0)
+    factory_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    price_expert_deployment = models.IntegerField(default=10, verbose_name=u'Количество сотрудников')
+    assembly_workpiece = models.IntegerField(default=10, verbose_name=u'Время создания заготовки')
+    time_deployment = models.IntegerField(verbose_name=u'Время развертывания')
+    production_class = models.IntegerField(verbose_name=u'Класс продукции')
+    production_id = models.IntegerField(verbose_name=u'Идентификатор продукции')
+    time_production = models.IntegerField(verbose_name=u'Время производства')
+    factory_size = models.IntegerField(verbose_name=u'Размер')
+    factory_mass = models.IntegerField(verbose_name=u'Вес')
+    power_consumption = models.IntegerField(default=0, verbose_name=u'Потребление энергии',
+                                            help_text=u'Потребление энергии, а в случае с електростанциями - производство')
 
     def __unicode__(self):
         return self.factory_name
@@ -310,40 +316,42 @@ class FactoryPattern(models.Model):
 class BasicHull(models.Model):
     class Meta:
         db_table = 'basic_hull'
+        verbose_name = u'Корпус'
+        verbose_name_plural = u'Корпуса'
 
-    hull_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    hull_health = models.IntegerField()
-    generator = models.IntegerField()
-    engine = models.IntegerField()
-    weapon = models.IntegerField()
-    armor = models.IntegerField()
-    shield = models.IntegerField()
-    module = models.IntegerField()
-    main_weapon = models.IntegerField()
-    hold_size = models.IntegerField()
-    fuel_tank = models.IntegerField(default=0)
-    hull_mass = models.IntegerField()
-    hull_size = models.IntegerField()
-    power_consuption = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    hull_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    hull_health = models.IntegerField(verbose_name=u'Количество здоровья')
+    generator = models.IntegerField(verbose_name=u'Количество герераторов')
+    engine = models.IntegerField(verbose_name=u'Количество двигателей')
+    weapon = models.IntegerField(verbose_name=u'Количество оружия')
+    armor = models.IntegerField(verbose_name=u'Количество брони')
+    shield = models.IntegerField(verbose_name=u'Количество щитов')
+    module = models.IntegerField(verbose_name=u'Количество модулей')
+    main_weapon = models.IntegerField(verbose_name=u'Количество главного калибра')
+    hold_size = models.IntegerField(verbose_name=u'Размер трюма')
+    fuel_tank = models.IntegerField(default=0, verbose_name=u'Размер топливного бака')
+    hull_mass = models.IntegerField(verbose_name=u'Масса')
+    hull_size = models.IntegerField(verbose_name=u'Размер')
+    power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.hull_name
@@ -384,35 +392,37 @@ class HullPattern(models.Model):
 class BasicEngine(models.Model):
     class Meta:
         db_table = 'basic_engine'
+        verbose_name = u'Двигатель'
+        verbose_name_plural = u'Двигатели'
 
-    engine_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    engine_health = models.IntegerField()
-    system_power = models.IntegerField()
-    intersystem_power = models.IntegerField()
-    giper_power = models.IntegerField()
-    nullT_power = models.IntegerField()
-    engine_mass = models.IntegerField()
-    engine_size = models.IntegerField()
-    power_consuption = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    engine_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    engine_health = models.IntegerField(verbose_name=u'Количество здоровья')
+    system_power = models.IntegerField(verbose_name=u'Системная мощьность')
+    intersystem_power = models.IntegerField(verbose_name=u'Межсистемная мощьность')
+    giper_power = models.IntegerField(verbose_name=u'Гиперпространственная мощьность')
+    nullT_power = models.IntegerField(verbose_name=u'Нуль-Т мощьность')
+    engine_mass = models.IntegerField(verbose_name=u'Масса')
+    engine_size = models.IntegerField(verbose_name=u'Размер')
+    power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.engine_name
@@ -448,32 +458,34 @@ class EnginePattern(models.Model):
 class BasicGenerator(models.Model):
     class Meta:
         db_table = 'basic_generator'
+        verbose_name = u'Генератор'
+        verbose_name_plural = u'Генераторы'
 
-    generator_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    generator_health = models.IntegerField()
-    produced_energy = models.IntegerField()
-    fuel_necessary = models.IntegerField()
-    generator_mass = models.IntegerField()
-    generator_size = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    generator_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    generator_health = models.IntegerField(verbose_name=u'Количество жизни')
+    produced_energy = models.IntegerField(verbose_name=u'Вырабатываемая энергия')
+    fuel_necessary = models.IntegerField(verbose_name=u'Потребление топлива')
+    generator_mass = models.IntegerField(verbose_name=u'Масса')
+    generator_size = models.IntegerField(verbose_name=u'Размер')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.generator_name
@@ -506,35 +518,37 @@ class GeneratorPattern(models.Model):
 class BasicShield(models.Model):
     class Meta:
         db_table = 'basic_shield'
+        verbose_name = u'Щит'
+        verbose_name_plural = u'Щиты'
 
-    shield_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    shield_health = models.IntegerField()
-    value_energy_resistance = models.IntegerField()
-    value_phisical_resistance = models.IntegerField()
-    shield_regeneration = models.IntegerField()
-    number_of_emitter = models.IntegerField()
-    shield_mass = models.IntegerField()
-    shield_size = models.IntegerField()
-    power_consuption = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    shield_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    shield_health = models.IntegerField(verbose_name=u'Количество жизни')
+    value_energy_resistance = models.IntegerField(verbose_name=u'Отражение энергитического урона')
+    value_phisical_resistance = models.IntegerField(verbose_name=u'Отражение физического урона')
+    shield_regeneration = models.IntegerField(verbose_name=u'Востановление')
+    number_of_emitter = models.IntegerField(verbose_name=u'Количество эмиттеров')
+    shield_mass = models.IntegerField(verbose_name=u'Масса')
+    shield_size = models.IntegerField(verbose_name=u'Размер')
+    power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.shield_name
@@ -570,37 +584,39 @@ class ShieldPattern(models.Model):
 class BasicWeapon(models.Model):
     class Meta:
         db_table = 'basic_weapon'
+        verbose_name = u'Оружие'
+        verbose_name_plural = u'Оружие'
 
-    weapon_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    weapon_health = models.IntegerField()
-    weapon_energy_damage = models.IntegerField()
-    weapon_regenerations = models.IntegerField()
-    number_of_bursts = models.IntegerField()
-    weapon_range = models.IntegerField()
-    weapon_accuracy = models.IntegerField()
-    weapon_mass = models.IntegerField()
-    weapon_size = models.IntegerField()
-    power_consuption = models.IntegerField()
-    weapon_class = models.IntegerField(default=1)
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    weapon_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    weapon_health = models.IntegerField(verbose_name=u'Количество жизни')
+    weapon_energy_damage = models.IntegerField(verbose_name=u'Энергетический урон')
+    weapon_regenerations = models.IntegerField(verbose_name=u'Время перезарядки')
+    number_of_bursts = models.IntegerField(verbose_name=u'Количество залпов')
+    weapon_range = models.IntegerField(verbose_name=u'Дальность')
+    weapon_accuracy = models.IntegerField(verbose_name=u'Точность')
+    weapon_mass = models.IntegerField(verbose_name=u'Масса')
+    weapon_size = models.IntegerField(verbose_name=u'Размер')
+    power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
+    weapon_class = models.IntegerField(default=1, verbose_name=u'Класс оружия')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.weapon_name
@@ -638,33 +654,35 @@ class WeaponPattern(models.Model):
 class BasicArmor(models.Model):
     class Meta:
         db_table = 'basic_armor'
+        verbose_name = u'Бронь'
+        verbose_name_plural = u'Бронь'
 
-    armor_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    armor_health = models.IntegerField()
-    value_energy_resistance = models.IntegerField()
-    value_phisical_resistance = models.IntegerField()
-    armor_power = models.IntegerField()
-    armor_regeneration = models.IntegerField()
-    armor_mass = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    armor_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    armor_health = models.IntegerField(verbose_name=u'Количество жизни')
+    value_energy_resistance = models.IntegerField(verbose_name=u'Отражение энергитического урона')
+    value_phisical_resistance = models.IntegerField(verbose_name=u'Отражение физического урона')
+    armor_power = models.IntegerField(verbose_name=u'Сила брони')
+    armor_regeneration = models.IntegerField(verbose_name=u'Востановление брони')
+    armor_mass = models.IntegerField(verbose_name=u'Масса')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.armor_name
@@ -698,31 +716,33 @@ class ArmorPattern(models.Model):
 class BasicShell(models.Model):
     class Meta:
         db_table = 'basic_shell'
+        verbose_name = u'Боеприпас'
+        verbose_name_plural = u'Боеприпасы'
 
-    shell_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    shell_phisical_damage = models.IntegerField()
-    shell_speed = models.IntegerField()
-    shell_mass = models.IntegerField()
-    shell_size = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    shell_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    shell_phisical_damage = models.IntegerField(verbose_name=u'Физический урон')
+    shell_speed = models.IntegerField(verbose_name=u'Скорость')
+    shell_mass = models.IntegerField(verbose_name=u'Масса')
+    shell_size = models.IntegerField(verbose_name=u'Размер')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.shell_name
@@ -754,35 +774,37 @@ class ShellPattern(models.Model):
 class BasicModule(models.Model):
     class Meta:
         db_table = 'basic_module'
+        verbose_name = u'Модуль'
+        verbose_name_plural = u'Модули'
 
-    module_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    module_health = models.IntegerField()
-    param1 = models.IntegerField()
-    param2 = models.IntegerField()
-    param3 = models.IntegerField()
-    module_mass = models.IntegerField()
-    module_size = models.IntegerField()
-    power_consuption = models.IntegerField()
-    module_class = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    module_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    module_health = models.IntegerField(verbose_name=u'Количество жизни')
+    param1 = models.IntegerField(verbose_name=u'Параметр 1')
+    param2 = models.IntegerField(verbose_name=u'Параметр 2')
+    param3 = models.IntegerField(verbose_name=u'Параметр 3')
+    module_mass = models.IntegerField(verbose_name=u'Масса')
+    module_size = models.IntegerField(verbose_name=u'Размер')
+    power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
+    module_class = models.IntegerField(verbose_name=u'Класс модуля')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.module_name
@@ -795,14 +817,14 @@ class ModulePattern(models.Model):
     user = models.ForeignKey(MyUser, db_index=True)
     basic_module = models.ForeignKey(BasicModule)
     module_name = models.CharField(max_length=50, default='New module')
-    module_health = models.IntegerField()
-    param1 = models.IntegerField()
-    param2 = models.IntegerField()
-    param3 = models.IntegerField()
-    module_mass = models.IntegerField()
-    module_size = models.IntegerField()
-    power_consuption = models.IntegerField()
-    module_class = models.IntegerField()
+    module_health = models.IntegerField(verbose_name=u'')
+    param1 = models.IntegerField(verbose_name=u'')
+    param2 = models.IntegerField(verbose_name=u'')
+    param3 = models.IntegerField(verbose_name=u'')
+    module_mass = models.IntegerField(verbose_name=u'')
+    module_size = models.IntegerField(verbose_name=u'')
+    power_consuption = models.IntegerField(verbose_name=u'')
+    module_class = models.IntegerField(verbose_name=u'')
     price_internal_currency = models.IntegerField(default=25)
     price_resource1 = models.IntegerField(default=0)
     price_resource2 = models.IntegerField(default=0)
@@ -818,23 +840,25 @@ class ModulePattern(models.Model):
 class BasicFuel(models.Model):
     class Meta:
         db_table = 'basic_fuel'
+        verbose_name = u'Топливо'
+        verbose_name_plural = u'Топливо'
 
-    fuel_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    fuel_mass = models.IntegerField()
-    fuel_size = models.IntegerField()
-    fuel_efficiency = models.IntegerField()
-    fuel_class = models.IntegerField()
-    fuel_id = models.IntegerField(default=0)
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
+    fuel_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    fuel_mass = models.IntegerField(verbose_name=u'Масса')
+    fuel_size = models.IntegerField(verbose_name=u'Размер')
+    fuel_efficiency = models.IntegerField(verbose_name=u'Эфективность топлива')
+    fuel_class = models.IntegerField(verbose_name=u'Класс топлива')
+    fuel_id = models.IntegerField(default=0, verbose_name=u'Идентификатор топлива')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
 
     def __unicode__(self):
         return self.fuel_name
@@ -852,15 +876,15 @@ class FuelPattern(models.Model):
     fuel_efficiency = models.IntegerField()
     fuel_class = models.IntegerField()
     fuel_id = models.IntegerField(default=0)
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
 
     def __unicode__(self):
         return self.fuel_name
@@ -869,35 +893,37 @@ class FuelPattern(models.Model):
 class BasicDevice(models.Model):
     class Meta:
         db_table = 'basic_device'
+        verbose_name = u'Устройство'
+        verbose_name_plural = u'Устройства'
 
-    device_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    device_health = models.IntegerField()
-    param1 = models.IntegerField()
-    param2 = models.IntegerField()
-    param3 = models.IntegerField()
-    device_mass = models.IntegerField()
-    device_size = models.IntegerField()
-    power_consuption = models.IntegerField()
-    device_class = models.IntegerField()
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    min_all_scientic = models.IntegerField(default=0)
-    min_math = models.IntegerField(default=0)
-    min_phis = models.IntegerField(default=0)
-    min_biol = models.IntegerField(default=0)
-    min_energy = models.IntegerField(default=0)
-    min_radio = models.IntegerField(default=0)
-    min_nanotech = models.IntegerField(default=0)
-    min_astronomy = models.IntegerField(default=0)
-    min_logist = models.IntegerField(default=0)
+    device_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    device_health = models.IntegerField(verbose_name=u'Количество жизни')
+    param1 = models.IntegerField(verbose_name=u'Параметр 1')
+    param2 = models.IntegerField(verbose_name=u'Параметр 2')
+    param3 = models.IntegerField(verbose_name=u'Параметр 3')
+    device_mass = models.IntegerField(verbose_name=u'Масса')
+    device_size = models.IntegerField(verbose_name=u'Размер')
+    power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
+    device_class = models.IntegerField(verbose_name=u'Класс устройства')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
+    min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
+    min_phis = models.IntegerField(default=0, verbose_name=u'Минимальный уровень физики')
+    min_biol = models.IntegerField(default=0, verbose_name=u'Минимальный уровень биологии')
+    min_energy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень енергетики')
+    min_radio = models.IntegerField(default=0, verbose_name=u'Минимальный уровень електротехники')
+    min_nanotech = models.IntegerField(default=0, verbose_name=u'Минимальный уровень нанотехнологий')
+    min_astronomy = models.IntegerField(default=0, verbose_name=u'Минимальный уровень астрономии')
+    min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
         return self.device_name
@@ -933,29 +959,31 @@ class DevicePattern(models.Model):
 class BasicBuilding(models.Model):
     class Meta:
         db_table = 'basic_building'
+        verbose_name = u'Строение'
+        verbose_name_plural = u'Строения'
 
-    building_name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    production_class = models.IntegerField()
-    production_id = models.IntegerField()
-    time_production = models.IntegerField()
-    warehouse = models.IntegerField(default=0)
-    max_warehouse = models.IntegerField(default=500)
-    price_internal_currency = models.IntegerField(default=25)
-    price_resource1 = models.IntegerField(default=0)
-    price_resource2 = models.IntegerField(default=0)
-    price_resource3 = models.IntegerField(default=0)
-    price_resource4 = models.IntegerField(default=0)
-    price_mineral1 = models.IntegerField(default=0)
-    price_mineral2 = models.IntegerField(default=0)
-    price_mineral3 = models.IntegerField(default=0)
-    price_mineral4 = models.IntegerField(default=0)
-    cost_expert_deployment = models.IntegerField(default=10)
-    assembly_workpiece = models.IntegerField(default=10)
-    time_deployment = models.IntegerField()
-    building_size = models.IntegerField()
-    building_mass = models.IntegerField()
-    power_consumption = models.IntegerField(default=0)
+    building_name = models.CharField(max_length=50, verbose_name=u'Название')
+    description = models.CharField(max_length=500, verbose_name=u'Описание')
+    production_class = models.IntegerField(verbose_name=u'Класс продукции')
+    production_id = models.IntegerField(verbose_name=u'Идентификатор продукции')
+    time_production = models.IntegerField(verbose_name=u'Время производства')
+    warehouse = models.IntegerField(default=0, verbose_name=u'Склад')
+    max_warehouse = models.IntegerField(default=500, verbose_name=u'Максимальный размер склада')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    price_resource1 = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
+    price_resource2 = models.IntegerField(default=0, verbose_name=u'Цена в железе')
+    price_resource3 = models.IntegerField(default=0, verbose_name=u'Цена в меди')
+    price_resource4 = models.IntegerField(default=0, verbose_name=u'Цена в алюминии')
+    price_mineral1 = models.IntegerField(default=0, verbose_name=u'Цена в вариатите')
+    price_mineral2 = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
+    price_mineral3 = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
+    price_mineral4 = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    price_expert_deployment = models.IntegerField(default=10, verbose_name=u'Количество сотрудников')
+    assembly_workpiece = models.IntegerField(default=10, verbose_name=u'Время создания заготовки')
+    time_deployment = models.IntegerField(verbose_name=u'Время развертывания')
+    building_size = models.IntegerField(verbose_name=u'Размер')
+    building_mass = models.IntegerField(verbose_name=u'Масса')
+    power_consumption = models.IntegerField(default=0, verbose_name=u'Потребление энергии')
 
     def __unicode__(self):
         return self.building_name
@@ -1056,6 +1084,7 @@ class WarehouseBuilding(models.Model):
     user_city = models.ForeignKey(UserCity, db_index=True)
     factory = models.ForeignKey(BuildingPattern, db_index=True)
     amount = models.IntegerField(default=0)
+
 
 class WarehouseElement(models.Model):
     class Meta:

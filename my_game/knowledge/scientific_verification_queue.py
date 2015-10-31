@@ -17,7 +17,7 @@ def check_scientific_verification_queue(request):
     user_variables = UserVariables.objects.filter(id=1).first()
     if turn_scientics:
         for turn_scientic in turn_scientics:
-            scin_id = turn_scientic.id
+            scientic_id = turn_scientic.id
             time_start = turn_scientic.start_time_science
             delta_time = time - time_start
             new_delta = delta_time.seconds
@@ -38,7 +38,7 @@ def check_scientific_verification_queue(request):
                     astronomy_up=scientic.astronomy_up + turn_scientic.astronomy_up,
                     logistic_up=scientic.logistic_up + turn_scientic.logistic_up,
                 )
-                TurnScientic.objects.filter(id=scin_id).delete()
+                TurnScientic.objects.filter(id=scientic_id).delete()
                 user_scientic = UserScientic.objects.filter(user=user).first()
                 all_scient = user_scientic.mathematics_up + user_scientic.phisics_up + user_scientic.biologic_chimics_up + \
                              user_scientic.energetics_up + user_scientic.radionics_up + user_scientic.nanotech_up + \
@@ -51,8 +51,8 @@ def check_scientific_verification_queue(request):
     delta_time = delta.seconds
 
     if delta_time > user_variables.time_check_new_technology:
-        all_scientic = UserScientic.objects.filter(user=user).first()
-        if all_scientic.all_scientic > 10:
+        user_scientic = UserScientic.objects.filter(user=user).first()
+        if user_scientic.all_scientic > 10:
             new_technology = random.random()
 
             if 0 <= new_technology < 0.125:

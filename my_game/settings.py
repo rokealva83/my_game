@@ -50,6 +50,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = (
     'suit',
     'django.contrib.admin',
@@ -87,7 +88,7 @@ DATABASES = {
     'default': {
         'CHARSET': 'utf8',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'base',
+        'NAME': 'libre',
         'USER': 'root',
         'PASSWORD': 'tolik2000',
 
@@ -117,14 +118,29 @@ STATICFILES_DIRS = (
     BASE_DIR
 )
 
+MEDIA_URL = '/media/'
+MEDIAFILES_DIRS = (
+    BASE_DIR + '/media-files',
+    BASE_DIR
+)
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
-
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
+    'django.core.context_processors.media',
 )
 
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'LIBRE',
+
+    'SHOW_REQUIRED_ASTERISK': True,
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'MENU_EXCLUDE': ('auth.group', 'auth'),
+    'LIST_PER_PAGE': 10
+}

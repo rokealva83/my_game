@@ -12,8 +12,8 @@ def new_ship(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
-        session_user = int(request.session['userid'])
-        session_user_city = int(request.session['user_city'])
+        session_user = request.session['userid']
+        session_user_city = request.session['user_city']
         armors = {}
         shields = {}
         engines = {}
@@ -27,9 +27,7 @@ def new_ship(request):
         choice_armor = []
         output = {}
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
-        user_city = UserCity.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = UserCity.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=session_user)
 
         if request.POST.get('create_pattern'):
             chosen_hull_id = request.POST.get('choice_pattern')
@@ -43,7 +41,7 @@ def new_ship(request):
             main_weapons = WeaponPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
             modules = ModulePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
             turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
-            output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+            output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city, 'user_citys': user_citys,
                       'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                       'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
                       'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,
@@ -226,13 +224,13 @@ def new_ship(request):
                 ship_pattern = ProjectShip.objects.filter(id=pattern_ship_id).update(time_build=time_build, mass=mass)
                 turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
                 project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
-                output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+                output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city, 'user_citys': user_citys,
                           'hulls': hulls, 'project_ships': project_ships, 'turn_ship_builds': turn_ship_builds}
             else:
                 message_error = 'Ошибка создания проекта'
                 turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
                 project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
-                output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+                output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city, 'user_citys': user_citys,
                           'chosen_hull': chosen_hull, 'chosen_name': chosen_name, 'armors': armors,
                           'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
                           'main_weapons': main_weapons, 'modules': modules, 'hulls': hulls,

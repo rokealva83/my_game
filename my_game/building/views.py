@@ -45,7 +45,7 @@ def choice_build(request):
         warehouse_elements = {}
         attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                       "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                      "cost_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size",
+                      "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size",
                       "mass", "power_consumption")
 
         if request.POST.get('housing_unit') is not None:
@@ -68,7 +68,7 @@ def choice_build(request):
                                                                                             'production_id')
             attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                           "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                          "cost_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size",
+                          "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size",
                           "mass", "power_consumption", "max_warehouse")
             warehouse_elements = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   production_class=13)
