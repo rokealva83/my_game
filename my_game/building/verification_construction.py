@@ -17,7 +17,7 @@ def verification_phase_of_construction(request):
         new_delta = delta_time.seconds
         delta_time = turn_building.finish_time_deployment - turn_building.start_time_deployment
         delta = delta_time.seconds
-        user_city = UserCity.objects.filter(id=turn_building.user_city.id).first()
+        user_city = turn_building.user_city
         #Проверка времени
         if new_delta > delta:
             verification_func.verification_of_resources(user)
@@ -47,7 +47,6 @@ def verification_phase_of_construction(request):
                 user_city_update = UserCity.objects.filter(id=user_city.id).update(use_energy=new_energy)
 
             if factory_pattern.production_class == 10:
-                user_city_update = UserCity.objects.filter(id=user_city.id).first()
                 new_max_population = user_city.max_population + 100 * factory_pattern.production_id
                 user_city_update = UserCity.objects.filter(id=user_city.id).update(max_population=new_max_population)
 

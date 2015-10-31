@@ -4,52 +4,55 @@ import random
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib import auth
 from datetime import datetime
 from my_game.models import Planet
 from my_game.models import UserVariables
 from my_game.models import MyUser, Race
 from my_game.models import UserCity, Warehouse, UserScientic, BasicScientic, BasicFactory, FactoryPattern, FactoryInstalled
+
 from my_game import function
 
 
 def registration(request):
-    return render(request, "registration.html", {})
+    races = Race.objects.all()
+    return render(request, "registration.html", {'races': races})
 
 
 # функция добавления нового игрока
 def add_user(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
-        u_name = request.POST.get('name')
-        ma = request.POST.get('mail')
+        new_user_name = request.POST.get('name')
+        new_user_email = request.POST.get('mail')
         # проверка имени и емейла на уникальность
-        us_name = MyUser.objects.filter(user_name=u_name).first()
-        mai = MyUser.objects.filter(e_mail=ma).first()
-        if us_name is not None or mai is not None:
+        user_name = MyUser.objects.filter(user_name=new_user_name).first()
+        user_email = MyUser.objects.filter(e_mail=new_user_email).first()
+        if user_name is not None or user_email is not None:
             return HttpResponse()
         else:
             user_variables = UserVariables.objects.filter(id=1).first()
             user = User(
-                username=request.POST.get('name'),
+                username=new_user_name,
                 password=request.POST.get('pass'),
                 last_login=datetime.today(),
                 date_joined=datetime.today(),
-                email=ma,
+                email=new_user_email,
             )
             user.save()
-            id_user = user.pk
+            user_id = user.pk
             user_lucky = random.randint(1, 10)
             time_check = user.last_login
             last_time_check = datetime(time_check.year, time_check.month, time_check.day, 0, 0, 0, 0)
             race = Race.objects.filter(id=request.POST.get('rac')).first()
 
             myuser = MyUser(
-                user_id=id_user,
-                user_name=request.POST.get('name'),
+                user_id=user_id,
+                user_name=new_user_name,
                 password=request.POST.get('pass'),
                 race=race,
                 internal_currency=user_variables.registr_internal_currency,
-                e_mail=ma,
-                referal_code=request.POST.get('name'),
+                e_mail=new_user_email,
+                referal_code=new_user_name,
                 user_luckyness=user_lucky,
                 last_time_check=last_time_check,
                 last_time_scan_scient=last_time_check,
@@ -154,10 +157,6 @@ def add_user(request):
                         price_resource2=basic_factory.price_resource2,
                         price_resource3=basic_factory.price_resource3,
                         price_resource4=basic_factory.price_resource4,
-                        price_mineral1=basic_factory.price_mineral1,
-                        price_mineral2=basic_factory.price_mineral2,
-                        price_mineral3=basic_factory.price_mineral3,
-                        price_mineral4=basic_factory.price_mineral4,
                         cost_expert_deployment=basic_factory.price_expert_deployment,
                         assembly_workpiece=basic_factory.assembly_workpiece,
                         time_deployment=basic_factory.time_deployment,
@@ -182,13 +181,13 @@ def add_user(request):
             use_energy = 0
             use_area = 0
             for factory_instelled in factory_instelleds:
-                use_area = factory_instelled.size + use_area
-                if factory_instelled.production_class == 12:
-                    user_city = UserCity.objects.filter(user=myuser).update(power=factory_instelled.power_consumption)
+                use_area = factory_instelled.factory_pattern.factory_size + use_area
+                if factory_instelled.factory_pattern.production_class == 12:
+                    user_city_update = UserCity.objects.filter(user=myuser).update(power=factory_instelled.factory_pattern.power_consumption)
                 else:
-                    use_energy = use_energy + factory_instelled.power_consumption
+                    use_energy = use_energy + factory_instelled.factory_pattern.power_consumption
             free_area = user_city.city_size_free - use_area
-            user_city = UserCity.objects.filter(user=myuser).update(use_energy=use_energy, city_size_free=free_area)
+            user_city_update = UserCity.objects.filter(user=myuser).update(use_energy=use_energy, city_size_free=free_area)
 
     elif request.POST.get('cancel_button') is not None:
         return render(request, "index.html", {})
@@ -196,7 +195,7 @@ def add_user(request):
 
 
 # функция авторизации
-def auth(request):
+def user_auth(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
         user_name_post = request.POST.get('name')
         password_post = request.POST.get('pass')
@@ -212,8 +211,8 @@ def auth(request):
                 # function.check_all_queues(user)
                 output = {'user': user, 'race': race, 'warehouses': warehouses, 'user_city': user_city,
                           'user_citys': user_citys, 'planet': planet}
-                request.session['user'] = user
-                request.session['user_city'] = user_city
+                request.session['user'] = user.id
+                request.session['user_city'] = user_city.id
                 request.session['live'] = True
                 return render(request, "civilization.html", output)
             else:

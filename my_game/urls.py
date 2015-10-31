@@ -66,7 +66,7 @@ urlpatterns = patterns('',
 
                        url(r'^registration.html', account.registration, name='account.registration'),
                        url(r'^index.html', account.add_user, name='account.add_user'),
-                       url(r'^auth', account.auth, name='account.auth'),
+                       url(r'^auth', account.user_auth, name='account.auth'),
 
                        url(r'^admin/administration', administration.administration),
                        url(r'^admin/generation', administration.generation),

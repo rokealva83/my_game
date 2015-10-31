@@ -17,6 +17,7 @@ from my_game.models import BasicEngine
 from my_game.models import BasicFuel
 from my_game.models import BasicGenerator
 from my_game.models import BasicModule
+from my_game.models import UserVariables
 
 
 class MyUserAdmin(admin.ModelAdmin):
@@ -25,6 +26,21 @@ class MyUserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MyUser, MyUserAdmin)
+
+
+class UserVariablesAdmin(admin.ModelAdmin):
+    list_display = [
+        'registr_internal_currency', 'registr_resource1', 'registr_resource2', 'registr_resource3', 'registr_resource4',
+        'registr_mineral1', 'registr_mineral2', 'registr_mineral3', 'registr_mineral4', 'basic_time_build_ship',
+        'koef_ship_element_time', 'minimum_scan_time', 'max_turn_assembly_pieces_basic',
+        'max_turn_assembly_pieces_premium', 'max_turn_building_basic', 'max_turn_building_premium',
+        'max_turn_production_basic', 'max_turn_production_premium', 'max_turn_scientic_basic',
+        'max_turn_scientic_premium', 'max_turn_ship_build_basic', 'max_turn_ship_build_premium',
+        'time_check_new_technology', 'min_scientic_level', 'tax_per_person', 'koef_price_increace_modern_element'
+    ]
+
+
+admin.site.register(UserVariables, UserVariablesAdmin)
 
 
 class MyRaceAdmin(admin.ModelAdmin):
@@ -55,9 +71,8 @@ admin.site.register(BasicScientic, MyScienticAdmin)
 class MyFactoryAdmin(admin.ModelAdmin):
     list_display = ['factory_name', 'description', 'production_class', 'production_id', 'time_production',
                     'factory_size', 'factory_mass', 'power_consumption', 'price_internal_currency', 'price_resource1',
-                    'price_resource2', 'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2',
-                    'price_mineral3', 'price_mineral4', 'price_expert_deployment', 'assembly_workpiece',
-                    'time_deployment']
+                    'price_resource2', 'price_resource3', 'price_resource4', 'price_expert_deployment',
+                    'assembly_workpiece', 'time_deployment']
 
 
 admin.site.register(BasicFactory, MyFactoryAdmin)
@@ -123,10 +138,7 @@ admin.site.register(BasicWeapon, MyWeaponAdmin)
 
 class MyArmorAdmin(admin.ModelAdmin):
     list_display = ['armor_name', 'description', 'armor_health', 'value_energy_resistance', 'value_phisical_resistance',
-                    'armor_power', 'armor_regeneration', 'armor_mass', 'price_internal_currency', 'price_resource1',
-                    'price_resource2', 'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2',
-                    'price_mineral3', 'price_mineral4', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol',
-                    'min_energy', 'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
+                    'armor_power', 'armor_regeneration', 'armor_mass', 'min_all_scientic']
 
 
 admin.site.register(BasicArmor, MyArmorAdmin)

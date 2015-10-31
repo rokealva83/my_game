@@ -98,8 +98,8 @@
                         <option value="0">Добыча ресурсов</option>
                         {% spaceless %}
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 11 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 11 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                         {% endspaceless %}
@@ -113,8 +113,8 @@
                     {% spaceless %}
                         <option value="0">Завод корпусов</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 1 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 1 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -128,8 +128,8 @@
                     {% spaceless %}
                         <option value="0">Завод брони</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 2 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 2 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -143,8 +143,8 @@
                     <p><select name="factory_id" class="complex_botton">
                         <option value="0">Завод щитов</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 3 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 3 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -158,8 +158,8 @@
                     {% spaceless %}
                         <option value="0">Завод двигателей</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 4 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 4 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -173,8 +173,8 @@
                     {% spaceless %}
                         <option value="0">Завод генераторов</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 5 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 5 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -188,8 +188,8 @@
                     {% spaceless %}
                         <option value="0">Завод оружия</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 6 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 6 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -203,8 +203,8 @@
                     {% spaceless %}
                         <option value="0">Завод расходников</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 7 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 7 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -218,8 +218,8 @@
                     {% spaceless %}
                         <option value="0">Завод модулей</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 8 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 8 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -233,8 +233,8 @@
                     {% spaceless %}
                         <option value="0">Завод устройств</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 9 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 9 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -248,8 +248,8 @@
                     {% spaceless %}
                         <option value="0">Завод топлива</option>
                         {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.production_class == 14 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.name }}</option>
+                            {% if factory_installed.factory_pattern.production_class == 14 %}
+                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -274,7 +274,7 @@
 
                 {% for complex_factory in complex_factorys %}
                     <form method="post" action="remove_from_complex">
-                        <p><b>{{ complex_factory.name }}</b>
+                        <p><b>{{ complex_factory.factory_pattern.factory_name }}</b>
                             <input class="complex_botton" type="submit" value="Убрать"/>
                             <input type="hidden" value={{ complex_factory.id }} name="factory_id">
                             <input type="hidden" value={{ complex_id }} name="complex_id"></p>
@@ -302,8 +302,8 @@
                             {% for warehouse in warehouses %}
                                 {% if warehouse.amount > 0 %}
                                     {% for basic_resource in basic_resources %}
-                                        {% if basic_resource.id == warehouse.id_resource %}
-                                            <option value="{{ warehouse.id_resource }}">{{ basic_resource.name }}
+                                        {% if basic_resource.id == warehouse.resource_id %}
+                                            <option value="{{ warehouse.resource_id }}">{{ basic_resource.resource_name }}
                                                 ( {{ warehouse.amount }} )
                                             </option>
                                         {% endif %}
@@ -320,11 +320,11 @@
             </div>
         {% else %}
             {% for factory_pattern in factory_patterns %}
-                {% if 9 < factory_pattern.production_class and 14 > factory_pattern.production_class %}
+                {% if factory_pattern.production_class > 9 and factory_pattern.production_class < 14 %}
                     <form method="post" action="working">
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
                         <label class="slide" id="slowdown" for="factory{{ factory_pattern.id }}">
-                            <h4>{{ factory_pattern.name }}</h4>
+                            <h4>{{ factory_pattern.factory_name }}</h4>
                         </label>
 
                         <div id="factory_information">
@@ -344,7 +344,7 @@
                                         {% spaceless %}
                                             {% load my_filter %}
                                             {% if factory_pattern|getattribute:attribute != 0 %}
-                                                {{ attribute }}: <b>{{ factory_pattern|getattribute:attribute }}</b>;s
+                                                {{ attribute }}: <b>{{ factory_pattern|getattribute:attribute }}</b>
                                             {% endif %}
                                         {% endspaceless %}
                                     {% endfor %}

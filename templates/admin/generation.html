@@ -6,42 +6,40 @@
 {% block content %}
     <div id="block_content">
         <div id="block_design_left">
-        <h3>
-            {{ message }}
-        </h3>
-
+            <h3>
+                {{ message }}
+            </h3>
 
             <h3>
-            Генерация галактики
-        </h3>
+                Генерация галактики
+            </h3>
 
-        <p>Выберите количество генерируимых систем</p>
+            <p>Выберите количество генерируимых систем</p>
 
-        <form method="post" action="star_generation"
-              enctype="multipart/form-data">
-            <div>
-                <label for="star">Star</label>
-                <input type="text" value=""
-                       name="star" class="scientic_place"
-                       placeholder="star"/>
+            <form method="post" action="star_generation"
+                  enctype="multipart/form-data">
+                <div>
+                    <label for="star">Star</label>
+                    <input type="text" value=""
+                           name="star" class="scientic_place"
+                           placeholder="star"/>
 
-            </div>
-            <br>
+                </div>
+                <br>
 
-            <div>
-                <input type="submit" value="OK" class="scientic" name="add_button"/>
-                <button type="submit" class="scientic" name="cancel_button">Cancel</button>
-            </div>
-        </form>
-    </div>
+                <div>
+                    <input type="submit" value="OK" class="scientic" name="add_button"/>
+                    <button type="submit" class="scientic" name="cancel_button">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
     <div id="block_design_left">
         <h3>
             {{ message }}
         </h3>
 
-
-            <h3>
+        <h3>
             Генерация галактики
         </h3>
 
@@ -53,10 +51,7 @@
                 <input type="text" value=""
                        name="asteroid" class="scientic_place"
                        placeholder="asteroid"/>
-
             </div>
-            <br>
-
             <div>
                 <input type="submit" value="OK" class="scientic" name="add_button"/>
                 <button type="submit" class="scientic" name="cancel_button">Cancel</button>

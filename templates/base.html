@@ -39,8 +39,8 @@
     <div class="inform_resource">
         {% spaceless %}
             {% for warehouse in warehouses %}
-                {% if warehouse.id_resource == 1 %}
-                    <p>Ресурс 1 </p>
+                {% if warehouse.resource_id == 1 %}
+                    <p>Ресурс 1</p>
                     <p>{{ warehouse.amount }}</p>
                 {% endif %}
             {% endfor %}
@@ -49,7 +49,7 @@
     <div class="inform_resource">
         {% spaceless %}
             {% for warehouse in warehouses %}
-                {% if warehouse.id_resource == 2 %}
+                {% if warehouse.resource_id == 2 %}
                     <p>Ресурс 2 </p>
                     <p>{{ warehouse.amount }}</p>
                 {% endif %}
@@ -59,7 +59,7 @@
     <div class="inform_resource">
         {% spaceless %}
             {% for warehouse in warehouses %}
-                {% if warehouse.id_resource == 3 %}
+                {% if warehouse.resource_id == 3 %}
                     <p>Ресурс 3 </p>
                     <p>{{ warehouse.amount }}</p>
                 {% endif %}
@@ -69,7 +69,7 @@
     <div class="inform_resource">
         {% spaceless %}
             {% for warehouse in warehouses %}
-                {% if warehouse.id_resource == 4 %}
+                {% if warehouse.resource_id == 4 %}
                     <p>Ресурс 4 </p>
                     <p>{{ warehouse.amount }}</p>
                 {% endif %}

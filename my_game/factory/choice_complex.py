@@ -13,7 +13,7 @@ def choice_complex(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
-        session_user = int(request.session['userid'])
+        session_user = int(request.session['user'])
         session_user_city = int(request.session['user_city'])
         complex_id = request.POST.get('complex_id')
         assembly_line_workpieces.check_assembly_line_workpieces(session_user)
@@ -51,7 +51,7 @@ def choice_complex(request):
         user_city = UserCity.objects.filter(user=session_user).first()
         user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = UserCity.objects.filter(user=int(session_user))
-        request.session['userid'] = session_user
+        request.session['user'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
         output = {'user': user, 'warehouses': warehouses, 'user_city': user_city,
