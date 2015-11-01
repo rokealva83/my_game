@@ -95,14 +95,12 @@ def choice_element(request):
         factory_warehouses = WarehouseFactoryResource.objects.filter(id_factory=factory_id)
         basic_resources = BasicResource.objects.filter()
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
-        user_city = UserCity.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
         turn_productions = TurnProduction.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=int(session_user))
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
+        request.session['userid'] = session_user.id
+        request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city,
+        output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city,
                   'factory_installeds': factory_installeds, 'factory_installed': factory_installed,
                   'element_patterns': element_patterns, 'attributes': attributes, 'turn_productions': turn_productions,
                   'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs,

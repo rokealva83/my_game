@@ -320,8 +320,8 @@ def complex_warehouse(request):
         else:
             message = 'Нехватает ресурсов на основном складе'
 
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
+        request.session['user'] = session_user.id
+        request.session['user_city'] = session_user_city.id
         request.session['live'] = True
         output = create_complex_output(session_user, session_user_city, complex_id, message)
         return render(request, "building.html", output)

@@ -13,8 +13,6 @@ def civilization(request):
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
-        for warehouse in warehouses:
-            print warehouse.id, warehouse.amount
         user_citys = UserCity.objects.filter(user=session_user)
         race = Race.objects.filter(id=session_user.race_id).first()
         planets = Planet.objects.filter(id=session_user_city.planet_id)

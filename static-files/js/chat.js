@@ -19,7 +19,7 @@ setInterval(
                     if (delete_id == first_message) {
                         $('#ground p:first').remove()
                     }
-                    $('#ground').append('<p class="message" id="' + message.id + '"><b>' + message.user + '</b>(' + message.time + '):' + message.text + '</p>')
+                    $('#ground').append('<p class="message" id="' + message.id + '"><b class="touch">' + message.user + '</b>(' + message.time + '):' + message.text + '</p>')
                 }
             }
         );
