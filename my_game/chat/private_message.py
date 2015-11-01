@@ -5,15 +5,15 @@ from django.http import JsonResponse
 
 
 def send_private_message(request):
-    session_user = int(request.session['userid'])
-    user = MyUser.objects.filter(user_id=session_user).first().user_name
+    session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
+    user = session_user.user_name
     recipient_id = int(request.POST.get('user'))
     text = request.POST.get('text')
     recipient_name = UserChatOnline.objects.filter(id=recipient_id).first().user
     recipient_id = MyUser.objects.filter(user_name=recipient_name).first().user_id
 
     message = ChatPrivate(
-        user_id=session_user,
+        user_id=session_user.user_id,
         user=user,
         recipient=recipient_id,
         recipient_name=recipient_name,
@@ -23,8 +23,8 @@ def send_private_message(request):
 
 
 def update_private_message(request):
-    session_user = int(request.session['userid'])
-    message = ChatPrivate.objects.filter(recipient=session_user).first()
+    session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
+    message = ChatPrivate.objects.filter(recipient=session_user.user_id).first()
     response = []
     if message:
         response.append({

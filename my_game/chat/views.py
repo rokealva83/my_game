@@ -10,25 +10,24 @@ def chat(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
-        session_user = int(request.session['userid'])
-        session_user_city = int(request.session['user_city'])
-        user = MyUser.objects.filter(user_id=session_user).first()
-        user_online = UserChatOnline.objects.filter(user_id=session_user).first()
+        session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
+        session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
+        user_online = UserChatOnline.objects.filter(user_id=session_user.id).first()
         if user_online is None:
             user_online = UserChatOnline(
-                user_id=session_user,
-                user=user.user_name,
+                user_id=session_user.id,
+                user=session_user.user_name,
                 last_time_update=timezone.now()
             )
             user_online.save()
             message = Chat(
                 user_id=1,
                 user='System',
-                text='Hello, ' + str(user.user_name)
+                text='Hello, ' + str(session_user.user_name)
             )
             message.save()
         else:
-            user_online = UserChatOnline.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
+            user_online = UserChatOnline.objects.filter(user_id=session_user.id).update(last_time_update=timezone.now())
 
         last_id = Chat.objects.last().pk
         need_id = int(last_id) - 38
@@ -36,48 +35,46 @@ def chat(request):
 
         online_users = UserChatOnline.objects.all()
 
-        user_name = MyUser.objects.filter(user_id=session_user).first().user_name
+        user_name = session_user.user_name
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         user_city = UserCity.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = UserCity.objects.filter(user=int(session_user))
+        user_citys = UserCity.objects.filter(user=session_user)
 
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
+        request.session['user'] = session_user.id
+        request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': session_user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
                   'user_name': user_name, 'messages': messages, 'online_users': online_users}
 
         return render(request, "chat.html", output)
 
 
 def send_message(request):
-    session_user = int(request.session['userid'])
-    user = MyUser.objects.filter(user_id=session_user).first()
+    session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
     name = request.POST.get('user')
     text = request.POST.get('text')
     time = timezone.now()
     message = Chat(
-        user_id=session_user,
+        user_id=session_user.id,
         user=name,
         text=text,
         time=time
     )
     message.save()
-    user_online = UserChatOnline.objects.filter(user_id=session_user).first()
+    user_online = UserChatOnline.objects.filter(user_id=session_user.id).first()
     if user_online is None:
         user_online = UserChatOnline(
-            user_id=session_user,
-            user=user.user_name,
+            user_id=session_user.id,
+            user=session_user.user_name,
             last_time_update=timezone.now()
         )
         user_online.save()
     else:
-        user_online = UserChatOnline.objects.filter(user_id=session_user).update(last_time_update=timezone.now())
+        user_online = UserChatOnline.objects.filter(user_id=session_user.id).update(last_time_update=timezone.now())
 
 
 def update_message(request):
-    session_user = int(request.session['userid'])
+    session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
     id = int(request.POST.get('id'))
     messages = Chat.objects.filter(id__gte=id).all()
     response = []
