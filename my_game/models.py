@@ -1161,7 +1161,7 @@ class ProjectShip(models.Model):
 
     user = models.ForeignKey(MyUser, db_index=True)
     project_name = models.CharField(max_length=32)
-    hull_id = models.IntegerField()
+    hull_pattern = models.ForeignKey(HullPattern)
     system_power = models.IntegerField(default=0)
     system_fuel = models.IntegerField(default=0)
     intersystem_power = models.IntegerField(default=0)
@@ -1337,6 +1337,7 @@ class TurnShipBuild(models.Model):
     user_city = models.ForeignKey(UserCity, db_index=True)
     process_id = models.IntegerField(default=0)
     project_ship = models.ForeignKey(ProjectShip)
+    amount = models.IntegerField(default=0)
     start_time_build = models.DateTimeField()
     finish_time_build = models.DateTimeField()
 
