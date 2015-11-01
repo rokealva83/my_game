@@ -12,9 +12,9 @@ def rename_factory_pattern(*args):
     pattern_id = args[1]
     class_id = args[2]
     if class_id != 13:
-        name_factory = FactoryPattern.objects.filter(id=pattern_id).update(name=new_name)
+        FactoryPattern.objects.filter(id=pattern_id).update(name=new_name)
     else:
-        name_factory = BuildingPattern.objects.filter(id=pattern_id).update(name=new_name)
+        BuildingPattern.objects.filter(id=pattern_id).update(name=new_name)
     message = 'Шаблон переименован'
     return message
 
@@ -98,7 +98,7 @@ def upgrade_factory_pattern(*args):
     if new_pattern.production_class == 12:
         old_pattern_power = old_pattern.power_consumption
         new_power_consumption = old_pattern_power * number
-        new_pattern = FactoryPattern.objects.filter(id=new_pattern_id).update(power_consumption=new_power_consumption)
+        FactoryPattern.objects.filter(id=new_pattern_id).update(power_consumption=new_power_consumption)
     message = 'Шаблон улучшен'
     return message
 
@@ -113,9 +113,9 @@ def delete_factory_pattern(*args):
         message = 'Шаблон не может быть удален'
     else:
         if class_id != 13:
-            delete_pattern = FactoryPattern.objects.filter(id=pattern_id).delete()
+            FactoryPattern.objects.filter(id=pattern_id).delete()
         else:
-            delete_pattern = BuildingPattern.objects.filter(id=pattern_id).delete()
+            BuildingPattern.objects.filter(id=pattern_id).delete()
         message = 'Шаблон удален'
     return message
 
@@ -157,7 +157,7 @@ def making_factory_unit(*args):
             elif warehouse.resource_id == 8:
                 mineral4 = warehouse.amount
 
-        if session_user.internal_currency >= factory_pattern_making.price_internal_currency and \
+        if session_user.internal_currency >= factory_pattern_making.price_internal_currency and\
                         resource1 >= factory_pattern_making.price_resource1 and \
                         resource2 >= factory_pattern_making.price_resource2 and \
                         resource3 >= factory_pattern_making.price_resource3 and \
@@ -179,31 +179,31 @@ def making_factory_unit(*args):
 
             for warehouse in warehouses:
                 if warehouse.resource_id == 1:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=1).update(amount=new_resource1)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=1).update(
+                        amount=new_resource1)
                 elif warehouse.resource_id == 2:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=2).update(amount=new_resource2)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=2).update(
+                        amount=new_resource2)
                 elif warehouse.resource_id == 3:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=3).update(amount=new_resource3)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=3).update(
+                        amount=new_resource3)
                 elif warehouse.resource_id == 4:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=4).update(amount=new_resource4)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=4).update(
+                        amount=new_resource4)
                 elif warehouse.resource_id == 5:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=5).update(amount=new_mineral1)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=5).update(
+                        amount=new_mineral1)
                 elif warehouse.resource_id == 6:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=6).update(amount=new_mineral2)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=6).update(
+                        amount=new_mineral2)
                 elif warehouse.resource_id == 7:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=7).update(amount=new_mineral3)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=7).update(
+                        amount=new_mineral3)
                 elif warehouse.resource_id == 8:
-                    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                         id_resource=8).update(amount=new_mineral4)
+                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=8).update(
+                        amount=new_mineral4)
 
-            user_update = MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
+            MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
             turn_assembly_piece = TurnAssemblyPieces.objects.filter(user=session_user,
                                                                     user_city=session_user_city).last()
             if turn_assembly_piece is not None:
@@ -236,6 +236,8 @@ def install_factory_unit(*args):
     session_user_city = args[1]
     pattern_id = args[2]
     class_id = int(args[3])
+    warehouse_factory = None
+    warehouse_building = None
     if class_id != 13:
         factory_pattern = FactoryPattern.objects.filter(id=pattern_id).first()
         warehouse_factory = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
@@ -277,20 +279,15 @@ def install_factory_unit(*args):
                 turn_building.save()
                 if class_id != 13:
                     new_amount = warehouse_factory.amount - 1
-                    warehouse_factory_update = WarehouseFactory.objects.filter(user=session_user,
-                                                                               user_city=session_user_city,
-                                                                               factory=factory_pattern).update(
-                        amount=new_amount)
+                    WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
+                                                    factory=factory_pattern).update(amount=new_amount)
                 else:
                     new_amount = warehouse_building.amount - 1
-                    warehouse_building_update = WarehouseBuilding.objects.filter(user=session_user,
-                                                                                 user_city=session_user_city,
-                                                                                 factory=factory_pattern).update(
-                        amount=new_amount)
+                    WarehouseBuilding.objects.filter(user=session_user, user_city=session_user_city,
+                                                     factory=factory_pattern).update(amount=new_amount)
                 if factory_pattern.production_class != 10:
                     new_population = session_user_city.population - factory_pattern.cost_expert_deployment
-                    user_city_update = UserCity.objects.filter(id=session_user_city.id).update(
-                        population=new_population)
+                    UserCity.objects.filter(id=session_user_city.id).update(population=new_population)
                 message = 'Развертывание начато'
             else:
                 message = 'Нехватает инженеров или энергии'

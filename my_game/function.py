@@ -14,7 +14,7 @@ import my_game.trade.verification_trade as verification_trade
 
 def check_all_queues(request):
     user = request
-    # check_scientific_verification_queue(user)
+    check_scientific_verification_queue(user)
     # verification_construction.verification_phase_of_construction(user)
     # verification_func.verification_of_resources(user)
     # verification_trade.verification_trade(user)

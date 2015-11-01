@@ -6,7 +6,6 @@ from my_game.models import FactoryPattern, BuildingPattern, FactoryInstalled, Ba
 from my_game.models import WarehouseFactory, WarehouseBuilding
 from my_game.models import ManufacturingComplex, WarehouseComplex, TurnComplexProduction
 from my_game import function, verification_func
-from django.utils import timezone
 from my_game.building import build_function, assembly_line_workpieces
 
 
@@ -40,7 +39,6 @@ def choice_build(request):
         function.check_all_queues(session_user)
         factory_patterns = {}
         building_patterns = {}
-        warehouse_elements = {}
         attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
                       "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
                       "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production",
@@ -225,8 +223,7 @@ def add_in_complex(request):
         complex_factory = FactoryInstalled.objects.filter(id=installed_factory_id).first()
         manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
         if complex_factory.user_city == manufacturing_complex.user_city:
-            complex_factory = FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=1,
-                                                                                              complex_id=complex_id)
+            FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=1, complex_id=complex_id)
             message = 'Производство добавлено в комплекс'
         else:
             message = 'Производство в комплекс не добавлено. Местоположение неверное'
@@ -251,8 +248,8 @@ def remove_from_complex(request):
         if turn_production:
             message = 'Исключение невозможно. Идет производство'
         else:
-            complex_factory = FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=0,
-                                                                                              complex_id=None)
+            FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=0,
+                                                                            complex_id=None)
             message = 'Производство добавлено в комплекс'
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
@@ -268,16 +265,10 @@ def percent_extraction(request):
         session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
-        time_update = session_user.last_time_check
-        now_date = timezone.now()
-        elapsed_time_full = now_date - time_update
-        elapsed_time_seconds = elapsed_time_full.seconds
-        time_update = now_date
         verification_func.verification_of_resources(session_user)
         complex_id = request.POST.get('complex_id')
         new_percent = request.POST.get('percent_extraction')
-        manufacturing_complex_update = ManufacturingComplex.objects.filter(id=complex_id).update(
-            extraction_parametr=new_percent)
+        ManufacturingComplex.objects.filter(id=complex_id).update(extraction_parametr=new_percent)
         message = ''
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
@@ -300,14 +291,13 @@ def complex_warehouse(request):
                                              id_resource=warehouse_resource).first()
         if warehouse is not None and int(warehouse.amount) >= int(resource_amount):
             new_amount = int(warehouse.amount) - int(resource_amount)
-            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                 id_resource=warehouse_resource).update(amount=new_amount)
+            Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                     id_resource=warehouse_resource).update(amount=new_amount)
             warehouse_complex = WarehouseComplex.objects.filter(complex_id=complex_id,
                                                                 id_resource=warehouse_resource).first()
             if warehouse_complex:
                 new_amount = int(warehouse_complex.amount) + int(resource_amount)
-                warehouse_complex = WarehouseComplex.objects.filter(complex_id=complex_id,
-                                                                    id_resource=warehouse_resource).update(
+                WarehouseComplex.objects.filter(complex_id=complex_id, id_resource=warehouse_resource).update(
                     amount=new_amount)
             else:
                 warehouse_complex = WarehouseComplex(

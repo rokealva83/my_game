@@ -6,7 +6,8 @@ from my_game.models import TurnBuilding
 from my_game.models import FactoryPattern, FactoryInstalled, BuildingPattern, BuildingInstalled
 import my_game.verification_func as verification_func
 
-#Проверки очереди развертывания
+
+# Проверки очереди развертывания
 def verification_phase_of_construction(request):
     user = request
     turn_buildings = TurnBuilding.objects.filter(user=user)
@@ -18,7 +19,7 @@ def verification_phase_of_construction(request):
         delta_time = turn_building.finish_time_deployment - turn_building.start_time_deployment
         delta = delta_time.seconds
         user_city = turn_building.user_city
-        #Проверка времени
+        # Проверка времени
         if new_delta > delta:
             verification_func.verification_of_resources(user)
             if turn_building.class_id != 13:
@@ -41,13 +42,13 @@ def verification_phase_of_construction(request):
                 power_consumption = factory_installed.building_pattern.power_consumption
             if factory_pattern.production_class == 12:
                 new_power = user_city.power + power_consumption
-                user_city_update = UserCity.objects.filter(id=user_city.id).update(power=new_power)
+                UserCity.objects.filter(id=user_city.id).update(power=new_power)
             else:
                 new_energy = user_city.use_energy + power_consumption
-                user_city_update = UserCity.objects.filter(id=user_city.id).update(use_energy=new_energy)
+                UserCity.objects.filter(id=user_city.id).update(use_energy=new_energy)
 
             if factory_pattern.production_class == 10:
                 new_max_population = user_city.max_population + 100 * factory_pattern.production_id
-                user_city_update = UserCity.objects.filter(id=user_city.id).update(max_population=new_max_population)
+                UserCity.objects.filter(id=user_city.id).update(max_population=new_max_population)
 
-            turn_building = TurnBuilding.objects.filter(id=turn_building.id).delete()
+            TurnBuilding.objects.filter(id=turn_building.id).delete()
