@@ -1161,7 +1161,7 @@ class ProjectShip(models.Model):
 
     user = models.ForeignKey(MyUser, db_index=True)
     project_name = models.CharField(max_length=32)
-    hull_pattern = models.ForeignKey(HullPattern)
+    hull_pattern = models.ForeignKey(HullPattern, default=None)
     system_power = models.IntegerField(default=0)
     system_fuel = models.IntegerField(default=0)
     intersystem_power = models.IntegerField(default=0)
