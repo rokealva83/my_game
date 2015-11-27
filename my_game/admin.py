@@ -7,6 +7,7 @@ from my_game.models import BasicScientic
 from my_game.models import BasicFactory
 from my_game.models import BasicArmor
 from my_game.models import BasicResource
+from my_game.models import BasicMaterial
 from my_game.models import BasicShell
 from my_game.models import BasicBuilding
 from my_game.models import BasicShield
@@ -29,15 +30,17 @@ admin.site.register(MyUser, MyUserAdmin)
 
 
 class UserVariablesAdmin(admin.ModelAdmin):
-    list_display = [
-        'registr_internal_currency', 'registr_resource1', 'registr_resource2', 'registr_resource3', 'registr_resource4',
-        'registr_mineral1', 'registr_mineral2', 'registr_mineral3', 'registr_mineral4', 'basic_time_build_ship',
-        'koef_ship_element_time', 'minimum_scan_time', 'max_turn_assembly_pieces_basic',
-        'max_turn_assembly_pieces_premium', 'max_turn_building_basic', 'max_turn_building_premium',
-        'max_turn_production_basic', 'max_turn_production_premium', 'max_turn_scientic_basic',
-        'max_turn_scientic_premium', 'max_turn_ship_build_basic', 'max_turn_ship_build_premium',
-        'time_check_new_technology', 'min_scientic_level', 'tax_per_person', 'koef_price_increace_modern_element'
-    ]
+    list_display = ['registr_internal_currency', 'registr_nickel', 'registr_iron', 'registr_cooper', 'registr_aluminum',
+                    'registr_veriarit', 'registr_inneilit', 'registr_renniit', 'registr_cobalt',
+                    'registr_construction_material', 'registr_chemical', 'registr_high_strength_allov',
+                    'registr_nanoelement', 'registr_microprocessor_element', 'registr_fober_optic_element',
+                    'basic_time_build_ship', 'koef_ship_element_time', 'minimum_scan_time',
+                    'max_turn_assembly_pieces_basic', 'max_turn_assembly_pieces_premium', 'max_turn_building_basic',
+                    'max_turn_building_premium', 'max_turn_production_basic', 'max_turn_production_premium',
+                    'max_turn_scientic_basic', 'max_turn_scientic_premium', 'max_turn_ship_build_basic',
+                    'max_turn_ship_build_premium', 'time_check_new_technology', 'min_scientic_level', 'tax_per_person',
+                    'koef_price_increace_modern_element'
+                    ]
 
 
 admin.site.register(UserVariables, UserVariablesAdmin)
@@ -59,10 +62,18 @@ class MyResourceAdmin(admin.ModelAdmin):
 admin.site.register(BasicResource, MyResourceAdmin)
 
 
+class MyMaterialAdmin(admin.ModelAdmin):
+    list_display = ['material_name', 'description', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
+                    'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt']
+
+
+admin.site.register(BasicMaterial, MyMaterialAdmin)
+
+
 class MyScienticAdmin(admin.ModelAdmin):
-    list_display = ['scientic_name', 'description', 'time_study', 'price_internal_currency', 'price_resource1',
-                    'price_resource2', 'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2',
-                    'price_mineral3', 'price_mineral4']
+    list_display = ['scientic_name', 'description', 'time_study', 'price_internal_currency', 'price_nickel',
+                    'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
+                    'price_cobalt', ]
 
 
 admin.site.register(BasicScientic, MyScienticAdmin)
@@ -70,8 +81,9 @@ admin.site.register(BasicScientic, MyScienticAdmin)
 
 class MyFactoryAdmin(admin.ModelAdmin):
     list_display = ['factory_name', 'description', 'production_class', 'production_id', 'time_production',
-                    'factory_size', 'factory_mass', 'power_consumption', 'price_internal_currency', 'price_resource1',
-                    'price_resource2', 'price_resource3', 'price_resource4', 'price_expert_deployment',
+                    'factory_size', 'factory_mass', 'power_consumption', 'price_internal_currency',
+                    'price_construction_material', 'price_chemical', 'price_high_strength_allov', 'price_nanoelement',
+                    'price__microprocessor_element', 'price_fober_optic_element', 'price_expert_deployment',
                     'assembly_workpiece', 'time_deployment']
 
 
@@ -81,10 +93,11 @@ admin.site.register(BasicFactory, MyFactoryAdmin)
 class MyHullAdmin(admin.ModelAdmin):
     list_display = ['hull_name', 'description', 'hull_health', 'generator', 'engine', 'weapon', 'armor', 'shield',
                     'module', 'main_weapon', 'hold_size', 'fuel_tank', 'hull_mass', 'hull_size', 'power_consuption',
-                    'price_internal_currency', 'price_resource1', 'price_resource2', 'price_resource3',
-                    'price_resource4', 'price_mineral1', 'price_mineral2', 'price_mineral3', 'price_mineral4',
-                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
-                    'min_astronomy', 'min_logist']
+                    'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
+                    'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
+                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_fober_optic_element', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy',
+                    'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicHull, MyHullAdmin)
@@ -93,9 +106,11 @@ admin.site.register(BasicHull, MyHullAdmin)
 class MyEngineAdmin(admin.ModelAdmin):
     list_display = ['engine_name', 'description', 'engine_health', 'system_power', 'intersystem_power', 'giper_power',
                     'nullT_power', 'engine_mass', 'engine_size', 'power_consuption', 'price_internal_currency',
-                    'price_resource1', 'price_resource2', 'price_resource3', 'price_resource4', 'price_mineral1',
-                    'price_mineral2', 'price_mineral3', 'price_mineral4', 'min_all_scientic', 'min_math', 'min_phis',
-                    'min_biol', 'min_energy', 'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
+                    'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit',
+                    'price_renniit', 'price_cobalt', 'price_construction_material', 'price_chemical',
+                    'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_fober_optic_element', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy',
+                    'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicEngine, MyEngineAdmin)
@@ -103,10 +118,12 @@ admin.site.register(BasicEngine, MyEngineAdmin)
 
 class MyGeneratorAdmin(admin.ModelAdmin):
     list_display = ['generator_name', 'description', 'generator_health', 'produced_energy', 'fuel_necessary',
-                    'generator_mass', 'generator_size', 'price_internal_currency', 'price_resource1', 'price_resource2',
-                    'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2', 'price_mineral3',
-                    'price_mineral4', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio',
-                    'min_nanotech', 'min_astronomy', 'min_logist']
+                    'generator_mass', 'generator_size', 'price_internal_currency', 'price_nickel', 'price_iron',
+                    'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
+                    'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
+                    'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicGenerator, MyGeneratorAdmin)
@@ -115,10 +132,12 @@ admin.site.register(BasicGenerator, MyGeneratorAdmin)
 class MyShieldAdmin(admin.ModelAdmin):
     list_display = ['shield_name', 'description', 'shield_health', 'value_energy_resistance',
                     'value_phisical_resistance', 'shield_regeneration', 'number_of_emitter', 'shield_mass',
-                    'shield_size', 'power_consuption', 'price_internal_currency', 'price_resource1', 'price_resource2',
-                    'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2', 'price_mineral3',
-                    'price_mineral4', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio',
-                    'min_nanotech', 'min_astronomy', 'min_logist']
+                    'shield_size', 'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron',
+                    'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
+                    'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
+                    'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicShield, MyShieldAdmin)
@@ -127,10 +146,11 @@ admin.site.register(BasicShield, MyShieldAdmin)
 class MyWeaponAdmin(admin.ModelAdmin):
     list_display = ['weapon_name', 'description', 'weapon_health', 'weapon_energy_damage', 'weapon_regenerations',
                     'number_of_bursts', 'weapon_range', 'weapon_accuracy', 'weapon_mass', 'weapon_size', 'weapon_class',
-                    'power_consuption', 'price_internal_currency', 'price_resource1', 'price_resource2',
-                    'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2', 'price_mineral3',
-                    'price_mineral4', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio',
-                    'min_nanotech', 'min_astronomy', 'min_logist']
+                    'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper',
+                    'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt',
+                    'price_construction_material', 'price_chemical', 'price_high_strength_allov', 'price_nanoelement',
+                    'price__microprocessor_element', 'price_fober_optic_element', 'min_all_scientic', 'min_math',
+                    'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicWeapon, MyWeaponAdmin)
@@ -146,10 +166,11 @@ admin.site.register(BasicArmor, MyArmorAdmin)
 
 class MyShellAdmin(admin.ModelAdmin):
     list_display = ['shell_name', 'description', 'shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size',
-                    'price_internal_currency', 'price_resource1', 'price_resource2', 'price_resource3',
-                    'price_resource4', 'price_mineral1', 'price_mineral2', 'price_mineral3', 'price_mineral4',
-                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
-                    'min_astronomy', 'min_logist']
+                    'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
+                    'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
+                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_fober_optic_element', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy',
+                    'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicShell, MyShellAdmin)
@@ -157,10 +178,12 @@ admin.site.register(BasicShell, MyShellAdmin)
 
 class MyModuleAdmin(admin.ModelAdmin):
     list_display = ['module_name', 'description', 'module_health', 'param1', 'param2', 'param3', 'module_mass',
-                    'module_size', 'module_class', 'power_consuption', 'price_internal_currency', 'price_resource1',
-                    'price_resource2', 'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2',
-                    'price_mineral3', 'price_mineral4', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol',
-                    'min_energy', 'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
+                    'module_size', 'module_class', 'power_consuption', 'price_internal_currency', 'price_nickel',
+                    'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
+                    'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
+                    'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicModule, MyModuleAdmin)
@@ -168,8 +191,8 @@ admin.site.register(BasicModule, MyModuleAdmin)
 
 class MyFuelAdmin(admin.ModelAdmin):
     list_display = ['fuel_name', 'description', 'fuel_mass', 'fuel_size', 'fuel_efficiency', 'fuel_class', 'fuel_id',
-                    'price_internal_currency', 'price_resource1', 'price_resource2', 'price_resource3',
-                    'price_resource4', 'price_mineral1', 'price_mineral2', 'price_mineral3', 'price_mineral4']
+                    'price_internal_currency', 'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt',
+                    'price_chemical', ]
 
 
 admin.site.register(BasicFuel, MyFuelAdmin)
@@ -177,10 +200,12 @@ admin.site.register(BasicFuel, MyFuelAdmin)
 
 class MyDeviceAdmin(admin.ModelAdmin):
     list_display = ['device_name', 'description', 'device_health', 'param1', 'param2', 'param3', 'device_mass',
-                    'device_size', 'device_class', 'power_consuption', 'price_internal_currency', 'price_resource1',
-                    'price_resource2', 'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2',
-                    'price_mineral3', 'price_mineral4', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol',
-                    'min_energy', 'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
+                    'device_size', 'device_class', 'power_consuption', 'price_internal_currency', 'price_nickel',
+                    'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
+                    'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
+                    'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicDevice, MyDeviceAdmin)
@@ -188,10 +213,10 @@ admin.site.register(BasicDevice, MyDeviceAdmin)
 
 class MyBuildingAdmin(admin.ModelAdmin):
     list_display = ['building_name', 'description', 'production_class', 'production_id', 'time_production', 'warehouse',
-                    'max_warehouse', 'power_consumption', 'price_internal_currency', 'price_resource1',
-                    'price_resource2', 'price_resource3', 'price_resource4', 'price_mineral1', 'price_mineral2',
-                    'price_mineral3', 'price_mineral4', 'price_expert_deployment', 'assembly_workpiece',
-                    'time_deployment', 'building_size', 'building_mass']
+                    'max_warehouse', 'power_consumption', 'price_internal_currency', 'price_construction_material',
+                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_fober_optic_element', 'price_expert_deployment', 'assembly_workpiece', 'time_deployment',
+                    'building_size', 'building_mass']
 
 
 admin.site.register(BasicBuilding, MyBuildingAdmin)
