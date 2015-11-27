@@ -228,6 +228,7 @@ class BasicMaterial(models.Model):
 
     material_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=1000, verbose_name=u'Описание')
+    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')
     price_cooper = models.IntegerField(default=0, verbose_name=u'Цена в меди')
@@ -236,6 +237,10 @@ class BasicMaterial(models.Model):
     price_inneilit = models.IntegerField(default=0, verbose_name=u'Цена в иннэилите')
     price_renniit = models.IntegerField(default=0, verbose_name=u'Цена в ренниите')
     price_cobalt = models.IntegerField(default=0, verbose_name=u'Цена в кобальте')
+    time_production = models.IntegerField(verbose_name=u'Время производства')
+    material_size = models.IntegerField(verbose_name=u'Размер')
+    material_mass = models.IntegerField(verbose_name=u'Вес')
+
 
 
 class BasicScientic(models.Model):
@@ -300,7 +305,7 @@ class BasicFactory(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     price_expert_deployment = models.IntegerField(default=10, verbose_name=u'Количество сотрудников')
     assembly_workpiece = models.IntegerField(default=10, verbose_name=u'Время создания заготовки')
@@ -329,7 +334,7 @@ class FactoryPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     cost_expert_deployment = models.IntegerField(default=10)
     assembly_workpiece = models.IntegerField(default=10)
@@ -377,7 +382,7 @@ class BasicHull(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -426,7 +431,7 @@ class HullPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -460,7 +465,7 @@ class BasicEngine(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -504,7 +509,7 @@ class EnginePattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -535,7 +540,7 @@ class BasicGenerator(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -576,7 +581,7 @@ class GeneratorPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -610,7 +615,7 @@ class BasicShield(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -654,7 +659,7 @@ class ShieldPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -690,7 +695,7 @@ class BasicWeapon(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -736,7 +741,7 @@ class WeaponPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -768,7 +773,7 @@ class BasicArmor(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -810,7 +815,7 @@ class ArmorPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -840,7 +845,7 @@ class BasicShell(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -880,7 +885,7 @@ class ShellPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -914,7 +919,7 @@ class BasicModule(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -958,7 +963,7 @@ class ModulePattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -1039,7 +1044,7 @@ class BasicDevice(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     min_all_scientic = models.IntegerField(default=0, verbose_name=u'Минимальный уровень науки')
     min_math = models.IntegerField(default=0, verbose_name=u'Минимальный уровень математики')
@@ -1083,7 +1088,7 @@ class DevicePattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
 
@@ -1106,7 +1111,7 @@ class BasicBuilding(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     price_expert_deployment = models.IntegerField(default=10, verbose_name=u'Количество сотрудников')
     assembly_workpiece = models.IntegerField(default=10, verbose_name=u'Время создания заготовки')
@@ -1136,7 +1141,7 @@ class BuildingPattern(models.Model):
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
     price_nanoelement = models.IntegerField(default=0, verbose_name=u'Цена в наноелементах')
-    price__microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
+    price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     cost_expert_deployment = models.IntegerField(default=10)
     assembly_workpiece = models.IntegerField(default=10)
@@ -1426,19 +1431,6 @@ class FleetParametrBuildRepair(models.Model):
     process_per_minute = models.IntegerField()
 
 
-class Hold(models.Model):
-    class Meta:
-        db_table = 'fleet_hold'
-
-    fleet = models.ForeignKey(Fleet, db_index=True)
-    resource_hold = models.ForeignKey(ResourceHold)
-    class_shipment = models.IntegerField()
-    shipment_id = models.IntegerField()
-    amount_shipment = models.IntegerField()
-    mass_shipment = models.IntegerField()
-    size_shipment = models.IntegerField()
-
-
 class ResourceHold(models.Model):
     hold_id = models.ImageField()
     res_nickel = models.IntegerField(default=0)
@@ -1453,8 +1445,21 @@ class ResourceHold(models.Model):
     mat_chemical = models.IntegerField(default=0)
     mat_high_strength_allov = models.IntegerField(default=0)
     mat_nanoelement = models.IntegerField(default=0)
-    mat__microprocessor_element = models.IntegerField(default=0)
+    mat_microprocessor_element = models.IntegerField(default=0)
     mat_fober_optic_element = models.IntegerField(default=0)
+
+
+class Hold(models.Model):
+    class Meta:
+        db_table = 'fleet_hold'
+
+    fleet = models.ForeignKey(Fleet, db_index=True)
+    resource_hold = models.ForeignKey(ResourceHold)
+    class_shipment = models.IntegerField()
+    shipment_id = models.IntegerField()
+    amount_shipment = models.IntegerField()
+    mass_shipment = models.IntegerField()
+    size_shipment = models.IntegerField()
 
 
 class FuelTank(models.Model):

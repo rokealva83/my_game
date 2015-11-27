@@ -41,7 +41,7 @@ def choice_build(request):
         building_patterns = {}
         attributes = (
             "price_internal_currency", 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-            'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+            'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
             "price_expert_deployment",
             "assembly_workpiece", "time_deployment", "time_production", "factory_size", "factory_mass",
             "power_consumption")
@@ -60,7 +60,7 @@ def choice_build(request):
                                                                                            'production_id')
             attributes = (
                 "price_internal_currency", 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-                'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
                 "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size", "mass",
                 "power_consumption", "max_warehouse")
         if request.POST.get('hull') is not None:

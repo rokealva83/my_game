@@ -120,7 +120,7 @@ def add_user(request):
                         price_chemical=basic_factory.price_chemical,
                         price_high_strength_allov=basic_factory.price_high_strength_allov,
                         price_nanoelement=basic_factory.price_nanoelement,
-                        price__microprocessor_element=basic_factory.price__microprocessor_element,
+                        price_microprocessor_element=basic_factory.price_microprocessor_element,
                         price_fober_optic_element=basic_factory.price_fober_optic_element,
                         cost_expert_deployment=basic_factory.price_expert_deployment,
                         assembly_workpiece=basic_factory.assembly_workpiece,

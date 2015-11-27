@@ -63,8 +63,9 @@ admin.site.register(BasicResource, MyResourceAdmin)
 
 
 class MyMaterialAdmin(admin.ModelAdmin):
-    list_display = ['material_name', 'description', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
-                    'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt']
+    list_display = ['material_name', 'description', 'price_internal_currency',
+                    'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit',
+                    'price_renniit', 'price_cobalt', 'time_production', 'material_mass', 'material_size']
 
 
 admin.site.register(BasicMaterial, MyMaterialAdmin)
@@ -83,7 +84,7 @@ class MyFactoryAdmin(admin.ModelAdmin):
     list_display = ['factory_name', 'description', 'production_class', 'production_id', 'time_production',
                     'factory_size', 'factory_mass', 'power_consumption', 'price_internal_currency',
                     'price_construction_material', 'price_chemical', 'price_high_strength_allov', 'price_nanoelement',
-                    'price__microprocessor_element', 'price_fober_optic_element', 'price_expert_deployment',
+                    'price_microprocessor_element', 'price_fober_optic_element', 'price_expert_deployment',
                     'assembly_workpiece', 'time_deployment']
 
 
@@ -95,7 +96,7 @@ class MyHullAdmin(admin.ModelAdmin):
                     'module', 'main_weapon', 'hold_size', 'fuel_tank', 'hull_mass', 'hull_size', 'power_consuption',
                     'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
                     'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
-                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',
                     'price_fober_optic_element', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy',
                     'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
@@ -108,7 +109,7 @@ class MyEngineAdmin(admin.ModelAdmin):
                     'nullT_power', 'engine_mass', 'engine_size', 'power_consuption', 'price_internal_currency',
                     'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit',
                     'price_renniit', 'price_cobalt', 'price_construction_material', 'price_chemical',
-                    'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',
                     'price_fober_optic_element', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy',
                     'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
@@ -121,7 +122,7 @@ class MyGeneratorAdmin(admin.ModelAdmin):
                     'generator_mass', 'generator_size', 'price_internal_currency', 'price_nickel', 'price_iron',
                     'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
                     'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
                     'min_astronomy', 'min_logist']
 
@@ -135,7 +136,7 @@ class MyShieldAdmin(admin.ModelAdmin):
                     'shield_size', 'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron',
                     'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
                     'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
                     'min_astronomy', 'min_logist']
 
@@ -149,7 +150,7 @@ class MyWeaponAdmin(admin.ModelAdmin):
                     'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper',
                     'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt',
                     'price_construction_material', 'price_chemical', 'price_high_strength_allov', 'price_nanoelement',
-                    'price__microprocessor_element', 'price_fober_optic_element', 'min_all_scientic', 'min_math',
+                    'price_microprocessor_element', 'price_fober_optic_element', 'min_all_scientic', 'min_math',
                     'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
 
@@ -168,7 +169,7 @@ class MyShellAdmin(admin.ModelAdmin):
     list_display = ['shell_name', 'description', 'shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size',
                     'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
                     'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
-                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',
                     'price_fober_optic_element', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy',
                     'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
@@ -181,7 +182,7 @@ class MyModuleAdmin(admin.ModelAdmin):
                     'module_size', 'module_class', 'power_consuption', 'price_internal_currency', 'price_nickel',
                     'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
                     'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
                     'min_astronomy', 'min_logist']
 
@@ -203,7 +204,7 @@ class MyDeviceAdmin(admin.ModelAdmin):
                     'device_size', 'device_class', 'power_consuption', 'price_internal_currency', 'price_nickel',
                     'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-                    'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                    'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
                     'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
                     'min_astronomy', 'min_logist']
 
@@ -214,7 +215,7 @@ admin.site.register(BasicDevice, MyDeviceAdmin)
 class MyBuildingAdmin(admin.ModelAdmin):
     list_display = ['building_name', 'description', 'production_class', 'production_id', 'time_production', 'warehouse',
                     'max_warehouse', 'power_consumption', 'price_internal_currency', 'price_construction_material',
-                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price__microprocessor_element',
+                    'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',
                     'price_fober_optic_element', 'price_expert_deployment', 'assembly_workpiece', 'time_deployment',
                     'building_size', 'building_mass']
 
