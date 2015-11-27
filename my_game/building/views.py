@@ -18,13 +18,13 @@ def building(request):
         function.check_all_queues(session_user)
         turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city,
+        output = {'user': session_user, 'warehouse': warehouse, 'user_city': session_user_city,
                   'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings,
                   'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs}
         return render(request, "building.html", output)
@@ -39,10 +39,12 @@ def choice_build(request):
         function.check_all_queues(session_user)
         factory_patterns = {}
         building_patterns = {}
-        attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                      "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                      "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production",
-                      "factory_size", "factory_mass", "power_consumption")
+        attributes = (
+            "price_internal_currency", 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+            'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+            "price_expert_deployment",
+            "assembly_workpiece", "time_deployment", "time_production", "factory_size", "factory_mass",
+            "power_consumption")
 
         if request.POST.get('housing_unit') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=10).order_by(
@@ -56,10 +58,11 @@ def choice_build(request):
         if request.POST.get('infrastructure') is not None:
             building_patterns = BuildingPattern.objects.filter(user=session_user).order_by('production_class',
                                                                                            'production_id')
-            attributes = ("price_internal_currency", "price_resource1", "price_resource2", "price_resource3",
-                          "price_resource4", "price_mineral1", "price_mineral2", "price_mineral3", "price_mineral4",
-                          "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size",
-                          "mass", "power_consumption", "max_warehouse")
+            attributes = (
+                "price_internal_currency", 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+                'price_nanoelement', 'price__microprocessor_element', 'price_fober_optic_element',
+                "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size", "mass",
+                "power_consumption", "max_warehouse")
         if request.POST.get('hull') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=1).order_by(
                 'production_id')
@@ -103,17 +106,16 @@ def choice_build(request):
 
         turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city,
-                  'factory_patterns': factory_patterns,
-                  'attributes': attributes, 'turn_assembly_piecess': turn_assembly_piecess,
-                  'building_patterns': building_patterns, 'turn_buildings': turn_buildings,
-                  'warehouse_elements': warehouse_elements, 'user_citys': user_citys,
+        output = {'user': session_user, 'warehouse': warehouse, 'user_city': session_user_city,
+                  'factory_patterns': factory_patterns, 'attributes': attributes,
+                  'turn_assembly_piecess': turn_assembly_piecess, 'building_patterns': building_patterns,
+                  'turn_buildings': turn_buildings, 'warehouse_elements': warehouse_elements, 'user_citys': user_citys,
                   'manufacturing_complexs': manufacturing_complexs}
 
         return render(request, "building.html", output)
@@ -160,13 +162,13 @@ def working(request):
 
         turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city, 'message': message,
+        output = {'user': session_user, 'warehouse': warehouse, 'user_city': session_user_city, 'message': message,
                   'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings,
                   'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs}
         return render(request, "building.html", output)
@@ -322,7 +324,7 @@ def create_complex_output(*args):
     session_user_city = args[1]
     complex_id = args[2]
     message = args[3]
-    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
+    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city)
     turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
     turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
     user_citys = UserCity.objects.filter(user=session_user)
@@ -333,7 +335,7 @@ def create_complex_output(*args):
     basic_resources = BasicResource.objects.filter()
     warehouse_complexs = WarehouseComplex.objects.filter(complex_id=complex_id).order_by('resource_id')
 
-    output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city,
+    output = {'user': session_user, 'warehouse': warehouse, 'user_city': session_user_city,
               'turn_assembly_piecess': turn_assembly_piecess, 'turn_buildings': turn_buildings,
               'user_citys': user_citys, 'message': message, 'complex_id': complex_id,
               'manufacturing_complexs': manufacturing_complexs, 'manufacturing_complex': manufacturing_complex,

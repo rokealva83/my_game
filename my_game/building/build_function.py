@@ -51,10 +51,12 @@ def upgrade_factory_pattern(*args):
             basic_factory=old_pattern.basic_factory,
             factory_name=old_pattern.factory_name,
             price_internal_currency=old_pattern.price_internal_currency * koef_speed * koef_number,
-            price_resource1=old_pattern.price_resource1 * koef_speed * koef_number,
-            price_resource2=old_pattern.price_resource2 * koef_speed * koef_number,
-            price_resource3=old_pattern.price_resource3 * koef_speed * koef_number,
-            price_resource4=old_pattern.price_resource4 * koef_speed * koef_number,
+            price_construction_material=old_pattern.price_construction_material * koef_speed * koef_number,
+            price_chemical=old_pattern.price_chemical * koef_speed * koef_number,
+            price_high_strength_allov=old_pattern.price_high_strength_allov * koef_speed * koef_number,
+            price_nanoelement=old_pattern.price_nanoelement * koef_speed * koef_number,
+            price_microprocessor_element=old_pattern.price_microprocessor_element * koef_speed * koef_number,
+            price_fober_optic_element=old_pattern.price_fober_optic_element * koef_speed * koef_number,
             cost_expert_deployment=old_pattern.cost_expert_deployment * koef_speed * koef_number,
             assembly_workpiece=old_pattern.assembly_workpiece * koef_speed * koef_number,
             time_deployment=old_pattern.time_deployment * koef_speed * koef_number,
@@ -73,14 +75,12 @@ def upgrade_factory_pattern(*args):
             basic_id=old_pattern.basic_id,
             name=old_pattern.name,
             price_internal_currency=old_pattern.price_internal_currency * koef_speed * koef_number,
-            price_resource1=old_pattern.price_resource1 * koef_speed * koef_number,
-            price_resource2=old_pattern.price_resource2 * koef_speed * koef_number,
-            price_resource3=old_pattern.price_resource3 * koef_speed * koef_number,
-            price_resource4=old_pattern.price_resource4 * koef_speed * koef_number,
-            price_mineral1=old_pattern.price_mineral1 * koef_speed * koef_number,
-            price_mineral2=old_pattern.price_mineral2 * koef_speed * koef_number,
-            price_mineral3=old_pattern.price_mineral3 * koef_speed * koef_number,
-            price_mineral4=old_pattern.price_mineral4 * koef_speed * koef_number,
+            price_construction_material=old_pattern.price_construction_material * koef_speed * koef_number,
+            price_chemical=old_pattern.price_chemical * koef_speed * koef_number,
+            price_high_strength_allov=old_pattern.price_high_strength_allov * koef_speed * koef_number,
+            price_nanoelement=old_pattern.price_nanoelement * koef_speed * koef_number,
+            price_microprocessor_element=old_pattern.price_microprocessor_element * koef_speed * koef_number,
+            price_fober_optic_element=old_pattern.price_fober_optic_element * koef_speed * koef_number,
             cost_expert_deployment=old_pattern.cost_expert_deployment * koef_speed * koef_number,
             assembly_workpiece=old_pattern.assembly_workpiece * koef_speed * koef_number,
             time_deployment=old_pattern.time_deployment * koef_speed * koef_number,
@@ -128,9 +128,7 @@ def making_factory_unit(*args):
     pattern_id = int(args[3])
     class_id = int(args[4])
 
-    resource1 = resource2 = resource3 = resource4 = mineral1 = mineral2 = mineral3 = mineral4 = 0
-
-    warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
+    warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
     if class_id != 13:
         factory_pattern_making = FactoryPattern.objects.filter(id=pattern_id).first()
     else:
@@ -139,71 +137,33 @@ def making_factory_unit(*args):
 
     if turn_assembly_pieces < 3:
         # Проверка наличия ресурсов
-        for warehouse in warehouses:
-            if warehouse.resource_id == 1:
-                resource1 = warehouse.amount
-            elif warehouse.resource_id == 2:
-                resource2 = warehouse.amount
-            elif warehouse.resource_id == 3:
-                resource3 = warehouse.amount
-            elif warehouse.resource_id == 4:
-                resource4 = warehouse.amount
-            elif warehouse.resource_id == 5:
-                mineral1 = warehouse.amount
-            elif warehouse.resource_id == 6:
-                mineral2 = warehouse.amount
-            elif warehouse.resource_id == 7:
-                mineral3 = warehouse.amount
-            elif warehouse.resource_id == 8:
-                mineral4 = warehouse.amount
 
-        if session_user.internal_currency >= factory_pattern_making.price_internal_currency and\
-                        resource1 >= factory_pattern_making.price_resource1 and \
-                        resource2 >= factory_pattern_making.price_resource2 and \
-                        resource3 >= factory_pattern_making.price_resource3 and \
-                        resource4 >= factory_pattern_making.price_resource4 and \
-                        mineral1 >= factory_pattern_making.price_mineral1 and \
-                        mineral2 >= factory_pattern_making.price_mineral2 and \
-                        mineral3 >= factory_pattern_making.price_mineral3 and \
-                        mineral4 >= factory_pattern_making.price_mineral4:
+        if session_user.internal_currency >= factory_pattern_making.price_internal_currency and \
+                        warehouse.construction_material >= factory_pattern_making.price_construction_material and \
+                        warehouse.chemical >= factory_pattern_making.price_chemical and \
+                        warehouse.high_strength_allov >= factory_pattern_making.price_high_strength_allov and \
+                        warehouse.nanoelement >= factory_pattern_making.price_nanoelement and \
+                        warehouse.microprocessor_element >= factory_pattern_making.price_microprocessor_element and \
+                        warehouse.fober_optic_element >= factory_pattern_making.price_fober_optic_element:
 
             new_internal_currency = session_user.internal_currency - factory_pattern_making.price_internal_currency
-            new_resource1 = resource1 - factory_pattern_making.price_resource1
-            new_resource2 = resource2 - factory_pattern_making.price_resource1
-            new_resource3 = resource3 - factory_pattern_making.price_resource1
-            new_resource4 = resource4 - factory_pattern_making.price_resource1
-            new_mineral1 = mineral1 - factory_pattern_making.price_mineral1
-            new_mineral2 = mineral2 - factory_pattern_making.price_mineral1
-            new_mineral3 = mineral3 - factory_pattern_making.price_mineral1
-            new_mineral4 = mineral4 - factory_pattern_making.price_mineral1
+            new_construction_material = warehouse.construction_material - factory_pattern_making.price_construction_material
+            new_chemical = warehouse.chemical - factory_pattern_making.price_construction_material
+            new_high_strength_allov = warehouse.high_strength_allov - factory_pattern_making.price_construction_material
+            new_nanoelement = warehouse.nanoelement - factory_pattern_making.price_construction_material
+            new_microprocessor_element = warehouse.microprocessor_element - factory_pattern_making.price_microprocessor_element
+            new_fober_optic_element = warehouse.fober_optic_element - factory_pattern_making.price_fober_optic_element
 
-            for warehouse in warehouses:
-                if warehouse.resource_id == 1:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=1).update(
-                        amount=new_resource1)
-                elif warehouse.resource_id == 2:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=2).update(
-                        amount=new_resource2)
-                elif warehouse.resource_id == 3:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=3).update(
-                        amount=new_resource3)
-                elif warehouse.resource_id == 4:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=4).update(
-                        amount=new_resource4)
-                elif warehouse.resource_id == 5:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=5).update(
-                        amount=new_mineral1)
-                elif warehouse.resource_id == 6:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=6).update(
-                        amount=new_mineral2)
-                elif warehouse.resource_id == 7:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=7).update(
-                        amount=new_mineral3)
-                elif warehouse.resource_id == 8:
-                    Warehouse.objects.filter(user=session_user, user_city=session_user_city, id_resource=8).update(
-                        amount=new_mineral4)
+            Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
+                construction_material=new_construction_material,
+                chemical=new_chemical,
+                high_strength_allov=new_high_strength_allov,
+                nanoelement=new_nanoelement,
+                microprocessor_element=new_microprocessor_element,
+                fober_optic_element=new_fober_optic_element
+            )
 
-            MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency)
+            MyUser.objects.filter(user_id=session_user.id).update(internal_currency=new_internal_currency)
             turn_assembly_piece = TurnAssemblyPieces.objects.filter(user=session_user,
                                                                     user_city=session_user_city).last()
             if turn_assembly_piece is not None:
