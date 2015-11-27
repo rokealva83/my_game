@@ -168,25 +168,6 @@ class PlanetType(models.Model):
     atmosphere = models.CharField(max_length=20, verbose_name=u'')
 
 
-class UserCity(models.Model):
-    class Meta:
-        db_table = 'user_city'
-
-    user = models.ForeignKey(MyUser, db_index=True, verbose_name=u'Город')
-    system = models.ForeignKey(System, db_index=True, null=True, default=None, verbose_name=u'')
-    planet = models.ForeignKey(Planet, db_index=True, null=True, default=None, verbose_name=u'')
-    x = models.IntegerField()
-    y = models.IntegerField()
-    z = models.IntegerField()
-    name_city = models.CharField(db_index=True, max_length=20, default='New City', verbose_name=u'')
-    city_size_free = models.IntegerField(verbose_name=u'')
-    population = models.IntegerField(default=150, verbose_name=u'')
-    max_population = models.IntegerField(default=500, verbose_name=u'')
-    founding_date = models.DateTimeField(verbose_name=u'')
-    extraction_date = models.DateTimeField(verbose_name=u'')
-    power = models.IntegerField(default=0, verbose_name=u'')
-    use_energy = models.IntegerField(default=0, verbose_name=u'')
-
 
 class Warehouse(models.Model):
     class Meta:
@@ -208,6 +189,28 @@ class Warehouse(models.Model):
     mat_nanoelement = models.IntegerField(default=0)
     mat_microprocessor_element = models.IntegerField(default=0)
     mat_fober_optic_element = models.IntegerField(default=0)
+
+
+class UserCity(models.Model):
+    class Meta:
+        db_table = 'user_city'
+
+    user = models.ForeignKey(MyUser, db_index=True, verbose_name=u'Город')
+    system = models.ForeignKey(System, db_index=True, null=True, default=None, verbose_name=u'')
+    planet = models.ForeignKey(Planet, db_index=True, null=True, default=None, verbose_name=u'')
+    x = models.IntegerField()
+    y = models.IntegerField()
+    z = models.IntegerField()
+    name_city = models.CharField(db_index=True, max_length=20, default='New City', verbose_name=u'')
+    city_size_free = models.IntegerField(verbose_name=u'')
+    population = models.IntegerField(default=150, verbose_name=u'')
+    max_population = models.IntegerField(default=500, verbose_name=u'')
+    founding_date = models.DateTimeField(verbose_name=u'')
+    extraction_date = models.DateTimeField(verbose_name=u'')
+    power = models.IntegerField(default=0, verbose_name=u'')
+    use_energy = models.IntegerField(default=0, verbose_name=u'')
+    warehouse = models.ForeignKey(Warehouse, db_index=True)
+
 
 
 class BasicResource(models.Model):
@@ -1171,7 +1174,7 @@ class FactoryInstalled(models.Model):
     factory_pattern = models.ForeignKey(FactoryPattern)
     complex_status = models.BooleanField(default=0)
     manufacturing_complex = models.ForeignKey(ManufacturingComplex, null=True, default=None)
-    factory_warehouse = models.ForeignKey(WarehouseFactory)
+    factory_warehouse = models.ForeignKey(WarehouseFactoryResource)
 
 
 class BuildingInstalled(models.Model):
@@ -1303,7 +1306,7 @@ class TurnComplexProduction(models.Model):
     class Meta:
         db_table = 'turn_complex_production'
 
-    manufacturing_complex.id = models.ForeignKey(ManufacturingComplex)
+    manufacturing_complex = models.ForeignKey(ManufacturingComplex)
     factory = models.ForeignKey(FactoryInstalled)
     element_id = models.IntegerField()
     start_time_production = models.DateTimeField()
