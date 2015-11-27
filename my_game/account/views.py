@@ -86,62 +86,25 @@ def add_user(request):
                 extraction_date=datetime.today()
             )
             user_city.save()
-            planet = Planet.objects.filter(pk=user_city.planet.id).update(planet_free=0)
+            Planet.objects.filter(pk=user_city.planet.id).update(planet_free=0)
 
             warehouse = Warehouse(
                 user=myuser,
                 user_city=user_city,
-                resource_id=1,
-                amount=user_variables.registr_resource1
-            )
-            warehouse.save()
-            warehouse = Warehouse(
-                user=myuser,
-                user_city=user_city,
-                resource_id=2,
-                amount=user_variables.registr_resource2
-            )
-            warehouse.save()
-            warehouse = Warehouse(
-                user=myuser,
-                user_city=user_city,
-                resource_id=3,
-                amount=user_variables.registr_resource3
-            )
-            warehouse.save()
-            warehouse = Warehouse(
-                user=myuser,
-                user_city=user_city,
-                resource_id=4,
-                amount=user_variables.registr_resource4
-            )
-            warehouse.save()
-            warehouse = Warehouse(
-                user=myuser,
-                user_city=user_city,
-                resource_id=5,
-                amount=user_variables.registr_mineral1
-            )
-            warehouse.save()
-            warehouse = Warehouse(
-                user=myuser,
-                user_city=user_city,
-                resource_id=6,
-                amount=user_variables.registr_mineral2
-            )
-            warehouse.save()
-            warehouse = Warehouse(
-                user=myuser,
-                user_city=user_city,
-                resource_id=7,
-                amount=user_variables.registr_mineral3
-            )
-            warehouse.save()
-            warehouse = Warehouse(
-                user=myuser,
-                user_city=user_city,
-                resource_id=8,
-                amount=user_variables.registr_mineral4
+                res_nickel=user_variables.registr_nickel,
+                res_iron=user_variables.registr_iron,
+                res_cooper=user_variables.registr_cooper,
+                res_aluminum=user_variables.registr_aluminum,
+                res_variarit=user_variables.registr_variarit,
+                res_inneilit=user_variables.registr_inneilit,
+                res_renniit=user_variables.registr_renniit,
+                res_cobalt=user_variables.registr_cobalt,
+                mat_construction_material=user_variables.registr_construction_material,
+                mat_chemical=user_variables.registr_chemical,
+                mat_high_strength_allov=user_variables.registr_high_strength_allov,
+                mat_nanoelement=user_variables.registr_nanoelement,
+                mat_microprocessor_element=user_variables.registr_microprocessor_element,
+                mat_fober_optic_element=user_variables.registr_fober_optic_element,
             )
             warehouse.save()
 
@@ -153,10 +116,12 @@ def add_user(request):
                         basic_factory=basic_factory,
                         factory_name=basic_factory.factory_name,
                         price_internal_currency=basic_factory.price_internal_currency,
-                        price_resource1=basic_factory.price_resource1,
-                        price_resource2=basic_factory.price_resource2,
-                        price_resource3=basic_factory.price_resource3,
-                        price_resource4=basic_factory.price_resource4,
+                        price_construction_material=basic_factory.price_construction_material,
+                        price_chemical=basic_factory.price_chemical,
+                        price_high_strength_allov=basic_factory.price_high_strength_allov,
+                        price_nanoelement=basic_factory.price_nanoelement,
+                        price__microprocessor_element=basic_factory.price__microprocessor_element,
+                        price_fober_optic_element=basic_factory.price_fober_optic_element,
                         cost_expert_deployment=basic_factory.price_expert_deployment,
                         assembly_workpiece=basic_factory.assembly_workpiece,
                         time_deployment=basic_factory.time_deployment,
@@ -183,11 +148,11 @@ def add_user(request):
             for factory_instelled in factory_instelleds:
                 use_area = factory_instelled.factory_pattern.factory_size + use_area
                 if factory_instelled.factory_pattern.production_class == 12:
-                    user_city_update = UserCity.objects.filter(user=myuser).update(power=factory_instelled.factory_pattern.power_consumption)
+                    UserCity.objects.filter(user=myuser).update(power=factory_instelled.factory_pattern.power_consumption)
                 else:
                     use_energy = use_energy + factory_instelled.factory_pattern.power_consumption
             free_area = user_city.city_size_free - use_area
-            user_city_update = UserCity.objects.filter(user=myuser).update(use_energy=use_energy, city_size_free=free_area)
+            UserCity.objects.filter(user=myuser).update(use_energy=use_energy, city_size_free=free_area)
 
     elif request.POST.get('cancel_button') is not None:
         return render(request, "index.html", {})
@@ -204,11 +169,11 @@ def user_auth(request):
             if user_name_auth.password == password_post:
                 user = MyUser.objects.filter(user_id=user_name_auth.id).first()
                 user_city = UserCity.objects.filter(user=user).first()
-                warehouses = Warehouse.objects.filter(user=user, user_city=user_city).order_by('resource_id')
+                warehouses = Warehouse.objects.filter(user=user, user_city=user_city)
                 user_citys = UserCity.objects.filter(user=user)
                 planet = user_city.planet
                 race = user.race
-                # function.check_all_queues(user)
+                function.check_all_queues(user)
                 output = {'user': user, 'race': race, 'warehouses': warehouses, 'user_city': user_city,
                           'user_citys': user_citys, 'planet': planet}
                 request.session['user'] = user.id
