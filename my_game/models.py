@@ -1158,6 +1158,7 @@ class ManufacturingComplex(models.Model):
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
     name = models.CharField(max_length=50, default='New complex')
+    warehouse_complex = models.ForeignKey(Comp)
     extraction_parametr = models.IntegerField(default=0)
 
 
@@ -1169,7 +1170,8 @@ class FactoryInstalled(models.Model):
     user_city = models.ForeignKey(UserCity, db_index=True)
     factory_pattern = models.ForeignKey(FactoryPattern)
     complex_status = models.BooleanField(default=0)
-    complex = models.ForeignKey(ManufacturingComplex, null=True, default=None)
+    manufacturing_complex = models.ForeignKey(ManufacturingComplex, null=True, default=None)
+    factory_warehouse = models.ForeignKey(WarehouseFactory)
 
 
 class BuildingInstalled(models.Model):
@@ -1185,18 +1187,40 @@ class WarehouseFactoryResource(models.Model):
     class Meta:
         db_table = 'warehouse_factory_resource'
 
-    factory = models.ForeignKey(FactoryInstalled, db_index=True)
-    resource = models.ForeignKey(BasicResource)
-    amount = models.IntegerField()
+    res_nickel = models.IntegerField(default=0)
+    res_iron = models.IntegerField(default=0)
+    res_cooper = models.IntegerField(default=0)
+    res_aluminum = models.IntegerField(default=0)
+    res_variarit = models.IntegerField(default=0)
+    res_inneilit = models.IntegerField(default=0)
+    res_renniit = models.IntegerField(default=0)
+    res_cobalt = models.IntegerField(default=0)
+    mat_construction_material = models.IntegerField(default=0)
+    mat_chemical = models.IntegerField(default=0)
+    mat_high_strength_allov = models.IntegerField(default=0)
+    mat_nanoelement = models.IntegerField(default=0)
+    mat_microprocessor_element = models.IntegerField(default=0)
+    mat_fober_optic_element = models.IntegerField(default=0)
 
 
 class WarehouseComplex(models.Model):
     class Meta:
         db_table = 'warehouse_complex'
 
-    complex = models.ForeignKey(ManufacturingComplex)
-    resource_id = models.IntegerField()
-    amount = models.IntegerField()
+    res_nickel = models.IntegerField(default=0)
+    res_iron = models.IntegerField(default=0)
+    res_cooper = models.IntegerField(default=0)
+    res_aluminum = models.IntegerField(default=0)
+    res_variarit = models.IntegerField(default=0)
+    res_inneilit = models.IntegerField(default=0)
+    res_renniit = models.IntegerField(default=0)
+    res_cobalt = models.IntegerField(default=0)
+    mat_construction_material = models.IntegerField(default=0)
+    mat_chemical = models.IntegerField(default=0)
+    mat_high_strength_allov = models.IntegerField(default=0)
+    mat_nanoelement = models.IntegerField(default=0)
+    mat_microprocessor_element = models.IntegerField(default=0)
+    mat_fober_optic_element = models.IntegerField(default=0)
 
 
 class WarehouseFactory(models.Model):
@@ -1279,7 +1303,7 @@ class TurnComplexProduction(models.Model):
     class Meta:
         db_table = 'turn_complex_production'
 
-    complex = models.ForeignKey(ManufacturingComplex)
+    manufacturing_complex.id = models.ForeignKey(ManufacturingComplex)
     factory = models.ForeignKey(FactoryInstalled)
     element_id = models.IntegerField()
     start_time_production = models.DateTimeField()

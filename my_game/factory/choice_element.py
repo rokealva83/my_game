@@ -18,8 +18,7 @@ def choice_element(request):
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         assembly_line_workpieces.check_assembly_line_workpieces(session_user)
         verification_stage_production.verification_stage_production(session_user)
-        factory_id = request.POST.get('factory_id')
-        factory_installed = FactoryInstalled.objects.filter(id=factory_id).first()
+        factory_installed = FactoryInstalled.objects.filter(id=request.POST.get('factory_id')).first()
         factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                              complex_status=0)
         attributes = {}
@@ -87,7 +86,7 @@ def choice_element(request):
                           "fuel_mass", "fuel_size", "fuel_efficiency")
             element_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_fuel', 'id')
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
+        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city).first()
         factory_warehouses = WarehouseFactoryResource.objects.filter(factory=factory_installed)
         basic_resources = BasicResource.objects.filter()
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
@@ -96,7 +95,7 @@ def choice_element(request):
         request.session['userid'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city,
+        output = {'user': session_user, 'warehouses': session_user_city.warehouses, 'user_city': session_user_city,
                   'factory_installeds': factory_installeds, 'factory_installed': factory_installed,
                   'element_patterns': element_patterns, 'attributes': attributes, 'turn_productions': turn_productions,
                   'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs,

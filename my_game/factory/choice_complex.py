@@ -13,8 +13,8 @@ def choice_complex(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
-        session_user = int(request.session['user'])
-        session_user_city = int(request.session['user_city'])
+        session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
+        session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         complex_id = request.POST.get('complex_id')
         assembly_line_workpieces.check_assembly_line_workpieces(session_user)
         verification_stage_production.verification_stage_production(session_user)
@@ -42,19 +42,18 @@ def choice_complex(request):
 
         fuel_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
+        warehouse= session_user_city.warehouse
         factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                               complex_status=0).order_by('production_class',
                                                                                          'production_id')
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         turn_complex_productions = TurnComplexProduction.objects.filter(complex_id=complex_id)
         user_city = UserCity.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
         user_citys = UserCity.objects.filter(user=int(session_user))
-        request.session['user'] = session_user
-        request.session['user_city'] = session_user_city
+        request.session['user'] = session_user.id
+        request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city,
+        output = {'user': session_user, 'warehouses': warehouses, 'user_city': user_city,
                   'turn_productions': turn_complex_productions, 'user_citys': user_citys,
                   'manufacturing_complexs': manufacturing_complexs, 'complex_id': complex_id,
                   'complex_factorys': complex_factorys, 'hull_patterns': hull_patterns,

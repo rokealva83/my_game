@@ -139,28 +139,28 @@ def making_factory_unit(*args):
         # Проверка наличия ресурсов
 
         if session_user.internal_currency >= factory_pattern_making.price_internal_currency and \
-                        warehouse.construction_material >= factory_pattern_making.price_construction_material and \
-                        warehouse.chemical >= factory_pattern_making.price_chemical and \
-                        warehouse.high_strength_allov >= factory_pattern_making.price_high_strength_allov and \
-                        warehouse.nanoelement >= factory_pattern_making.price_nanoelement and \
-                        warehouse.microprocessor_element >= factory_pattern_making.price_microprocessor_element and \
-                        warehouse.fober_optic_element >= factory_pattern_making.price_fober_optic_element:
+                        warehouse.res_construction_material >= factory_pattern_making.price_construction_material and \
+                        warehouse.res_chemical >= factory_pattern_making.price_chemical and \
+                        warehouse.res_high_strength_allov >= factory_pattern_making.price_high_strength_allov and \
+                        warehouse.res_nanoelement >= factory_pattern_making.price_nanoelement and \
+                        warehouse.res_microprocessor_element >= factory_pattern_making.price_microprocessor_element and \
+                        warehouse.res_fober_optic_element >= factory_pattern_making.price_fober_optic_element:
 
             new_internal_currency = session_user.internal_currency - factory_pattern_making.price_internal_currency
-            new_construction_material = warehouse.construction_material - factory_pattern_making.price_construction_material
-            new_chemical = warehouse.chemical - factory_pattern_making.price_construction_material
-            new_high_strength_allov = warehouse.high_strength_allov - factory_pattern_making.price_construction_material
-            new_nanoelement = warehouse.nanoelement - factory_pattern_making.price_construction_material
-            new_microprocessor_element = warehouse.microprocessor_element - factory_pattern_making.price_microprocessor_element
-            new_fober_optic_element = warehouse.fober_optic_element - factory_pattern_making.price_fober_optic_element
+            new_construction_material = warehouse.res_construction_material - factory_pattern_making.price_construction_material
+            new_chemical = warehouse.res_chemical - factory_pattern_making.price_construction_material
+            new_high_strength_allov = warehouse.res_high_strength_allov - factory_pattern_making.price_construction_material
+            new_nanoelement = warehouse.res_nanoelement - factory_pattern_making.price_construction_material
+            new_microprocessor_element = warehouse.res_microprocessor_element - factory_pattern_making.price_microprocessor_element
+            new_fober_optic_element = warehouse.res_fober_optic_element - factory_pattern_making.price_fober_optic_element
 
             Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                construction_material=new_construction_material,
-                chemical=new_chemical,
-                high_strength_allov=new_high_strength_allov,
-                nanoelement=new_nanoelement,
-                microprocessor_element=new_microprocessor_element,
-                fober_optic_element=new_fober_optic_element
+                res_construction_material=new_construction_material,
+                res_chemical=new_chemical,
+                res_high_strength_allov=new_high_strength_allov,
+                res_nanoelement=new_nanoelement,
+                res_microprocessor_element=new_microprocessor_element,
+                res_fober_optic_element=new_fober_optic_element
             )
 
             MyUser.objects.filter(user_id=session_user.id).update(internal_currency=new_internal_currency)
