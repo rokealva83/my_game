@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity, Planet
+from my_game.models import MyUser, Planet, UserCity
 from my_game.models import Warehouse, WarehouseElement, WarehouseFactory, BasicResource, BasicFuel
 from my_game.models import Ship, Fleet, Hold, FleetParametrScan, FleetEnergyPower, FleetEngine, \
     FlightplanProduction, FlightplanScan, FlightplanHold, FlightplanRefill, FlightplanBuildRepair, \

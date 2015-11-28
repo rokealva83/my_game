@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from account_models import MyUser
-from hull_models import HullPattern
-from fleet_models import Fleet
+from my_game.models import MyUser
+from my_game.models import HullPattern
+from my_game.models import Fleet
+from my_game.models import UserCity
 
 class ProjectShip(models.Model):
     class Meta:
@@ -68,3 +69,13 @@ class DamageElement(models.Model):
     damage_ship = models.ForeignKey(DamageShip, db_index=True)
     element_id = models.IntegerField()
     health = models.IntegerField()
+
+
+class WarehouseShip(models.Model):
+    class Meta:
+        db_table = 'warehouse_ship'
+
+    user = models.ForeignKey(MyUser, db_index=True)
+    user_city = models.ForeignKey(UserCity, db_index=True)
+    ship = models.ForeignKey(Ship)
+    amount = models.IntegerField(default=0)

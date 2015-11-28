@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.utils import timezone
-from datetime import datetime
+from my_game.models import MyUser, UserCity, ProjectShip, ManufacturingComplex, FactoryInstalled, FactoryPattern
 
 
 class TurnBuilding(models.Model):
@@ -72,6 +71,7 @@ class TurnAssemblyPieces(models.Model):
     amount_assembly = models.IntegerField(default=0)
     start_time_assembly = models.DateTimeField()
     finish_time_assembly = models.DateTimeField()
+
 
 class TurnShipBuild(models.Model):
     class Meta:

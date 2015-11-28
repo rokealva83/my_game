@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from account_models import MyUser
-from manufacturing_complex_models import ManufacturingComplex
-from city_models import UserCity
+from my_game.models import MyUser
+from my_game.models import ManufacturingComplex
+from my_game.models import UserCity
 
 
 class BasicFactory(models.Model):
@@ -63,18 +63,6 @@ class FactoryPattern(models.Model):
     bought_template = models.BooleanField(default=False)
 
 
-class FactoryInstalled(models.Model):
-    class Meta:
-        db_table = 'factory_installed'
-
-    user = models.ForeignKey(MyUser, db_index=True)
-    user_city = models.ForeignKey(UserCity, db_index=True)
-    factory_pattern = models.ForeignKey(FactoryPattern)
-    complex_status = models.BooleanField(default=0)
-    manufacturing_complex = models.ForeignKey(ManufacturingComplex, null=True, default=None)
-    factory_warehouse = models.ForeignKey(WarehouseFactoryResource)
-
-
 class WarehouseFactoryResource(models.Model):
     class Meta:
         db_table = 'warehouse_factory_resource'
@@ -93,3 +81,25 @@ class WarehouseFactoryResource(models.Model):
     mat_nanoelement = models.IntegerField(default=0)
     mat_microprocessor_element = models.IntegerField(default=0)
     mat_fober_optic_element = models.IntegerField(default=0)
+
+
+class WarehouseFactory(models.Model):
+    class Meta:
+        db_table = 'warehouse_factory'
+
+    user = models.ForeignKey(MyUser, db_index=True)
+    user_city = models.ForeignKey(UserCity, db_index=True)
+    factory = models.ForeignKey(FactoryPattern, db_index=True)
+    amount = models.IntegerField(default=0)
+
+
+class FactoryInstalled(models.Model):
+    class Meta:
+        db_table = 'factory_installed'
+
+    user = models.ForeignKey(MyUser, db_index=True)
+    user_city = models.ForeignKey(UserCity, db_index=True)
+    factory_pattern = models.ForeignKey(FactoryPattern)
+    complex_status = models.BooleanField(default=0)
+    manufacturing_complex = models.ForeignKey(ManufacturingComplex, null=True, default=None)
+    factory_warehouse = models.ForeignKey(WarehouseFactoryResource)

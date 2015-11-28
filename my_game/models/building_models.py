@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from account_models import MyUser
-from city_models import UserCity
+from my_game.models import MyUser, UserCity
 
 
 class BasicBuilding(models.Model):
@@ -70,3 +69,13 @@ class BuildingInstalled(models.Model):
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
     building_pattern = models.ForeignKey(BuildingPattern)
+
+
+class WarehouseBuilding(models.Model):
+    class Meta:
+        db_table = 'warehouse_building'
+
+    user = models.ForeignKey(MyUser, db_index=True)
+    user_city = models.ForeignKey(UserCity, db_index=True)
+    building = models.ForeignKey(BuildingPattern, db_index=True)
+    amount = models.IntegerField(default=0)

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.utils import timezone
-from datetime import datetime
+from my_game.models import MyUser
 
 class BasicWeapon(models.Model):
     class Meta:

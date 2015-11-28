@@ -2,8 +2,8 @@
 
 from django.db import models
 from django.utils import timezone
-from account_models import MyUser
-from fleet_models import Fleet
+from my_game.models import MyUser
+from my_game.models import Fleet
 
 
 class Flightplan(models.Model):

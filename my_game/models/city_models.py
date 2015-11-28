@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from account_models import MyUser
-from building_models import BuildingPattern
-from factory_models import FactoryPattern
-from galaxy_models import Planet, System
-from ship_models import Ship
+from my_game.models import MyUser
+from my_game.models import Planet, System
 
 
 class Warehouse(models.Model):
@@ -13,7 +10,6 @@ class Warehouse(models.Model):
         db_table = 'warehouse'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    user_city = models.ForeignKey(UserCity, db_index=True)
     res_nickel = models.IntegerField(default=0)
     res_iron = models.IntegerField(default=0)
     res_cooper = models.IntegerField(default=0)
@@ -51,26 +47,6 @@ class UserCity(models.Model):
     warehouse = models.ForeignKey(Warehouse, db_index=True)
 
 
-class WarehouseFactory(models.Model):
-    class Meta:
-        db_table = 'warehouse_factory'
-
-    user = models.ForeignKey(MyUser, db_index=True)
-    user_city = models.ForeignKey(UserCity, db_index=True)
-    factory = models.ForeignKey(FactoryPattern, db_index=True)
-    amount = models.IntegerField(default=0)
-
-
-class WarehouseBuilding(models.Model):
-    class Meta:
-        db_table = 'warehouse_building'
-
-    user = models.ForeignKey(MyUser, db_index=True)
-    user_city = models.ForeignKey(UserCity, db_index=True)
-    building = models.ForeignKey(BuildingPattern, db_index=True)
-    amount = models.IntegerField(default=0)
-
-
 class WarehouseElement(models.Model):
     class Meta:
         db_table = 'warehouse_element'
@@ -79,14 +55,4 @@ class WarehouseElement(models.Model):
     user_city = models.ForeignKey(UserCity, db_index=True)
     element_class = models.IntegerField(default=1, db_index=True)
     element_id = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-
-
-class WarehouseShip(models.Model):
-    class Meta:
-        db_table = 'warehouse_ship'
-
-    user = models.ForeignKey(MyUser, db_index=True)
-    user_city = models.ForeignKey(UserCity, db_index=True)
-    ship = models.ForeignKey(Ship)
     amount = models.IntegerField(default=0)
