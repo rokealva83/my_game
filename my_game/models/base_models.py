@@ -41,6 +41,9 @@ class UserVariables(models.Model):
     min_scientic_level = models.IntegerField(verbose_name=u'Минимальный научный уровень')
     tax_per_person = models.FloatField(verbose_name=u'Налог')
     koef_price_increace_modern_element = models.FloatField(verbose_name=u'Коефициент увеличения цены при модернизации')
+    time_refill = models.IntegerField(verbose_name=u'Время заправки флота')
+    time_refill_youself = models.IntegerField(verbose_name=u'Время заправки себя')
+    time_refill_all_goods = models.IntegerField(verbose_name=u'Время заправки флота до полного')
 
 
 class BasicResource(models.Model):

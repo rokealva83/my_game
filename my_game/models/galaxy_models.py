@@ -29,7 +29,7 @@ class Planet(models.Model):
     class Meta:
         db_table = 'planet'
 
-    system = models.ForeignKey(System, )
+    system = models.ForeignKey(System, db_index=True)
     global_x = models.IntegerField(db_index=True)
     global_y = models.IntegerField(db_index=True)
     global_z = models.IntegerField(db_index=True)

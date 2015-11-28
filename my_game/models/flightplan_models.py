@@ -34,8 +34,8 @@ class FlightplanFlight(models.Model):
     system_flight = models.BooleanField(default=True)
     flight_time = models.IntegerField(default=0)
     start_time = models.DateTimeField(default=timezone.now, blank=True)
-    system = models.IntegerField(default=0)
-    planet = models.IntegerField(default=0)
+    system_id = models.IntegerField(default=0)
+    planet_id = models.IntegerField(default=0)
 
 
 class FlightplanHold(models.Model):
@@ -61,7 +61,7 @@ class FlightplanProduction(models.Model):
     user = models.ForeignKey(MyUser, db_index=True)
     fleet = models.ForeignKey(Fleet, db_index=True)
     flightplan = models.ForeignKey(Flightplan)
-    command = models.IntegerField()
+    command_id = models.IntegerField()
     production_per_minute = models.IntegerField()
     start_time = models.DateTimeField(default=timezone.now, blank=True)
     time_extraction = models.IntegerField(default=0)
@@ -74,7 +74,7 @@ class FlightplanRefill(models.Model):
     user = models.ForeignKey(MyUser, db_index=True)
     fleet = models.ForeignKey(Fleet, db_index=True)
     flightplan = models.ForeignKey(Flightplan)
-    command = models.IntegerField()
+    command_id = models.IntegerField()
     fleet_refill_id = models.IntegerField()
     class_refill = models.IntegerField(default=0)
     class_element = models.IntegerField(default=0)

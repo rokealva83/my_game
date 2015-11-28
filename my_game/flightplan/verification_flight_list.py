@@ -48,7 +48,6 @@ def verification_flight_list(request):
                     flightplan = Flightplan.objects.filter(fleet=fleet, status=0).first()
 
                 if flightplan:
-
                     if flightplan.class_command == 1:
                         start_flight.start_flight(fleet, finish_time)
 
@@ -67,4 +66,4 @@ def verification_flight_list(request):
                     elif flightplan.class_command == 6:
                         start_scaning.start_scaning(fleet, finish_time)
                 else:
-                    fleet_up = Fleet.objects.filter(id=fleet.id).update(status=0)
+                    Fleet.objects.filter(id=fleet.id).update(status=0)

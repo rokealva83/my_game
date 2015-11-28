@@ -7,34 +7,34 @@ from my_game.flightplan.find_name import find_name
 
 def upload_hold(*args):
     session_user = args[0]
-    fleet_id = args[1]
+    fleet = args[1]
     upload_amount = args[2]
     name_upload_element = args[3]
 
     name_upload_element = name_upload_element.split(';')
-    id_element = int(name_upload_element[0])
+    element_id = int(name_upload_element[0])
     class_element = int(name_upload_element[1])
-    name = find_name(class_element, id_element)
+    name = find_name(class_element, element_id)
 
     flightplan = Flightplan(
         user=session_user,
-        id_fleet=fleet_id,
+        fleet=fleet,
         class_command=2,
-        id_command=1,
+        command_id=1,
         status=0
     )
     flightplan.save()
 
     flightplan_hold = FlightplanHold(
         user=session_user,
-        id_fleet=fleet_id,
-        id_command=1,
+        fleet=fleet,
+        command_id=1,
         amount=upload_amount,
         start_time=datetime.now(),
-        id_fleetplan=flightplan.id,
+        fleetplan=flightplan,
         time=300,
         class_element=class_element,
-        id_element=id_element,
+        id_element=element_id,
         name=name
     )
     flightplan_hold.save()

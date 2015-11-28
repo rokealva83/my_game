@@ -2,16 +2,16 @@
 
 import math
 from my_game.models import System, Planet
-from my_game.models import ProjectShip, Ship, Fleet, FleetEngine
+from my_game.models import Fleet
 from my_game.models import Flightplan, FlightplanFlight
+from my_game.flightplan.create.calculation import calculation
 
 
 def flight_system(*args):
     session_user = args[0]
-    request = args[2]
-    fleet_id = int(request.POST.get('hidden_fleet'))
-    fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
-    fleet = Fleet.objects.filter(id=fleet_id).first()
+    fleet = args[2]
+    request = args[3]
+    fleet_engine = Fleet.fleet_engine
     city = request.POST.get('city')
     coordinate = request.POST.get('coordinate')
     message = ''
@@ -21,12 +21,10 @@ def flight_system(*args):
         planet_giper = request.POST.get('planet_giper')
         planet_null = request.POST.get('planet_null')
         target_system = System.objects.filter(id=planet_system).first()
-        target_planet = Planet.objects.filter(system_id=planet_system, planet_num=planet_planet).first()
+        target_planet = Planet.objects.filter(system=target_system, planet_num=planet_planet).first()
         if target_planet:
-            system = System.objects.filter(id=fleet.system).first()
-
-            flightplan_flight = FlightplanFlight.objects.filter(id_fleet=fleet_id).last()
-
+            system = System.objects.filter(id=fleet.system_id).first()
+            flightplan_flight = FlightplanFlight.objects.filter(fleet=fleet).last()
             if flightplan_flight:
                 xx1 = flightplan_flight.finish_x
                 yy1 = flightplan_flight.finish_y
@@ -51,46 +49,45 @@ def flight_system(*args):
 
             distance = math.sqrt((xx1 - xx2) ** 2 + (yy1 - yy2) ** 2 + (zz1 - zz2) ** 2)
 
-            if fleet.system != 0:
-                system = System.objects.filter(id=fleet.system).first()
+            if fleet.system_id != 0:
+                system = System.objects.filter(id=fleet.system_id).first()
             else:
-                flightplan_flight = FlightplanFlight.objects.filter(id_fleet=fleet_id).last()
+                flightplan_flight = FlightplanFlight.objects.filter(fleet=fleet).last()
                 if flightplan_flight:
-                    system = flightplan_flight.system
+                    system = System.objects.filter(id=flightplan_flight.system_id).first()
 
             if system:
                 if int(system.id) == planet_system:
                     flight_time = math.sqrt(
                         distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.system_power)) * 2
-                    id_command = 1
+                    command_id = 1
                 else:
-                    answer = calculation(fleet_id, planet_giper, planet_null, distance)
-                    id_command = answer['command_id']
+                    answer = calculation(fleet, planet_giper, planet_null, distance)
+                    command_id = answer['command_id']
                     flight_time = answer['flight_time']
             else:
-                answer = calculation(fleet_id, planet_giper, planet_null, distance)
-                id_command = answer['command_id']
+                answer = calculation(fleet, planet_giper, planet_null, distance)
+                command_id = answer['command_id']
                 flight_time = answer['flight_time']
 
-            if id_command != 1:
+            if command_id != 1:
                 system_flight = 0
             else:
                 system_flight = 1
 
             flightplan = Flightplan(
                 user=session_user,
-                id_fleet=fleet_id,
+                fleet=fleet,
                 class_command=1,
-                id_command=id_command,
+                command_id=command_id,
                 status=0,
             )
             flightplan.save()
-            id_fleetplan = flightplan.pk
             flightplan_flight = FlightplanFlight(
                 user=session_user,
-                id_fleet=fleet_id,
-                id_fleetplan=id_fleetplan,
-                id_command=id_command,
+                fleet=fleet,
+                flightplan=flightplan,
+                command_id=command_id,
                 start_x=xx1,
                 start_y=yy1,
                 start_z=zz1,
@@ -98,8 +95,8 @@ def flight_system(*args):
                 finish_y=int(yy2),
                 finish_z=int(zz2),
                 flight_time=flight_time,
-                planet=planet_planet,
-                system=planet_system,
+                planet_id=planet_planet,
+                system_id=planet_system,
                 system_flight=system_flight
             )
             flightplan_flight.save()
@@ -112,8 +109,7 @@ def flight_system(*args):
         coordinate_z = float(request.POST.get('coordinate_z'))
         coordinate_giper = request.POST.get('coordinate_giper')
         coordinate_null = request.POST.get('coordinate_null')
-        fleet = Fleet.objects.filter(id=fleet_id).first()
-        flightplan_flight = FlightplanFlight.objects.filter(id_fleet=fleet_id).last()
+        flightplan_flight = FlightplanFlight.objects.filter(fleet=fleet).last()
 
         if flightplan_flight:
             xx1 = flightplan_flight.finish_x
@@ -129,8 +125,8 @@ def flight_system(*args):
         zz2 = coordinate_z
         distance = math.sqrt((xx1 - xx2) ** 2 + (yy1 - yy2) ** 2 + (zz1 - zz2) ** 2)
 
-        answer = calculation(fleet_id, coordinate_giper, coordinate_null, distance)
-        id_command = answer['command_id']
+        answer = calculation(fleet, coordinate_giper, coordinate_null, distance)
+        command_id = answer['command_id']
         flight_time = answer['flight_time']
 
         system = 0
@@ -141,26 +137,26 @@ def flight_system(*args):
         else:
             planet = 0
 
-        if id_command != 1:
+        if command_id != 1:
             system_flight = 0
         else:
             system_flight = 1
 
         flightplan = Flightplan(
             user=session_user,
-            id_fleet=fleet_id,
+            fleet=fleet,
             class_command=1,
-            id_command=id_command,
+            command_id=command_id,
             status=0,
         )
         flightplan.save()
 
-        id_fleetplan = flightplan.pk
+        flightplan = flightplan.pk
         flightplan_flight = FlightplanFlight(
             user=session_user,
-            id_fleet=fleet_id,
-            id_fleetplan=id_fleetplan,
-            id_command=id_command,
+            fleet=fleet,
+            flightplan=flightplan,
+            command_id=command_id,
             start_x=xx1,
             start_y=yy1,
             start_z=zz1,
@@ -168,54 +164,11 @@ def flight_system(*args):
             finish_y=yy2,
             finish_z=zz2,
             flight_time=flight_time,
-            planet=planet,
-            system=system,
+            planet_id=planet,
+            system_id=system,
             system_flight=system_flight
         )
         flightplan_flight.save()
 
     return message
 
-
-def calculation(*args):
-    fleet_id = args[0]
-    coordinate_giper = args[1]
-    coordinate_null = args[2]
-    distance = args[3]
-    fleet = Fleet.objects.filter(id=fleet_id).first()
-    fleet_engine = FleetEngine.objects.filter(fleet_id=fleet_id).first()
-    if coordinate_giper:
-        fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
-        check = 0
-        for fleet_ship in fleet_ships:
-            project_ship = ProjectShip.objects.filter(id=fleet_ship.project_ship).first()
-            if project_ship.giper_power == 0:
-                check = 1
-        if check == 0:
-            flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.giper_power)) * 2
-            id_command = 3
-        else:
-            flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.intersystem_power)) * 2
-            id_command = 2
-    elif coordinate_null:
-        fleet_ships = Ship.objects.filter(place_id=fleet_id, fleet_status=1)
-        check = 0
-        for fleet_ship in fleet_ships:
-            project_ship = ProjectShip.objects.filter(id=fleet_ship.project_ship).first()
-            if project_ship.giper_power == 0:
-                check = 1
-        if check == 0:
-            flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.null_power)) * 2
-            id_command = 4
-        else:
-            flight_time = math.sqrt(
-                distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.intersystem_power)) * 2
-            id_command = 2
-    else:
-        flight_time = math.sqrt(
-            distance / 2 * (int(fleet.ship_empty_mass)) / int(fleet_engine.intersystem_power)) * 2
-        id_command = 2
-    return {'flight_time': flight_time, 'command_id': id_command}

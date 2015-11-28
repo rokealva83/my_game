@@ -29,6 +29,23 @@ class FleetEnergyPower(models.Model):
     produce_energy = models.IntegerField(default=0)
     use_fuel_generator = models.IntegerField(default=0)
 
+class ResourceHold(models.Model):
+    fleet = models.ForeignKey(Fleet, db_index=True)
+    res_nickel = models.IntegerField(default=0)
+    res_iron = models.IntegerField(default=0)
+    res_cooper = models.IntegerField(default=0)
+    res_aluminum = models.IntegerField(default=0)
+    res_veriarit = models.IntegerField(default=0)
+    res_inneilit = models.IntegerField(default=0)
+    res_renniit = models.IntegerField(default=0)
+    res_cobalt = models.IntegerField(default=0)
+    mat_construction_material = models.IntegerField(default=0)
+    mat_chemical = models.IntegerField(default=0)
+    mat_high_strength_allov = models.IntegerField(default=0)
+    mat_nanoelement = models.IntegerField(default=0)
+    mat_microprocessor_element = models.IntegerField(default=0)
+    mat_fober_optic_element = models.IntegerField(default=0)
+
 
 class Fleet(models.Model):
     class Meta:
@@ -39,11 +56,12 @@ class Fleet(models.Model):
     x = models.FloatField()
     y = models.FloatField()
     z = models.FloatField()
-    system = models.IntegerField(default=0)
-    planet = models.IntegerField(default=0)
+    system_id = models.IntegerField(default=0)
+    planet_id = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
     planet_status = models.BooleanField(default=1)
     fleet_hold = models.IntegerField(default=0)
+    resource_hold = models.ForeignKey(ResourceHold)
     empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
     fuel_tank = models.IntegerField(default=0)
@@ -79,30 +97,11 @@ class FleetParametrBuildRepair(models.Model):
     process_per_minute = models.IntegerField()
 
 
-class ResourceHold(models.Model):
-    hold_id = models.ImageField()
-    res_nickel = models.IntegerField(default=0)
-    res_iron = models.IntegerField(default=0)
-    res_cooper = models.IntegerField(default=0)
-    res_aluminum = models.IntegerField(default=0)
-    res_veriarit = models.IntegerField(default=0)
-    res_inneilit = models.IntegerField(default=0)
-    res_renniit = models.IntegerField(default=0)
-    res_cobalt = models.IntegerField(default=0)
-    mat_construction_material = models.IntegerField(default=0)
-    mat_chemical = models.IntegerField(default=0)
-    mat_high_strength_allov = models.IntegerField(default=0)
-    mat_nanoelement = models.IntegerField(default=0)
-    mat_microprocessor_element = models.IntegerField(default=0)
-    mat_fober_optic_element = models.IntegerField(default=0)
-
-
 class Hold(models.Model):
     class Meta:
         db_table = 'fleet_hold'
 
     fleet = models.ForeignKey(Fleet, db_index=True)
-    resource_hold = models.ForeignKey(ResourceHold)
     class_shipment = models.IntegerField()
     shipment_id = models.IntegerField()
     amount_shipment = models.IntegerField()
