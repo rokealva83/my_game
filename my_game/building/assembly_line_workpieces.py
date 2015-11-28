@@ -41,7 +41,7 @@ def check_assembly_line_workpieces(request):
                     new_building = WarehouseBuilding(
                         user=turn_assembly_pieces.user,
                         user_city=turn_assembly_pieces.user_city,
-                        factory=turn_assembly_pieces.pattern,
+                        building=turn_assembly_pieces.pattern,
                         amount=turn_assembly_pieces.amount_assembly
                     )
                     new_building.save()

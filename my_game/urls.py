@@ -1,6 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+
 from my_game.account import views as account
+from my_game.account.registration import add_user
+from my_game.account.user_auth import user_auth
 
 from my_game.knowledge import views as knowledge
 
@@ -9,9 +12,18 @@ from my_game.civilization import views as civilization
 from my_game.warehouse import views as warehouse
 
 from my_game.administrator import views as administration
-from my_game.administrator import asteroid_generation as asteroid_generation
+from my_game.administrator.asteroid_generation import asteroid_generation
+from my_game.administrator.star_generation import star_generation
 
-from my_game.building import views as building
+from my_game.building.views import building
+from my_game.building.choice_build import choice_build
+from my_game.building.working import working
+from my_game.building.create_complex import create_complex
+from my_game.building.management_complex import management_complex
+from my_game.building.add_in_complex import add_in_complex
+from my_game.building.complex_warehouse import complex_warehouse
+from my_game.building.percent_extraction import percent_extraction
+from my_game.building.remove_from_complex import remove_from_complex
 
 from my_game.factory import views as factory
 from my_game.factory import produce_warehouse as produce_warehouse
@@ -51,27 +63,19 @@ from my_game.diplomacy import remove_mail as remove
 from my_game.chat import views as chatroom
 from my_game.chat import private_message as private_chatroom
 
-
-
-# import my_game.registration.registration
-
 urlpatterns = patterns('',
-                       # Examples:
-                       # url(r'^$', 'my_game.views.home', name='home'),
-                       # url(r'^blog/', include('blog.urls')),
-
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^index/', 'my_game.views.home'),
                        url(r'^$', 'my_game.views.home', name='home'),
 
                        url(r'^registration.html', account.registration, name='account.registration'),
-                       url(r'^index.html', account.add_user, name='account.add_user'),
-                       url(r'^auth', account.user_auth, name='account.auth'),
+                       url(r'^index.html', add_user, name='account.add_user'),
+                       url(r'^auth', user_auth, name='account.auth'),
 
                        url(r'^admin/administration', administration.administration),
                        url(r'^admin/generation', administration.generation),
-                       url(r'^admin/star_generation', administration.star_generation),
-                       url(r'^admin/asteroid_generation', asteroid_generation.asteroid_generation),
+                       url(r'^admin/star_generation', star_generation),
+                       url(r'^admin/asteroid_generation', asteroid_generation),
 
                        url(r'^civilization', civilization.civilization),
 
@@ -80,15 +84,15 @@ urlpatterns = patterns('',
                        url(r'^knowledge', knowledge.knowledge),
                        url(r'^study', knowledge.study),
 
-                       url(r'^building', building.building),
-                       url(r'^choice_build', building.choice_build),
-                       url(r'^create_complex', building.create_complex),
-                       url(r'^management_complex', building.management_complex),
-                       url(r'^add_in_complex', building.add_in_complex),
-                       url(r'^percent_extraction', building.percent_extraction),
-                       url(r'^remove_from_complex', building.remove_from_complex),
-                       url(r'^complex_warehouse', building.complex_warehouse),
-                       url(r'^working', building.working),
+                       url(r'^building', building),
+                       url(r'^choice_build', choice_build),
+                       url(r'^create_complex', create_complex),
+                       url(r'^management_complex', management_complex),
+                       url(r'^add_in_complex', add_in_complex),
+                       url(r'^percent_extraction', percent_extraction),
+                       url(r'^remove_from_complex', remove_from_complex),
+                       url(r'^complex_warehouse', complex_warehouse),
+                       url(r'^working', working),
 
                        url(r'^factory', factory.factory),
                        url(r'^choice_element', choice_element.choice_element),
