@@ -175,5 +175,5 @@ def star_generation(request):
             system_id = system_id + 1
             iteration = iteration + 1
             r = r + 1
-            a = a + 15
+            angle = angle + 15
     return render(request, "admin/generation.html", {})

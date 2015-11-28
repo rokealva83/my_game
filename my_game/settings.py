@@ -142,5 +142,5 @@ SUIT_CONFIG = {
     'SHOW_REQUIRED_ASTERISK': True,
     'CONFIRM_UNSAVED_CHANGES': True,
     'MENU_EXCLUDE': ('auth.group', 'auth'),
-    'LIST_PER_PAGE': 10
+    'LIST_PER_PAGE': 20
 }

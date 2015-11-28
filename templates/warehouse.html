@@ -8,14 +8,54 @@
         <p>City name: {{ user_city.name_city }}</p>
 
         <h3><p style="text-align: center">Warehouse</p></h3>
-        {% for warehouse in warehouses %}
-            {% spaceless %}
-                {% for basic_resource in basic_resources %}
-                    {% if basic_resource.id == warehouse.id_resource %}
-                        <p>{{ basic_resource.name }}: {{ warehouse.amount }}</p>
-                    {% endif %}
-                {% endfor %}
-            {% endspaceless %}
+
+
+        {% for basic_resource in basic_resources %}
+            {% if basic_resource.id == 1 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_nickel }}</p>
+            {% endif %}
+            {% if basic_resource.id == 2 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_iron }}</p>
+            {% endif %}
+            {% if basic_resource.id == 3 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_cooper }}</p>
+            {% endif %}
+            {% if basic_resource.id == 4 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_aluminum }}</p>
+            {% endif %}
+            {% if basic_resource.id == 5 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_variarit }}</p>
+            {% endif %}
+            {% if basic_resource.id == 6 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_inneilit }}</p>
+            {% endif %}
+            {% if basic_resource.id == 7 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_renniit }}</p>
+            {% endif %}
+            {% if basic_resource.id == 8 %}
+                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_cobalt }}</p>
+            {% endif %}
+        {% endfor %}
+        {% for basic_material in basic_materials %}
+            {% if basic_material.id == 8 %}
+                <p>{{ basic_material.material_name }}: {{ warehouse.mat_construction_material }}</p>
+            {% endif %}
+            {% if basic_material.id == 8 %}
+                <p>{{ basic_material.material_name }}: {{ warehouse.mat_chemical }}</p>
+            {% endif %}
+            {% if basic_material.id == 8 %}
+                <p>{{ basic_material.material_name }}: {{ warehouse.mat_high_strength_allov }}</p>
+            {% endif %}
+            {% if basic_material.id == 8 %}
+                <p>{{ basic_material.material_name }}: {{ warehouse.mat_nanoelement }}</p>
+            {% endif %}
+            {% if basic_material.id == 8 %}
+                <p>{{ basic_material.material_name }}: {{ warehouse.mat_microprocessor_element }}</p>
+            {% endif %}
+            {% if basic_material.id == 8 %}
+                <p>{{ basic_material.material_name }}: {{ warehouse.mat_fober_optic_element }}</p>
+            {% endif %}
+
         {% endfor %}
         {% spaceless %}
             <div>
@@ -65,7 +105,7 @@
                     <h3><p style="text-align: center; margin: 2px 0 2px 0">Warehouse_hull</p></h3>
                 </label>
 
-                <div style="margin: 0px">
+                <div style="margin: 0">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 1 %}
                             {% if warehouse_element.amount > 0 %}

@@ -15,7 +15,6 @@ class BasicFactory(models.Model):
     factory_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
-    price_mat_construction_material = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_construction_material = models.IntegerField(default=0, verbose_name=u'Цена в строительных материалах')
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')

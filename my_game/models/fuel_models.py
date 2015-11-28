@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from my_game.models import MyUser
 
 
 class BasicFuel(models.Model):
@@ -31,7 +32,7 @@ class FuelPattern(models.Model):
     class Meta:
         db_table = 'fuel_pattern'
 
-    user = models.IntegerField(db_index=True, default=2)
+    user = models.ForeignKey(MyUser,db_index=True, default=2)
     fuel_name = models.CharField(max_length=50)
     basic_fuel = models.ForeignKey(BasicFuel)
     fuel_mass = models.IntegerField()

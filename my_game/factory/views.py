@@ -15,8 +15,7 @@ def factory(request):
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
         factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                             complex_status=0).order_by(
-            'production_class', 'production_id')
+                                                             complex_status=0)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['user'] = session_user.id

@@ -8,17 +8,19 @@ from datetime import datetime
 from my_game.models import Planet
 from my_game.models import UserVariables
 from my_game.models import MyUser, Race
-from my_game.models import UserCity, Warehouse, UserScientic, BasicScientic, BasicFactory, FactoryPattern, FactoryInstalled
+from my_game.models import UserCity, Warehouse, UserScientic, BasicScientic, BasicFactory, FactoryPattern, \
+    FactoryInstalled, WarehouseFactoryResource
 
 
 def add_user(request):
     if request.method == "POST" and request.POST.get('add_button') is not None:
         new_user_name = request.POST.get('name')
         new_user_email = request.POST.get('mail')
+        race = request.POST.get('rac')
         # проверка имени и емейла на уникальность
         user_name = MyUser.objects.filter(user_name=new_user_name).first()
         user_email = MyUser.objects.filter(e_mail=new_user_email).first()
-        if user_name is not None or user_email is not None:
+        if user_name is not None or user_email is not None and race is not None:
             return HttpResponse()
         else:
             user_variables = UserVariables.objects.filter(id=1).first()
@@ -65,28 +67,14 @@ def add_user(request):
             scientic.save()
             planet = Planet.objects.filter(planet_type=int(request.POST.get('rac')), planet_free=1).first()
             # установка начального города и добавление склада. Добавление начальных строений
-            user_city = UserCity(
-                user=myuser,
-                system=planet.system,
-                planet=planet,
-                x=planet.global_x,
-                y=planet.global_y,
-                z=planet.global_z,
-                city_size_free=planet.work_area_planet,
-                founding_date=datetime.today(),
-                extraction_date=datetime.today()
-            )
-            user_city.save()
-            Planet.objects.filter(pk=user_city.planet.id).update(planet_free=0)
 
             warehouse = Warehouse(
                 user=myuser,
-                user_city=user_city,
                 res_nickel=user_variables.registr_nickel,
                 res_iron=user_variables.registr_iron,
                 res_cooper=user_variables.registr_cooper,
                 res_aluminum=user_variables.registr_aluminum,
-                res_variarit=user_variables.registr_variarit,
+                res_variarit=user_variables.registr_veriarit,
                 res_inneilit=user_variables.registr_inneilit,
                 res_renniit=user_variables.registr_renniit,
                 res_cobalt=user_variables.registr_cobalt,
@@ -98,6 +86,21 @@ def add_user(request):
                 mat_fober_optic_element=user_variables.registr_fober_optic_element,
             )
             warehouse.save()
+
+            user_city = UserCity(
+                user=myuser,
+                system=planet.system,
+                warehouse=warehouse,
+                planet=planet,
+                x=planet.global_x,
+                y=planet.global_y,
+                z=planet.global_z,
+                city_size_free=planet.work_area_planet,
+                founding_date=datetime.today(),
+                extraction_date=datetime.today()
+            )
+            user_city.save()
+            Planet.objects.filter(pk=user_city.planet.id).update(planet_free=0)
 
             basic_factorys = BasicFactory.objects.all()
             for basic_factory in basic_factorys:
@@ -127,10 +130,13 @@ def add_user(request):
             factory_patterns = FactoryPattern.objects.filter(user=myuser)
             for factory_pattern in factory_patterns:
                 if factory_pattern.production_id == 1 or factory_pattern.production_id == 2:
+                    warehouse_factory = WarehouseFactoryResource()
+                    warehouse_factory.save()
                     factory_instelled = FactoryInstalled(
                         user=myuser,
                         user_city=user_city,
                         factory_pattern=factory_pattern,
+                        factory_warehouse=warehouse_factory
                     )
                     factory_instelled.save()
             factory_instelleds = FactoryInstalled.objects.filter(user=myuser)
@@ -139,7 +145,8 @@ def add_user(request):
             for factory_instelled in factory_instelleds:
                 use_area = factory_instelled.factory_pattern.factory_size + use_area
                 if factory_instelled.factory_pattern.production_class == 12:
-                    UserCity.objects.filter(user=myuser).update(power=factory_instelled.factory_pattern.power_consumption)
+                    UserCity.objects.filter(user=myuser).update(
+                        power=factory_instelled.factory_pattern.power_consumption)
                 else:
                     use_energy = use_energy + factory_instelled.factory_pattern.power_consumption
             free_area = user_city.city_size_free - use_area

@@ -2,10 +2,10 @@
 
 from django.shortcuts import render
 
-from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import MyUser, UserCity
 from my_game.models import HullPattern, ShellPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
     ArmorPattern, ModulePattern, FactoryPattern, WeaponPattern, FuelPattern, DevicePattern
-from my_game.models import WarehouseFactory, WarehouseElement, BasicResource
+from my_game.models import WarehouseFactory, WarehouseElement, BasicResource, BasicMaterial
 from my_game import function
 
 
@@ -17,9 +17,10 @@ def warehouse(request):
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
         basic_resources = BasicResource.objects.filter()
-        user_citys = UserCity.objects.filter(user=int(session_user))
+        basic_materials = BasicMaterial.objects.filter()
+        user_citys = UserCity.objects.filter(user=session_user)
         warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).order_by(
-            'production_class', 'production_id')
+            'factory')
         factory_patterns = FactoryPattern.objects.filter(user=session_user)
         warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'element_class', 'element_id')
@@ -61,20 +62,20 @@ def warehouse(request):
         attribute_devices = ("health", "param1", "param2", "param3", "mass", "size", "power_consuption")
         attribute_fuels = ("mass", "size", "efficiency")
 
-    request.session['userid'] = session_user
-    request.session['user_city'] = session_user_city
+    request.session['userid'] = session_user.id
+    request.session['user_city'] = session_user_city.id
     request.session['live'] = True
-    output = {'user': session_user, 'warehouses': session_user_city.warehouses, 'basic_resources': basic_resources,
-              'user_city': session_user_city, 'user_citys': user_citys, 'warehouse_factorys': warehouse_factorys,
-              'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
-              'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
-              'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-              'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'module_patterns': module_patterns,
-              'fuel_patterns': fuel_patterns, 'device_patterns': device_patterns,
-              'attribute_factorys': attribute_factorys, 'attribute_hulls': attribute_hulls,
-              'attribute_armors': attribute_armors, 'attribute_shields': attribute_shields,
-              'attribute_engines': attribute_engines, 'attribute_generators': attribute_generators,
-              'attribute_weapons': attribute_weapons, 'attribute_shells': attribute_shells,
-              'attribute_modules': attribute_modules, 'attribute_fuels': attribute_fuels,
-              'attribute_devices': attribute_devices}
+    output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'basic_resources': basic_resources,
+              'basic_materials': basic_materials, 'user_city': session_user_city, 'user_citys': user_citys,
+              'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
+              'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
+              'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns, 'engine_patterns': engine_patterns,
+              'generator_patterns': generator_patterns, 'weapon_patterns': weapon_patterns,
+              'shell_patterns': shell_patterns, 'module_patterns': module_patterns, 'fuel_patterns': fuel_patterns,
+              'device_patterns': device_patterns, 'attribute_factorys': attribute_factorys,
+              'attribute_hulls': attribute_hulls, 'attribute_armors': attribute_armors,
+              'attribute_shields': attribute_shields, 'attribute_engines': attribute_engines,
+              'attribute_generators': attribute_generators, 'attribute_weapons': attribute_weapons,
+              'attribute_shells': attribute_shells, 'attribute_modules': attribute_modules,
+              'attribute_fuels': attribute_fuels, 'attribute_devices': attribute_devices}
     return render(request, "warehouse.html", output)

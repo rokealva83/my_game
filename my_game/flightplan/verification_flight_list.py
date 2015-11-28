@@ -1,22 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from datetime import timedelta
 from django.utils import timezone
-import math
-from my_game.models import Planet, Warehouse, WarehouseElement, WarehouseFactory, WarehouseShip
-from my_game.models import System, AsteroidField, FlightplanScan, FleetParametrResourceExtraction
-from my_game.models import Fleet, FuelPattern, FuelTank, ArmorPattern, ShieldPattern, WeaponPattern, \
-    EnginePattern, GeneratorPattern, ShellPattern, ModulePattern, DevicePattern
-from my_game.models import Flightplan, FlightplanFlight, FleetParametrScan, FlightplanProduction, FlightplanHold
-from my_game.models import Mail, Hold, Ship, ProjectShip, HullPattern, UserCity, FactoryPattern
-from my_game.flightplan.start import start_flight, start_colonization, start_extraction, start_refill, \
-    start_repair_build, start_scaning, start_unload_hold, start_upload_hold
+from my_game.models import Fleet
+from my_game.models import Flightplan
+from my_game.flightplan.start import start_flight, start_extraction, start_refill, start_scaning, start_unload_hold, \
+    start_upload_hold
 from my_game.flightplan.veryfication.flight_verification import verification_flight
 from my_game.flightplan.veryfication.scan_veryfication import scan_veryfication
 from my_game.flightplan.veryfication.extraction_veryfication import extraction_veryfication
 from my_game.flightplan.veryfication.upload_unload_veryfication import upload_unload_veryfication
 from my_game.flightplan.veryfication.colonization_veryfication import colonization_veryfication
-from my_game.flightplan import fuel
 
 
 def verification_flight_list(request):

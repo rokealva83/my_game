@@ -29,6 +29,9 @@ def choice_build(request):
         if request.POST.get('mine') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=11).order_by(
                 'production_id')
+        if request.POST.get('material'):
+            factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=13).order_by(
+                'production_id')
         if request.POST.get('energy_unit') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=12).order_by(
                 'production_id')

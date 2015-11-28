@@ -1,5 +1,2 @@
-1,race_1,1,1,1,1,1,1,1,1,1,1,1,1,1
-2,race_2,1,1,1,1,1,1,1,1,1,1,1,1,1
-3,race_3,1,1,1,1,1,1,1,1,1,1,1,1,1
-4,race_4,1,1,1,1,1,1,1,1,1,1,1,1,1
-5,race_5,1,1,1,1,1,1,1,1,1,1,1,1,1
+id,race_name,description,engine_system,engine_intersystem,engine_giper,engine_null,generator,armor,shield,weapon_attack,weapon_defense,exploration,disguse,auximilary,image
+1,Кордиане,Кордиане,1,1,1,1,1,1,1,1,1,1,1,1,

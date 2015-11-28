@@ -14,14 +14,13 @@ def knowledge(request):
         session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         scientic = UserScientic.objects.filter(user=session_user).first()
         turn_scientics = TurnScientic.objects.filter(user=session_user)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'scientic': scientic, 'warehouses': warehouses, 'user_city': session_user_city,
+        output = {'user': session_user, 'scientic': scientic, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
                   'turn_scientics': turn_scientics, 'user_citys': user_citys}
         return render(request, "scientic.html", output)
 

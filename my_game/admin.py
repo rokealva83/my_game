@@ -65,7 +65,7 @@ admin.site.register(BasicResource, MyResourceAdmin)
 class MyMaterialAdmin(admin.ModelAdmin):
     list_display = ['material_name', 'description', 'price_internal_currency',
                     'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit',
-                    'price_renniit', 'price_cobalt', 'time_production', 'material_mass', 'material_size']
+                    'price_renniit', 'price_cobalt', 'material_mass', 'material_size']
 
 
 admin.site.register(BasicMaterial, MyMaterialAdmin)

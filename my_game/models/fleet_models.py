@@ -30,7 +30,6 @@ class FleetEnergyPower(models.Model):
     use_fuel_generator = models.IntegerField(default=0)
 
 class ResourceHold(models.Model):
-    fleet = models.ForeignKey(Fleet, db_index=True)
     res_nickel = models.IntegerField(default=0)
     res_iron = models.IntegerField(default=0)
     res_cooper = models.IntegerField(default=0)
