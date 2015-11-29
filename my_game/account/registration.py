@@ -136,7 +136,9 @@ def add_user(request):
                         user=myuser,
                         user_city=user_city,
                         factory_pattern=factory_pattern,
-                        factory_warehouse=warehouse_factory
+                        factory_warehouse=warehouse_factory,
+                        production_class=factory_pattern.production_class,
+                        production_id=factory_pattern.production_id,
                     )
                     factory_instelled.save()
             factory_instelleds = FactoryInstalled.objects.filter(user=myuser)

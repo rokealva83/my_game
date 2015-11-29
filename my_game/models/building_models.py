@@ -69,6 +69,8 @@ class BuildingInstalled(models.Model):
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
     building_pattern = models.ForeignKey(BuildingPattern)
+    production_class = models.IntegerField(default=14)
+    production_id = models.IntegerField(default=1)
 
 
 class WarehouseBuilding(models.Model):

@@ -102,3 +102,5 @@ class FactoryInstalled(models.Model):
     complex_status = models.BooleanField(default=0)
     manufacturing_complex = models.ForeignKey(ManufacturingComplex, null=True, default=None)
     factory_warehouse = models.ForeignKey(WarehouseFactoryResource)
+    production_class = models.IntegerField(default=11)
+    production_id = models.IntegerField(default=0)

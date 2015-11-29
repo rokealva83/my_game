@@ -72,7 +72,7 @@ def check_scientific_verification_queue(request):
         last_time_update = time_update
         last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,
                                          0)
-        MyUser.objects.filter(user=user).update(last_time_scan_scient=last_time_scan_scient)
+        MyUser.objects.filter(id=user.id).update(last_time_scan_scient=last_time_scan_scient)
     science_users = UserScientic.objects.filter(user=user).first()
     if int(science_users.all_scientic) > 100:
         building = BuildingPattern.objects.filter(production_class=13).first()
