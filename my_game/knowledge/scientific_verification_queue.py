@@ -4,9 +4,18 @@ from django.utils import timezone
 from datetime import datetime
 from my_game.models import MyUser, UserScientic, BasicBuilding, BuildingPattern
 from my_game.models import TurnScientic
-import my_game.knowledge.scientic_func as scientic_func
 from my_game.models import UserVariables
 import random
+from my_game.knowledge.armor_upgrade import armor_upgrade
+from my_game.knowledge.engine_upgrade import engine_upgrade
+from my_game.knowledge.weapon_upgrade import weapon_upgrade
+from my_game.knowledge.module_upgrade import module_upgrade
+from my_game.knowledge.shell_upgrade import shell_upgrade
+from my_game.knowledge.shield_upgrade import shield_upgrade
+from my_game.knowledge.hull_upgrade import hull_upgrade
+from my_game.knowledge.generator_upgrade import generator_upgrade
+from my_game.knowledge.device_open import device_open
+
 
 
 def check_scientific_verification_queue(request):
@@ -51,24 +60,24 @@ def check_scientific_verification_queue(request):
         if science_users.all_scientic > user_variables.min_scientic_level:
             new_technology = random.random()
             if 0 <= new_technology < 0.125:
-                scientic_func.hull_upgrade(user)
+                hull_upgrade(user)
             if 0.125 <= new_technology < 0.250:
-                scientic_func.armor_upgrade(user)
+                armor_upgrade(user)
             if 0.250 <= new_technology < 0.375:
-                scientic_func.shield_upgrade(user)
+                shield_upgrade(user)
             if 0.375 <= new_technology < 0.5:
-                scientic_func.engine_upgrade(user)
+                engine_upgrade(user)
             if 0.5 <= new_technology < 0.625:
-                scientic_func.generator_upgrade(user)
+                generator_upgrade(user)
             if 0.625 <= new_technology < 0.750:
-                scientic_func.weapon_upgrade(user)
+                weapon_upgrade(user)
             if 0.750 <= new_technology < 0.875:
-                scientic_func.shell_upgrade(user)
+                shell_upgrade(user)
             if 0.875 <= new_technology <= 1:
-                scientic_func.module_upgrade(user)
+                module_upgrade(user)
             new_device = random.random()
             if 0 < new_device < 1:
-                scientic_func.device_open(user)
+                device_open(user)
         last_time_update = time_update
         last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,
                                          0)

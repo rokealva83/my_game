@@ -4,7 +4,7 @@ from django.shortcuts import render
 from my_game.models import MyUser, UserCity, Warehouse, UserScientic
 from my_game.models import TurnScientic
 from my_game import function
-from my_game.knowledge import scientic_work
+from my_game.knowledge.scien_up import scien_up
 
 
 def knowledge(request):
@@ -35,7 +35,7 @@ def study(request):
         if request.method == "POST":
             level_up = int(request.POST.get("scient"))
             scientic = int(request.POST.get("name_scient"))
-            scientic_work.scien_up(session_user, level_up, scientic, session_user_city)
+            scien_up(session_user, level_up, scientic, session_user_city)
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         scientic = UserScientic.objects.filter(user=session_user).first()
         turn_scientics = TurnScientic.objects.filter(user=session_user)
