@@ -83,7 +83,6 @@ def element_open(*args):
     else:
         koef_logist = 0
     lucky = user.user_luckyness
-    koefitsient = (1 + (
-        koef_all + koef_math + koef_phis + koef_biol + koef_energy + koef_radio + koef_nanotech + koef_astronomy + koef_logist)) * (
-                      1 + lucky / 100.0)
+    koefitsient = (1 + (koef_all + koef_math + koef_phis + koef_biol + koef_energy + koef_radio + koef_nanotech +
+                        koef_astronomy + koef_logist)) * (1 + lucky)
     return koefitsient

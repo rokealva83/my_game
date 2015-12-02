@@ -7,6 +7,7 @@ from my_game.knowledge.element_open import element_open
 from my_game.knowledge.new_factory_pattern import new_factory_pattern
 from my_game.knowledge.price_increase import price_increase
 
+
 def hull_upgrade(request):
     user = request
     basic_hull = BasicHull.objects.all()
@@ -39,14 +40,20 @@ def hull_upgrade(request):
                 fuel_tank=hull_scient.fuel_tank,
                 power_consuption=hull_scient.power_consuption,
                 price_internal_currency=hull_scient.price_internal_currency,
-                price_resource1=hull_scient.price_resource1,
-                price_resource2=hull_scient.price_resource2,
-                price_resource3=hull_scient.price_resource3,
-                price_resource4=hull_scient.price_resource4,
-                price_mineral1=hull_scient.price_mineral1,
-                price_mineral2=hull_scient.price_mineral2,
-                price_mineral3=hull_scient.price_mineral3,
-                price_mineral4=hull_scient.price_mineral4,
+                price_nickel=hull_scient.price_nickel,
+                price_iron=hull_scient.price_iron,
+                price_cooper=hull_scient.price_cooper,
+                price_aluminum=hull_scient.price_aluminum,
+                price_veriarit=hull_scient.price_veriarit,
+                price_inneilit=hull_scient.price_inneilit,
+                price_renniit=hull_scient.price_renniit,
+                price_cobalt=hull_scient.price_cobalt,
+                price_construction_material=hull_scient.price_construction_material,
+                price_chemical=hull_scient.price_chemical,
+                price_high_strength_allov=hull_scient.price_high_strength_allov,
+                price_nanoelement=hull_scient.price_nanoelement,
+                price_microprocessor_element=hull_scient.price_microprocessor_element,
+                price_fober_optic_element=hull_scient.price_fober_optic_element
             )
             hull_pattern.save()
             new_factory_pattern(user, 1, hull_scient.id)
@@ -56,72 +63,35 @@ def hull_upgrade(request):
         if len_studied_hull < 2:
             user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
             hull_attribute = ['hull_health', 'generator', 'engine', 'weapon', 'armor', 'shield', 'module',
-                              'main_weapon',
-                              'hold_size', 'hull_mass', 'hull_size', 'power_consuption']
+                              'main_weapon', 'hold_size', 'hull_mass', 'hull_size', 'power_consuption']
             trying = random.random()
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-                number = random.randint(0, 11)
-                attribute = hull_attribute[number]
-                element = getattr(user_hull, attribute)
-                element_basic = getattr(hull_scient, attribute)
-                if user_hull.basic_hull.id == 1:
-                    if number == 5 and element == 0:
-                        element = 1
-                    else:
-                        if number == 9 or number == 11:
-                            percent_update = 1 - random.randint(5, 10) / 100.0
-                            if element / element_basic > 0.7:
-                                element = element * percent_update
-                                user_hull.pk = None
-                                user_hull.save()
-                                user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
-                                setattr(user_hull, attribute, element)
-                                user_hull.save()
-                        if number == 0 or number == 8 or number == 10:
-                            percent_update = 1 + random.randint(5, 10) / 100.0
-                            if element != 0 and element_basic / element > 0.7:
-                                element = element * percent_update
-                                user_hull.pk = None
-                                user_hull.save()
-                                user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
-                                setattr(user_hull, attribute, element)
-                                user_hull.save()
-                        else:
-                            if element != 0 and element / element_basic < 2:
-                                element = element + 1
-                                user_hull.pk = None
-                                user_hull.save()
-                                user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
-                                setattr(user_hull, attribute, element)
-                                user_hull.save()
-                else:
-                    if element != 0:
-                        if number == 9 or number == 11:
-                            percent_update = 1 - random.randint(5, 10) / 100.0
-                            if element / element_basic > 0.7:
-                                element = element * percent_update
-                                user_hull.pk = None
-                                user_hull.save()
-                                user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
-                                setattr(user_hull, attribute, element)
-                                user_hull.save()
-                        else:
-                            if number == 0 or number == 8 or number == 10:
-                                percent_update = 1 + random.randint(5, 10) / 100.0
-                                if element_basic / element > 0.7:
-                                    element = element * percent_update
-                                    user_hull.pk = None
-                                    user_hull.save()
-                                    user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
-                                    setattr(user_hull, attribute, element)
-                                    user_hull.save()
-                            else:
-                                if element / element_basic < 2:
-                                    element = element + 1
-                                    user_hull.pk = None
-                                    user_hull.save()
-                                    user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
-                                    setattr(user_hull, attribute, element)
-                                    user_hull.save()
+                summary_percent_up = 0
+                user_hull.pk = None
+                user_hull.save()
                 user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
+                for attribute in hull_attribute:
+                    element = getattr(user_hull, attribute)
+                    element_basic = getattr(hull_scient, attribute)
+                    percent_update = 1 + random.randint(5, 20) / 100.0
+                    if element_basic / element > 4:
+                        if attribute == 'hull_health' and element_basic / element > 2.5:
+                            element *= percent_update
+                            setattr(user_hull, attribute, element)
+                            user_hull.save()
+                        elif attribute == 'hull_mass' or attribute == 'power_consuption':
+                            percent_update = 1 - random.randint(2, 4) / 100.0
+                            element *= percent_update
+                            setattr(user_hull, attribute, element)
+                            user_hull.save()
+                        elif attribute == 'hold_size' or attribute == 'hull_size':
+                            percent_update = 1 + random.randint(3, 10) / 100.0
+                            element *= percent_update
+                            setattr(user_hull, attribute, element)
+                            user_hull.save()
+                        else:
+                            element += 1
+                            setattr(user_hull, attribute, element)
+                            user_hull.save()
+                    summary_percent_up += percent_update
                 price_increase(user_hull)

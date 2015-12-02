@@ -33,14 +33,20 @@ def generator_upgrade(request):
                 generator_mass=generator_scient.generator_mass,
                 generator_size=generator_scient.generator_size,
                 price_internal_currency=generator_scient.price_internal_currency,
-                price_resource1=generator_scient.price_resource1,
-                price_resource2=generator_scient.price_resource2,
-                price_resource3=generator_scient.price_resource3,
-                price_resource4=generator_scient.price_resource4,
-                price_mineral1=generator_scient.price_mineral1,
-                price_mineral2=generator_scient.price_mineral2,
-                price_mineral3=generator_scient.price_mineral3,
-                price_mineral4=generator_scient.price_mineral4,
+                price_nickel=generator_scient.price_nickel,
+                price_iron=generator_scient.price_iron,
+                price_cooper=generator_scient.price_cooper,
+                price_aluminum=generator_scient.price_aluminum,
+                price_veriarit=generator_scient.price_veriarit,
+                price_inneilit=generator_scient.price_inneilit,
+                price_renniit=generator_scient.price_renniit,
+                price_cobalt=generator_scient.price_cobalt,
+                price_construction_material=generator_scient.price_construction_material,
+                price_chemical=generator_scient.price_chemical,
+                price_high_strength_allov=generator_scient.price_high_strength_allov,
+                price_nanoelement=generator_scient.price_nanoelement,
+                price_microprocessor_element=generator_scient.price_microprocessor_element,
+                price_fober_optic_element=generator_scient.price_fober_optic_element
             )
             generator_pattern.save()
             new_factory_pattern(user, 5, generator_scient.id)
@@ -48,36 +54,28 @@ def generator_upgrade(request):
         studied_generator = GeneratorPattern.objects.filter(user=user, basic_generator=generator_scient,
                                                             bought_template=0)
         len_studied_generator = len(studied_generator)
-        if len_studied_generator < 2:
+        if len_studied_generator < 3:
             generator_attribute = ['generator_health', 'produced_energy', 'fuel_necessary', 'generator_mass',
                                    'generator_size']
             trying = random.random()
-            percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-                number = random.randint(0, 4)
-                attribute = generator_attribute[number]
-                element = getattr(user_generator, attribute)
-                element_basic = getattr(generator_scient, attribute)
-                if element != 0:
-                    if number == 2 or number == 3 or number == 4:
-                        if element / element_basic > 0.7:
-                            percent_update = 1 - random.randint(5, 10) / 100.0
-                            element = element * percent_update
-                            user_generator.pk = None
-                            user_generator.save()
-                            user_generator = GeneratorPattern.objects.filter(user=user,
-                                                                             basic_generator=generator_scient).last()
-                            setattr(user_generator, attribute, element)
-                            user_generator.save()
-                    else:
-                        if element_basic / element > 0.7:
-                            element = element * percent_update
-                            user_generator.pk = None
-                            user_generator.save()
-                            user_generator = GeneratorPattern.objects.filter(user=user,
-                                                                             basic_generator=generator_scient).last()
-                            setattr(user_generator, attribute, element)
-                            user_generator.save()
-
+                summary_percent_up = 0
+                user_generator.pk = None
+                user_generator.save()
                 user_generator = GeneratorPattern.objects.filter(user=user, basic_generator=generator_scient).last()
-                price_increase(user_generator)
+                for attribute in generator_attribute:
+                    percent_update = 1.0 + random.randint(5, 20) / 100.0
+                    element = getattr(user_generator, attribute)
+                    element_basic = getattr(generator_scient, attribute)
+                    if element_basic / element > 4.0:
+                        if attribute == 'fuel_necessary' or attribute == 'generator_mass' or attribute == 'generator_size':
+                            percent_update = 1 - random.randint(2, 5) / 100.0
+                            element *= percent_update
+                            setattr(user_generator, attribute, element)
+                            user_generator.save()
+                        else:
+                            element *= percent_update
+                            setattr(user_generator, attribute, element)
+                            user_generator.save()
+                    summary_percent_up += percent_update
+                price_increase(user_generator, summary_percent_up)

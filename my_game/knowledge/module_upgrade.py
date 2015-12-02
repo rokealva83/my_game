@@ -44,47 +44,48 @@ def module_upgrade(request):
                 power_consuption=module_scient.power_consuption,
                 module_class=module_scient.module_class,
                 price_internal_currency=module_scient.price_internal_currency,
-                price_resource1=module_scient.price_resource1,
-                price_resource2=module_scient.price_resource2,
-                price_resource3=module_scient.price_resource3,
-                price_resource4=module_scient.price_resource4,
-                price_mineral1=module_scient.price_mineral1,
-                price_mineral2=module_scient.price_mineral2,
-                price_mineral3=module_scient.price_mineral3,
-                price_mineral4=module_scient.price_mineral4,
+                price_nickel=module_scient.price_nickel,
+                price_iron=module_scient.price_iron,
+                price_cooper=module_scient.price_cooper,
+                price_aluminum=module_scient.price_aluminum,
+                price_veriarit=module_scient.price_veriarit,
+                price_inneilit=module_scient.price_inneilit,
+                price_renniit=module_scient.price_renniit,
+                price_cobalt=module_scient.price_cobalt,
+                price_construction_material=module_scient.price_construction_material,
+                price_chemical=module_scient.price_chemical,
+                price_high_strength_allov=module_scient.price_high_strength_allov,
+                price_nanoelement=module_scient.price_nanoelement,
+                price_microprocessor_element=module_scient.price_microprocessor_element,
+                price_fober_optic_element=module_scient.price_fober_optic_element
             )
             module_pattern.save()
             new_factory_pattern(user, 8, module_scient.id)
     else:
         studied_module = ModulePattern.objects.filter(user=user, basic_module=module_scient, bought_template=0)
         len_studied_module = len(studied_module)
-        if len_studied_module < 2:
+        if len_studied_module < 3:
             module_attribute = ['module_health', 'param1', 'param2', 'param3', 'module_mass', 'module_size',
                                 'power_consuption']
             trying = random.random()
-            percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-                number = random.randint(0, 6)
-                attribute = module_attribute[number]
-                element = getattr(user_module, attribute)
-                element_basic = getattr(module_scient, attribute)
-                if element != 0:
-                    if number == 4 or number == 5 or number == 6:
-                        if element / element_basic > 0.7:
-                            percent_update = 1 - random.randint(5, 10) / 100.0
-                            element = element * percent_update
-                            user_module.pk = None
-                            user_module.save()
-                            user_module = ModulePattern.objects.filter(user=user, basic_module=module_scient).last()
-                            setattr(user_module, attribute, element)
-                            user_module.save()
-                    else:
-                        if element_basic / element > 0.7:
-                            element = element * percent_update
-                            user_module.pk = None
-                            user_module.save()
-                            user_module = ModulePattern.objects.filter(user=user, basic_module=module_scient).last()
-                            setattr(user_module, attribute, element)
-                            user_module.save()
+                summary_percent_up = 0
+                user_module.pk = None
+                user_module.save()
                 user_module = ModulePattern.objects.filter(user=user, basic_module=module_scient).last()
-                price_increase(user_module)
+                for attribute in module_attribute:
+                    percent_update = 1.0 + random.randint(5, 20) / 100.0
+                    element = getattr(user_module, attribute)
+                    element_basic = getattr(module_scient, attribute)
+                    if element_basic / element > 4.0:
+                        if attribute == 'module_mass' or attribute == 'module_size' or attribute == 'power_consuption':
+                            percent_update = 1 - random.randint(2, 5) / 100.0
+                            element *= percent_update
+                            setattr(user_module, attribute, element)
+                            user_module.save()
+                        else:
+                            element *= percent_update
+                            setattr(user_module, attribute, element)
+                            user_module.save()
+                    summary_percent_up += percent_update
+                price_increase(user_module, summary_percent_up)

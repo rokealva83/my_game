@@ -30,46 +30,47 @@ def shell_upgrade(request):
                 shell_mass=shell_scient.shell_mass,
                 shell_size=shell_scient.shell_size,
                 price_internal_currency=shell_scient.price_internal_currency,
-                price_resource1=shell_scient.price_resource1,
-                price_resource2=shell_scient.price_resource2,
-                price_resource3=shell_scient.price_resource3,
-                price_resource4=shell_scient.price_resource4,
-                price_mineral1=shell_scient.price_mineral1,
-                price_mineral2=shell_scient.price_mineral2,
-                price_mineral3=shell_scient.price_mineral3,
-                price_mineral4=shell_scient.price_mineral4,
+                price_nickel=shell_scient.price_nickel,
+                price_iron=shell_scient.price_iron,
+                price_cooper=shell_scient.price_cooper,
+                price_aluminum=shell_scient.price_aluminum,
+                price_veriarit=shell_scient.price_veriarit,
+                price_inneilit=shell_scient.price_inneilit,
+                price_renniit=shell_scient.price_renniit,
+                price_cobalt=shell_scient.price_cobalt,
+                price_construction_material=shell_scient.price_construction_material,
+                price_chemical=shell_scient.price_chemical,
+                price_high_strength_allov=shell_scient.price_high_strength_allov,
+                price_nanoelement=shell_scient.price_nanoelement,
+                price_microprocessor_element=shell_scient.price_microprocessor_element,
+                price_fober_optic_element=shell_scient.price_fober_optic_element
             )
             shell_pattern.save()
             new_factory_pattern(user, 7, shell_scient.id)
     else:
         studied_shell = ShellPattern.objects.filter(user=user, basic_shell=shell_scient, bought_template=0)
         len_studied_shell = len(studied_shell)
-        if len_studied_shell < 2:
+        if len_studied_shell < 3:
             shell_attribute = ['shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size']
             trying = random.random()
-            percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-                number = random.randint(0, 3)
-                attribute = shell_attribute[number]
-                element = getattr(user_shell, attribute)
-                element_basic = getattr(shell_scient, attribute)
-                if element != 0:
-                    if number == 2 or number == 3:
-                        if element / element_basic > 0.7:
-                            percent_update = 1 - random.randint(5, 10) / 100.0
-                            element = element * percent_update
-                            user_shell.pk = None
-                            user_shell.save()
-                            user_shell = ShellPattern.objects.filter(user=user, basic_shell=shell_scient).last()
-                            setattr(user_shell, attribute, element)
-                            user_shell.save()
-                    else:
-                        if element_basic / element > 0.7:
-                            element = element * percent_update
-                            user_shell.pk = None
-                            user_shell.save()
-                            user_shell = ShellPattern.objects.filter(user=user, basic_shell=shell_scient).last()
-                            setattr(user_shell, attribute, element)
-                            user_shell.save()
+                summary_percent_up = 0
+                user_shell.pk = None
+                user_shell.save()
                 user_shell = ShellPattern.objects.filter(user=user, basic_shell=shell_scient).last()
+                for attribute in shell_attribute:
+                    percent_update = 1.0 + random.randint(5, 20) / 100.0
+                    element = getattr(user_shell, attribute)
+                    element_basic = getattr(shell_scient, attribute)
+                    if element_basic / element > 4.0:
+                        if attribute == 'shell_mass' or attribute == 'shell_size':
+                            percent_update = 1 - random.randint(2, 5) / 100.0
+                            element *= percent_update
+                            setattr(user_shell, attribute, element)
+                            user_shell.save()
+                        else:
+                            element *= percent_update
+                            setattr(user_shell, attribute, element)
+                            user_shell.save()
+                    summary_percent_up += percent_update
                 price_increase(user_shell)

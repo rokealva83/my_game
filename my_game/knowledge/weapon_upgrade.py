@@ -38,72 +38,63 @@ def weapon_upgrade(request):
                 number_of_bursts=weapon_scient.number_of_bursts * weapon,
                 weapon_range=weapon_scient.weapon_range * weapon,
                 weapon_accuracy=weapon_scient.weapon_accuracy * weapon,
-                weapon_ass=weapon_scient.weapon_mass,
+                weapon_mass=weapon_scient.weapon_mass,
                 weapon_size=weapon_scient.weapon_size,
                 power_consuption=weapon_scient.power_consuption,
                 weapon_class=weapon_scient.weapon_class,
                 price_internal_currency=weapon_scient.price_internal_currency,
-                price_resource1=weapon_scient.price_resource1,
-                price_resource2=weapon_scient.price_resource2,
-                price_resource3=weapon_scient.price_resource3,
-                price_resource4=weapon_scient.price_resource4,
-                price_mineral1=weapon_scient.price_mineral1,
-                price_mineral2=weapon_scient.price_mineral2,
-                price_mineral3=weapon_scient.price_mineral3,
-                price_mineral4=weapon_scient.price_mineral4,
+                price_nickel=weapon_scient.price_nickel,
+                price_iron=weapon_scient.price_iron,
+                price_cooper=weapon_scient.price_cooper,
+                price_aluminum=weapon_scient.price_aluminum,
+                price_veriarit=weapon_scient.price_veriarit,
+                price_inneilit=weapon_scient.price_inneilit,
+                price_renniit=weapon_scient.price_renniit,
+                price_cobalt=weapon_scient.price_cobalt,
+                price_construction_material=weapon_scient.price_construction_material,
+                price_chemical=weapon_scient.price_chemical,
+                price_high_strength_allov=weapon_scient.price_high_strength_allov,
+                price_nanoelement=weapon_scient.price_nanoelement,
+                price_microprocessor_element=weapon_scient.price_microprocessor_element,
+                price_fober_optic_element=weapon_scient.price_fober_optic_element
             )
             weapon_pattern.save()
             new_factory_pattern(user, 6, weapon_scient.id)
     else:
         studied_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient, bought_template=0)
         len_studied_weapon = len(studied_weapon)
-        if len_studied_weapon < 2:
+        if len_studied_weapon < 3:
             user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
-            weapon_attribute = ['health', 'energy_damage', 'regenerations', 'number_of_bursts', 'range', 'accuracy',
-                                'mass', 'size', 'power_consuption']
+            weapon_attribute = ['weapon_health', 'weapon_energy_damage', 'weapon_regenerations', 'number_of_bursts',
+                                'weapon_range', 'weapon_accuracy', 'weapon_mass', 'weapon_size', 'power_consuption']
             trying = random.random()
-            percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-                number = random.randint(0, 8)
-                attribute = weapon_attribute[number]
-                element = getattr(user_weapon, attribute)
-                element_basic = getattr(weapon_scient, attribute)
-                if element != 0:
-                    if number == 6 or number == 7 or number == 8:
-                        if element / element_basic > 0.7:
-                            percent_update = 1 - random.randint(5, 10) / 100.0
-                            element = element * percent_update
-                            user_weapon.pk = None
-                            user_weapon.save()
-                            user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
+                summary_percent_up = 0
+                user_weapon.pk = None
+                user_weapon.save()
+                user_weapon = WeaponPattern.objects.filter(user=user, basic_armor=weapon_scient).last()
+                for attribute in weapon_attribute:
+                    percent_update = 1.0 + random.randint(5, 20) / 100.0
+                    element = getattr(user_weapon, attribute)
+                    element_basic = getattr(weapon_scient, attribute)
+                    if element_basic / element > 4.0:
+                        if attribute == 'weapon_mass' or attribute == 'weapon_size' or attribute == 'power_consuption':
+                            percent_update = 1 - random.randint(2, 5) / 100.0
+                            element *= percent_update
                             setattr(user_weapon, attribute, element)
                             user_weapon.save()
-                    else:
-                        if number == 3 and element / element_basic < 2:
-                            element = element + 1
-                            user_weapon.pk = None
-                            user_weapon.save()
-                            user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
+                        elif attribute == 'number_of_bursts' and element / element_basic < 2:
+                            element += 1
                             setattr(user_weapon, attribute, element)
                             user_weapon.save()
+                        elif attribute == 'weapon_accuracy':
+                            if element_basic / element > 0.75:
+                                element *= percent_update
+                                setattr(user_weapon, attribute, element)
+                                user_weapon.save()
                         else:
-                            if number == 5:
-                                if element_basic / element > 0.75:
-                                    element = element * percent_update
-                                    user_weapon.pk = None
-                                    user_weapon.save()
-                                    user_weapon = WeaponPattern.objects.filter(user=user,
-                                                                               basic_weapon=weapon_scient).last()
-                                    setattr(user_weapon, attribute, element)
-                                    user_weapon.save()
-                            else:
-                                if element_basic / element > 0.7:
-                                    element = element * percent_update
-                                    user_weapon.pk = None
-                                    user_weapon.save()
-                                    user_weapon = WeaponPattern.objects.filter(user=user,
-                                                                               basic_weapon=weapon_scient).last()
-                                    setattr(user_weapon, attribute, element)
-                                    user_weapon.save()
-                user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
+                            element *= percent_update
+                            setattr(user_weapon, attribute, element)
+                            user_weapon.save()
+                    summary_percent_up += percent_update
                 price_increase(user_weapon)

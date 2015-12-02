@@ -34,14 +34,20 @@ def device_open(request):
                 power_consuption=device_scient.power_consuption,
                 device_class=device_scient.device_class,
                 price_internal_currency=device_scient.price_internal_currency,
-                price_resource1=device_scient.price_resource1,
-                price_resource2=device_scient.price_resource2,
-                price_resource3=device_scient.price_resource3,
-                price_resource4=device_scient.price_resource4,
-                price_mineral1=device_scient.price_mineral1,
-                price_mineral2=device_scient.price_mineral2,
-                price_mineral3=device_scient.price_mineral3,
-                price_mineral4=device_scient.price_mineral4,
+                price_nickel=device_scient.price_nickel,
+                price_iron=device_scient.price_iron,
+                price_cooper=device_scient.price_cooper,
+                price_aluminum=device_scient.price_aluminum,
+                price_veriarit=device_scient.price_veriarit,
+                price_inneilit=device_scient.price_inneilit,
+                price_renniit=device_scient.price_renniit,
+                price_cobalt=device_scient.price_cobalt,
+                price_construction_material=device_scient.price_construction_material,
+                price_chemical=device_scient.price_chemical,
+                price_high_strength_allov=device_scient.price_high_strength_allov,
+                price_nanoelement=device_scient.price_nanoelement,
+                price_microprocessor_element=device_scient.price_microprocessor_element,
+                price_fober_optic_element=device_scient.price_fober_optic_element
             )
             device_pattern.save()
             new_factory_pattern(user, 9, device_scient.id)

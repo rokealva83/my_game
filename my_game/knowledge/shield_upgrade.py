@@ -36,57 +36,52 @@ def shield_upgrade(request):
                 shield_size=shield_scient.shield_size,
                 power_consuption=shield_scient.power_consuption,
                 price_internal_currency=shield_scient.price_internal_currency,
-                price_resource1=shield_scient.price_resource1,
-                price_resource2=shield_scient.price_resource2,
-                price_resource3=shield_scient.price_resource3,
-                price_resource4=shield_scient.price_resource4,
-                price_mineral1=shield_scient.price_mineral1,
-                price_mineral2=shield_scient.price_mineral2,
-                price_mineral3=shield_scient.price_mineral3,
-                price_mineral4=shield_scient.price_mineral4,
+                price_nickel=shield_scient.price_nickel,
+                price_iron=shield_scient.price_iron,
+                price_cooper=shield_scient.price_cooper,
+                price_aluminum=shield_scient.price_aluminum,
+                price_veriarit=shield_scient.price_veriarit,
+                price_inneilit=shield_scient.price_inneilit,
+                price_renniit=shield_scient.price_renniit,
+                price_cobalt=shield_scient.price_cobalt,
+                price_construction_material=shield_scient.price_construction_material,
+                price_chemical=shield_scient.price_chemical,
+                price_high_strength_allov=shield_scient.price_high_strength_allov,
+                price_nanoelement=shield_scient.price_nanoelement,
+                price_microprocessor_element=shield_scient.price_microprocessor_element,
+                price_fober_optic_element=shield_scient.price_fober_optic_element
             )
             shield_pattern.save()
             new_factory_pattern(user, 3, shield_scient.id)
     else:
         studied_shield = ShieldPattern.objects.filter(user=user, basic_shield=shield_scient, bought_template=0)
         len_studied_shield = len(studied_shield)
-        if len_studied_shield < 2:
+        if len_studied_shield < 3:
             shield_attribute = ['shield_health', 'value_energy_resistance', 'value_phisical_resistance',
                                 'shield_regeneration', 'number_of_emitter', 'shield_mass', 'shield_size',
                                 'power_consuption']
             trying = random.random()
-            percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-                number = random.randint(0, 7)
-                attribute = shield_attribute[number]
-                element = getattr(user_shield, attribute)
-                element_basic = getattr(shield_scient, attribute)
-                if element != 0:
-                    if number == 5 or number == 7:
-                        if element / element_basic > 0.7:
-                            percent_update = 1.0 - random.randint(5, 10) / 100.0
-                            element = element * percent_update
-                            user_shield.pk = None
-                            user_shield.save()
-                            user_shield = ShieldPattern.objects.filter(user=user, basic_shield=shield_scient).last()
-                            setattr(user_shield, attribute, element)
-                            user_shield.save()
-                    else:
-                        if number == 4:
-                            if element_basic / element > 0.5:
-                                element = element + 1
-                                user_shield.pk = None
-                                user_shield.save()
-                                user_shield = ShieldPattern.objects.filter(user=user, basic_shield=shield_scient).last()
-                                setattr(user_shield, attribute, element)
-                                user_shield.save()
-                        else:
-                            if element_basic / element > 0.7:
-                                element = element * percent_update
-                                user_shield.pk = None
-                                user_shield.save()
-                                user_shield = ShieldPattern.objects.filter(user=user, basic_shield=shield_scient).last()
-                                setattr(user_shield, attribute, element)
-                                user_shield.save()
+                summary_percent_up = 0
+                user_shield.pk = None
+                user_shield.save()
                 user_shield = ShieldPattern.objects.filter(user=user, basic_shield=shield_scient).last()
-                price_increase(user_shield)
+                for attribute in shield_attribute:
+                    percent_update = 1.0 + random.randint(5, 20) / 100.0
+                    element = getattr(user_shield, attribute)
+                    element_basic = getattr(shield_scient, attribute)
+                    if attribute == 'shield_mass' or attribute == 'shield_size' or attribute == 'power_consuption':
+                        percent_update = 1.0 - random.randint(2, 5) / 100.0
+                        element *= percent_update
+                        setattr(user_shield, attribute, element)
+                        user_shield.save()
+                    elif attribute == 'number_of_emitter' and element_basic / element > 0.5:
+                        element += 1
+                        setattr(user_shield, attribute, element)
+                        user_shield.save()
+                    else:
+                        element *= percent_update
+                        setattr(user_shield, attribute, element)
+                        user_shield.save()
+                summary_percent_up += percent_update
+            price_increase(user_shield)

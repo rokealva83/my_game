@@ -37,14 +37,20 @@ def engine_upgrade(request):
                 engine_size=engine_scient.engine_size,
                 power_consuption=engine_scient.power_consuption,
                 price_internal_currency=engine_scient.price_internal_currency,
-                price_resource1=engine_scient.price_resource1,
-                price_resource2=engine_scient.price_resource2,
-                price_resource3=engine_scient.price_resource3,
-                price_resource4=engine_scient.price_resource4,
-                price_mineral1=engine_scient.price_mineral1,
-                price_mineral2=engine_scient.price_mineral2,
-                price_mineral3=engine_scient.price_mineral3,
-                price_mineral4=engine_scient.price_mineral4,
+                price_nickel=engine_scient.price_nickel,
+                price_iron=engine_scient.price_iron,
+                price_cooper=engine_scient.price_cooper,
+                price_aluminum=engine_scient.price_aluminum,
+                price_veriarit=engine_scient.price_veriarit,
+                price_inneilit=engine_scient.price_inneilit,
+                price_renniit=engine_scient.price_renniit,
+                price_cobalt=engine_scient.price_cobalt,
+                price_construction_material=engine_scient.price_construction_material,
+                price_chemical=engine_scient.price_chemical,
+                price_high_strength_allov=engine_scient.price_high_strength_allov,
+                price_nanoelement=engine_scient.price_nanoelement,
+                price_microprocessor_element=engine_scient.price_microprocessor_element,
+                price_fober_optic_element=engine_scient.price_fober_optic_element
             )
             engine_pattern.save()
             new_factory_pattern(user, 4, engine_scient.id)
@@ -53,34 +59,29 @@ def engine_upgrade(request):
     else:
         studied_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient, bought_template=0)
         len_studied_engine = len(studied_engine)
-        if len_studied_engine < 2:
+        if len_studied_engine < 3:
             user_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient).last()
             engine_attribute = ['engine_health', 'system_power', 'intersystem_power', 'giper_power', 'nullT_power',
                                 'engine_mass', 'engine_size', 'power_consuption']
             trying = random.random()
-            percent_update = 1 + random.randint(5, 10) / 100.0
             if 0.15 <= trying <= 0.3 or 0.7 <= trying <= 0.85:
-                number = random.randint(1, 7)
-                attribute = engine_attribute[number]
-                element = getattr(user_engine, attribute)
-                element_basic = getattr(engine_scient, attribute)
-                if element != 0:
-                    if number == 5 or number == 6 or number == 7:
-                        if element / element_basic > 0.7:
-                            percent_update = 1 - random.randint(5, 10) / 100.0
-                            element = element * percent_update
-                            user_engine.pk = None
-                            user_engine.save()
-                            user_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient).last()
-                            setattr(user_engine, attribute, element)
-                            user_engine.save()
-                    else:
-                        if element_basic / element > 0.7:
-                            element = element * percent_update
-                            user_engine.pk = None
-                            user_engine.save()
-                            user_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient).last()
-                            setattr(user_engine, attribute, element)
-                            user_engine.save()
+                summary_percent_up = 0
+                user_engine.pk = None
+                user_engine.save()
                 user_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient).last()
-                price_increase(user_engine)
+                for attribute in engine_attribute:
+                    percent_update = 1.0 + random.randint(5, 20) / 100.0
+                    element = getattr(user_engine, attribute)
+                    element_basic = getattr(engine_scient, attribute)
+                    if element_basic / element > 0.7:
+                        if attribute == 'engine_mass' or attribute == 'engine_size' or attribute == 'power_consuption':
+                            percent_update = 1 - random.randint(2, 5) / 100.0
+                            element *= percent_update
+                            setattr(user_engine, attribute, element)
+                            user_engine.save()
+                        else:
+                            element *= percent_update
+                            setattr(user_engine, attribute, element)
+                            user_engine.save()
+                    summary_percent_up += percent_update
+                price_increase(user_engine, summary_percent_up)

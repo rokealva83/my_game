@@ -29,13 +29,10 @@ def open_fuel(*args):
             fuel_class=basic_fuel.fuel_class,
             fuel_id=basic_fuel.fuel_id,
             price_internal_currency=basic_fuel.price_internal_currency,
-            price_resource1=basic_fuel.price_resource1,
-            price_resource2=basic_fuel.price_resource2,
-            price_resource3=basic_fuel.price_resource3,
-            price_resource4=basic_fuel.price_resource4,
-            price_mineral1=basic_fuel.price_mineral1,
-            price_mineral2=basic_fuel.price_mineral2,
-            price_mineral3=basic_fuel.price_mineral3,
-            price_mineral4=basic_fuel.price_mineral4,
+            price_veriarit=basic_fuel.price_veriarit,
+            price_inneilit=basic_fuel.price_inneilit,
+            price_renniit=basic_fuel.price_renniit,
+            price_cobalt=basic_fuel.price_cobalt,
+            price_chemical=basic_fuel.price_chemical,
         )
         new_factory_pattern(user, 14, fuel_pattern)

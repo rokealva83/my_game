@@ -20,8 +20,8 @@ def knowledge(request):
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'scientic': scientic, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
-                  'turn_scientics': turn_scientics, 'user_citys': user_citys}
+        output = {'user': session_user, 'scientic': scientic, 'warehouse': session_user_city.warehouse,
+                  'user_city': session_user_city, 'turn_scientics': turn_scientics, 'user_citys': user_citys}
         return render(request, "scientic.html", output)
 
 
@@ -36,13 +36,12 @@ def study(request):
             level_up = int(request.POST.get("scient"))
             scientic = int(request.POST.get("name_scient"))
             scien_up(session_user, level_up, scientic, session_user_city)
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         scientic = UserScientic.objects.filter(user=session_user).first()
         turn_scientics = TurnScientic.objects.filter(user=session_user)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['userid'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'scientic': scientic, 'warehouses': warehouses, 'user_city': session_user_city,
-                  'turn_scientics': turn_scientics, 'user_citys': user_citys}
+        output = {'user': session_user, 'scientic': scientic, 'warehouse': session_user_city.warehouse,
+                  'user_city': session_user_city, 'turn_scientics': turn_scientics, 'user_citys': user_citys}
         return render(request, "scientic.html", output)
