@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
-from my_game.models import MyUser, Warehouse, TurnAssemblyPieces
+from my_game.models import MyUser, TurnAssemblyPieces
 from my_game.models import FactoryPattern, BuildingPattern
 
 
@@ -24,29 +24,28 @@ def making_factory_unit(*args):
 
         # Проверка наличия ресурсов
         if session_user.internal_currency >= factory_pattern_making.price_internal_currency and \
-                        warehouse.res_construction_material >= factory_pattern_making.price_construction_material and \
-                        warehouse.res_chemical >= factory_pattern_making.price_chemical and \
-                        warehouse.res_high_strength_allov >= factory_pattern_making.price_high_strength_allov and \
-                        warehouse.res_nanoelement >= factory_pattern_making.price_nanoelement and \
-                        warehouse.res_microprocessor_element >= factory_pattern_making.price_microprocessor_element and \
-                        warehouse.res_fober_optic_element >= factory_pattern_making.price_fober_optic_element:
+                        warehouse.mat_construction_material >= factory_pattern_making.price_construction_material and \
+                        warehouse.mat_chemical >= factory_pattern_making.price_chemical and \
+                        warehouse.mat_high_strength_allov >= factory_pattern_making.price_high_strength_allov and \
+                        warehouse.mat_nanoelement >= factory_pattern_making.price_nanoelement and \
+                        warehouse.mat_microprocessor_element >= factory_pattern_making.price_microprocessor_element and \
+                        warehouse.mat_fober_optic_element >= factory_pattern_making.price_fober_optic_element:
 
             new_internal_currency = session_user.internal_currency - factory_pattern_making.price_internal_currency
-            new_construction_material = warehouse.res_construction_material - factory_pattern_making.price_construction_material
-            new_chemical = warehouse.res_chemical - factory_pattern_making.price_construction_material
-            new_high_strength_allov = warehouse.res_high_strength_allov - factory_pattern_making.price_construction_material
-            new_nanoelement = warehouse.res_nanoelement - factory_pattern_making.price_construction_material
-            new_microprocessor_element = warehouse.res_microprocessor_element - factory_pattern_making.price_microprocessor_element
-            new_fober_optic_element = warehouse.res_fober_optic_element - factory_pattern_making.price_fober_optic_element
+            new_construction_material = warehouse.mat_construction_material - factory_pattern_making.price_construction_material
+            new_chemical = warehouse.mat_chemical - factory_pattern_making.price_chemical
+            new_high_strength_allov = warehouse.mat_high_strength_allov - factory_pattern_making.price_high_strength_allov
+            new_nanoelement = warehouse.mat_nanoelement - factory_pattern_making.price_nanoelement
+            new_microprocessor_element = warehouse.mat_microprocessor_element - factory_pattern_making.price_microprocessor_element
+            new_fober_optic_element = warehouse.mat_fober_optic_element - factory_pattern_making.price_fober_optic_element
 
-            Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                res_construction_material=new_construction_material,
-                res_chemical=new_chemical,
-                res_high_strength_allov=new_high_strength_allov,
-                res_nanoelement=new_nanoelement,
-                res_microprocessor_element=new_microprocessor_element,
-                res_fober_optic_element=new_fober_optic_element
-            )
+            setattr(warehouse, 'mat_construction_material', new_construction_material)
+            setattr(warehouse, 'new_chemical', new_chemical)
+            setattr(warehouse, 'new_high_strength_allov', new_high_strength_allov)
+            setattr(warehouse, 'new_nanoelement', new_nanoelement)
+            setattr(warehouse, 'new_microprocessor_element', new_microprocessor_element)
+            setattr(warehouse, 'new_fober_optic_elemen', new_fober_optic_element)
+            warehouse.save()
 
             MyUser.objects.filter(user_id=session_user.id).update(internal_currency=new_internal_currency)
             turn_assembly_piece = TurnAssemblyPieces.objects.filter(user=session_user,

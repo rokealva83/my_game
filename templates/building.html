@@ -407,7 +407,7 @@
                             </form>
                             <form method="post" action="working">
                                 {% for warehouse_element in warehouse_elements %}
-                                    {% if factory_pattern.id == warehouse_element.factory_id %}
+                                    {% if factory_pattern == warehouse_element.factory %}
                                         {% if warehouse_element.amount > 0 %}
                                             <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
                                             <p><input id="install_factory_unit" class="building_botton"

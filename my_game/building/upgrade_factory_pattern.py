@@ -29,7 +29,7 @@ def upgrade_factory_pattern(*args):
     else:
         koef_number = int(number) * 1.6
 
-    if class_id != 13:
+    if class_id != 14:
         new_pattern = FactoryPattern(
             user=old_pattern.user,
             basic_factory=old_pattern.basic_factory,

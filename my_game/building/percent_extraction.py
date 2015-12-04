@@ -15,12 +15,13 @@ def percent_extraction(request):
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
         verification_func.verification_of_resources(session_user)
-        complex_id = request.POST.get('complex_id')
+        manufacturing_complex = ManufacturingComplex.objects.filter(id=request.POST.get('complex_id')).first()
         new_percent = request.POST.get('percent_extraction')
-        ManufacturingComplex.objects.filter(id=complex_id).update(extraction_parametr=new_percent)
-        message = ''
+        setattr(manufacturing_complex, 'extraction_parametr', new_percent)
+        manufacturing_complex.save()
+        message = 'Ресурсы перераспределены'
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = create_complex_output(session_user, session_user_city, complex_id, message)
+        output = create_complex_output(session_user, session_user_city, manufacturing_complex, message)
         return render(request, "building.html", output)

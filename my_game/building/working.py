@@ -29,8 +29,8 @@ def working(request):
         if request.POST.get('upgrade_factory_pattern') is not None:
             number = request.POST.get('number')
             speed = request.POST.get('speed')
-            pattern_id = request.POST.get('hidden_factory')
             class_id = request.POST.get('hidden_class')
+            pattern_id = request.POST.get('hidden_factory')
             message = upgrade_factory_pattern(number, speed, pattern_id, class_id)
 
         if request.POST.get('delete_factory_pattern') is not None:

@@ -20,12 +20,13 @@ def add_in_complex(request):
         complex_factory = FactoryInstalled.objects.filter(id=installed_factory_id).first()
         manufacturing_complex = ManufacturingComplex.objects.filter(id=complex_id).first()
         if complex_factory.user_city == manufacturing_complex.user_city:
-            FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=1, complex_id=complex_id)
+            FactoryInstalled.objects.filter(id=installed_factory_id).update(complex_status=1,
+                                                                            manufacturing_complex=manufacturing_complex)
             message = 'Производство добавлено в комплекс'
         else:
             message = 'Производство в комплекс не добавлено. Местоположение неверное'
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = create_complex_output(session_user, session_user_city, complex_id, message)
+        output = create_complex_output(session_user, session_user_city, manufacturing_complex, message)
         return render(request, "building.html", output)

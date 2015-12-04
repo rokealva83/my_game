@@ -3,7 +3,7 @@
 from django.utils import timezone
 from my_game.models import UserCity
 from my_game.models import TurnBuilding
-from my_game.models import FactoryPattern, FactoryInstalled, BuildingPattern, BuildingInstalled
+from my_game.models import FactoryPattern, FactoryInstalled, BuildingPattern, BuildingInstalled, WarehouseFactoryResource
 import my_game.verification_func as verification_func
 
 
@@ -22,12 +22,18 @@ def verification_phase_of_construction(request):
         # Проверка времени
         if new_delta > delta:
             verification_func.verification_of_resources(user)
-            if turn_building.class_id != 13:
+            if turn_building.class_id != 14:
+                warehouse_factory_resource = WarehouseFactoryResource(
+                )
+                warehouse_factory_resource.save()
                 factory_pattern = FactoryPattern.objects.filter(id=turn_building.factory).first()
                 factory_installed = FactoryInstalled(
                     user=user,
                     user_city=user_city,
                     factory_pattern=factory_pattern,
+                    factory_warehouse=warehouse_factory_resource,
+                    production_class=factory_pattern.production_class,
+                    production_id=factory_pattern.production_id
                 )
                 factory_installed.save()
                 power_consumption = factory_installed.factory_pattern.power_consumption
@@ -36,7 +42,9 @@ def verification_phase_of_construction(request):
                 factory_installed = BuildingInstalled(
                     user=user,
                     user_city=user_city,
-                    building_pattern=turn_building.factory,
+                    building_pattern=factory_pattern,
+                    production_class=factory_pattern.production_class,
+                    production_id=factory_pattern.production_id
                 )
                 factory_installed.save()
                 power_consumption = factory_installed.building_pattern.power_consumption

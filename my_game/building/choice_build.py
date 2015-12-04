@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity,  TurnBuilding, TurnAssemblyPieces
+from my_game.models import MyUser, UserCity, TurnBuilding, TurnAssemblyPieces
 from my_game.models import FactoryPattern, BuildingPattern
 from my_game.models import WarehouseFactory, WarehouseBuilding
 from my_game.models import ManufacturingComplex
@@ -77,12 +77,12 @@ def choice_build(request):
         if request.POST.get('infrastructure') is not None:
             warehouse_elements = [
                 WarehouseBuilding.objects.filter(user=session_user, user_city=session_user_city,
-                                                 factory=building_pattern)
-                for building_pattern in building_patterns]
+                                                 factory=building_pattern).first() for building_pattern in
+                building_patterns]
         else:
-            warehouse_elements = [
-                WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city, factory=factory_pattern)
-                for factory_pattern in factory_patterns]
+            warehouse_elements = [WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
+                                                                  factory=factory_pattern).first() for factory_pattern
+                                  in factory_patterns]
 
         turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
         turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
