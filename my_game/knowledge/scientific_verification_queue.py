@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import math
 from django.utils import timezone
 from datetime import datetime
 from my_game.models import MyUser, UserScientic, BasicBuilding, BuildingPattern
@@ -15,7 +15,6 @@ from my_game.knowledge.shield_upgrade import shield_upgrade
 from my_game.knowledge.hull_upgrade import hull_upgrade
 from my_game.knowledge.generator_upgrade import generator_upgrade
 from my_game.knowledge.device_open import device_open
-
 
 
 def check_scientific_verification_queue(request):
@@ -54,33 +53,36 @@ def check_scientific_verification_queue(request):
     # the addition of new technology
     table_scan_time = user.last_time_scan_scient
     delta = time - table_scan_time
-    delta_time = delta.seconds
+    delta_time = delta.total_seconds()
     if delta_time > user_variables.time_check_new_technology:
-        science_users = UserScientic.objects.filter(user=user).first()
-        if science_users.all_scientic > user_variables.min_scientic_level:
-            new_technology = random.random()
-            if 0 <= new_technology < 0.125:
-                hull_upgrade(user)
-            if 0.125 <= new_technology < 0.250:
-                armor_upgrade(user)
-            if 0.250 <= new_technology < 0.375:
-                shield_upgrade(user)
-            if 0.375 <= new_technology < 0.5:
-                engine_upgrade(user)
-            if 0.5 <= new_technology < 0.625:
-                generator_upgrade(user)
-            if 0.625 <= new_technology < 0.750:
-                weapon_upgrade(user)
-            if 0.750 <= new_technology < 0.875:
-                shell_upgrade(user)
-            if 0.875 <= new_technology <= 1:
-                module_upgrade(user)
-            new_device = random.random()
-            if 0 < new_device < 1:
-                device_open(user)
-        last_time_update = time_update
-        last_time_scan_scient = datetime(last_time_update.year, last_time_update.month, last_time_update.day, 0, 0, 0,
-                                         0)
+        num = int(math.floor(delta_time / user_variables.time_check_new_technology))
+        for i in range(num-1):
+            science_users = UserScientic.objects.filter(user=user).first()
+            if science_users.all_scientic > user_variables.min_scientic_level:
+                new_technology = random.random()
+                if 0 <= new_technology < 0.125:
+                    hull_upgrade(user)
+                if 0.125 <= new_technology < 0.250:
+                    armor_upgrade(user)
+                if 0.250 <= new_technology < 0.375:
+                    shield_upgrade(user)
+                if 0.375 <= new_technology < 0.5:
+                    engine_upgrade(user)
+                if 0.5 <= new_technology < 0.625:
+                    generator_upgrade(user)
+                if 0.625 <= new_technology < 0.750:
+                    weapon_upgrade(user)
+                if 0.750 <= new_technology < 0.875:
+                    shell_upgrade(user)
+                if 0.875 <= new_technology <= 1:
+                    module_upgrade(user)
+                new_device = random.random()
+                if 0 < new_device < 1:
+                    device_open(user)
+        last_date_update = time_update
+        last_time_update = user_variables.time_check_new_technology * num / 3600 + table_scan_time.hour
+        last_time_scan_scient = datetime(last_date_update.year, last_date_update.month, last_date_update.day,
+                                         last_time_update, 0, 0, 0)
         MyUser.objects.filter(id=user.id).update(last_time_scan_scient=last_time_scan_scient)
     science_users = UserScientic.objects.filter(user=user).first()
     if int(science_users.all_scientic) > 100:

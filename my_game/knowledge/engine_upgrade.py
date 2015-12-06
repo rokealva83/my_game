@@ -54,8 +54,8 @@ def engine_upgrade(request):
             )
             engine_pattern.save()
             new_factory_pattern(user, 4, engine_scient.id)
-            if engine_pattern.system_power != 0 or engine_pattern.intersystem_power != 0:
-                open_fuel(user, engine_pattern.system_power, engine_pattern.intersystem_power)
+            # if engine_pattern.system_power != 0 or engine_pattern.intersystem_power != 0:
+                # open_fuel(user, engine_pattern.system_power, engine_pattern.intersystem_power)
     else:
         studied_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient, bought_template=0)
         len_studied_engine = len(studied_engine)

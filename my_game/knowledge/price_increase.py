@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-
+from my_game.models import UserVariables
 
 def price_increase(*args):
     pattern = args[0]
-    koef_up = 1 + args[1] / 2
+    koef_up = UserVariables.objects.get(id=1).koef_price_increace_modern_element
     price_internal_currency = pattern.price_internal_currency * koef_up
     price_nickel = pattern.price_nickel * koef_up
     price_iron = pattern.price_iron * koef_up

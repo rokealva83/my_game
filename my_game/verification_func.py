@@ -40,8 +40,8 @@ def verification_of_resources(request):
                     res_aluminum = resourse + warehouse.res_aluminum
                     setattr(warehouse, 'res_aluminum', res_aluminum)
                 elif production_id == 5:
-                    res_variarit = resourse + warehouse.res_variarit
-                    setattr(warehouse, 'res_variarit', res_variarit)
+                    res_veriarit = resourse + warehouse.res_veriarit
+                    setattr(warehouse, 'res_veriarit', res_veriarit)
                 elif production_id == 6:
                     res_inneilit = resourse + warehouse.res_inneilit
                     setattr(warehouse, 'res_inneilit', res_inneilit)
@@ -102,10 +102,10 @@ def verification_of_resources(request):
                             setattr(warehouse, 'res_aluminum', res_aluminum)
                             setattr(warehouse_complex, 'res_aluminum', complex_res_aluminum)
                         elif production_id == 5:
-                            complex_res_variarit = resourse * koef
-                            res_variarit = warehouse.res_variarit + resourse - complex_res_variarit
-                            setattr(warehouse, 'res_variarit', res_variarit)
-                            setattr(warehouse_complex, 'res_variarit', complex_res_variarit)
+                            complex_res_veriarit = resourse * koef
+                            res_veriarit = warehouse.res_veriarit + resourse - complex_res_veriarit
+                            setattr(warehouse, 'res_veriarit', res_veriarit)
+                            setattr(warehouse_complex, 'res_veriarit', complex_res_veriarit)
                         elif production_id == 6:
                             complex_res_inneilit = resourse * koef
                             res_inneilit = warehouse.res_inneilit + resourse - complex_res_inneilit

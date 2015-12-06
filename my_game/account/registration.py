@@ -74,7 +74,7 @@ def add_user(request):
                 res_iron=user_variables.registr_iron,
                 res_cooper=user_variables.registr_cooper,
                 res_aluminum=user_variables.registr_aluminum,
-                res_variarit=user_variables.registr_veriarit,
+                res_veriarit=user_variables.registr_veriarit,
                 res_inneilit=user_variables.registr_inneilit,
                 res_renniit=user_variables.registr_renniit,
                 res_cobalt=user_variables.registr_cobalt,

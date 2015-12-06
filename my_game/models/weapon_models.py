@@ -10,12 +10,19 @@ class BasicWeapon(models.Model):
         verbose_name = u'Оружие'
         verbose_name_plural = u'Оружие'
 
-    CHOISE_WEAPON_CLASS = (
+    CHOICES_WEAPON_CLASS = (
         (1, '1.Энергетическое'),
         (2, '2.Энергетический главный калибр'),
         (3, '3.Кинетическое'),
         (4, '4.Кинетический главный калибр'),
     )
+
+    CHOICES_SHELL_CLASS = (
+        (0, 'Энергия'),
+        (1, 'Снаряды'),
+        (2, 'Ракеты'),
+        (3, 'Торпеды')
+        )
 
     weapon_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
@@ -28,7 +35,8 @@ class BasicWeapon(models.Model):
     weapon_mass = models.IntegerField(default=0, verbose_name=u'Масса')
     weapon_size = models.IntegerField(verbose_name=u'Размер')
     power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
-    weapon_class = models.IntegerField(default=1, verbose_name=u'Класс оружия', choices=CHOISE_WEAPON_CLASS)
+    weapon_class = models.IntegerField(default=1, verbose_name=u'Класс оружия', choices=CHOICES_WEAPON_CLASS)
+    shell_class = models.IntegerField(default=0, verbose_name=u'Класс боеприпаса', choices=CHOICES_SHELL_CLASS)
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')

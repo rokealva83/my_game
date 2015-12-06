@@ -12,7 +12,7 @@ class WarehouseComplex(models.Model):
     res_iron = models.IntegerField(default=0)
     res_cooper = models.IntegerField(default=0)
     res_aluminum = models.IntegerField(default=0)
-    res_variarit = models.IntegerField(default=0)
+    res_veriarit = models.IntegerField(default=0)
     res_inneilit = models.IntegerField(default=0)
     res_renniit = models.IntegerField(default=0)
     res_cobalt = models.IntegerField(default=0)

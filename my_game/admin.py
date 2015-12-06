@@ -147,11 +147,12 @@ admin.site.register(BasicShield, MyShieldAdmin)
 class MyWeaponAdmin(admin.ModelAdmin):
     list_display = ['weapon_name', 'weapon_health', 'weapon_energy_damage', 'weapon_regenerations',
                     'number_of_bursts', 'weapon_range', 'weapon_accuracy', 'weapon_mass', 'weapon_size', 'weapon_class',
-                    'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper',
-                    'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt',
-                    'price_construction_material', 'price_chemical', 'price_high_strength_allov', 'price_nanoelement',
-                    'price_microprocessor_element', 'price_fober_optic_element', 'min_all_scientic', 'min_math',
-                    'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
+                    'shell_class', 'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron',
+                    'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
+                    'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+                    'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
+                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
+                    'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicWeapon, MyWeaponAdmin)
@@ -171,7 +172,7 @@ admin.site.register(BasicArmor, MyArmorAdmin)
 
 
 class MyShellAdmin(admin.ModelAdmin):
-    list_display = ['shell_name', 'shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size',
+    list_display = ['shell_name', 'shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size', 'shell_class',
                     'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
                     'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
                     'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',

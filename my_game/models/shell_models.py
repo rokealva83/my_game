@@ -10,8 +10,15 @@ class BasicShell(models.Model):
         verbose_name = u'Боеприпас'
         verbose_name_plural = u'Боеприпасы'
 
+    CHOICES_SHELL_CLASS = (
+        (1, 'Снаряды'),
+        (2, 'Ракеты'),
+        (3, 'Торпеды')
+        )
+
     shell_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
+    shell_class = models.IntegerField(default=1, verbose_name=u'Класс боеприпаса', choices=CHOICES_SHELL_CLASS)
     shell_phisical_damage = models.IntegerField(verbose_name=u'Физический урон')
     shell_speed = models.IntegerField(verbose_name=u'Скорость')
     shell_mass = models.IntegerField(verbose_name=u'Масса')
@@ -72,3 +79,4 @@ class ShellPattern(models.Model):
     price_microprocessor_element = models.IntegerField(default=0, verbose_name=u'Цена в микропроцессорных елементах')
     price_fober_optic_element = models.IntegerField(default=0, verbose_name=u'Цена в оптоволоконных елементах')
     bought_template = models.BooleanField(default=False)
+    shell_class = models.IntegerField(default=1, verbose_name=u'Класс боеприпаса')

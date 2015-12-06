@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import random
-from my_game.models import WeaponPattern
+from my_game.models import WeaponPattern, ShellPattern
 from my_game.models import BasicWeapon
 from my_game.knowledge.element_open import element_open
 from my_game.knowledge.new_factory_pattern import new_factory_pattern
 from my_game.knowledge.price_increase import price_increase
+from my_game.knowledge.open_shell import open_shell
 
 
 def weapon_upgrade(request):
@@ -60,6 +61,10 @@ def weapon_upgrade(request):
             )
             weapon_pattern.save()
             new_factory_pattern(user, 6, weapon_scient.id)
+            if weapon_pattern.weapon_class > 2:
+                shell_pattern = ShellPattern.objects.filter(user=user, shell_class=weapon_pattern.shell_class).all()
+                if not shell_pattern:
+                    open_shell(user, weapon_pattern, 1, None)
     else:
         studied_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient, bought_template=0)
         len_studied_weapon = len(studied_weapon)
@@ -72,7 +77,7 @@ def weapon_upgrade(request):
                 summary_percent_up = 0
                 user_weapon.pk = None
                 user_weapon.save()
-                user_weapon = WeaponPattern.objects.filter(user=user, basic_armor=weapon_scient).last()
+                user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
                 for attribute in weapon_attribute:
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_weapon, attribute)
