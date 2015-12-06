@@ -34,7 +34,7 @@ def module_upgrade(request):
             module_pattern = ModulePattern(
                 user=user,
                 basic_pattern=module_scient,
-                element_name=module_scient.element_name,
+                element_name=module_scient.module_name,
                 module_health=module_scient.module_health,
                 param1=module_scient.param1 * module,
                 param2=module_scient.param2 * module,
@@ -77,15 +77,15 @@ def module_upgrade(request):
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_module, attribute)
                     element_basic = getattr(module_scient, attribute)
-                    if element_basic / element > 4.0:
-                        if attribute == 'module_mass' or attribute == 'module_size' or attribute == 'power_consuption':
-                            percent_update = 1 - random.randint(2, 5) / 100.0
-                            element *= percent_update
-                            setattr(user_module, attribute, element)
-                            user_module.save()
-                        else:
-                            element *= percent_update
-                            setattr(user_module, attribute, element)
-                            user_module.save()
-                    summary_percent_up += percent_update
-                price_increase(user_module, summary_percent_up)
+                    if element_basic != 0:
+                        if element / element_basic < 4.0:
+                            if attribute == 'module_mass' or attribute == 'module_size' or attribute == 'power_consuption':
+                                percent_update = 1 - random.randint(2, 5) / 100.0
+                                element *= percent_update
+                                setattr(user_module, attribute, element)
+                            else:
+                                element *= percent_update
+                                setattr(user_module, attribute, element)
+                        summary_percent_up += percent_update
+                user_module.save()
+                price_increase(user_module, (summary_percent_up/len(module_attribute)))

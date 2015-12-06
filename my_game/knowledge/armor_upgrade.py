@@ -26,7 +26,7 @@ def armor_upgrade(request):
             armor_pattern = ArmorPattern(
                 user=user,
                 basic_pattern=armor_scient,
-                element_name=armor_scient.element_name,
+                element_name=armor_scient.armon_name,
                 armor_health=armor_scient.armor_health,
                 value_energy_resistance=armor_scient.value_energy_resistance * race.armor,
                 value_phisical_resistance=armor_scient.value_phisical_resistance * race.armor,
@@ -68,15 +68,14 @@ def armor_upgrade(request):
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_armor, attribute)
                     element_basic = getattr(armor_scient, attribute)
-                    if element_basic / element > 4.0:
+                    if element / element_basic < 4.0:
                         if attribute == 'armor_mass':
                             percent_update = 1 - random.randint(2, 5) / 100.0
                             element *= percent_update
                             setattr(user_armor, attribute, element)
-                            user_armor.save()
                         else:
                             element *= percent_update
                             setattr(user_armor, attribute, element)
-                            user_armor.save()
                     summary_percent_up += percent_update
-                price_increase(user_armor, summary_percent_up)
+                user_armor.save()
+                price_increase(user_armor, (summary_percent_up / len(armor_attribute)))

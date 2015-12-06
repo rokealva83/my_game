@@ -26,7 +26,7 @@ def generator_upgrade(request):
             generator_pattern = GeneratorPattern(
                 user=user,
                 basic_pattern=generator_scient,
-                element_name=generator_scient.element_name,
+                element_name=generator_scient.generator_name,
                 generator_health=generator_scient.generator_health,
                 produced_energy=generator_scient.produced_energy * race.generator,
                 fuel_necessary=generator_scient.fuel_necessary,
@@ -67,15 +67,14 @@ def generator_upgrade(request):
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_generator, attribute)
                     element_basic = getattr(generator_scient, attribute)
-                    if element_basic / element > 4.0:
+                    if element / element_basic < 4.0:
                         if attribute == 'fuel_necessary' or attribute == 'generator_mass' or attribute == 'generator_size':
                             percent_update = 1 - random.randint(2, 5) / 100.0
                             element *= percent_update
                             setattr(user_generator, attribute, element)
-                            user_generator.save()
                         else:
                             element *= percent_update
                             setattr(user_generator, attribute, element)
-                            user_generator.save()
                     summary_percent_up += percent_update
-                price_increase(user_generator, summary_percent_up)
+                user_generator.save()
+                price_increase(user_generator, (summary_percent_up/len(generator_attribute)))

@@ -79,10 +79,7 @@ def check_scientific_verification_queue(request):
                 new_device = random.random()
                 if 0 < new_device < 1:
                     device_open(user)
-        last_date_update = time_update
-        last_time_update = user_variables.time_check_new_technology * num / 3600 + table_scan_time.hour
-        last_time_scan_scient = datetime(last_date_update.year, last_date_update.month, last_date_update.day,
-                                         last_time_update, 0, 0, 0)
+        last_time_scan_scient = datetime.now()
         MyUser.objects.filter(id=user.id).update(last_time_scan_scient=last_time_scan_scient)
     science_users = UserScientic.objects.filter(user=user).first()
     if int(science_users.all_scientic) > 100:
@@ -90,7 +87,7 @@ def check_scientific_verification_queue(request):
         if building is None:
             building = BasicBuilding.objects.filter(production_class=21).first()
             building_pattern = BuildingPattern(
-                name=building.name,
+                building_name=building.building_name,
                 user=user,
                 production_class=15,
                 production_id=1,

@@ -27,7 +27,7 @@ def engine_upgrade(request):
             engine_pattern = EnginePattern(
                 user=user,
                 basic_pattern=engine_scient,
-                element_name=engine_scient.element_name,
+                element_name=engine_scient.engine_name,
                 engine_health=engine_scient.engine_health,
                 system_power=engine_scient.system_power * race.engine_system,
                 intersystem_power=engine_scient.intersystem_power * race.engine_intersystem,
@@ -73,15 +73,15 @@ def engine_upgrade(request):
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_engine, attribute)
                     element_basic = getattr(engine_scient, attribute)
-                    if element_basic / element > 0.7:
-                        if attribute == 'engine_mass' or attribute == 'engine_size' or attribute == 'power_consuption':
-                            percent_update = 1 - random.randint(2, 5) / 100.0
-                            element *= percent_update
-                            setattr(user_engine, attribute, element)
-                            user_engine.save()
-                        else:
-                            element *= percent_update
-                            setattr(user_engine, attribute, element)
-                            user_engine.save()
-                    summary_percent_up += percent_update
-                price_increase(user_engine, summary_percent_up)
+                    if element_basic != 0:
+                        if element / element_basic < 4.0:
+                            if attribute == 'engine_mass' or attribute == 'engine_size' or attribute == 'power_consuption':
+                                percent_update = 1 - random.randint(2, 5) / 100.0
+                                element *= percent_update
+                                setattr(user_engine, attribute, element)
+                            else:
+                                element *= percent_update
+                                setattr(user_engine, attribute, element)
+                        summary_percent_up += percent_update
+                user_engine.save()
+                price_increase(user_engine, (summary_percent_up/len(engine_attribute)))

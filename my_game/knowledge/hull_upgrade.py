@@ -14,7 +14,7 @@ def hull_upgrade(request):
     number_hull = len(basic_hull) - 1
     number_hull_scient = random.randint(0, number_hull)
     hull_scient = basic_hull[number_hull_scient]
-    user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
+    user_hull = HullPattern.objects.filter(user=user, basic_pattern=hull_scient).last()
     if user_hull is None:
         koef = element_open(user, hull_scient)
         if koef < 0:
@@ -25,7 +25,7 @@ def hull_upgrade(request):
             hull_pattern = HullPattern(
                 user=user,
                 basic_pattern=hull_scient,
-                element_name=hull_scient.element_name,
+                element_name=hull_scient.hull_name,
                 hull_health=hull_scient.hull_health,
                 generator=hull_scient.generator,
                 engine=hull_scient.engine,
@@ -74,24 +74,22 @@ def hull_upgrade(request):
                     element = getattr(user_hull, attribute)
                     element_basic = getattr(hull_scient, attribute)
                     percent_update = 1 + random.randint(5, 20) / 100.0
-                    if element_basic / element > 4:
-                        if attribute == 'hull_health' and element_basic / element > 2.5:
-                            element *= percent_update
-                            setattr(user_hull, attribute, element)
-                            user_hull.save()
-                        elif attribute == 'hull_mass' or attribute == 'power_consuption':
-                            percent_update = 1 - random.randint(2, 4) / 100.0
-                            element *= percent_update
-                            setattr(user_hull, attribute, element)
-                            user_hull.save()
-                        elif attribute == 'hold_size' or attribute == 'hull_size':
-                            percent_update = 1 + random.randint(3, 10) / 100.0
-                            element *= percent_update
-                            setattr(user_hull, attribute, element)
-                            user_hull.save()
-                        else:
-                            element += 1
-                            setattr(user_hull, attribute, element)
-                            user_hull.save()
-                    summary_percent_up += percent_update
-                price_increase(user_hull)
+                    if element_basic != 0:
+                        if element / element_basic < 4.0:
+                            if attribute == 'hull_health' and element_basic / element < 2.5:
+                                element *= percent_update
+                                setattr(user_hull, attribute, element)
+                            elif attribute == 'hull_mass' or attribute == 'power_consuption':
+                                percent_update = 1 - random.randint(2, 4) / 100.0
+                                element *= percent_update
+                                setattr(user_hull, attribute, element)
+                            elif attribute == 'hold_size' or attribute == 'hull_size':
+                                percent_update = 1 + random.randint(3, 10) / 100.0
+                                element *= percent_update
+                                setattr(user_hull, attribute, element)
+                            else:
+                                element += 1
+                                setattr(user_hull, attribute, element)
+                            summary_percent_up += percent_update
+                user_hull.save()
+                price_increase(user_hull, (summary_percent_up/len(hull_attribute)))

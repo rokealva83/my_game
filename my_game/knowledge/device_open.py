@@ -24,7 +24,7 @@ def device_open(request):
             device_pattern = DevicePattern(
                 user=user,
                 basic_pattern=device_scient,
-                element_name=device_scient.element_name,
+                element_name=device_scient.device_name,
                 device_health=device_scient.device_health,
                 param1=device_scient.param1,
                 param2=device_scient.param2,

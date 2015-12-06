@@ -36,15 +36,14 @@ def shell_upgrade(request):
                         percent_update = 1.0 + random.randint(5, 20) / 100.0
                         element = getattr(user_shell, attribute)
                         element_basic = getattr(shell_scient, attribute)
-                        if element_basic / element > 4.0:
+                        if element / element_basic < 4.0:
                             if attribute == 'shell_mass' or attribute == 'shell_size':
                                 percent_update = 1 - random.randint(2, 5) / 100.0
                                 element *= percent_update
                                 setattr(user_shell, attribute, element)
-                                user_shell.save()
                             else:
                                 element *= percent_update
                                 setattr(user_shell, attribute, element)
-                                user_shell.save()
                         summary_percent_up += percent_update
-                    price_increase(user_shell)
+                    user_shell.save()
+                    price_increase(user_shell, (summary_percent_up/len(shell_attribute)))

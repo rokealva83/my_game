@@ -30,7 +30,7 @@ def open_shell(*args):
         shell_pattern = ShellPattern(
             user=user,
             basic_pattern=shell_scient,
-            element_name=shell_scient.element_name,
+            element_name=shell_scient.shell_name,
             shell_phisical_damage=shell_scient.shell_phisical_damage,
             shell_speed=shell_scient.shell_speed,
             shell_mass=shell_scient.shell_mass,

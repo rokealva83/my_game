@@ -32,7 +32,7 @@ def weapon_upgrade(request):
             weapon_pattern = WeaponPattern(
                 user=user,
                 basic_pattern=weapon_scient,
-                element_name=weapon_scient.element_name,
+                element_name=weapon_scient.weapon_name,
                 weapon_health=weapon_scient.weapon_health,
                 weapon_energy_damage=weapon_scient.weapon_energy_damage * weapon,
                 weapon_regenerations=weapon_scient.weapon_regenerations * weapon,
@@ -82,24 +82,22 @@ def weapon_upgrade(request):
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_weapon, attribute)
                     element_basic = getattr(weapon_scient, attribute)
-                    if element_basic / element > 4.0:
-                        if attribute == 'weapon_mass' or attribute == 'weapon_size' or attribute == 'power_consuption':
-                            percent_update = 1 - random.randint(2, 5) / 100.0
-                            element *= percent_update
-                            setattr(user_weapon, attribute, element)
-                            user_weapon.save()
-                        elif attribute == 'number_of_bursts' and element / element_basic < 2:
-                            element += 1
-                            setattr(user_weapon, attribute, element)
-                            user_weapon.save()
-                        elif attribute == 'weapon_accuracy':
-                            if element_basic / element > 0.75:
+                    if element_basic != 0:
+                        if element / element_basic < 4.0:
+                            if attribute == 'weapon_mass' or attribute == 'weapon_size' or attribute == 'power_consuption':
+                                percent_update = 1 - random.randint(2, 5) / 100.0
                                 element *= percent_update
                                 setattr(user_weapon, attribute, element)
-                                user_weapon.save()
-                        else:
-                            element *= percent_update
-                            setattr(user_weapon, attribute, element)
-                            user_weapon.save()
-                    summary_percent_up += percent_update
-                price_increase(user_weapon)
+                            elif attribute == 'number_of_bursts' and element / element_basic < 2:
+                                element += 1
+                                setattr(user_weapon, attribute, element)
+                            elif attribute == 'weapon_accuracy':
+                                if element_basic / element > 0.75:
+                                    element *= percent_update
+                                    setattr(user_weapon, attribute, element)
+                            else:
+                                element *= percent_update
+                                setattr(user_weapon, attribute, element)
+                        summary_percent_up += percent_update
+                user_weapon.save()
+                price_increase(user_weapon, (summary_percent_up/len(weapon_attribute)))
