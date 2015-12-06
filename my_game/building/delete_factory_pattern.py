@@ -12,7 +12,7 @@ def delete_factory_pattern(*args):
     if factory is not None:
         message = 'Шаблон не может быть удален'
     else:
-        if class_id != 13:
+        if class_id != 21:
             FactoryPattern.objects.filter(id=pattern_id).delete()
         else:
             BuildingPattern.objects.filter(id=pattern_id).delete()

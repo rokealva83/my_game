@@ -47,7 +47,7 @@ admin.site.register(UserVariables, UserVariablesAdmin)
 
 
 class MyRaceAdmin(admin.ModelAdmin):
-    list_display = ['race_name', 'description', 'engine_system', 'engine_intersystem', 'engine_giper', 'engine_null',
+    list_display = ['race_name', 'engine_system', 'engine_intersystem', 'engine_giper', 'engine_null',
                     'generator', 'armor', 'shield', 'weapon_attack', 'weapon_defense', 'exploration', 'disguse',
                     'auximilary', 'image']
 
@@ -63,7 +63,7 @@ admin.site.register(BasicResource, MyResourceAdmin)
 
 
 class MyMaterialAdmin(admin.ModelAdmin):
-    list_display = ['material_name', 'description', 'price_internal_currency',
+    list_display = ['material_name', 'price_internal_currency',
                     'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit',
                     'price_renniit', 'price_cobalt', 'material_mass', 'material_size']
 
@@ -72,7 +72,7 @@ admin.site.register(BasicMaterial, MyMaterialAdmin)
 
 
 class MyScienticAdmin(admin.ModelAdmin):
-    list_display = ['scientic_name', 'description', 'time_study', 'price_internal_currency', 'price_nickel',
+    list_display = ['scientic_name', 'time_study', 'price_internal_currency', 'price_nickel',
                     'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', ]
 
@@ -81,7 +81,7 @@ admin.site.register(BasicScientic, MyScienticAdmin)
 
 
 class MyFactoryAdmin(admin.ModelAdmin):
-    list_display = ['factory_name', 'description', 'production_class', 'production_id', 'time_production',
+    list_display = ['factory_name', 'production_class', 'production_id', 'time_production',
                     'factory_size', 'factory_mass', 'power_consumption', 'price_internal_currency',
                     'price_construction_material', 'price_chemical', 'price_high_strength_allov', 'price_nanoelement',
                     'price_microprocessor_element', 'price_fober_optic_element', 'price_expert_deployment',
@@ -92,7 +92,7 @@ admin.site.register(BasicFactory, MyFactoryAdmin)
 
 
 class MyHullAdmin(admin.ModelAdmin):
-    list_display = ['hull_name', 'description', 'hull_health', 'generator', 'engine', 'weapon', 'armor', 'shield',
+    list_display = ['hull_name', 'hull_health', 'generator', 'engine', 'weapon', 'armor', 'shield',
                     'module', 'main_weapon', 'hold_size', 'fuel_tank', 'hull_mass', 'hull_size', 'power_consuption',
                     'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
                     'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
@@ -105,7 +105,7 @@ admin.site.register(BasicHull, MyHullAdmin)
 
 
 class MyEngineAdmin(admin.ModelAdmin):
-    list_display = ['engine_name', 'description', 'engine_health', 'system_power', 'intersystem_power', 'giper_power',
+    list_display = ['engine_name', 'engine_health', 'system_power', 'intersystem_power', 'giper_power',
                     'nullT_power', 'engine_mass', 'engine_size', 'power_consuption', 'price_internal_currency',
                     'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit',
                     'price_renniit', 'price_cobalt', 'price_construction_material', 'price_chemical',
@@ -118,7 +118,7 @@ admin.site.register(BasicEngine, MyEngineAdmin)
 
 
 class MyGeneratorAdmin(admin.ModelAdmin):
-    list_display = ['generator_name', 'description', 'generator_health', 'produced_energy', 'fuel_necessary',
+    list_display = ['generator_name', 'generator_health', 'produced_energy', 'fuel_necessary',
                     'generator_mass', 'generator_size', 'price_internal_currency', 'price_nickel', 'price_iron',
                     'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
@@ -131,7 +131,7 @@ admin.site.register(BasicGenerator, MyGeneratorAdmin)
 
 
 class MyShieldAdmin(admin.ModelAdmin):
-    list_display = ['shield_name', 'description', 'shield_health', 'value_energy_resistance',
+    list_display = ['shield_name', 'shield_health', 'value_energy_resistance',
                     'value_phisical_resistance', 'shield_regeneration', 'number_of_emitter', 'shield_mass',
                     'shield_size', 'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron',
                     'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
@@ -145,7 +145,7 @@ admin.site.register(BasicShield, MyShieldAdmin)
 
 
 class MyWeaponAdmin(admin.ModelAdmin):
-    list_display = ['weapon_name', 'description', 'weapon_health', 'weapon_energy_damage', 'weapon_regenerations',
+    list_display = ['weapon_name', 'weapon_health', 'weapon_energy_damage', 'weapon_regenerations',
                     'number_of_bursts', 'weapon_range', 'weapon_accuracy', 'weapon_mass', 'weapon_size', 'weapon_class',
                     'power_consuption', 'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper',
                     'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt',
@@ -158,15 +158,20 @@ admin.site.register(BasicWeapon, MyWeaponAdmin)
 
 
 class MyArmorAdmin(admin.ModelAdmin):
-    list_display = ['armor_name', 'description', 'armor_health', 'value_energy_resistance', 'value_phisical_resistance',
-                    'armor_power', 'armor_regeneration', 'armor_mass', 'min_all_scientic']
+    list_display = ['armor_name', 'armor_health', 'value_energy_resistance', 'value_phisical_resistance', 'armor_power',
+                    'armor_regeneration', 'armor_mass', 'price_internal_currency', 'price_nickel', 'price_iron',
+                    'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
+                    'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
+                    'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
+                    'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
+                    'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicArmor, MyArmorAdmin)
 
 
 class MyShellAdmin(admin.ModelAdmin):
-    list_display = ['shell_name', 'description', 'shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size',
+    list_display = ['shell_name', 'shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size',
                     'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
                     'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
                     'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',
@@ -178,7 +183,7 @@ admin.site.register(BasicShell, MyShellAdmin)
 
 
 class MyModuleAdmin(admin.ModelAdmin):
-    list_display = ['module_name', 'description', 'module_health', 'param1', 'param2', 'param3', 'module_mass',
+    list_display = ['module_name', 'module_health', 'param1', 'param2', 'param3', 'module_mass',
                     'module_size', 'module_class', 'power_consuption', 'price_internal_currency', 'price_nickel',
                     'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
@@ -191,7 +196,7 @@ admin.site.register(BasicModule, MyModuleAdmin)
 
 
 class MyFuelAdmin(admin.ModelAdmin):
-    list_display = ['fuel_name', 'description', 'fuel_mass', 'fuel_size', 'fuel_efficiency', 'fuel_class', 'fuel_id',
+    list_display = ['fuel_name', 'fuel_mass', 'fuel_size', 'fuel_efficiency', 'fuel_class', 'fuel_id',
                     'price_internal_currency', 'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt',
                     'price_chemical', ]
 
@@ -200,7 +205,7 @@ admin.site.register(BasicFuel, MyFuelAdmin)
 
 
 class MyDeviceAdmin(admin.ModelAdmin):
-    list_display = ['device_name', 'description', 'device_health', 'param1', 'param2', 'param3', 'device_mass',
+    list_display = ['device_name', 'device_health', 'param1', 'param2', 'param3', 'device_mass',
                     'device_size', 'device_class', 'power_consuption', 'price_internal_currency', 'price_nickel',
                     'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
                     'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
@@ -213,7 +218,7 @@ admin.site.register(BasicDevice, MyDeviceAdmin)
 
 
 class MyBuildingAdmin(admin.ModelAdmin):
-    list_display = ['building_name', 'description', 'production_class', 'production_id', 'time_production', 'warehouse',
+    list_display = ['building_name', 'production_class', 'production_id', 'time_production', 'warehouse',
                     'max_warehouse', 'power_consumption', 'price_internal_currency', 'price_construction_material',
                     'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',
                     'price_fober_optic_element', 'price_expert_deployment', 'assembly_workpiece', 'time_deployment',

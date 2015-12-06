@@ -7,7 +7,7 @@ from my_game.models import FactoryPattern, BuildingPattern
 def upgrade_factory_pattern(*args):
     pattern_id = int(args[2])
     class_id = int(args[3])
-    if class_id != 13:
+    if class_id != 21:
         old_pattern = FactoryPattern.objects.filter(id=pattern_id).first()
     else:
         old_pattern = BuildingPattern.objects.filter(id=pattern_id).first()
@@ -29,7 +29,7 @@ def upgrade_factory_pattern(*args):
     else:
         koef_number = int(number) * 1.6
 
-    if class_id != 14:
+    if class_id != 21:
         new_pattern = FactoryPattern(
             user=old_pattern.user,
             basic_factory=old_pattern.basic_factory,

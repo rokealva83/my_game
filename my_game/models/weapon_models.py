@@ -3,24 +3,32 @@
 from django.db import models
 from my_game.models import MyUser
 
+
 class BasicWeapon(models.Model):
     class Meta:
         db_table = 'basic_weapon'
         verbose_name = u'Оружие'
         verbose_name_plural = u'Оружие'
 
+    CHOISE_WEAPON_CLASS = (
+        (1, '1.Энергетическое'),
+        (2, '2.Энергетический главный калибр'),
+        (3, '3.Кинетическое'),
+        (4, '4.Кинетический главный калибр'),
+    )
+
     weapon_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
     weapon_health = models.IntegerField(verbose_name=u'Количество жизни')
-    weapon_energy_damage = models.IntegerField(verbose_name=u'Энергетический урон')
-    weapon_regenerations = models.IntegerField(verbose_name=u'Время перезарядки')
-    number_of_bursts = models.IntegerField(verbose_name=u'Количество залпов')
-    weapon_range = models.IntegerField(verbose_name=u'Дальность')
-    weapon_accuracy = models.IntegerField(verbose_name=u'Точность')
-    weapon_mass = models.IntegerField(verbose_name=u'Масса')
+    weapon_energy_damage = models.IntegerField(default=0, verbose_name=u'Энергетический урон')
+    weapon_regenerations = models.IntegerField(default=0, verbose_name=u'Время перезарядки')
+    number_of_bursts = models.IntegerField(default=0, verbose_name=u'Количество залпов')
+    weapon_range = models.IntegerField(default=0, verbose_name=u'Дальность')
+    weapon_accuracy = models.IntegerField(default=0, verbose_name=u'Точность')
+    weapon_mass = models.IntegerField(default=0, verbose_name=u'Масса')
     weapon_size = models.IntegerField(verbose_name=u'Размер')
     power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
-    weapon_class = models.IntegerField(default=1, verbose_name=u'Класс оружия')
+    weapon_class = models.IntegerField(default=1, verbose_name=u'Класс оружия', choices=CHOISE_WEAPON_CLASS)
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')
@@ -58,11 +66,11 @@ class WeaponPattern(models.Model):
     basic_weapon = models.ForeignKey(BasicWeapon)
     weapon_name = models.CharField(max_length=50, default='New weapon')
     weapon_health = models.IntegerField()
-    weapon_energy_damage = models.IntegerField()
-    weapon_regenerations = models.IntegerField()
-    number_of_bursts = models.IntegerField()
-    weapon_range = models.IntegerField()
-    weapon_accuracy = models.IntegerField()
+    weapon_energy_damage = models.IntegerField(default=0)
+    weapon_regenerations = models.IntegerField(default=0)
+    number_of_bursts = models.IntegerField(default=0)
+    weapon_range = models.IntegerField(default=0)
+    weapon_accuracy = models.IntegerField(default=0)
     weapon_mass = models.IntegerField()
     weapon_size = models.IntegerField()
     power_consuption = models.IntegerField()

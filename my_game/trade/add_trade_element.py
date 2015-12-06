@@ -299,7 +299,7 @@ def add_trade_element(request):
         trade_spaces = TradeSpace.objects.filter()
         trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
         trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=13).first()
+                                                           production_class=21).first()
         delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city

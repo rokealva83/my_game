@@ -10,16 +10,25 @@ class BasicModule(models.Model):
         verbose_name = u'Модуль'
         verbose_name_plural = u'Модули'
 
+    CHOICES_CLASS_MODULE = (
+        (1,'Полетные модули'),
+        (2,'Модули трюма'),
+        (3,'Геологические модули'),
+        (4,'Заправочные модули'),
+        (5,'Ремонтные модули'),
+        (6,'Модули сканирования')
+        )
+
     module_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
     module_health = models.IntegerField(verbose_name=u'Количество жизни')
-    param1 = models.IntegerField(verbose_name=u'Параметр 1')
-    param2 = models.IntegerField(verbose_name=u'Параметр 2')
-    param3 = models.IntegerField(verbose_name=u'Параметр 3')
+    param1 = models.IntegerField(verbose_name=u'Параметр 1', help_text=u'Добыча в минуту, Растояние сканирования')
+    param2 = models.IntegerField(verbose_name=u'Параметр 2', help_text=u'Ремонт/Строительство в минуту, Время сканирования')
+    param3 = models.IntegerField(verbose_name=u'Параметр 3', help_text=u'Метод ремонта/строительства, Метод сканирования')
     module_mass = models.IntegerField(verbose_name=u'Масса')
     module_size = models.IntegerField(verbose_name=u'Размер')
     power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
-    module_class = models.IntegerField(verbose_name=u'Класс модуля')
+    module_class = models.IntegerField(verbose_name=u'Класс модуля', choices=CHOICES_CLASS_MODULE)
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')

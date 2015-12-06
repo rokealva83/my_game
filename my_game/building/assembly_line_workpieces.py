@@ -17,7 +17,7 @@ def check_assembly_line_workpieces(request):
             new_delta = delta_time.total_seconds()
             delta_time = turn_assembly_pieces.finish_time_assembly - turn_assembly_pieces.start_time_assembly
             delta = delta_time.total_seconds()
-            if turn_assembly_pieces.class_id != 14:
+            if turn_assembly_pieces.class_id != 21:
                 warehouse_factory = WarehouseFactory.objects.filter(factory=turn_assembly_pieces.pattern).first()
             else:
                 warehouse_factory = WarehouseBuilding.objects.filter(building=turn_assembly_pieces.pattern).first()
@@ -28,7 +28,7 @@ def check_assembly_line_workpieces(request):
                     setattr(warehouse_factory, 'amount', amount_assembly)
                     warehouse_factory.save()
                 else:
-                    if turn_assembly_pieces.class_id != 14:
+                    if turn_assembly_pieces.class_id != 21:
                         new_factory = WarehouseFactory(
                             user=turn_assembly_pieces.user,
                             user_city=turn_assembly_pieces.user_city,

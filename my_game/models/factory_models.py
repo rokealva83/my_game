@@ -12,6 +12,24 @@ class BasicFactory(models.Model):
         verbose_name = u'Фабрика'
         verbose_name_plural = u'Фабрики'
 
+
+    CHOICES_FACTORY_PRODUCTION_CLASS = (
+        (1, '1. Производство корпусов'),
+        (2, '2. Производство брони'),
+        (3, '3. Производство щитов'),
+        (4, '4. Производство двигателей'),
+        (5, '5. Производство генераторов'),
+        (6, '6. Производство оружия'),
+        (7, '7. Производство боеприпасов'),
+        (8, '8. Производство модулей'),
+        (9, '9. Производство устройств'),
+        (10, '10. Жилье'),
+        (11, '11. Добыча'),
+        (12, '12. Энергостанции'),
+        (13, '13. Производство материалов'),
+        (14, '14. Производство топлива'),
+        )
+
     factory_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
@@ -24,7 +42,7 @@ class BasicFactory(models.Model):
     price_expert_deployment = models.IntegerField(default=10, verbose_name=u'Количество сотрудников')
     assembly_workpiece = models.IntegerField(default=10, verbose_name=u'Время создания заготовки')
     time_deployment = models.IntegerField(verbose_name=u'Время развертывания')
-    production_class = models.IntegerField(verbose_name=u'Класс продукции')
+    production_class = models.IntegerField(verbose_name=u'Класс продукции', choices=CHOICES_FACTORY_PRODUCTION_CLASS)
     production_id = models.IntegerField(verbose_name=u'Идентификатор продукции')
     time_production = models.IntegerField(verbose_name=u'Время производства')
     factory_size = models.IntegerField(verbose_name=u'Размер')

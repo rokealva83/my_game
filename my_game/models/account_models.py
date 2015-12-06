@@ -101,6 +101,14 @@ class Mail(models.Model):
     class Meta:
         db_table = 'mail'
 
+    CHOICES_STATUS = (
+        (1, '1. Личные'),
+        (2, '2. Альянс'),
+        (3, '3. Союз'),
+        (4, '4. Системные'),
+        (5, '5. Администрация'),
+        )
+
     user = models.ForeignKey(MyUser, db_index=True)
     recipient = models.IntegerField()
     time = models.DateTimeField(default=timezone.now, blank=True)

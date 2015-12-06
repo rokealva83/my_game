@@ -106,13 +106,13 @@ def verification_trade(request):
                                 )
                         elif hold.class_shipment > 10:
                             warehouse = WarehouseFactory.objects.filter(user=user, user_city=trade_flight.user_city,
-                                                                         production_class__lt=13,
+                                                                         production_class__lt=21,
                                                                          factory_id=trade_flight.element_id).first()
                             if warehouse:
                                 new_amount = warehouse.amount + trade_flight.amount
                                 warehouse = WarehouseFactory.objects.filter(user=user,
                                                                              user_city=trade_flight.user_city,
-                                                                             production_class__lt=13,
+                                                                             production_class__lt=21,
                                                                              factory_id=trade_flight.element_id).update(
                                     amount=new_amount)
                             else:
@@ -182,12 +182,12 @@ def verification_trade(request):
                     )
             elif teleport.class_shipment > 10:
                 warehouse = WarehouseFactory.objects.filter(user=user, user_city=teleport.user_city,
-                                                             production_class__lt=13,
+                                                             production_class__lt=21,
                                                              factory_id=teleport.element_id).first()
                 if warehouse:
                     new_amount = warehouse.amount + teleport.amount
                     warehouse = WarehouseFactory.objects.filter(user=user, user_city=teleport.user_city,
-                                                                 production_class__lt=13,
+                                                                 production_class__lt=21,
                                                                  factory=teleport.element_id).update(
                         amount=new_amount)
                 else:

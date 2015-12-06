@@ -14,7 +14,7 @@ def making_factory_unit(*args):
     class_id = int(args[4])
 
     warehouse = session_user_city.warehouse
-    if class_id != 14:
+    if class_id != 21:
         factory_pattern_making = FactoryPattern.objects.filter(id=pattern_id).first()
     else:
         factory_pattern_making = BuildingPattern.objects.filter(id=pattern_id).first()

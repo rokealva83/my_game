@@ -266,7 +266,7 @@ def create_trade_fleet(request):
         trade_elements = TradeElement.objects.filter(trade_space=1)
         user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user)
         trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=13).first()
+                                                           production_class=21).first()
         delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city

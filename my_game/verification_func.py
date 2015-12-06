@@ -173,7 +173,7 @@ def verification_of_resources(request):
                     new_energy = stock_energy + energy
                     if new_energy > trade_building.max_warehouse:
                         new_energy = trade_building.max_warehouse
-                    BuildingInstalled.objects.filter(user=user, user_city=user_city, production_class=13).update(
+                    BuildingInstalled.objects.filter(user=user, user_city=user_city, production_class=21).update(
                         warehouse=new_energy)
 
         last_time_update = time_update

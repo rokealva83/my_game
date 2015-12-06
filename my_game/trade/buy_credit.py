@@ -68,7 +68,7 @@ def buy_credit(request):
         trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
         trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
         trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=13).first()
+                                                           production_class=21).first()
         delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         user_trade_elements = TradeElement.objects.filter(user=session_user)
         request.session['userid'] = session_user

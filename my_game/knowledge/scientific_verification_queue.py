@@ -84,13 +84,13 @@ def check_scientific_verification_queue(request):
         MyUser.objects.filter(id=user.id).update(last_time_scan_scient=last_time_scan_scient)
     science_users = UserScientic.objects.filter(user=user).first()
     if int(science_users.all_scientic) > 100:
-        building = BuildingPattern.objects.filter(production_class=13).first()
+        building = BuildingPattern.objects.filter(production_class=21).first()
         if building is None:
-            building = BasicBuilding.objects.filter(production_class=13).first()
+            building = BasicBuilding.objects.filter(production_class=21).first()
             building_pattern = BuildingPattern(
                 name=building.name,
                 user=user,
-                production_class=13,
+                production_class=15,
                 production_id=1,
                 time_production=building.time_production,
                 warehouse=building.warehouse,

@@ -14,7 +14,7 @@ def install_factory_unit(*args):
     class_id = int(args[3])
     warehouse_factory = None
     warehouse_building = None
-    if class_id != 14:
+    if class_id != 21:
         factory_pattern = FactoryPattern.objects.filter(id=pattern_id).first()
         warehouse_factory = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                             factory=factory_pattern).first()
@@ -53,7 +53,7 @@ def install_factory_unit(*args):
                     finish_time_deployment=finish_time,
                 )
                 turn_building.save()
-                if class_id != 14:
+                if class_id != 21:
                     new_amount = warehouse_factory.amount - 1
                     WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                     factory=factory_pattern).update(amount=new_amount)

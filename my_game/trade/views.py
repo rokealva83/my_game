@@ -20,7 +20,7 @@ def trade(request):
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=13).first()
+                                                           production_class=21).first()
         if trade_building:
             message = ''
             trade_space_id = 1
@@ -48,7 +48,7 @@ def trade(request):
             device_patterns = DevicePattern.objects.filter(user=session_user)
             trade_spaces = TradeSpace.objects.filter()
             trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                               production_class=13).first()
+                                                               production_class=21).first()
             delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
             ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
             project_ships = ProjectShip.objects.filter(user=session_user)
@@ -170,7 +170,7 @@ def new_trade_space(request):
         trade_spaces = TradeSpace.objects.filter()
         trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
         trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=13).first()
+                                                           production_class=21).first()
         delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city

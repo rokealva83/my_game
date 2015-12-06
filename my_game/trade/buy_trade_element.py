@@ -99,7 +99,7 @@ def buy_trade(request):
                         energy = math.sqrt(mass * distance / 20000)
                         trade_building = BuildingInstalled.objects.filter(user=session_user,
                                                                            user_city=session_user_city,
-                                                                           production_class=13).first()
+                                                                           production_class=21).first()
                         if trade_building.warehouse >= energy:
                             time = math.sqrt(mass * distance * energy / 10000)
                             start_time = datetime.now()
@@ -124,7 +124,7 @@ def buy_trade(request):
                             new_energy = trade_building.warehouse - energy
                             trade_building = BuildingInstalled.objects.filter(user=session_user,
                                                                                user_city=session_user_city,
-                                                                               production_class=13).update(
+                                                                               production_class=21).update(
                                 warehouse=new_energy)
                         else:
                             message = 'Нехватает энергии'
@@ -275,7 +275,7 @@ def buy_trade(request):
         trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
         user_trade_elements = TradeElement.objects.filter(user=session_user)
         trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=13).first()
+                                                           production_class=21).first()
         delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city

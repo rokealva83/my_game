@@ -10,16 +10,21 @@ class BasicDevice(models.Model):
         verbose_name = u'Устройство'
         verbose_name_plural = u'Устройства'
 
+    CHOICES_CLASS_DEVICE = (
+        (1, 'Колонизаторы'),
+        (2, 'Геологические устройства')
+        )
+
     device_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
     device_health = models.IntegerField(verbose_name=u'Количество жизни')
-    param1 = models.IntegerField(verbose_name=u'Параметр 1')
+    param1 = models.IntegerField(verbose_name=u'Параметр 1', help_text=u'Время колонизации')
     param2 = models.IntegerField(verbose_name=u'Параметр 2')
     param3 = models.IntegerField(verbose_name=u'Параметр 3')
     device_mass = models.IntegerField(verbose_name=u'Масса')
     device_size = models.IntegerField(verbose_name=u'Размер')
     power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
-    device_class = models.IntegerField(verbose_name=u'Класс устройства')
+    device_class = models.IntegerField(verbose_name=u'Класс устройства', choices=CHOICES_CLASS_DEVICE)
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')
