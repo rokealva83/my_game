@@ -15,7 +15,7 @@ def engine_upgrade(request):
     number_engine = len(basic_engine) - 1
     number_engine_scient = random.randint(0, number_engine)
     engine_scient = basic_engine[number_engine_scient]
-    user_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient).last()
+    user_engine = EnginePattern.objects.filter(user=user, basic_pattern=engine_scient).last()
     if user_engine is None:
         koef = element_open(user, engine_scient)
         if koef < 0:
@@ -26,8 +26,8 @@ def engine_upgrade(request):
         if 0 < new_engine < upper_scope:
             engine_pattern = EnginePattern(
                 user=user,
-                basic_engine=engine_scient,
-                engine_name=engine_scient.engine_name,
+                basic_pattern=engine_scient,
+                element_name=engine_scient.element_name,
                 engine_health=engine_scient.engine_health,
                 system_power=engine_scient.system_power * race.engine_system,
                 intersystem_power=engine_scient.intersystem_power * race.engine_intersystem,
@@ -57,10 +57,10 @@ def engine_upgrade(request):
             # if engine_pattern.system_power != 0 or engine_pattern.intersystem_power != 0:
                 # open_fuel(user, engine_pattern.system_power, engine_pattern.intersystem_power)
     else:
-        studied_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient, bought_template=0)
+        studied_engine = EnginePattern.objects.filter(user=user, basic_pattern=engine_scient, bought_template=0)
         len_studied_engine = len(studied_engine)
         if len_studied_engine < 3:
-            user_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient).last()
+            user_engine = EnginePattern.objects.filter(user=user, basic_pattern=engine_scient).last()
             engine_attribute = ['engine_health', 'system_power', 'intersystem_power', 'giper_power', 'nullT_power',
                                 'engine_mass', 'engine_size', 'power_consuption']
             trying = random.random()
@@ -68,7 +68,7 @@ def engine_upgrade(request):
                 summary_percent_up = 0
                 user_engine.pk = None
                 user_engine.save()
-                user_engine = EnginePattern.objects.filter(user=user, basic_engine=engine_scient).last()
+                user_engine = EnginePattern.objects.filter(user=user, basic_pattern=engine_scient).last()
                 for attribute in engine_attribute:
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_engine, attribute)

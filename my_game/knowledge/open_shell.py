@@ -29,8 +29,8 @@ def open_shell(*args):
     if 0 < new_shell < upper_scope:
         shell_pattern = ShellPattern(
             user=user,
-            basic_shell=shell_scient,
-            shell_name=shell_scient.shell_name,
+            basic_pattern=shell_scient,
+            element_name=shell_scient.element_name,
             shell_phisical_damage=shell_scient.shell_phisical_damage,
             shell_speed=shell_scient.shell_speed,
             shell_mass=shell_scient.shell_mass,

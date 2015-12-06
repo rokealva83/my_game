@@ -51,8 +51,8 @@ class GeneratorPattern(models.Model):
         db_table = 'generator_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_generator = models.ForeignKey(BasicGenerator)
-    generator_name = models.CharField(max_length=50, default='New generator')
+    basic_pattern = models.ForeignKey(BasicGenerator)
+    element_name = models.CharField(max_length=50, default='New generator')
     generator_health = models.FloatField()
     produced_energy = models.FloatField()
     fuel_necessary = models.FloatField()

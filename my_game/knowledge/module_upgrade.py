@@ -14,7 +14,7 @@ def module_upgrade(request):
     number_module = len(basic_module) - 1
     number_module_scient = random.randint(0, number_module)
     module_scient = basic_module[number_module_scient]
-    user_module = ModulePattern.objects.filter(user=user, basic_module=module_scient).last()
+    user_module = ModulePattern.objects.filter(user=user, basic_pattern=module_scient).last()
     if user_module is None:
         koef = element_open(user, module_scient)
         if koef < 0:
@@ -33,8 +33,8 @@ def module_upgrade(request):
         if 0 < new_module < upper_scope:
             module_pattern = ModulePattern(
                 user=user,
-                basic_module=module_scient,
-                module_name=module_scient.module_name,
+                basic_pattern=module_scient,
+                element_name=module_scient.element_name,
                 module_health=module_scient.module_health,
                 param1=module_scient.param1 * module,
                 param2=module_scient.param2 * module,
@@ -62,7 +62,7 @@ def module_upgrade(request):
             module_pattern.save()
             new_factory_pattern(user, 8, module_scient.id)
     else:
-        studied_module = ModulePattern.objects.filter(user=user, basic_module=module_scient, bought_template=0)
+        studied_module = ModulePattern.objects.filter(user=user, basic_pattern=module_scient, bought_template=0)
         len_studied_module = len(studied_module)
         if len_studied_module < 3:
             module_attribute = ['module_health', 'param1', 'param2', 'param3', 'module_mass', 'module_size',
@@ -72,7 +72,7 @@ def module_upgrade(request):
                 summary_percent_up = 0
                 user_module.pk = None
                 user_module.save()
-                user_module = ModulePattern.objects.filter(user=user, basic_module=module_scient).last()
+                user_module = ModulePattern.objects.filter(user=user, basic_pattern=module_scient).last()
                 for attribute in module_attribute:
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_module, attribute)

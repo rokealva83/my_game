@@ -30,13 +30,13 @@ def new_ship(request):
             chosen_hull_id = request.POST.get('choice_pattern')
             chosen_name = request.POST.get('ship_name')
             chosen_hull = HullPattern.objects.filter(user=session_user, id=chosen_hull_id).first()
-            armors = ArmorPattern.objects.filter(user=session_user).order_by('basic_armor', 'id')
-            shields = ShieldPattern.objects.filter(user=session_user).order_by('basic_shield', 'id')
-            engines = EnginePattern.objects.filter(user=session_user).order_by('basic_engine', 'id')
-            generators = GeneratorPattern.objects.filter(user=session_user).order_by('basic_generator', 'id')
-            weapons = WeaponPattern.objects.filter(user=session_user).order_by('basic_weapon', 'id')
-            main_weapons = WeaponPattern.objects.filter(user=session_user).order_by('basic_weapon', 'id')
-            modules = ModulePattern.objects.filter(user=session_user).order_by('basic_module', 'id')
+            armors = ArmorPattern.objects.filter(user=session_user).all()
+            shields = ShieldPattern.objects.filter(user=session_user).all()
+            engines = EnginePattern.objects.filter(user=session_user).all()
+            generators = GeneratorPattern.objects.filter(user=session_user).all()
+            weapons = WeaponPattern.objects.filter(user=session_user).all()
+            main_weapons = WeaponPattern.objects.filter(user=session_user).all()
+            modules = ModulePattern.objects.filter(user=session_user).all()
             turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
             output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city,
                       'user_citys': user_citys,
@@ -54,7 +54,7 @@ def new_ship(request):
             full_request = request.POST
             myDict = dict(full_request.iterlists())
             chosen_hull = HullPattern.objects.filter(user=session_user, id=chosen_hull_id).first()
-            hulls = HullPattern.objects.filter(user=session_user).order_by('basic_hill', 'id')
+            hulls = HullPattern.objects.filter(user=session_user).all()
 
             verification = verification_project.verification(chosen_hull, myDict)
             if verification:

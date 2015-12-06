@@ -59,8 +59,8 @@ class DevicePattern(models.Model):
         db_table = 'device_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_device = models.ForeignKey(BasicDevice)
-    device_name = models.CharField(max_length=50, default='New device')
+    basic_pattern = models.ForeignKey(BasicDevice)
+    element_name = models.CharField(max_length=50, default='New device')
     device_health = models.IntegerField()
     param1 = models.IntegerField()
     param2 = models.IntegerField()

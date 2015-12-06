@@ -54,8 +54,8 @@ class ShieldPattern(models.Model):
         db_table = 'shield_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_shield = models.ForeignKey(BasicShield)
-    shield_name = models.CharField(max_length=50, default='New shield')
+    basic_pattern = models.ForeignKey(BasicShield)
+    element_name = models.CharField(max_length=50, default='New shield')
     shield_health = models.FloatField()
     value_energy_resistance = models.FloatField()
     value_phisical_resistance = models.FloatField()

@@ -51,7 +51,7 @@ class BasicHull(models.Model):
     min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
-        return self.hull_name
+        return self.element_name
 
 
 class HullPattern(models.Model):
@@ -59,8 +59,8 @@ class HullPattern(models.Model):
         db_table = 'hull_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_hull = models.ForeignKey(BasicHull)
-    hull_name = models.CharField(max_length=50, default="New hull")
+    basic_pattern = models.ForeignKey(BasicHull)
+    element_name = models.CharField(max_length=50, default="New hull")
     hull_health = models.IntegerField()
     generator = models.IntegerField()
     engine = models.IntegerField()

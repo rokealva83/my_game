@@ -15,7 +15,7 @@ def weapon_upgrade(request):
     number_weapon = len(basic_weapon) - 1
     number_weapon_scient = random.randint(0, number_weapon)
     weapon_scient = basic_weapon[number_weapon_scient]
-    user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
+    user_weapon = WeaponPattern.objects.filter(user=user, basic_pattern=weapon_scient).last()
     if user_weapon is None:
         koef = element_open(user, weapon_scient)
         if koef < 0:
@@ -31,8 +31,8 @@ def weapon_upgrade(request):
         if 0 < new_weapon < upper_scope:
             weapon_pattern = WeaponPattern(
                 user=user,
-                basic_weapon=weapon_scient,
-                weapon_name=weapon_scient.weapon_name,
+                basic_pattern=weapon_scient,
+                element_name=weapon_scient.element_name,
                 weapon_health=weapon_scient.weapon_health,
                 weapon_energy_damage=weapon_scient.weapon_energy_damage * weapon,
                 weapon_regenerations=weapon_scient.weapon_regenerations * weapon,
@@ -66,10 +66,10 @@ def weapon_upgrade(request):
                 if not shell_pattern:
                     open_shell(user, weapon_pattern, 1, None)
     else:
-        studied_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient, bought_template=0)
+        studied_weapon = WeaponPattern.objects.filter(user=user, basic_pattern=weapon_scient, bought_template=0)
         len_studied_weapon = len(studied_weapon)
         if len_studied_weapon < 3:
-            user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
+            user_weapon = WeaponPattern.objects.filter(user=user, basic_pattern=weapon_scient).last()
             weapon_attribute = ['weapon_health', 'weapon_energy_damage', 'weapon_regenerations', 'number_of_bursts',
                                 'weapon_range', 'weapon_accuracy', 'weapon_mass', 'weapon_size', 'power_consuption']
             trying = random.random()
@@ -77,7 +77,7 @@ def weapon_upgrade(request):
                 summary_percent_up = 0
                 user_weapon.pk = None
                 user_weapon.save()
-                user_weapon = WeaponPattern.objects.filter(user=user, basic_weapon=weapon_scient).last()
+                user_weapon = WeaponPattern.objects.filter(user=user, basic_pattern=weapon_scient).last()
                 for attribute in weapon_attribute:
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_weapon, attribute)

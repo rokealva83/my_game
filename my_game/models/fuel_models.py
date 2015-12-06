@@ -33,8 +33,8 @@ class FuelPattern(models.Model):
         db_table = 'fuel_pattern'
 
     user = models.ForeignKey(MyUser,db_index=True, default=2)
-    fuel_name = models.CharField(max_length=50)
-    basic_fuel = models.ForeignKey(BasicFuel)
+    element_name = models.CharField(max_length=50)
+    basic_pattern = models.ForeignKey(BasicFuel)
     fuel_mass = models.IntegerField()
     fuel_size = models.IntegerField()
     fuel_efficiency = models.IntegerField()

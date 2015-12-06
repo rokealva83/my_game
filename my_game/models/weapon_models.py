@@ -71,8 +71,8 @@ class WeaponPattern(models.Model):
         db_table = 'weapon_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_weapon = models.ForeignKey(BasicWeapon)
-    weapon_name = models.CharField(max_length=50, default='New weapon')
+    basic_pattern = models.ForeignKey(BasicWeapon)
+    element_name = models.CharField(max_length=50, default='New weapon')
     weapon_health = models.IntegerField()
     weapon_energy_damage = models.IntegerField(default=0)
     weapon_regenerations = models.IntegerField(default=0)

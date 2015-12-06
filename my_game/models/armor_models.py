@@ -52,8 +52,8 @@ class ArmorPattern(models.Model):
         db_table = 'armor_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_armor = models.ForeignKey(BasicArmor)
-    armor_name = models.CharField(max_length=50, default='New armor')
+    basic_pattern = models.ForeignKey(BasicArmor)
+    element_name = models.CharField(max_length=50, default='New armor')
     armor_health = models.FloatField()
     value_energy_resistance = models.FloatField()
     value_phisical_resistance = models.FloatField()

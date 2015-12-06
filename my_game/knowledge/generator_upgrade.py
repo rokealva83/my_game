@@ -14,7 +14,7 @@ def generator_upgrade(request):
     number_generator = len(basic_generator) - 1
     number_generator_scient = random.randint(0, number_generator)
     generator_scient = basic_generator[number_generator_scient]
-    user_generator = GeneratorPattern.objects.filter(user=user, basic_generator=generator_scient).last()
+    user_generator = GeneratorPattern.objects.filter(user=user, basic_pattern=generator_scient).last()
     if user_generator is None:
         koef = element_open(user, generator_scient)
         if koef < 0:
@@ -25,8 +25,8 @@ def generator_upgrade(request):
         if 0 < new_generator < upper_scope:
             generator_pattern = GeneratorPattern(
                 user=user,
-                basic_generator=generator_scient,
-                generator_name=generator_scient.generator_name,
+                basic_pattern=generator_scient,
+                element_name=generator_scient.element_name,
                 generator_health=generator_scient.generator_health,
                 produced_energy=generator_scient.produced_energy * race.generator,
                 fuel_necessary=generator_scient.fuel_necessary,
@@ -51,7 +51,7 @@ def generator_upgrade(request):
             generator_pattern.save()
             new_factory_pattern(user, 5, generator_scient.id)
     else:
-        studied_generator = GeneratorPattern.objects.filter(user=user, basic_generator=generator_scient,
+        studied_generator = GeneratorPattern.objects.filter(user=user, basic_pattern=generator_scient,
                                                             bought_template=0)
         len_studied_generator = len(studied_generator)
         if len_studied_generator < 3:
@@ -62,7 +62,7 @@ def generator_upgrade(request):
                 summary_percent_up = 0
                 user_generator.pk = None
                 user_generator.save()
-                user_generator = GeneratorPattern.objects.filter(user=user, basic_generator=generator_scient).last()
+                user_generator = GeneratorPattern.objects.filter(user=user, basic_pattern=generator_scient).last()
                 for attribute in generator_attribute:
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_generator, attribute)

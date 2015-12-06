@@ -107,7 +107,7 @@ def work_with_project(request):
 
         warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
         user_citys = UserCity.objects.filter(user=int(session_user))
-        hulls = HullPattern.objects.filter(user=session_user).order_by('basic_hill', 'id')
+        hulls = HullPattern.objects.filter(user=session_user).all()
         project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
         turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
         request.session['user'] = session_user.id

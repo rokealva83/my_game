@@ -18,11 +18,11 @@ def shell_upgrade(request):
         number_shell = len(basic_shell) - 1
         number_shell_scient = random.randint(0, number_shell)
         shell_scient = basic_shell[number_shell_scient]
-        user_shell = ShellPattern.objects.filter(user=user, basic_shell=shell_scient).last()
+        user_shell = ShellPattern.objects.filter(user=user, basic_pattern=shell_scient).last()
         if user_shell is None:
             open_shell(user, weapon_pattern, 2, shell_scient)
         else:
-            studied_shell = ShellPattern.objects.filter(user=user, basic_shell=shell_scient, bought_template=0)
+            studied_shell = ShellPattern.objects.filter(user=user, basic_pattern=shell_scient, bought_template=0)
             len_studied_shell = len(studied_shell)
             if len_studied_shell < 3:
                 shell_attribute = ['shell_phisical_damage', 'shell_speed', 'shell_mass', 'shell_size']
@@ -31,7 +31,7 @@ def shell_upgrade(request):
                     summary_percent_up = 0
                     user_shell.pk = None
                     user_shell.save()
-                    user_shell = ShellPattern.objects.filter(user=user, basic_shell=shell_scient).last()
+                    user_shell = ShellPattern.objects.filter(user=user, basic_pattern=shell_scient).last()
                     for attribute in shell_attribute:
                         percent_update = 1.0 + random.randint(5, 20) / 100.0
                         element = getattr(user_shell, attribute)

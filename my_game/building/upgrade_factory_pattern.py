@@ -56,7 +56,7 @@ def upgrade_factory_pattern(*args):
     else:
         new_pattern = BuildingPattern(
             user=old_pattern.user,
-            basic_id=old_pattern.basic_id,
+            basic_building=old_pattern.basic_building,
             name=old_pattern.name,
             price_internal_currency=old_pattern.price_internal_currency * koef_speed * koef_number,
             price_construction_material=old_pattern.price_construction_material * koef_speed * koef_number,

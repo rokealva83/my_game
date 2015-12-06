@@ -21,7 +21,7 @@ def open_fuel(*args):
         basic_fuel = BasicFuel.objects.filter(fuel_class=fuel_class).first()
         fuel_pattern = FuelPattern(
             user=user,
-            fuel_name=basic_fuel.fuel_name,
+            element_name=basic_fuel.element_name,
             basic_fuel=basic_fuel,
             fuel_mass=basic_fuel.fuel_mass,
             fuel_size=basic_fuel.fuel_size,

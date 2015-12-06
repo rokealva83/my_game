@@ -26,7 +26,7 @@ def shield_upgrade(request):
             shield_pattern = ShieldPattern(
                 user=user,
                 basic_shield=shield_scient,
-                shield_name=shield_scient.shield_name,
+                element_name=shield_scient.element_name,
                 shield_health=shield_scient.shield_health,
                 value_energy_resistance=shield_scient.value_energy_resistance * race.shield,
                 value_phisical_resistance=shield_scient.value_phisical_resistance * race.shield,

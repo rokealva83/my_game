@@ -13,7 +13,7 @@ def device_open(request):
     number_device = len(basic_device) - 1
     number_device_scient = random.randint(0, number_device)
     device_scient = basic_device[number_device_scient]
-    user_device = DevicePattern.objects.filter(user=user, basic_device=device_scient).last()
+    user_device = DevicePattern.objects.filter(user=user, basic_pattern=device_scient).last()
     if user_device is None:
         koef = element_open(user, device_scient)
         if koef < 0:
@@ -23,8 +23,8 @@ def device_open(request):
         if 0 < new_device < upper_scope:
             device_pattern = DevicePattern(
                 user=user,
-                basic_device=device_scient,
-                device_name=device_scient.device_name,
+                basic_pattern=device_scient,
+                element_name=device_scient.element_name,
                 device_health=device_scient.device_health,
                 param1=device_scient.param1,
                 param2=device_scient.param2,

@@ -24,8 +24,8 @@ def hull_upgrade(request):
         if 0 < new_hull < upper_scope:
             hull_pattern = HullPattern(
                 user=user,
-                basic_hull=hull_scient,
-                hull_name=hull_scient.hull_name,
+                basic_pattern=hull_scient,
+                element_name=hull_scient.element_name,
                 hull_health=hull_scient.hull_health,
                 generator=hull_scient.generator,
                 engine=hull_scient.engine,
@@ -58,10 +58,10 @@ def hull_upgrade(request):
             hull_pattern.save()
             new_factory_pattern(user, 1, hull_scient.id)
     else:
-        studied_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient, bought_template=0)
+        studied_hull = HullPattern.objects.filter(user=user, basic_pattern=hull_scient, bought_template=0)
         len_studied_hull = len(studied_hull)
         if len_studied_hull < 2:
-            user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
+            user_hull = HullPattern.objects.filter(user=user, basic_pattern=hull_scient).last()
             hull_attribute = ['hull_health', 'generator', 'engine', 'weapon', 'armor', 'shield', 'module',
                               'main_weapon', 'hold_size', 'hull_mass', 'hull_size', 'power_consuption']
             trying = random.random()
@@ -69,7 +69,7 @@ def hull_upgrade(request):
                 summary_percent_up = 0
                 user_hull.pk = None
                 user_hull.save()
-                user_hull = HullPattern.objects.filter(user=user, basic_hull=hull_scient).last()
+                user_hull = HullPattern.objects.filter(user=user, basic_pattern=hull_scient).last()
                 for attribute in hull_attribute:
                     element = getattr(user_hull, attribute)
                     element_basic = getattr(hull_scient, attribute)

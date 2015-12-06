@@ -57,8 +57,8 @@ class ShellPattern(models.Model):
         db_table = 'shell_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_shell = models.ForeignKey(BasicShell)
-    shell_name = models.CharField(max_length=50, default='New shell')
+    basic_pattern = models.ForeignKey(BasicShell)
+    element_name = models.CharField(max_length=50, default='New shell')
     shell_phisical_damage = models.FloatField()
     shell_speed = models.FloatField()
     shell_mass = models.FloatField()

@@ -22,25 +22,25 @@ def choice_complex(request):
 
         complex_factorys = FactoryInstalled.objects.filter(complex_id=complex_id).order_by('production_class')
 
-        hull_patterns = HullPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        hull_patterns = HullPattern.objects.filter(user=session_user).all()
 
-        armor_patterns = ArmorPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        armor_patterns = ArmorPattern.objects.filter(user=session_user).all()
 
-        shield_patterns = ShieldPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        shield_patterns = ShieldPattern.objects.filter(user=session_user).all()
 
-        engine_patterns = EnginePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        engine_patterns = EnginePattern.objects.filter(user=session_user).all()
 
-        generator_patterns = GeneratorPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        generator_patterns = GeneratorPattern.objects.filter(user=session_user).all()
 
-        weapon_patterns = WeaponPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        weapon_patterns = WeaponPattern.objects.filter(user=session_user).all()
 
-        shell_patterns = ShellPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        shell_patterns = ShellPattern.objects.filter(user=session_user).all()
 
-        module_patterns = ModulePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        module_patterns = ModulePattern.objects.filter(user=session_user).all()
 
-        device_patterns = DevicePattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        device_patterns = DevicePattern.objects.filter(user=session_user).all()
 
-        fuel_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_id', 'id')
+        fuel_patterns = FuelPattern.objects.filter(user=session_user).all()
 
         warehouse= session_user_city.warehouse
         factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
@@ -53,7 +53,7 @@ def choice_complex(request):
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'warehouses': warehouses, 'user_city': user_city,
+        output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': user_city,
                   'turn_productions': turn_complex_productions, 'user_citys': user_citys,
                   'manufacturing_complexs': manufacturing_complexs, 'complex_id': complex_id,
                   'complex_factorys': complex_factorys, 'hull_patterns': hull_patterns,

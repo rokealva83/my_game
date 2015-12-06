@@ -54,8 +54,8 @@ class EnginePattern(models.Model):
         db_table = 'engine_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_engine = models.ForeignKey(BasicEngine)
-    engine_name = models.CharField(max_length=50, default='New engine')
+    basic_pattern = models.ForeignKey(BasicEngine)
+    element_name = models.CharField(max_length=50, default='New engine')
     engine_health = models.FloatField()
     system_power = models.FloatField()
     intersystem_power = models.FloatField()

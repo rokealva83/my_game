@@ -22,7 +22,7 @@ def verification_phase_of_construction(request):
         # Проверка времени
         if new_delta > delta:
             verification_func.verification_of_resources(user)
-            if turn_building.class_id != 14:
+            if turn_building.class_id != 15:
                 warehouse_factory_resource = WarehouseFactoryResource(
                 )
                 warehouse_factory_resource.save()

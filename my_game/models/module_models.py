@@ -63,8 +63,8 @@ class ModulePattern(models.Model):
         db_table = 'module_pattern'
 
     user = models.ForeignKey(MyUser, db_index=True)
-    basic_module = models.ForeignKey(BasicModule)
-    module_name = models.CharField(max_length=50, default='New module')
+    basic_pattern = models.ForeignKey(BasicModule)
+    element_name = models.CharField(max_length=50, default='New module')
     module_health = models.IntegerField(verbose_name=u'')
     param1 = models.IntegerField(verbose_name=u'')
     param2 = models.IntegerField(verbose_name=u'')

@@ -14,7 +14,7 @@ def armor_upgrade(request):
     number_armor = len(basic_armor) - 1
     number_armor_scient = random.randint(0, number_armor)
     armor_scient = basic_armor[number_armor_scient]
-    user_armor = ArmorPattern.objects.filter(user=user, basic_armor=armor_scient).last()
+    user_armor = ArmorPattern.objects.filter(user=user, basic_pattern=armor_scient).last()
     if not user_armor:
         koef = element_open(user, armor_scient)
         if koef < 0:
@@ -25,8 +25,8 @@ def armor_upgrade(request):
         if 0 < new_armor < upper_scope:
             armor_pattern = ArmorPattern(
                 user=user,
-                basic_armor=armor_scient,
-                armor_name=armor_scient.armor_name,
+                basic_pattern=armor_scient,
+                element_name=armor_scient.element_name,
                 armor_health=armor_scient.armor_health,
                 value_energy_resistance=armor_scient.value_energy_resistance * race.armor,
                 value_phisical_resistance=armor_scient.value_phisical_resistance * race.armor,
@@ -52,10 +52,10 @@ def armor_upgrade(request):
             armor_pattern.save()
             new_factory_pattern(user, 2, armor_scient.id)
     else:
-        studied_armor = ArmorPattern.objects.filter(user=user, basic_armor=armor_scient, bought_template=0)
+        studied_armor = ArmorPattern.objects.filter(user=user, basic_pattern=armor_scient, bought_template=0)
         len_studied_armor = len(studied_armor)
         if len_studied_armor < 3:
-            user_armor = ArmorPattern.objects.filter(user=user, basic_armor=armor_scient).last()
+            user_armor = ArmorPattern.objects.filter(user=user, basic_pattern=armor_scient).last()
             armor_attribute = ['armor_health', 'value_energy_resistance', 'value_phisical_resistance',
                                'armor_regeneration', 'armor_power', 'armor_mass']
             trying = random.random()
@@ -63,7 +63,7 @@ def armor_upgrade(request):
                 summary_percent_up = 0
                 user_armor.pk = None
                 user_armor.save()
-                user_armor = ArmorPattern.objects.filter(user=user, basic_armor=armor_scient).last()
+                user_armor = ArmorPattern.objects.filter(user=user, basic_pattern=armor_scient).last()
                 for attribute in armor_attribute:
                     percent_update = 1.0 + random.randint(5, 20) / 100.0
                     element = getattr(user_armor, attribute)
