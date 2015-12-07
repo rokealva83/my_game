@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
-from my_game.models import MyUser, TurnAssemblyPieces
+from my_game.models import MyUser, TurnAssemblyPiecesFactory, TurnAssemblyPiecesBuilding
 from my_game.models import FactoryPattern, BuildingPattern
 
 
@@ -16,11 +16,14 @@ def making_factory_unit(*args):
     warehouse = session_user_city.warehouse
     if class_id != 21:
         factory_pattern_making = FactoryPattern.objects.filter(id=pattern_id).first()
+        turn_assembly_pieces = TurnAssemblyPiecesFactory.objects.filter(user=session_user, user_city=session_user_city).all()
+        len_turn_assembly_pieces = len(turn_assembly_pieces)
     else:
         factory_pattern_making = BuildingPattern.objects.filter(id=pattern_id).first()
-    turn_assembly_pieces = len(TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city))
+        turn_assembly_pieces = TurnAssemblyPiecesBuilding.objects.filter(user=session_user, user_city=session_user_city).all()
+        len_turn_assembly_pieces = len(turn_assembly_pieces)
 
-    if turn_assembly_pieces < 3:
+    if len_turn_assembly_pieces < 3:
 
         # Проверка наличия ресурсов
         if session_user.internal_currency >= factory_pattern_making.price_internal_currency and \
@@ -48,24 +51,37 @@ def making_factory_unit(*args):
             warehouse.save()
 
             MyUser.objects.filter(user_id=session_user.id).update(internal_currency=new_internal_currency)
-            turn_assembly_piece = TurnAssemblyPieces.objects.filter(user=session_user,
-                                                                    user_city=session_user_city).last()
-            if turn_assembly_piece is not None:
-                start_making = turn_assembly_piece.finish_time_assembly
+            turn_assembly_pieces_last = []
+            if len_turn_assembly_pieces >=1:
+                turn_assembly_pieces_last = turn_assembly_pieces[len_turn_assembly_pieces - 1]
+            if turn_assembly_pieces_last:
+                start_making = turn_assembly_pieces_last.finish_time_assembly
             else:
                 start_making = datetime.now()
             build_time = factory_pattern_making.assembly_workpiece * amount_factory_unit
             finish_making = start_making + timedelta(seconds=build_time)
-            turn_assembly_pieces = TurnAssemblyPieces(
-                user=session_user,
-                user_city=session_user_city,
-                pattern=factory_pattern_making,
-                class_id=class_id,
-                start_time_assembly=start_making,
-                finish_time_assembly=finish_making,
-                amount_assembly=amount_factory_unit
-            )
-            turn_assembly_pieces.save()
+            if class_id != 21:
+                turn_assembly_pieces = TurnAssemblyPiecesFactory(
+                    user=session_user,
+                    user_city=session_user_city,
+                    pattern=factory_pattern_making,
+                    class_id=class_id,
+                    start_time_assembly=start_making,
+                    finish_time_assembly=finish_making,
+                    amount_assembly=amount_factory_unit
+                )
+                turn_assembly_pieces.save()
+            else:
+                turn_assembly_pieces = TurnAssemblyPiecesBuilding(
+                    user=session_user,
+                    user_city=session_user_city,
+                    pattern=factory_pattern_making,
+                    class_id=class_id,
+                    start_time_assembly=start_making,
+                    finish_time_assembly=finish_making,
+                    amount_assembly=amount_factory_unit
+                )
+                turn_assembly_pieces.save()
             message = 'Производство заготовки начато'
         else:
             message = 'Нехватает ресурсов'

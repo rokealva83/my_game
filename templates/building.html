@@ -11,10 +11,13 @@
             </div>
         {% endif %}
     {% endspaceless %}
-    {% if turn_assembly_piecess %}
+    {% if factory_turn_assembly_piecess or building_turn_assembly_piecess %}
         <div class="building_up">
             <p> Очередь создания заготовки </p>
-            {% for turn_assembly_pieces in turn_assembly_piecess %}
+            {% for turn_assembly_pieces in factory_turn_assembly_piecess %}
+                <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
+            {% endfor %}
+            {% for turn_assembly_pieces in building_turn_assembly_piecess %}
                 <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
             {% endfor %}
         </div>
@@ -709,8 +712,11 @@
                         </form>
                         <form method="post" action="working">
                             {% for warehouse_element in warehouse_elements %}
-                                {% if building_pattern.id == warehouse_element.factory_id %}
+                                1111
+                                {% if building_pattern.id == warehouse_element.building.id %}
+                                    222
                                     {% if warehouse_element.amount > 0 %}
+                                        3333
                                         <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
                                         <p>
                                             <input id="install_factory_unit" class="building_botton"

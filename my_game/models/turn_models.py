@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from my_game.models import MyUser, UserCity, ProjectShip, ManufacturingComplex, FactoryInstalled, FactoryPattern
+from my_game.models import MyUser, UserCity, ProjectShip, ManufacturingComplex, FactoryInstalled, FactoryPattern, BuildingPattern
 
 
 class TurnBuilding(models.Model):
@@ -60,13 +60,25 @@ class TurnComplexProduction(models.Model):
     time = models.IntegerField()
 
 
-class TurnAssemblyPieces(models.Model):
+class TurnAssemblyPiecesFactory(models.Model):
     class Meta:
-        db_table = 'turn_assembly_pieces'
+        db_table = 'turn_assembly_pieces_factory'
 
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
     pattern = models.ForeignKey(FactoryPattern)
+    class_id = models.IntegerField(default=0)
+    amount_assembly = models.IntegerField(default=0)
+    start_time_assembly = models.DateTimeField()
+    finish_time_assembly = models.DateTimeField()
+
+class TurnAssemblyPiecesBuilding(models.Model):
+    class Meta:
+        db_table = 'turn_assembly_pieces_building'
+
+    user = models.ForeignKey(MyUser, db_index=True)
+    user_city = models.ForeignKey(UserCity, db_index=True)
+    pattern = models.ForeignKey(BuildingPattern)
     class_id = models.IntegerField(default=0)
     amount_assembly = models.IntegerField(default=0)
     start_time_assembly = models.DateTimeField()

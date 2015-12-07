@@ -21,7 +21,7 @@ def install_factory_unit(*args):
     else:
         factory_pattern = BuildingPattern.objects.filter(id=pattern_id).first()
         warehouse_building = WarehouseBuilding.objects.filter(user=session_user, user_city=session_user_city,
-                                                              factory=factory_pattern).first()
+                                                              building=factory_pattern).first()
     if warehouse_building or warehouse_factory:
         free_energy = session_user_city.power - session_user_city.use_energy
         len_turn_building = len(TurnBuilding.objects.filter(user=session_user, user_city=session_user_city))
@@ -60,7 +60,7 @@ def install_factory_unit(*args):
                 else:
                     new_amount = warehouse_building.amount - 1
                     WarehouseBuilding.objects.filter(user=session_user, user_city=session_user_city,
-                                                     factory=factory_pattern).update(amount=new_amount)
+                                                     building=factory_pattern).update(amount=new_amount)
                 if factory_pattern.production_class != 10:
                     new_population = session_user_city.population - factory_pattern.cost_expert_deployment
                     UserCity.objects.filter(id=session_user_city.id).update(population=new_population)

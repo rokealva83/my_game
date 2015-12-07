@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity, TurnBuilding, TurnAssemblyPieces
+from my_game.models import MyUser, UserCity, TurnBuilding
 from my_game.models import FactoryPattern, BuildingPattern
 from my_game.models import WarehouseFactory, WarehouseBuilding
 from my_game.models import ManufacturingComplex
+from my_game.models import TurnAssemblyPiecesBuilding, TurnAssemblyPiecesFactory
 from my_game import function
 
 
@@ -41,8 +42,8 @@ def choice_build(request):
             attributes = (
                 "price_internal_currency", 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
                 'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
-                "price_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "size", "mass",
-                "power_consumption", "max_warehouse")
+                "cost_expert_deployment", "assembly_workpiece", "time_deployment", "time_production", "building_size",
+                "building_mass", "power_consumption", "max_warehouse")
         if request.POST.get('hull') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=1).order_by(
                 'production_id')
@@ -77,14 +78,17 @@ def choice_build(request):
         if request.POST.get('infrastructure') is not None:
             warehouse_elements = [
                 WarehouseBuilding.objects.filter(user=session_user, user_city=session_user_city,
-                                                 factory=building_pattern).first() for building_pattern in
+                                                 building=building_pattern).first() for building_pattern in
                 building_patterns]
         else:
             warehouse_elements = [WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
                                                                   factory=factory_pattern).first() for factory_pattern
                                   in factory_patterns]
 
-        turn_assembly_piecess = TurnAssemblyPieces.objects.filter(user=session_user, user_city=session_user_city)
+        factory_turn_assembly_piecess = TurnAssemblyPiecesFactory.objects.filter(user=session_user,
+                                                                                 user_city=session_user_city).all()
+        building_turn_assembly_piecess = TurnAssemblyPiecesBuilding.objects.filter(user=session_user,
+                                                                                   user_city=session_user_city).all()
         turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=session_user)
@@ -93,8 +97,10 @@ def choice_build(request):
         request.session['live'] = True
         output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
                   'factory_patterns': factory_patterns, 'attributes': attributes,
-                  'turn_assembly_piecess': turn_assembly_piecess, 'building_patterns': building_patterns,
-                  'turn_buildings': turn_buildings, 'warehouse_elements': warehouse_elements, 'user_citys': user_citys,
+                  'factory_turn_assembly_piecess': factory_turn_assembly_piecess,
+                  'building_turn_assembly_piecess': building_turn_assembly_piecess,
+                  'building_patterns': building_patterns, 'turn_buildings': turn_buildings,
+                  'warehouse_elements': warehouse_elements, 'user_citys': user_citys,
                   'manufacturing_complexs': manufacturing_complexs}
 
         return render(request, "building.html", output)

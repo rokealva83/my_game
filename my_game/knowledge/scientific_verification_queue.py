@@ -87,36 +87,29 @@ def check_scientific_verification_queue(request):
     science_users = UserScientic.objects.filter(user=user).first()
     if int(science_users.all_scientic) > 100:
         building = BuildingPattern.objects.filter(production_class=21).first()
-        if building is None:
+        building_pattern = BuildingPattern.objects.filter(user=user, production_class=21).first()
+        if not building and not building_pattern:
             building = BasicBuilding.objects.filter(production_class=21).first()
             building_pattern = BuildingPattern(
                 building_name=building.building_name,
                 user=user,
-                production_class=15,
-                production_id=1,
+                production_class=building.production_class,
+                production_id=building.production_id,
                 time_production=building.time_production,
                 warehouse=building.warehouse,
                 max_warehouse=building.max_warehouse,
                 price_internal_currency=building.price_internal_currency,
-                price_nickel=building.price_nickel,
-                price_iron=building.price_iron,
-                price_cooper=building.price_cooper,
-                price_aluminum=building.price_aluminum,
-                price_veriarit=building.price_veriarit,
-                price_inneilit=building.price_inneilit,
-                price_renniit=building.price_renniit,
-                price_cobalt=building.price_cobalt,
                 price_construction_material=building.price_construction_material,
                 price_chemical=building.price_chemical,
                 price_high_strength_allov=building.price_high_strength_allov,
                 price_nanoelement=building.price_nanoelement,
                 price_microprocessor_element=building.price_microprocessor_element,
                 price_fober_optic_element=building.price_fober_optic_element,
-                cost_expert_deployment=building.cost_expert_deployment,
+                cost_expert_deployment=building.price_expert_deployment,
                 assembly_workpiece=building.assembly_workpiece,
                 time_deployment=building.time_deployment,
-                building_size=building.size,
-                building_mass=building.mass,
+                building_size=building.building_size,
+                building_mass=building.building_mass,
                 power_consumption=building.power_consumption,
                 basic_building=building
             )
