@@ -43,11 +43,11 @@ def making_factory_unit(*args):
             new_fober_optic_element = warehouse.mat_fober_optic_element - factory_pattern_making.price_fober_optic_element
 
             setattr(warehouse, 'mat_construction_material', new_construction_material)
-            setattr(warehouse, 'new_chemical', new_chemical)
-            setattr(warehouse, 'new_high_strength_allov', new_high_strength_allov)
-            setattr(warehouse, 'new_nanoelement', new_nanoelement)
-            setattr(warehouse, 'new_microprocessor_element', new_microprocessor_element)
-            setattr(warehouse, 'new_fober_optic_elemen', new_fober_optic_element)
+            setattr(warehouse, 'mat_chemical', new_chemical)
+            setattr(warehouse, 'mat_high_strength_allov', new_high_strength_allov)
+            setattr(warehouse, 'mat_nanoelement', new_nanoelement)
+            setattr(warehouse, 'mat_microprocessor_element', new_microprocessor_element)
+            setattr(warehouse, 'mat_fober_optic_element', new_fober_optic_element)
             warehouse.save()
 
             MyUser.objects.filter(user_id=session_user.id).update(internal_currency=new_internal_currency)

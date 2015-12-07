@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import MyUser, UserCity
 from my_game.models import ManufacturingComplex, TurnComplexProduction
 from my_game.models import HullPattern, ArmorPattern, ShieldPattern, EnginePattern, GeneratorPattern, \
     WeaponPattern, ShellPattern, ModulePattern, FuelPattern, DevicePattern
