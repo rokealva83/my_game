@@ -84,20 +84,28 @@ def weapon_upgrade(request):
                     element_basic = getattr(weapon_scient, attribute)
                     if element_basic != 0:
                         if element / element_basic < 4.0:
-                            if attribute == 'weapon_mass' or attribute == 'weapon_size' or attribute == 'power_consuption':
+                            if attribute == 'weapon_mass' or attribute == 'weapon_size' or \
+                                                    attribute == 'power_consuption' and \
+                                                    attribute == 'weapon_regenerations':
                                 percent_update = 1 - random.randint(2, 5) / 100.0
+                                if attribute == 'weapon_regenerations':
+                                    percent_update = 1 - random.randint(5, 15) / 100.0
                                 element *= percent_update
                                 setattr(user_weapon, attribute, element)
-                            elif attribute == 'number_of_bursts' and element / element_basic < 2:
+                            elif attribute == 'number_of_bursts' and element / element_basic < 2 and \
+                                            user_weapon.weapon_class in [
+                                3, 4]:
                                 element += 1
                                 setattr(user_weapon, attribute, element)
                             elif attribute == 'weapon_accuracy':
-                                if element_basic / element > 0.75:
+                                if element_basic / element > 0.75 and element <= 100:
                                     element *= percent_update
+                                    if element >= 100:
+                                        element = 95
                                     setattr(user_weapon, attribute, element)
                             else:
                                 element *= percent_update
                                 setattr(user_weapon, attribute, element)
                         summary_percent_up += percent_update
                 user_weapon.save()
-                price_increase(user_weapon, (summary_percent_up/len(weapon_attribute)))
+                price_increase(user_weapon, (summary_percent_up / len(weapon_attribute)))

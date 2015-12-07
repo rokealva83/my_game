@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import math
 from django.utils import timezone
-from datetime import datetime
+import datetime
 from my_game.models import MyUser, UserScientic, BasicBuilding, BuildingPattern
 from my_game.models import TurnScientic
 from my_game.models import UserVariables
@@ -20,7 +20,6 @@ from my_game.knowledge.device_open import device_open
 def check_scientific_verification_queue(request):
     user = request
     time = timezone.now()
-    time_update = user.last_time_check
     turn_scientics = TurnScientic.objects.filter(user=user)
     user_variables = UserVariables.objects.filter(id=1).first()
     if turn_scientics:
@@ -56,7 +55,11 @@ def check_scientific_verification_queue(request):
     delta_time = delta.total_seconds()
     if delta_time > user_variables.time_check_new_technology:
         num = int(math.floor(delta_time / user_variables.time_check_new_technology))
-        for i in range(num-1):
+        if num >= 1:
+            num = random.randint(2, 10)
+        else:
+            num *= random.randint(1, 4)
+        for i in range(num - 1):
             science_users = UserScientic.objects.filter(user=user).first()
             if science_users.all_scientic > user_variables.min_scientic_level:
                 new_technology = random.random()
@@ -79,7 +82,7 @@ def check_scientific_verification_queue(request):
                 new_device = random.random()
                 if 0 < new_device < 1:
                     device_open(user)
-        last_time_scan_scient = datetime.now()
+        last_time_scan_scient = datetime.datetime.now() + datetime.timedelta(1)
         MyUser.objects.filter(id=user.id).update(last_time_scan_scient=last_time_scan_scient)
     science_users = UserScientic.objects.filter(user=user).first()
     if int(science_users.all_scientic) > 100:
