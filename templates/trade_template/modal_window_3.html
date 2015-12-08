@@ -27,16 +27,13 @@
                 <optgroup label="Factory">
                     {% if warehouse_factorys %}
                         {% for warehouse_factory in warehouse_factorys %}
-                            {% for factory_pattern in factory_patterns %}
-                                {% if warehouse_factory.factory_id == factory_pattern.id %}
-                                    {% if warehouse_factory.amount > 0 %}
-                                        <option value="{{ warehouse_factory.id }}; 10"
-                                                >{{ factory_pattern.name }}
-                                            ( {{ warehouse_factory.amount }} )
-                                        </option>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
+                            {% if warehouse_factory.amount > 0 %}
+                                <option value="{{ warehouse_factory.id }}; 10">
+                                    {{ warehouse_factory.factory.factory_name }}
+                                    ( {{ warehouse_factory.amount }} )
+                                </option>
+                            {% endif %}
+
                         {% endfor %}
                     {% endif %}
                 </optgroup>

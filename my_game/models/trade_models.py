@@ -13,8 +13,8 @@ class TradeSpace(models.Model):
         db_table = 'trade_space'
 
     name = models.CharField(max_length=64)
-    user = models.ForeignKey(MyUser, db_index=True)
-    password = models.CharField(max_length=64)
+    user = models.ForeignKey(MyUser, db_index=True, blank=True, default=None)
+    password = models.CharField(max_length=64, blank=True, default=None)
     tax = models.IntegerField()
 
 

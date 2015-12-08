@@ -19,6 +19,7 @@ from my_game.models import BasicFuel
 from my_game.models import BasicGenerator
 from my_game.models import BasicModule
 from my_game.models import UserVariables
+from my_game.models import TradeSpace
 
 
 class MyUserAdmin(admin.ModelAdmin):
@@ -227,3 +228,10 @@ class MyBuildingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(BasicBuilding, MyBuildingAdmin)
+
+
+class MyTradeSpaceAdmin(admin.ModelAdmin):
+    list_display = ['name', 'user', 'password', 'tax']
+
+
+admin.site.register(TradeSpace, MyTradeSpaceAdmin)

@@ -9,33 +9,29 @@ from my_game.models import BasicArmor, BasicFactory, BasicEngine, BasicGenerator
 from my_game.models import WarehouseElement, WarehouseFactory, BasicResource
 from my_game import function
 from my_game.models import ProjectShip, Ship
-from my_game.models import TradeElement, TradeSpace, BuildingInstalled, DeliveryQueue
+from my_game.models import TradeElement
+from my_game.trade.create_trade_output import create_trade_output
 
 
 def add_trade_element(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
-        session_user = int(request.session['userid'])
-        session_user_city = int(request.session['user_city'])
+        session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
+        session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
-
         mass_element = 0
         size_element = 0
         id_element = 0
-
         full_request = request.POST
         myDict = dict(full_request.iterlists())
-
         trade_space_id = myDict.get('trade_space_id')
         trade_space_id = int(trade_space_id[0])
-
         name = myDict.get('name')
         name = name[0]
         name = name.split(';')
         id_warehouse_element = int(name[0])
         class_element = int(name[1])
-
         amount = myDict.get('amount')
         amount = int(amount[0])
         price = myDict.get('price')
@@ -44,7 +40,6 @@ def add_trade_element(request):
         unit_price = int(unit_price[0])
         minimum_lot = myDict.get('minimum_lot')
         minimum_lot = int(minimum_lot[0])
-
         personal_rate = myDict.get('personal_rate')
         personal_rate = personal_rate[0]
         if personal_rate == 'Empty':
@@ -52,17 +47,21 @@ def add_trade_element(request):
         else:
             user = MyUser.objects.filter(user_name=personal_rate).first()
             id_personal = int(user.user_id)
-
         notify = myDict.get('notify')
         if notify is not None:
             notify = notify[0]
-
+        else:
+            notify = ''
         ban = myDict.get('ban')
         ban = int(ban[0])
 
         if class_element == 0:
-            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                 id_resource=id_warehouse_element).first()
+            warehouse = session_user_city.warehouse
+
+
+
+
+
             resource = BasicResource.objects.filter(id=id_warehouse_element).first()
             if warehouse.amount >= amount:
                 amount = amount
@@ -71,8 +70,8 @@ def add_trade_element(request):
 
             name = resource.name
             new_amount = warehouse.amount - amount
-            warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                                 id_resource=id_warehouse_element).update(amount=new_amount)
+            Warehouse.objects.filter(user=session_user, user_city=session_user_city,
+                                     id_resource=id_warehouse_element).update(amount=new_amount)
             id_element = id_warehouse_element
             mass_element = 1
             size_element = 1
@@ -87,7 +86,7 @@ def add_trade_element(request):
             basic_hull = BasicHull.objects.filter(id=hull.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_hull.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = hull.id
             mass_element = hull.mass
             size_element = hull.size
@@ -102,7 +101,7 @@ def add_trade_element(request):
             basic_armor = BasicArmor.objects.filter(id=armor.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_armor.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = armor.id
             mass_element = armor.mass
             size_element = armor.size
@@ -117,7 +116,7 @@ def add_trade_element(request):
             basic_shield = BasicShield.objects.filter(id=shield.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_shield.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = shield.id
             mass_element = shield.mass
             size_element = shield.size
@@ -132,7 +131,7 @@ def add_trade_element(request):
             basic_engine = BasicEngine.objects.filter(id=engine.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_engine.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = engine.id
             mass_element = engine.mass
             size_element = engine.size
@@ -147,7 +146,7 @@ def add_trade_element(request):
             basic_generator = BasicGenerator.objects.filter(id=generator.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_generator.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = generator.id
             mass_element = generator.mass
             size_element = generator.size
@@ -162,7 +161,7 @@ def add_trade_element(request):
             basic_weapon = BasicWeapon.objects.filter(id=weapon.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_weapon.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = weapon.id
             mass_element = weapon.mass
             size_element = weapon.size
@@ -177,7 +176,7 @@ def add_trade_element(request):
             basic_shell = BasicShell.objects.filter(id=shell.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_shell.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = shell.id
             mass_element = shell.mass
             size_element = shell.size
@@ -192,7 +191,7 @@ def add_trade_element(request):
             basic_module = BasicModule.objects.filter(id=module.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_module.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = module.id
             mass_element = module.mass
             size_element = module.size
@@ -207,7 +206,7 @@ def add_trade_element(request):
             basic_device = BasicDevice.objects.filter(id=device.basic_id).first()
             new_amount = warehouse_element.amount - amount
             name = basic_device.name
-            warehouse_element = WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseElement.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = device.id
             mass_element = device.mass
             size_element = device.size
@@ -222,7 +221,7 @@ def add_trade_element(request):
             basic_factory = BasicFactory.objects.filter(id=factory.basic_id).first()
             new_amount = warehouse_factory.amount - amount
             name = basic_factory.name
-            warehouse_factory = WarehouseFactory.objects.filter(id=id_warehouse_element).update(amount=new_amount)
+            WarehouseFactory.objects.filter(id=id_warehouse_element).update(amount=new_amount)
             id_element = factory.id
             mass_element = factory.mass
             size_element = factory.size
@@ -243,7 +242,6 @@ def add_trade_element(request):
 
         user_city = UserCity.objects.filter(id=session_user_city).first()
         planet = Planet.objects.filter(x=user_city.x, y=user_city.y, z=user_city.z).first()
-        system_id = planet.system_id
         if planet:
             planet = 1
         else:
@@ -270,49 +268,9 @@ def add_trade_element(request):
             size_element=size_element
         )
         trade_element.save()
-
         trade_space_id = request.POST.get('trade_space_id')
-
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
-        user_city = UserCity.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = UserCity.objects.filter(user=int(session_user))
-        warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city).order_by(
-            'element_class', 'element_id')
-        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).order_by(
-            'production_class', 'production_id')
-        factory_patterns = FactoryPattern.objects.filter(user=session_user)
-        hull_patterns = HullPattern.objects.filter(user=session_user)
-        armor_patterns = ArmorPattern.objects.filter(user=session_user)
-        shield_patterns = ShieldPattern.objects.filter(user=session_user)
-        engine_patterns = EnginePattern.objects.filter(user=session_user)
-        generator_patterns = GeneratorPattern.objects.filter(user=session_user)
-        weapon_patterns = WeaponPattern.objects.filter(user=session_user)
-        shell_patterns = ShellPattern.objects.filter(user=session_user)
-        module_patterns = ModulePattern.objects.filter(user=session_user)
-        device_patterns = DevicePattern.objects.filter(user=session_user)
-        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-        project_ships = ProjectShip.objects.filter(user=session_user)
-        users = MyUser.objects.filter()
-        trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
-        user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user)
-        trade_spaces = TradeSpace.objects.filter()
-        trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
-        trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,
-                                                           production_class=21).first()
-        delivery_queues = DeliveryQueue.objects.filter(user=session_user, user_city=session_user_city)
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
+        request.session['user'] = session_user.id
+        request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-                  'warehouse_factorys': warehouse_factorys, 'factory_patterns': factory_patterns,
-                  'warehouse_elements': warehouse_elements, 'hull_patterns': hull_patterns,
-                  'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
-                  'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
-                  'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns,
-                  'device_patterns': device_patterns,
-                  'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
-                  'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements,
-                  'user_trade_elements': user_trade_elements, 'users': users, 'trade_space': trade_space,
-                  'trade_building': trade_building, 'delivery_queues': delivery_queues}
+        output = create_trade_output(session_user, session_user_city, output, trade_space_id, message='')
         return render(request, "trade.html", output)
