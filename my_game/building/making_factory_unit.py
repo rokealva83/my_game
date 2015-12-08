@@ -52,7 +52,7 @@ def making_factory_unit(*args):
 
             MyUser.objects.filter(user_id=session_user.id).update(internal_currency=new_internal_currency)
             turn_assembly_pieces_last = []
-            if len_turn_assembly_pieces >=1:
+            if len_turn_assembly_pieces >= 1:
                 turn_assembly_pieces_last = turn_assembly_pieces[len_turn_assembly_pieces - 1]
             if turn_assembly_pieces_last:
                 start_making = turn_assembly_pieces_last.finish_time_assembly

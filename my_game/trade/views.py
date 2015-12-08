@@ -16,7 +16,7 @@ def trade(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
-        session_user = int(request.session['userid'])
+        session_user = int(request.session['user'])
         session_user_city = int(request.session['user_city'])
         function.check_all_queues(session_user)
         trade_building = BuildingInstalled.objects.filter(user=session_user, user_city=session_user_city,

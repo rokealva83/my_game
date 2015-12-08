@@ -11,14 +11,19 @@
             </div>
         {% endif %}
     {% endspaceless %}
-    {% if factory_turn_assembly_piecess or building_turn_assembly_piecess %}
+    {% if factory_turn_assembly_piecess %}
         <div class="building_up">
             <p> Очередь создания заготовки </p>
             {% for turn_assembly_pieces in factory_turn_assembly_piecess %}
-                <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
+                    <p>{{ turn_assembly_pieces.pattern.factory_name }}: {{ turn_assembly_pieces.finish_time_assembly }}</p>
             {% endfor %}
+        </div>
+    {% endif %}
+    {% if building_turn_assembly_piecess %}
+        <div class="building_up">
+            <p> Очередь создания заготовки </p>
             {% for turn_assembly_pieces in building_turn_assembly_piecess %}
-                <p>{{ turn_assembly_pieces.finish_time_assembly }}</p>
+                <p>{{ turn_assembly_pieces.pattern.building_name }}: {{ turn_assembly_pieces.finish_time_assembly }}</p>
             {% endfor %}
         </div>
     {% endif %}
@@ -98,31 +103,32 @@
             <h4 style="text-align: center">Комплекс: {{ manufacturing_complex.name }}</h4>
             <div class="complex_left">
                 <h4>Добавление заводов в комплекс</h4>
+
                 <form method="post" action="add_in_complex">
-                        <p><select name="factory_id" class="complex_botton">
+                    <p><select name="factory_id" class="complex_botton">
                         <option value="0">Добыча ресурсов</option>
                         {% spaceless %}
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 11 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 11 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
                         {% endspaceless %}
                     </select>
-                    <input class="complex_botton" type="submit" value="Добавить"/>
-                    <input type="hidden" value={{ complex_id }} name="complex_id">
+                        <input class="complex_botton" type="submit" value="Добавить"/>
+                        <input type="hidden" value={{ complex_id }} name="complex_id">
                     </p>
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод корпусов</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 1 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод корпусов</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 1 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -130,22 +136,22 @@
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод брони</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 2 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод брони</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 2 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
                     </p>
                 </form>
                 <form method="post" action="add_in_complex">
-                {% spaceless %}
-                    <p><select name="factory_id" class="complex_botton">
+                    {% spaceless %}
+                        <p><select name="factory_id" class="complex_botton">
                         <option value="0">Завод щитов</option>
                         {% for factory_installed in factory_installeds %}
                             {% if factory_installed.factory_pattern.production_class == 3 %}
@@ -154,20 +160,20 @@
                         {% endfor %}
                     </select>
                     {% endspaceless %}
-                        <input class="complex_botton" type="submit" value="Добавить"/>
-                        <input type="hidden" value={{ complex_id }} name="complex_id">
+                    <input class="complex_botton" type="submit" value="Добавить"/>
+                    <input type="hidden" value={{ complex_id }} name="complex_id">
                     </p>
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод двигателей</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 4 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод двигателей</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 4 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -175,14 +181,14 @@
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод генераторов</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 5 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод генераторов</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 5 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -190,14 +196,14 @@
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод оружия</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 6 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод оружия</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 6 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -205,14 +211,14 @@
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод расходников</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 7 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод расходников</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 7 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -220,14 +226,14 @@
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод модулей</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 8 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод модулей</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 8 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -235,14 +241,14 @@
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод устройств</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 9 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод устройств</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 9 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -250,14 +256,14 @@
                 </form>
                 <form method="post" action="add_in_complex">
                     <p><select name="factory_id" class="complex_botton">
-                    {% spaceless %}
-                        <option value="0">Завод топлива</option>
-                        {% for factory_installed in factory_installeds %}
-                            {% if factory_installed.factory_pattern.production_class == 14 %}
-                                <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endspaceless %}
+                        {% spaceless %}
+                            <option value="0">Завод топлива</option>
+                            {% for factory_installed in factory_installeds %}
+                                {% if factory_installed.factory_pattern.production_class == 14 %}
+                                    <option value="{{ factory_installed.id }}">{{ factory_installed.factory_pattern.factory_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endspaceless %}
                     </select>
                         <input class="complex_botton" type="submit" value="Добавить"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id">
@@ -303,21 +309,22 @@
                     <div>
                         <select name="warehouse_resource" class="complex_botton">
                             <option selected disabled>Choise resource</option>
-                        {% spaceless %}
-                            {% for warehouse in warehouses %}
-                                {% if warehouse.amount > 0 %}
-                                    {% for basic_resource in basic_resources %}
-                                        {% if basic_resource.id == warehouse.resource_id %}
-                                            <option value="{{ warehouse.resource_id }}">{{ basic_resource.resource_name }}
-                                                ( {{ warehouse.amount }} )
-                                            </option>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
-                        {% endspaceless %}
+                            {% spaceless %}
+                                {% for warehouse in warehouses %}
+                                    {% if warehouse.amount > 0 %}
+                                        {% for basic_resource in basic_resources %}
+                                            {% if basic_resource.id == warehouse.resource_id %}
+                                                <option value="{{ warehouse.resource_id }}">{{ basic_resource.resource_name }}
+                                                    ( {{ warehouse.amount }} )
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endspaceless %}
                         </select>
-                        <input value="0" name="resource_amount" class="building_place" style="width: 100px" placeholder="Resource amount"/>
+                        <input value="0" name="resource_amount" class="building_place" style="width: 100px"
+                               placeholder="Resource amount"/>
                         <input class="building_botton" type="submit" value="Загрузить на склад"/>
                         <input type="hidden" value={{ complex_id }} name="complex_id"></p>
                     </div>
@@ -401,7 +408,8 @@
                                        value={{ factory_pattern.production_class }} name="hidden_class"></p>
                             </form>
                             <form method="post" action="working">
-                                <input id="delete_factory_pattern" class="building_botton" type="submit" value="Delete pattern"
+                                <input id="delete_factory_pattern" class="building_botton" type="submit"
+                                       value="Delete pattern"
                                        name="delete_factory_pattern"/>
                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                        value={{ factory_pattern.id }} name="hidden_factory">
@@ -429,7 +437,7 @@
                 {% endif %}
             {% endfor %}
             {% for factory_pattern in factory_patterns %}
-                {% if 10 > factory_pattern.production_class%}
+                {% if 10 > factory_pattern.production_class %}
                     <form method="post" action="working">
 
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
@@ -506,7 +514,8 @@
                                        value={{ factory_pattern.production_class }} name="hidden_class">
                             </form>
                             <form method="post" action="working">
-                                <input id="delete_factory_pattern" class="building_botton" type="submit" value="Delete pattern"
+                                <input id="delete_factory_pattern" class="building_botton" type="submit"
+                                       value="Delete pattern"
                                        name="delete_factory_pattern"/>
                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                        value={{ factory_pattern.id }} name="hidden_factory">
@@ -567,15 +576,15 @@
                                 </p>
                             </form>
                             <form method="post" action="working">
-                                    <p><label for="">Коефициент ускорения производства</label>
-                                        <select name="number" id="number">
-                                            <option value="1">Выберите коефициент</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                        </select></p>
+                                <p><label for="">Коефициент ускорения производства</label>
+                                    <select name="number" id="number">
+                                        <option value="1">Выберите коефициент</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select></p>
 
                                 <p><input id="upgrade_factory_pattern" class="building_botton" type="submit"
                                           value="Upgrade" name="upgrade_factory_pattern"/>
@@ -596,7 +605,8 @@
                                        value={{ factory_pattern.production_class }} name="hidden_class">
                             </form>
                             <form method="post" action="working">
-                                <input id="delete_factory_pattern" class="building_botton" type="submit" value="Delete pattern"
+                                <input id="delete_factory_pattern" class="building_botton" type="submit"
+                                       value="Delete pattern"
                                        name="delete_factory_pattern"/>
                                 <input type="hidden" id="factory{{ factory_pattern.id }}"
                                        value={{ factory_pattern.id }} name="hidden_factory">
@@ -703,7 +713,8 @@
                                    value={{ building_pattern.production_class }} name="hidden_class"></p>
                         </form>
                         <form method="post" action="working">
-                            <input id="delete_building_pattern" class="building_botton" type="submit" value="Delete pattern"
+                            <input id="delete_building_pattern" class="building_botton" type="submit"
+                                   value="Delete pattern"
                                    name="delete_factory_pattern"/>
                             <input type="hidden" id="factory{{ building_pattern.id }}"
                                    value={{ building_pattern.id }} name="hidden_factory">
@@ -712,11 +723,8 @@
                         </form>
                         <form method="post" action="working">
                             {% for warehouse_element in warehouse_elements %}
-                                1111
                                 {% if building_pattern.id == warehouse_element.building.id %}
-                                    222
                                     {% if warehouse_element.amount > 0 %}
-                                        3333
                                         <p>Количество блоков на складе: {{ warehouse_element.amount }}</p>
                                         <p>
                                             <input id="install_factory_unit" class="building_botton"

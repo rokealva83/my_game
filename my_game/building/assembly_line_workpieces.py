@@ -30,6 +30,10 @@ def check_assembly_line_workpieces(request):
                         amount_assembly = turn_assembly_pieces.amount_assembly + warehouse_factory.amount
                         setattr(warehouse_factory, 'amount', amount_assembly)
                         warehouse_factory.save()
+                        if turn_assembly_pieces.class_id != 21:
+                            TurnAssemblyPiecesFactory.objects.filter(id=turn_assembly_pieces.id).delete()
+                        else:
+                            TurnAssemblyPiecesBuilding.objects.filter(id=turn_assembly_pieces.id).delete()
                     else:
                         if turn_assembly_pieces.class_id != 21:
                             new_factory = WarehouseFactory(
