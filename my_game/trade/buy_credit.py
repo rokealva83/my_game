@@ -42,5 +42,5 @@ def buy_credit(request):
         request.session['user_city'] = session_user_city
         request.session['live'] = True
 
-        output = create_trade_output(session_user, session_user_city, output, trade_space_id, message)
+        output = create_trade_output(session_user, session_user_city, trade_space_id, message)
         return render(request, "trade.html", output)

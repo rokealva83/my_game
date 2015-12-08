@@ -22,14 +22,14 @@ def buy_trade(request):
         price_element = 0
         new_price = 0
         full_request = request.POST
-        myDict = dict(full_request.iterlists())
-        trade_space_id = int(myDict.get('trade_space_id')[0])
-        id_element = myDict.get('trade_buy')
+        my_dictionary = dict(full_request.iterlists())
+        trade_space_id = int(my_dictionary.get('trade_space_id')[0])
+        id_element = my_dictionary.get('trade_buy')
         id_element = int(id_element[0])
-        amount = myDict.get('amount')
+        amount = my_dictionary.get('amount')
         amount = int(amount[0])
-        set_aside = myDict.get('set_aside')
-        method = myDict.get('method')
+        set_aside = my_dictionary.get('set_aside')
+        method = my_dictionary.get('method')
         method = int(method[0])
         if amount > 0:
             trade_element = TradeElement.objects.filter(id=id_element).first()
@@ -85,7 +85,6 @@ def buy_trade(request):
                     message = 'Товар поставлено в очередь на доставку'
                 else:
                     user_city = UserCity.objects.filter(id=session_user_city).first()
-                    planet = Planet.objects.filter(x=user_city.x, y=user_city.y, z=user_city.z).first()
                     distance = math.sqrt(
                         (trade_element.x - user_city.x) ** 2 + (trade_element.y - user_city.y) ** 2 + (
                             trade_element.z - user_city.z) ** 2)
@@ -246,5 +245,5 @@ def buy_trade(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = create_trade_output(session_user, session_user_city, output, trade_space_id, message)
+        output = create_trade_output(session_user, session_user_city, trade_space_id, message)
         return render(request, "trade.html", output)

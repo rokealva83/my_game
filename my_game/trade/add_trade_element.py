@@ -20,47 +20,44 @@ def add_trade_element(request):
         session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
+        message = ''
         mass_element = 0
         size_element = 0
         id_element = 0
         full_request = request.POST
-        myDict = dict(full_request.iterlists())
-        trade_space_id = myDict.get('trade_space_id')
+        my_dictionary = dict(full_request.iterlists())
+        trade_space_id = my_dictionary.get('trade_space_id')
         trade_space_id = int(trade_space_id[0])
-        name = myDict.get('name')
+        name = my_dictionary.get('name')
         name = name[0]
         name = name.split(';')
         id_warehouse_element = int(name[0])
         class_element = int(name[1])
-        amount = myDict.get('amount')
+        amount = my_dictionary.get('amount')
         amount = int(amount[0])
-        price = myDict.get('price')
+        price = my_dictionary.get('price')
         price = int(price[0])
-        unit_price = myDict.get('unit_price')
+        unit_price = my_dictionary.get('unit_price')
         unit_price = int(unit_price[0])
-        minimum_lot = myDict.get('minimum_lot')
+        minimum_lot = my_dictionary.get('minimum_lot')
         minimum_lot = int(minimum_lot[0])
-        personal_rate = myDict.get('personal_rate')
+        personal_rate = my_dictionary.get('personal_rate')
         personal_rate = personal_rate[0]
         if personal_rate == 'Empty':
             id_personal = 0
         else:
             user = MyUser.objects.filter(user_name=personal_rate).first()
             id_personal = int(user.user_id)
-        notify = myDict.get('notify')
+        notify = my_dictionary.get('notify')
         if notify is not None:
             notify = notify[0]
         else:
             notify = ''
-        ban = myDict.get('ban')
+        ban = my_dictionary.get('ban')
         ban = int(ban[0])
 
         if class_element == 0:
             warehouse = session_user_city.warehouse
-
-
-
-
 
             resource = BasicResource.objects.filter(id=id_warehouse_element).first()
             if warehouse.amount >= amount:
@@ -272,5 +269,5 @@ def add_trade_element(request):
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = create_trade_output(session_user, session_user_city, output, trade_space_id, message='')
+        output = create_trade_output(session_user, session_user_city, trade_space_id, message)
         return render(request, "trade.html", output)

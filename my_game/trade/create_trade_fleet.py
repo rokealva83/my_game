@@ -232,5 +232,5 @@ def create_trade_fleet(request):
         request.session['userid'] = session_user
         request.session['user_city'] = session_user_city
         request.session['live'] = True
-        output = create_trade_output(session_user, session_user_city, output, trade_space_id, message)
+        output = create_trade_output(session_user, session_user_city, trade_space_id, message)
         return render(request, "trade.html", output)

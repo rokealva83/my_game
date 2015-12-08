@@ -8,7 +8,7 @@ from my_game.models import ProjectShip, Ship
 from my_game.models import TradeElement, TradeSpace, BuildingInstalled, DeliveryQueue
 
 
-def create_trade_output(session_user, session_user_city, output, trade_space_id, message):
+def create_trade_output(session_user, session_user_city, trade_space_id, message):
     warehouse = session_user_city.warehouse
     basic_resources = BasicResource.objects.all()
     user_citys = UserCity.objects.filter(user=session_user).all()
@@ -33,11 +33,14 @@ def create_trade_output(session_user, session_user_city, output, trade_space_id,
     project_ships = ProjectShip.objects.filter(user=session_user).all()
     users = MyUser.objects.all()
     user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user)
-    trade_elements = TradeElement.objects.filter(trade_space=trade_space_id)
+    trade_elements = TradeElement.objects.filter(trade_space=trade_space_id).all()
+    if trade_space_id != 1:
+        trade_elements = TradeElement.objects.filter(trade_space=trade_space_id).all()
+        user_trade_elements = TradeElement.objects.filter(trade_space=trade_space_id, user=session_user).all()
     trade_spaces = TradeSpace.objects.filter()
     trade_space = TradeSpace.objects.filter(id=trade_space_id).first()
 
-    output.update({'user': session_user, 'warehouse': warehouse, 'user_city': session_user_city, 'user_citys': user_citys,
+    output = {'user': session_user, 'warehouse': warehouse, 'user_city': session_user_city, 'user_citys': user_citys,
               'basic_resources': basic_resources, 'warehouse_factorys': warehouse_factorys,
               'factory_patterns': factory_patterns, 'warehouse_elements': warehouse_elements,
               'hull_patterns': hull_patterns, 'armor_patterns': armor_patterns, 'shield_patterns': shield_patterns,
@@ -46,5 +49,5 @@ def create_trade_output(session_user, session_user_city, output, trade_space_id,
               'module_patterns': module_patterns, 'trade_spaces': trade_spaces, 'trade_space_id': trade_space_id,
               'project_ships': project_ships, 'ships': ships, 'trade_elements': trade_elements, 'users': users,
               'user_trade_elements': user_trade_elements, 'trade_space': trade_space, 'message': message,
-              'trade_building': trade_building, 'delivery_queues': delivery_queues})
+              'trade_building': trade_building, 'delivery_queues': delivery_queues}
     return output
