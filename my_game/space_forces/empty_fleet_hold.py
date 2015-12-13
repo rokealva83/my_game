@@ -2,10 +2,9 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, UserCity
-from my_game.models import Warehouse, WarehouseElement, WarehouseFactory, WarehouseShip, BasicResource
+from my_game.models import Warehouse, WarehouseElement, WarehouseFactory,  BasicResource
 from my_game import function
-from my_game.models import ProjectShip, Ship, Fleet, Hold
-from my_game.models import Flightplan, FlightplanFlight
+from my_game.models import Ship, Fleet, Hold
 from my_game.models import FactoryPattern, HullPattern, ArmorPattern, ShellPattern, ShieldPattern, \
     GeneratorPattern, WeaponPattern, EnginePattern, ModulePattern, FuelPattern, DevicePattern
 
@@ -14,8 +13,8 @@ def empty_fleet_hold(request):
     if "live" not in request.session:
         return render(request, "index.html", {})
     else:
-        session_user = int(request.session['userid'])
-        session_user_city = int(request.session['user_city'])
+        session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
+        session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         function.check_all_queues(session_user)
 
         add_ships = {}
@@ -314,14 +313,12 @@ def empty_fleet_hold(request):
         else:
             message = 'Флот не над планетой'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
+        warehouse = session_user_city.warehouse
         basic_resources = BasicResource.objects.filter()
-        user_city = UserCity.objects.filter(user=session_user).first()
-        user = MyUser.objects.filter(user_id=session_user).first()
-        user_citys = UserCity.objects.filter(user=int(session_user))
-        user_fleets = Fleet.objects.filter(user=session_user)
-        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
-        ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
+        user_citys = UserCity.objects.filter(user=session_user).all()
+        user_fleets = Fleet.objects.filter(user=session_user).all()
+        ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city).all()
+        ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1).all()
         warehouse_factorys = WarehouseFactory.objects.filter(user=session_user,
                                                               user_city=session_user_city).order_by(
             'production_class', 'production_id')
@@ -330,10 +327,10 @@ def empty_fleet_hold(request):
             'element_class', 'element_id')
 
         command = 2
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
+        request.session['user'] = session_user.id
+        request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
+        output = {'user': session_user, 'warehouse': warehouse, 'user_city': session_user, 'user_citys': user_citys,
                   'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id, 'ship_fleets': ship_fleets,
                   'ships': ships, 'command': command, 'flightplans': flightplans,
                   'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
@@ -347,64 +344,4 @@ def empty_fleet_hold(request):
         return render(request, "fleet_hold.html", output)
 
 
-def unloading(*args):
-    session_user = args[0]
-    session_user_city = args[1]
-    fleet_id = args[2]
-    class_shipment = args[3]
-    id_shipment = args[4]
-    amount_shipment = args[5]
-    mass_shipment = args[6]
-    size = args[7]
 
-    hold = Hold.objects.filter(fleet_id=fleet_id, class_shipment=class_shipment, id_shipment=id_shipment).first()
-    hold_amount_shipment = hold.amount_shipment
-
-    if class_shipment == 0:
-        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                             id_resource=id_shipment).first()
-        new_amount = warehouse.amount + amount_shipment
-        warehouse = Warehouse.objects.filter(user=session_user, user_city=session_user_city,
-                                             id_resource=id_shipment).update(
-            amount=new_amount)
-        mass = amount_shipment
-        size = amount_shipment
-
-    elif class_shipment == 10:
-        warehouse_factory = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
-                                                             factory_id=id_shipment).first()
-        amount_factory = warehouse_factory.amount
-        new_amount = amount_factory + amount_shipment
-        warehouse_factory = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
-                                                             factory_id=id_shipment).update(amount=new_amount)
-        mass = amount_shipment * warehouse_factory.mass
-        size = amount_shipment * warehouse_factory.size
-
-    else:
-        element = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city,
-                                                   element_class=class_shipment, element_id=id_shipment).first()
-        amount_element = element.amount
-        new_amount = amount_shipment + amount_element
-        element = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city,
-                                                   element_class=class_shipment, element_id=id_shipment).update(
-            amount=new_amount)
-        hold = Hold.objects.filter(fleet_id=fleet_id, class_shipment=class_shipment, id_shipment=id_shipment).first()
-        mass = amount_shipment * (hold.mass_shipment / hold.amount_shipment)
-        size = amount_shipment * (hold.size_shipment / hold.amount_shipment)
-
-    if hold_amount_shipment == amount_shipment:
-        hold = Hold.objects.filter(fleet_id=fleet_id, class_shipment=class_shipment, id_shipment=id_shipment).delete()
-    else:
-        new_amount = hold.amount_shipment - amount_shipment
-
-        new_mass = hold.mass_shipment - amount_shipment * (hold.mass_shipment / hold.amount_shipment)
-        new_size = hold.size_shipment - amount_shipment * (hold.size_shipment / hold.amount_shipment)
-
-        hold = Hold.objects.filter(fleet_id=fleet_id, class_shipment=class_shipment, id_shipment=id_shipment).update(
-            amount_shipment=new_amount, mass_shipment=new_mass, size_shipment=new_size)
-    fleet = Fleet.objects.filter(id=fleet_id).first()
-    empty_hold = fleet.empty_hold
-    ship_empty_mass = fleet.ship_empty_mass
-    new_empty_hold = empty_hold + size
-    new_ship_empty_mass = ship_empty_mass - mass
-    fleet = Fleet.objects.filter(id=fleet_id).update(empty_hold=new_empty_hold, ship_empty_mass=new_ship_empty_mass)
