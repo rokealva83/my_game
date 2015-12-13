@@ -47,7 +47,7 @@ class BuildingPattern(models.Model):
     time_production = models.IntegerField()
     warehouse = models.IntegerField(default=0)
     max_warehouse = models.IntegerField(default=500)
-    price_internal_currency = models.IntegerField(default=25)
+    price_internal_currency = models.IntegerField(default=0)
     price_construction_material = models.IntegerField(default=0, verbose_name=u'Цена в строительных материалах')
     price_chemical = models.IntegerField(default=0, verbose_name=u'Цена в химических реактивах')
     price_high_strength_allov = models.IntegerField(default=0, verbose_name=u'Цена в высокопрочных сплавах')
@@ -71,6 +71,7 @@ class BuildingInstalled(models.Model):
     building_pattern = models.ForeignKey(BuildingPattern)
     production_class = models.IntegerField(default=21)
     production_id = models.IntegerField(default=1)
+    warehouse = models.IntegerField(default=0)
 
 
 class WarehouseBuilding(models.Model):
