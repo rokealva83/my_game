@@ -54,7 +54,7 @@ def fleet_manage(request):
                 y=user_city.y,
                 z=user_city.z,
                 system=user_city.system_id,
-                planet=planet.planet_num
+                planet=planet.id
             )
             new_fleet.save()
             fleet_id = new_fleet.pk

@@ -37,6 +37,10 @@ from my_game.designing_ships import new_ship as new_ship
 from my_game.designing_ships import work_with_project as work_with_project
 
 from my_game.space_forces import work_with_ship as modificate_ship
+from my_game.space_forces import
+
+
+
 from my_game.space_forces import views as space_forces
 from my_game.space_forces import fleet_flightplan as fleet_flightplan
 from my_game.space_forces import fleet_management as fleet_management
