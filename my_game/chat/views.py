@@ -70,13 +70,12 @@ def send_message(request):
         )
         user_online.save()
     else:
-        user_online = UserChatOnline.objects.filter(user_id=session_user.id).update(last_time_update=timezone.now())
+        UserChatOnline.objects.filter(user_id=session_user.id).update(last_time_update=timezone.now())
 
 
 def update_message(request):
-    session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
-    id = int(request.POST.get('id'))
-    messages = Chat.objects.filter(id__gte=id).all()
+    post_id = int(request.POST.get('id'))
+    messages = Chat.objects.filter(id__gte=post_id).all()
     response = []
     for msg in messages:
         response.append({
@@ -95,9 +94,9 @@ def user_delete(request):
     for online_user in online_users:
         last_time_update = online_user.last_time_update
         delta_time = timezone.now() - last_time_update
-        delta_time = delta_time.seconds
+        delta_time = delta_time.total_seconds()
         if delta_time > 300:
-            online_user_delete = UserChatOnline.objects.filter(id=online_user.id).delete()
+            UserChatOnline.objects.filter(id=online_user.id).delete()
 
 
 def delete_user_update(request):

@@ -17,9 +17,9 @@ def verification_stage_production(request):
             time = timezone.now()
             time_start = turn_production.start_time_production
             delta_time = time - time_start
-            new_delta = delta_time.seconds
+            new_delta = delta_time.total_seconds()
             delta_time = turn_production.finish_time_production - turn_production.start_time_production
-            delta = delta_time.seconds
+            delta = delta_time.total_seconds()
             if new_delta > delta:
                 warehouse = WarehouseElement.objects.filter(user_city=user_city, element_id=turn_production.element_id,
                                                             element_class=turn_production.factory.production_class).first()

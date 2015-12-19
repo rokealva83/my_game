@@ -13,28 +13,37 @@
     {% endspaceless %}
     {% if factory_turn_assembly_piecess %}
         <div class="building_up">
-            <p> Очередь создания заготовки </p>
+            <p> Очередь создания заготовки фабрики</p>
             {% for turn_assembly_pieces in factory_turn_assembly_piecess %}
-                    <p>{{ turn_assembly_pieces.pattern.factory_name }}: {{ turn_assembly_pieces.finish_time_assembly }}</p>
+                <p>{{ turn_assembly_pieces.pattern.factory_name }}: {{ turn_assembly_pieces.finish_time_assembly }}</p>
             {% endfor %}
         </div>
     {% endif %}
     {% if building_turn_assembly_piecess %}
         <div class="building_up">
-            <p> Очередь создания заготовки </p>
+            <p> Очередь создания заготовки инфраструктуры </p>
             {% for turn_assembly_pieces in building_turn_assembly_piecess %}
                 <p>{{ turn_assembly_pieces.pattern.building_name }}: {{ turn_assembly_pieces.finish_time_assembly }}</p>
             {% endfor %}
         </div>
     {% endif %}
-    {% if turn_buildings %}
+    {% if turn_building_factorys %}
         <div class="building_up">
-            <p> Очередь развертывания заготовки </p>
-            {% for turn_building in turn_buildings %}
-                <p>{{ turn_building.finish_time_deployment }}</p>
+            <p> Очередь развертывания заготовки фабрики </p>
+            {% for turn_building in turn_building_factorys %}
+                <p>{{ turn_building.factory.factory_name }}: {{ turn_building.finish_time_deployment }}</p>
             {% endfor %}
         </div>
     {% endif %}
+    {% if turn_building_buildings %}
+        <div class="building_up">
+            <p> Очередь развертывания заготовки инфраструктуры </p>
+            {% for turn_building in turn_building_buildings %}
+                 <p>{{ turn_building.factory.building_name }}: {{ turn_building.finish_time_deployment }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
 
     <div class="building_left">
 
@@ -336,7 +345,7 @@
                     <form method="post" action="working">
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
                         <label class="slide" id="slowdown" for="factory{{ factory_pattern.id }}">
-                            <h4>{{ factory_pattern.factory_name }}</h4>
+                            <h4>{{ factory_pattern.factory_name }} </h4>
                         </label>
 
                         <div id="factory_information">

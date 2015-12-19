@@ -1,2 +1,2 @@
-1,shell_1,shell_1,1000,500,100,100,50,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-2,shell_2,shell_2,500,1500,150,50,35,18,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+id,shell_name,description,shell_phisical_damage,shell_speed,shell_mass,shell_size,price_internal_currency,price_nickel,price_iron,price_cooper,price_aluminum,price_veriarit,price_inneilit,price_renniit,price_cobalt,price_construction_material,price_chemical,price_high_strength_allov,price_nanoelement,price_microprocessor_element,price_fober_optic_element,min_all_scientic,min_math,min_phis,min_biol,min_energy,min_radio,min_nanotech,min_astronomy,min_logist,shell_class
+1,"Ядерная торпеда","Ядерная торпеда",250,100,25,15,25,15,15,15,15,0,0,0,0,0,0,10,10,0,0,90,15,15,0,10,15,15,10,10,3

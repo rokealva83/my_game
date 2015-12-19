@@ -1,3 +1,2 @@
-1,shield_1,shield_1,250,200,0,100,2,200,200,200,25,8,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-2,shield_2,shield_2,500,0,250,100,4,500,500,200,30,10,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-3,shield_3,shield_3,200,500,500,200,6,500,500,200,50,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+id,shield_name,description,shield_health,value_energy_resistance,value_phisical_resistance,shield_regeneration,number_of_emitter,shield_mass,shield_size,power_consuption,price_internal_currency,price_nickel,price_iron,price_cooper,price_aluminum,price_veriarit,price_inneilit,price_renniit,price_cobalt,price_construction_material,price_chemical,price_high_strength_allov,price_nanoelement,price_microprocessor_element,price_fober_optic_element,min_all_scientic,min_math,min_phis,min_biol,min_energy,min_radio,min_nanotech,min_astronomy,min_logist
+1,"Электромагнитный щит","Электромагнитный щит - вокруг корабля создается мощное электромагнитное поле, которое частично отклоняет вражеский огонь. В связи со свойствами такого типа поля рассеиваться при увеличении объема, устанавливают такие щиты на малых кораблях",200,50,20,50,5,75,80,25,175,25,25,25,50,0,25,0,0,0,0,15,70,25,0,45,0,10,0,0,20,15,0,0

@@ -21,7 +21,7 @@ def verification_trade(request):
                 if trade_flight.flightplan == 1:
                     time_start = trade_flight.start_time
                     delta_time = time - time_start
-                    new_delta = delta_time.seconds
+                    new_delta = delta_time.total_seconds()
                     delta = trade_flight.flight_time
                     if new_delta > delta:
                         x = trade_flight.finish_x
@@ -35,7 +35,7 @@ def verification_trade(request):
                 elif trade_flight.flightplan == 2:
                     time_start = trade_flight.start_time
                     delta_time = time - time_start
-                    new_delta = delta_time.seconds
+                    new_delta = delta_time.total_seconds()
                     delta = trade_flight.flight_time
                     if new_delta > delta:
                         hold = Hold(
@@ -68,7 +68,7 @@ def verification_trade(request):
                 elif trade_flight.flightplan == 3:
                     time_start = trade_flight.start_time
                     delta_time = time - time_start
-                    new_delta = delta_time.seconds
+                    new_delta = delta_time.total_seconds()
                     delta = trade_flight.flight_time
                     if new_delta > delta:
                         hold = Hold.objects.filter(fleet_id=fleet.id).first()
@@ -138,9 +138,9 @@ def verification_trade(request):
         teleport_id = teleport.id
         time_start = teleport.start_teleport
         delta_time = time - time_start
-        new_delta = delta_time.seconds
+        new_delta = delta_time.total_seconds()
         delta = teleport.finish_teleport - teleport.start_teleport
-        delta = delta.seconds
+        delta = delta.total_seconds()
         if new_delta > delta:
 
             if teleport.class_element == 0:

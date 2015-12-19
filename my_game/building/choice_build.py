@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity, TurnBuilding
+from my_game.models import MyUser, UserCity, TurnBuildingBuilding, TurnBuildingFactory
 from my_game.models import FactoryPattern, BuildingPattern
 from my_game.models import WarehouseFactory, WarehouseBuilding
 from my_game.models import ManufacturingComplex
@@ -20,7 +20,7 @@ def choice_build(request):
         building_patterns = {}
         attributes = (
             "price_internal_currency", 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-            'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element', "price_expert_deployment",
+            'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element', "cost_expert_deployment",
             "assembly_workpiece", "time_deployment", "time_production", "factory_size", "factory_mass",
             "power_consumption")
 
@@ -89,7 +89,10 @@ def choice_build(request):
                                                                                  user_city=session_user_city).all()
         building_turn_assembly_piecess = TurnAssemblyPiecesBuilding.objects.filter(user=session_user,
                                                                                    user_city=session_user_city).all()
-        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        turn_building_buildings = TurnBuildingBuilding.objects.filter(user=session_user,
+                                                                      user_city=session_user_city).all()
+        turn_building_factorys = TurnBuildingFactory.objects.filter(user=session_user,
+                                                                    user_city=session_user_city).all()
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['user'] = session_user.id
@@ -99,8 +102,8 @@ def choice_build(request):
                   'factory_patterns': factory_patterns, 'attributes': attributes,
                   'factory_turn_assembly_piecess': factory_turn_assembly_piecess,
                   'building_turn_assembly_piecess': building_turn_assembly_piecess,
-                  'building_patterns': building_patterns, 'turn_buildings': turn_buildings,
-                  'warehouse_elements': warehouse_elements, 'user_citys': user_citys,
-                  'manufacturing_complexs': manufacturing_complexs}
+                  'building_patterns': building_patterns, 'turn_building_buildings': turn_building_buildings,
+                  'turn_building_factorys': turn_building_factorys, 'warehouse_elements': warehouse_elements,
+                  'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs}
 
         return render(request, "building.html", output)

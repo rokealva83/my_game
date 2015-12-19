@@ -20,7 +20,7 @@ def verification_complex_stage(request):
                 time = timezone.now()
                 time_start = turn_production.start_time_production
                 delta_time = time - time_start
-                new_delta = delta_time.seconds
+                new_delta = delta_time.total_seconds()
                 delta = turn_production.time
                 if new_delta > delta:
 

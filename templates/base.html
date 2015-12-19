@@ -23,11 +23,11 @@
     <div class="inform_city">
         <p>Поселение:</p>
         {% spaceless %}
-            <p>{% for user_city in user_citys %}
-                <select name="city" id="city">
+            <p><select name="city" id="city">
+                {% for user_city in user_citys %}
                     <option value="{{ user_city.id }}">{{ user_city.name_city }}</option>
-                </select>
-            {% endfor %}</p>
+                {% endfor %}
+            </select></p>
         {% endspaceless %}
     </div>
     <div class="inform_resource">
@@ -37,27 +37,37 @@
         {% endspaceless %}
     </div>
     <div class="inform_resource">
-
+        <p>Никель: {{ warehouse.res_nickel }}</p>
+        <p>Жедезо: {{ warehouse.res_iron }}</p>
     </div>
     <div class="inform_resource">
-
+        <p>Медь: {{ warehouse.res_cooper }}</p>
+        <p>Алюминий: {{ warehouse.res_aluminum }}</p>
     </div>
     <div class="inform_resource">
-
+        <p>Вариарит: {{ warehouse.res_veriarit }}</p>
+        <p>Иннэилит: {{ warehouse.res_inneilit }}</p>
     </div>
     <div class="inform_resource">
-
+        <p>Рэниит: {{ warehouse.res_renniit }}</p>
+        <p>Кобальт: {{ warehouse.res_cobalt }}</p>
+    </div>
+    <div class="inform_resource">
+        <p>Стр.мат: {{ warehouse.mat_construction_material }}</p>
+        <p>Хим.ел: {{ warehouse.mat_chemical }}</p>
+    </div>
+    <div class="inform_resource">
+        <p>Выс.пр.мат: {{ warehouse.mat_high_strength_allov }}</p>
+        <p>Наноелем: {{ warehouse.mat_nanoelement }}</p>
+    </div>
+    <div class="inform_resource">
+        <p>Микропроц.: {{ warehouse.mat_microprocessor_element }}</p>
+        <p>Опт.елем.: {{ warehouse.mat_fober_optic_element }}</p>
     </div>
     <div class="inform_resource">
         {% spaceless %}
-            <p>Население:</p>
-            <p>{{ user_city.population }} / {{ user_city.max_population }}</p>
-        {% endspaceless %}
-    </div>
-    <div class="inform_resource">
-        {% spaceless %}
-            <p>Энергия
-            <p>{{ user_city.use_energy }}/{{ user_city.power }}</p>
+            <p>Население: {{ user_city.population }}/{{ user_city.max_population }}</p>
+            <p>Энергия:{{ user_city.use_energy }}/{{ user_city.power }}</p>
         {% endspaceless %}
     </div>
     <div class="inform_resource">

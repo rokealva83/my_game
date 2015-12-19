@@ -34,8 +34,7 @@ def add_user(request):
             user.save()
             user_id = user.pk
             user_lucky = (random.randint(-15, 15))/100
-            time_check = user.last_login
-            last_time_check = datetime(time_check.year, time_check.month, time_check.day, 0, 0, 0, 0)
+            last_time_check = datetime.now()
             race = Race.objects.filter(id=request.POST.get('rac')).first()
 
             myuser = MyUser(

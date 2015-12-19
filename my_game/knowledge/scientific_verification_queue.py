@@ -27,9 +27,9 @@ def check_scientific_verification_queue(request):
             scientic_id = turn_scientic.id
             time_start = turn_scientic.start_time_science
             delta_time = time - time_start
-            new_delta = delta_time.seconds
+            new_delta = delta_time.total_seconds()
             delta_time = turn_scientic.finish_time_science - turn_scientic.start_time_science
-            delta = delta_time.seconds
+            delta = delta_time.total_seconds()
             if new_delta > delta:
                 scientic = UserScientic.objects.filter(user=user).first()
                 UserScientic.objects.filter(user=user).update(

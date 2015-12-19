@@ -18,7 +18,7 @@ def verification_flight(*args):
             time = timezone.now()
             time_start = flightplan_flight.start_time
             delta_time = time - time_start
-            new_delta = delta_time.seconds
+            new_delta = delta_time.total_seconds()
             delta = flightplan_flight.flight_time
             if new_delta > delta:
                 finish_time = time_start + timedelta(seconds=delta)

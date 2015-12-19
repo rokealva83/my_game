@@ -24,7 +24,7 @@ def upload_unload_veryfication(*args):
             time_start = flightplan_hold.start_time
             time_upload = flightplan_hold.time
             delta_time = time - time_start
-            new_delta = delta_time.seconds
+            new_delta = delta_time.total_seconds()
 
             if new_delta > time_upload:
                 finish_time = time_start + timedelta(seconds=time_upload)

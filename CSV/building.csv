@@ -1,2 +1,2 @@
-id,building_name,description,production_class,production_id,time_production,warehouse,max_warehouse,price_internal_currency,price_expert_deployment,assembly_workpiece,time_deployment,building_size,building_mass,power_consumption,price_chemical,price_construction_material,price_fober_optic_element,price_high_strength_allov,price_microprocessor_element,price_nanoelement
-1,"Торговая площадка","Торговая площадка",12,1,0,0,500,12500,140,7200,36000,5000,24000,150,0,0,0,0,0,0
+id,building_name,description,production_class,production_id,time_production,warehouse,max_warehouse,price_internal_currency,price_construction_material,price_chemical,price_high_strength_allov,price_nanoelement,price_microprocessor_element,price_fober_optic_element,price_expert_deployment,assembly_workpiece,time_deployment,building_size,building_mass,power_consumption
+1,"Торговая площадка","Торговая площадка",21,1,0,0,500,12500,140,7200,36000,5000,24000,150,125,43200,21600,5000,6000,250

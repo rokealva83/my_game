@@ -35,7 +35,7 @@ def produce_warehouse(request):
         elif warehouse_resource == 5:
             amount = warehouse.res_veriarit
         elif warehouse_resource == 6:
-            amount = warehouse.res_inneili
+            amount = warehouse.res_inneilit
         elif warehouse_resource == 7:
             amount = warehouse.res_renniit
         elif warehouse_resource == 8:

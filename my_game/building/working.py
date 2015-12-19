@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity, TurnBuilding
+from my_game.models import MyUser, UserCity
 from my_game.models import TurnAssemblyPiecesBuilding, TurnAssemblyPiecesFactory
 from my_game.models import ManufacturingComplex
+from my_game.models import TurnBuildingBuilding, TurnBuildingFactory
 from my_game.building import assembly_line_workpieces
 from my_game.building.delete_factory_pattern import delete_factory_pattern
 from my_game.building.install_factory_unit import install_factory_unit
@@ -55,7 +56,10 @@ def working(request):
                                                                                  user_city=session_user_city).all()
         building_turn_assembly_piecess = TurnAssemblyPiecesBuilding.objects.filter(user=session_user,
                                                                                    user_city=session_user_city).all()
-        turn_buildings = TurnBuilding.objects.filter(user=session_user, user_city=session_user_city)
+        turn_building_buildings = TurnBuildingBuilding.objects.filter(user=session_user,
+                                                                      user_city=session_user_city).all()
+        turn_building_factorys = TurnBuildingFactory.objects.filter(user=session_user,
+                                                                    user_city=session_user_city).all()
         manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city)
         user_citys = UserCity.objects.filter(user=session_user)
         request.session['user'] = session_user.id
@@ -63,6 +67,7 @@ def working(request):
         request.session['live'] = True
         output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
                   'message': message, 'factory_turn_assembly_piecess': factory_turn_assembly_piecess,
-                  'building_turn_assembly_piecess': building_turn_assembly_piecess, 'turn_buildings': turn_buildings,
+                  'building_turn_assembly_piecess': building_turn_assembly_piecess,
+                  'turn_building_buildings': turn_building_buildings, 'turn_building_factorys': turn_building_factorys,
                   'user_citys': user_citys, 'manufacturing_complexs': manufacturing_complexs}
         return render(request, "building.html", output)

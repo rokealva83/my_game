@@ -16,9 +16,9 @@ def verification_turn_ship_build(request):
             time = timezone.now()
             time_start = turn_ship_build.start_time_build
             delta_time = time - time_start
-            new_delta = delta_time.seconds
+            new_delta = delta_time.total_seconds()
             delta_time = turn_ship_build.finish_time_build - turn_ship_build.start_time_build
-            delta = delta_time.seconds
+            delta = delta_time.total_seconds()
             if new_delta > delta:
                 if turn_ship_build.process_id == 1:
                     dock = Ship.objects.filter(project_ship=turn_ship_build.project_ship, fleet_status=0).first()

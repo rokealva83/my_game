@@ -12,48 +12,48 @@
 
         {% for basic_resource in basic_resources %}
             {% if basic_resource.id == 1 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_nickel }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_nickel }}</p>
             {% endif %}
             {% if basic_resource.id == 2 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_iron }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_iron }}</p>
             {% endif %}
             {% if basic_resource.id == 3 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_cooper }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_cooper }}</p>
             {% endif %}
             {% if basic_resource.id == 4 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_aluminum }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_aluminum }}</p>
             {% endif %}
             {% if basic_resource.id == 5 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_veriarit }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_veriarit }}</p>
             {% endif %}
             {% if basic_resource.id == 6 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_inneilit }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_inneilit }}</p>
             {% endif %}
             {% if basic_resource.id == 7 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_renniit }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_renniit }}</p>
             {% endif %}
             {% if basic_resource.id == 8 %}
-                <p>{{ basic_resource.resource_name }}: {{ warehouse.res_cobalt }}</p>
+                <p>{{ basic_resource.resource_name }} &mdash; {{ warehouse.res_cobalt }}</p>
             {% endif %}
         {% endfor %}
         {% for basic_material in basic_materials %}
             {% if basic_material.id == 1 %}
-                <p>{{ basic_material.material_name }}: {{ warehouse.mat_construction_material }}</p>
+                <p>{{ basic_material.material_name }}  &mdash; {{ warehouse.mat_construction_material }}</p>
             {% endif %}
             {% if basic_material.id == 2 %}
-                <p>{{ basic_material.material_name }}: {{ warehouse.mat_chemical }}</p>
+                <p>{{ basic_material.material_name }} &mdash; {{ warehouse.mat_chemical }}</p>
             {% endif %}
             {% if basic_material.id == 3 %}
-                <p>{{ basic_material.material_name }}: {{ warehouse.mat_high_strength_allov }}</p>
+                <p>{{ basic_material.material_name }} &mdash; {{ warehouse.mat_high_strength_allov }}</p>
             {% endif %}
             {% if basic_material.id == 4 %}
-                <p>{{ basic_material.material_name }}: {{ warehouse.mat_nanoelement }}</p>
+                <p>{{ basic_material.material_name }} &mdash; {{ warehouse.mat_nanoelement }}</p>
             {% endif %}
             {% if basic_material.id == 5 %}
-                <p>{{ basic_material.material_name }}: {{ warehouse.mat_microprocessor_element }}</p>
+                <p>{{ basic_material.material_name }} &mdash; {{ warehouse.mat_microprocessor_element }}</p>
             {% endif %}
             {% if basic_material.id == 6 %}
-                <p>{{ basic_material.material_name }}: {{ warehouse.mat_fober_optic_element }}</p>
+                <p>{{ basic_material.material_name }} &mdash; {{ warehouse.mat_fober_optic_element }}</p>
             {% endif %}
 
         {% endfor %}
@@ -64,7 +64,7 @@
                     <h3><p style="text-align: center">Warehouse_factory</p></h3>
                 </label>
 
-                <div style="margin: 0px">
+                <div style="margin: 0">
                     {% if warehouse_factorys %}
                         {% for warehouse_factory in warehouse_factorys %}
                             {% for factory_pattern in factory_patterns %}
@@ -73,19 +73,17 @@
                                         <p>
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                        <span>{{ factory_pattern.name }}
-                                            <i>
-                                                {% for attribute_factory in attribute_factorys %}
-                                                    {% load my_filter %}
-                                                    {% if factory_pattern|getattribute:attribute_factory != 0 %}
-                                                        <li style="list-style-type: none">
-                                                            {{ attribute_factory }}:{{ factory_pattern|getattribute:attribute_factory }}
-                                                        </li>
-                                                    {% endif %}
-                                                {% endfor %}
-
-                                            </i> </b>: {{ warehouse_factory.amount }} </b>
-                                        </span>
+                                                <span>{{ factory_pattern.factory_name }}<i>
+                                                    {% for attribute_factory in attribute_factorys %}
+                                                        {% load my_filter %}
+                                                        {% if factory_pattern|getattribute:attribute_factory != 0 %}
+                                                            <li style="list-style-type: none">
+                                                                {{ attribute_factory }}:{{ factory_pattern|getattribute:attribute_factory }}
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </i> </b> &mdash; {{ warehouse_factory.amount }} </b>
+                                                </span>
                                             </ul>
                                         </div>
                                         </p>
@@ -95,7 +93,6 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-
             </div>
         {% endspaceless %}
         {% spaceless %}
@@ -113,19 +110,15 @@
                                     {% if hull_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ hull_pattern.name }}
-                                                        <i>
-                                                            {% for attribute_hull in attribute_hulls %}
-                                                                {% load my_filter %}
-                                                                {% if hull_pattern|getattribute:attribute_hull != 0 %}
-                                                                    <li style="list-style-type: none">
-                                                                        {{ attribute_hull }}:{{ hull_pattern|getattribute:attribute_hull }}
-                                                                    </li>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                        </i> - {{ warehouse_element.amount }}
-
-                                                    </span>
+                                                    <span>{{ hull_pattern.element_name }}<i>
+                                                        {% for attribute_hull in attribute_hulls %}
+                                                            {% load my_filter %}
+                                                            {% if hull_pattern|getattribute:attribute_hull != 0 %}
+                                                                <li style="list-style-type: none">
+                                                                    {{ attribute_hull }}:{{ hull_pattern|getattribute:attribute_hull }}
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}</i> &mdash; {{ warehouse_element.amount }}</span>
                                             </ul>
                                         </div>
                                     {% endif %}
@@ -143,7 +136,7 @@
                     <h3><p style="text-align: center">Warehouse_armor</p></h3>
                 </label>
 
-                <div style="margin: 0px">
+                <div style="margin: 0">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 2 %}
                             {% if warehouse_element.amount > 0 %}
@@ -152,7 +145,7 @@
 
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ armor_pattern.name }}
+                                                    <span>{{ armor_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_armor in attribute_armors %}
                                                                 {% load my_filter %}
@@ -163,7 +156,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -184,7 +177,7 @@
                     <h3><p style="text-align: center">Warehouse_shield</p></h3>
                 </label>
 
-                <div style="margin: 0px">
+                <div style="margin: 0">
                     {% for warehouse_element in warehouse_elements %}
                         {% if warehouse_element.element_class == 3 %}
                             {% if warehouse_element.amount > 0 %}
@@ -193,7 +186,7 @@
 
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ shield_pattern.name }}
+                                                    <span>{{ shield_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_shield in attribute_shields %}
                                                                 {% load my_filter %}
@@ -204,7 +197,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -233,7 +226,7 @@
 
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ engine_pattern.name }}
+                                                    <span>{{ engine_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_engine in attribute_engines %}
                                                                 {% load my_filter %}
@@ -244,7 +237,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -273,7 +266,7 @@
                                     {% if generator_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ generator_pattern.name }}
+                                                    <span>{{ generator_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_generator in attribute_generators %}
                                                                 {% load my_filter %}
@@ -284,7 +277,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -311,7 +304,7 @@
                                     {% if weapon_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ weapon_pattern.name }}
+                                                    <span>{{ weapon_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_weapon in attribute_weapons %}
                                                                 {% load my_filter %}
@@ -322,7 +315,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i> - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -349,7 +342,7 @@
                                     {% if shell_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ shell_pattern.name }}
+                                                    <span>{{ shell_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_shell in attribute_shells %}
                                                                 {% load my_filter %}
@@ -360,7 +353,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -387,7 +380,7 @@
                                     {% if module_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ module_pattern.name }}
+                                                    <span>{{ module_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_module in attribute_modules %}
                                                                 {% load my_filter %}
@@ -399,7 +392,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -426,7 +419,7 @@
                                     {% if device_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ device_pattern.name }}
+                                                    <span>{{ device_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_device in attribute_devices %}
                                                                 {% load my_filter %}
@@ -438,7 +431,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>
@@ -465,7 +458,7 @@
                                     {% if fuel_pattern.id == warehouse_element.element_id %}
                                         <div class="warehouse_inform">
                                             <ul style="margin: 1px 0 1px 0">
-                                                    <span>{{ fuel_pattern.name }}
+                                                    <span>{{ fuel_pattern.element_name }}
                                                         <i>
                                                             {% for attribute_fuel in attribute_fuels %}
                                                                 {% load my_filter %}
@@ -477,7 +470,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
 
-                                                        </i>  - {{ warehouse_element.amount }}
+                                                        </i> &mdash; {{ warehouse_element.amount }}
                                                     </span>
                                             </ul>
                                         </div>

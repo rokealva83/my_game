@@ -24,7 +24,7 @@ def scan_veryfication(*args):
         time = timezone.now()
         time_start = flightplan_scan.start_time
         delta_time = time - time_start
-        new_delta = delta_time.seconds
+        new_delta = delta_time.total_seconds()
         delta = flightplan_scan.time_scanning
         if new_delta > delta:
             finish_time = time_start + timedelta(seconds=delta)

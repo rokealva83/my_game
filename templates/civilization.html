@@ -18,11 +18,11 @@
             {% else %}
                 <p>Account: <b>BASIC</b></p>
             {% endif %}
-            <p>Race: {{ race.name }}</p>
-            {% if user.alliance_id != 0 %}
+            <p>Race: {{ race.race_name }}</p>
+            {% if user.alliance %}
                 <p>Alliance: </p>
             {% endif %}
-            {% if user.union_id != 0 %}
+            {% if user.union %}
                 <p>Union: </p>
             {% endif %}
             <br>

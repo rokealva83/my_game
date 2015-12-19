@@ -17,7 +17,7 @@ def colonization_veryfication(*args):
         time_start = flightplan_colonization.start_time
         time_colonization = int(flightplan_colonization.time)
         delta_time = time - time_start
-        new_delta = delta_time.seconds
+        new_delta = delta_time.total_seconds()
         if new_delta > time_colonization:
             finish_time = time_start + timedelta(seconds=time_colonization)
             if flightplan_colonization.id_command == 1:

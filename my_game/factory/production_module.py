@@ -44,47 +44,47 @@ def production_module(*args):
                 module_which_produces = FuelPattern.objects.filter(id=element_id).first()
 
             if session_user.internal_currency >= module_which_produces.price_internal_currency * \
-                    int(amount_element) and warehouse.res_construction_material >= \
+                    int(amount_element) and warehouse.mat_construction_material >= \
                             module_which_produces.price_construction_material * int(amount_element) and \
-                            warehouse.res_chemical >= module_which_produces.price_chemical * int(amount_element) and \
-                            warehouse.res_high_strength_allov >= module_which_produces.price_high_strength_allov * \
-                            int(amount_element) and warehouse.res_nanoelement >= \
+                            warehouse.mat_chemical >= module_which_produces.price_chemical * int(amount_element) and \
+                            warehouse.mat_high_strength_allov >= module_which_produces.price_high_strength_allov * \
+                            int(amount_element) and warehouse.mat_nanoelement >= \
                             module_which_produces.price_nanoelement * int(amount_element) and \
-                            warehouse.res_microprocessor_element >= module_which_produces.price_microprocessor_element * \
-                            int(amount_element) and warehouse.res_fober_optic_element >= \
+                            warehouse.mat_microprocessor_element >= module_which_produces.price_microprocessor_element * \
+                            int(amount_element) and warehouse.mat_fober_optic_element >= \
                             module_which_produces.price_fober_optic_element * int(amount_element):
 
                 new_internal_currency = session_user.internal_currency - \
                                         module_which_produces.price_internal_currency * int(amount_element)
-                new_construction_material = warehouse.res_construction_material - \
+                new_construction_material = warehouse.mat_construction_material - \
                                             module_which_produces.price_construction_material * int(amount_element)
-                new_chemical = warehouse.res_chemical - module_which_produces.price_chemical * int(amount_element)
-                new_high_strength_allov = warehouse.res_high_strength_allov - \
-                                          module_which_produces.price_res_high_strength_allov * int(amount_element)
-                new_nanoelement = warehouse.res_nanoelement - \
+                new_chemical = warehouse.mat_chemical - module_which_produces.price_chemical * int(amount_element)
+                new_high_strength_allov = warehouse.mat_high_strength_allov - \
+                                          module_which_produces.price_high_strength_allov * int(amount_element)
+                new_nanoelement = warehouse.mat_nanoelement - \
                                   module_which_produces.price_nanoelement * int(amount_element)
-                new_microprocessor_element = warehouse.res_microprocessor_element - \
+                new_microprocessor_element = warehouse.mat_microprocessor_element - \
                                              module_which_produces.price_microprocessor_element * int(amount_element)
-                new_fober_optic_element = warehouse.res_fober_optic_element - \
+                new_fober_optic_element = warehouse.mat_fober_optic_element - \
                                           module_which_produces.price_fober_optic_element * int(amount_element)
 
-                Warehouse.objects.filter(user=session_user, user_city=session_user_city).update(
-                    construction_material=new_construction_material,
-                    chemical=new_chemical,
-                    high_strength_allov=new_high_strength_allov,
-                    nanoelement=new_nanoelement,
-                    microprocessor_element=new_microprocessor_element,
-                    fober_optic_element=new_fober_optic_element
-                )
+                setattr(warehouse, 'mat_construction_material', new_construction_material)
+                setattr(warehouse, 'mat_chemical', new_chemical)
+                setattr(warehouse, 'mat_high_strength_allov', new_high_strength_allov)
+                setattr(warehouse, 'mat_nanoelement', new_nanoelement)
+                setattr(warehouse, 'mat_microprocessor_element', new_microprocessor_element)
+                setattr(warehouse, 'mat_fober_optic_element', new_fober_optic_element)
+                warehouse.save()
+                setattr(session_user, 'internal_currency', new_internal_currency)
+                session_user.save()
 
-                MyUser.objects.filter(user_id=session_user.id).update(internal_currency=new_internal_currency)
                 turn_productions = TurnProduction.objects.filter(user=session_user, user_city=session_user_city,
                                                                  factory=factory).last()
                 if turn_productions is not None:
                     start_making = turn_productions.finish_time_production
                 else:
                     start_making = datetime.now()
-                build_time = factory.time_production * int(amount_element)
+                build_time = factory.factory_pattern.time_production * int(amount_element)
                 finish_making = start_making + timedelta(seconds=build_time)
                 turn_production = TurnProduction(
                     user=session_user,

@@ -4,13 +4,27 @@ from django.db import models
 from my_game.models import MyUser, UserCity, ProjectShip, ManufacturingComplex, FactoryInstalled, FactoryPattern, BuildingPattern
 
 
-class TurnBuilding(models.Model):
+class TurnBuildingBuilding(models.Model):
     class Meta:
-        db_table = 'turn_building'
+        db_table = 'turn_building_building'
 
     user = models.ForeignKey(MyUser, db_index=True)
     user_city = models.ForeignKey(UserCity, db_index=True)
-    factory = models.IntegerField(default=0)
+    factory = models.ForeignKey(BuildingPattern)
+    class_id = models.IntegerField(default=0)
+    x = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
+    z = models.IntegerField(default=0)
+    start_time_deployment = models.DateTimeField()
+    finish_time_deployment = models.DateTimeField()
+
+class TurnBuildingFactory(models.Model):
+    class Meta:
+        db_table = 'turn_building_factory'
+
+    user = models.ForeignKey(MyUser, db_index=True)
+    user_city = models.ForeignKey(UserCity, db_index=True)
+    factory = models.ForeignKey(FactoryPattern)
     class_id = models.IntegerField(default=0)
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)

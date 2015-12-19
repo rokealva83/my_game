@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from my_game.models import MyUser, TurnAssemblyPiecesFactory, TurnAssemblyPiecesBuilding
 from my_game.models import FactoryPattern, BuildingPattern
+from my_game.models import UserVariables
 
 
 # Создание из шаблона заготовки
@@ -12,6 +13,8 @@ def making_factory_unit(*args):
     amount_factory_unit = int(args[2])
     pattern_id = int(args[3])
     class_id = int(args[4])
+
+    user_variables = UserVariables.objects.first()
 
     warehouse = session_user_city.warehouse
     if class_id != 21:
@@ -23,7 +26,7 @@ def making_factory_unit(*args):
         turn_assembly_pieces = TurnAssemblyPiecesBuilding.objects.filter(user=session_user, user_city=session_user_city).all()
         len_turn_assembly_pieces = len(turn_assembly_pieces)
 
-    if len_turn_assembly_pieces < 3:
+    if len_turn_assembly_pieces < user_variables.max_turn_building_basic:
 
         # Проверка наличия ресурсов
         if session_user.internal_currency >= factory_pattern_making.price_internal_currency and \

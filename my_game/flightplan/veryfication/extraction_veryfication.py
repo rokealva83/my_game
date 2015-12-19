@@ -19,7 +19,7 @@ def extraction_veryfication(*args):
         time_start = flightplan_extraction.start_time
         time_extraction = int(flightplan_extraction.time_extraction)
         delta_time = time - time_start
-        new_delta = delta_time.seconds
+        new_delta = delta_time.total_seconds()
         if time_extraction > new_delta:
             delta = new_delta
             finish_time = time + timedelta(seconds=time_extraction)

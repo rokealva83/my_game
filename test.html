@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+    function get_timer_130(string_was_130, string_sec_130) {
+        var date_new_was_130 = new Date(string_was_130);
+        var date_new_sec_130 = string_sec_130;
+        var date_130 = new Date();
+        var razn_130, left_130, left_n_130, vraz_130, ost_130;
+        razn_130 = date_130 - date_new_was_130;
+        left_130 = date_new_sec_130 - razn_130;
+        if (left_130 > 0) {
+            left_n_130 = left_130;
+        } else {
+            if (Math.abs(left_130) > date_new_sec_130) {
+                vraz_130 = (Math.abs(left_130)) / date_new_sec_130;
+                vraz_130 = vraz_130.toString().split(".");
+                left_n_130 = Math.abs(left_130) - (vraz_130[0]) * date_new_sec_130;
+                left_n_130 = date_new_sec_130 - left_n_130;
+            } else {
+                left_n_130 = date_new_sec_130 - Math.abs(left_130);
+            }
+        }
+        ost_130 = left_n_130;
+        var day_130 = parseInt(ost_130 / (60 * 60 * 1000 * 24));
+        if (day_130 < 10) {
+            day_130 = "0" + day_130;
+        }
+        day_130 = day_130.toString();
+        var hour_130 = parseInt(ost_130 / (60 * 60 * 1000)) % 24;
+        if (hour_130 < 10) {
+            hour_130 = "0" + hour_130;
+        }
+        hour_130 = hour_130.toString();
+        var min_130 = parseInt(ost_130 / (1000 * 60)) % 60;
+        if (min_130 < 10) {
+            min_130 = "0" + min_130;
+        }
+        min_130 = min_130.toString();
+        var sec_130 = parseInt(ost_130 / 1000) % 60;
+        if (sec_130 < 10) {
+            sec_130 = "0" + sec_130;
+        }
+        sec_130 = sec_130.toString();
+        timethis_130 = day_130 + " : " + hour_130 + " : " + min_130 + " : " + sec_130;
+        $(".timerhello_130 p.result .result-day").text(day_130);
+        $(".timerhello_130 p.result .result-hour").text(hour_130);
+        $(".timerhello_130 p.result .result-minute").text(min_130);
+        $(".timerhello_130 p.result .result-second").text(sec_130);
+    }
+    function getfrominputs_130() {
+        string_was_130 = "Sat Dec 19 2015 17:21:23 GMT+0200 (EET)";
+        var string_sec_130 = function('.time').value();
+        alert(string_sec_130);
+        get_timer_130(string_was_130, string_sec_130);
+        setInterval(function () {
+            get_timer_130(string_was_130, string_sec_130);
+        }, 1000);
+    }
+    $(document).ready(function () {
+        getfrominputs_130();
+    });
+</script>
+    <title></title>
+</head>
+<body>
+<!-- HelloTimer http://hello-site.ru/timer/ -->
+
+<style type="text/css">/*третий*/
+    body{
+        font-size: 12px;
+    }
+    .third-my {
+        width: 200px;
+        padding: 0px;
+        text-align: center;
+    }
+
+    .third-my .result span.items {
+        padding: 0;
+        display: inline-block;
+        margin: 0;
+        color: black;
+        min-width: 20px;
+        letter-spacing: 0;
+    }
+
+    .third-my .result span.dot {
+        margin: 0 -1px;
+        position: relative;
+        left: -4px;
+        font-weight: bold;
+    }
+
+    .third-my .result span.firstnum {
+        font-weight: bold;
+    }
+
+    .third-my .result {
+        margin: 0 auto;
+        width: 170px;
+    }
+
+    .third-my .titles {
+        position: relative;
+        height: 0;
+        right: -23px;
+        width: 300px;
+    }
+
+    .third-my .titles span {
+        position: relative;
+        top: 12px;
+    }
+
+    .third-my .titles span.mm {
+        right: 18px;
+    }
+
+    .third-my .titles span.hh {
+        right: 40px;
+    }
+
+    .third-my .titles span.dd {
+        right: 62px;
+    }
+
+    .third-my p.titloftimer {
+        margin: 0 auto;
+        left: 10px;
+        position: relative;
+    }
+
+    /*ресет*/
+    .timerhello span {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        vertical-align: baseline;
+    }
+
+    .timerhello p {
+        color: #191919;
+        font-family: Verdana, sans-serif;
+        margin: 0 0 10px 0;
+        line-height: 17px;
+    }
+
+    .clearf {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+
+    p.hellotimercopy {
+        display: none !important;
+    } </style>
+    <div class="third-my timerhello timerhello_130">
+        <div class="third-my-content">
+            <p class="titloftimer">До Нового года:</p>
+            <br>
+
+            <p class="result">
+                <p class="time">5000</p>
+                <span class="result-day firstnum">05</span>
+                <span class="dot">&nbsp; days</span>
+                <span class="result-hour items">18</span>
+                <span class="dot">:</span>
+                <span class="result-minute items">53</span>
+                <span class="dot">:</span>
+                <span class="result-second items">15</span>
+            </p>
+
+            <div class="clearf"></div>
+        </div>
+    </div>
+    <p class="hellotimercopy"><a href="http://hello-site.ru">Hello-Site.ru. Бесплатный конструктор сайтов.</a></p>
+    <!-- HelloTimer http://hello-site.ru/timer/ -->
+</body>
+</html>
