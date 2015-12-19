@@ -56,7 +56,7 @@ def empty_fleet_hold(request):
                           mass_shipment, size)
 
             resource_amount = my_dictionary.get('amount_resource2')
-            if resource_amount is not None and resource_amount[0] != 0:
+            if resource_amount and resource_amount[0] != 0:
                 shipment_id = 2
                 class_shipment = 0
                 size = int(resource_amount[0])

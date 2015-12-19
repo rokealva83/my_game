@@ -99,7 +99,7 @@ def delete_ship(request):
                         if element_pattern:
                             fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet=fleet,
                                                                                            class_process=1).first()
-                            new_process_per_minute = fleet_parametr_build.process_per_minute - \
+                            new_process_per_minute = fleet_parametr_build.process_per_minute -\
                                                      element_pattern.param2 * amount_ship
                             if new_process_per_minute == 0:
                                 FleetParametrBuildRepair.objects.filter(fleet=fleet, class_process=1).delete()

@@ -37,20 +37,18 @@ from my_game.designing_ships import new_ship as new_ship
 from my_game.designing_ships import work_with_project as work_with_project
 
 from my_game.space_forces import work_with_ship as modificate_ship
-from my_game.space_forces import
-
-
-
+from my_game.space_forces.action_modificate_ship import action_modificate_ship
+from my_game.space_forces.choise_project import choise_project
 from my_game.space_forces import views as space_forces
-from my_game.space_forces import fleet_flightplan as fleet_flightplan
-from my_game.space_forces import fleet_management as fleet_management
-from my_game.space_forces import delete_ship as delete_ship
-from my_game.space_forces import add_ship as add_ship
-from my_game.space_forces import start_flight as start_flight
-from my_game.space_forces import fleet_hold as fleet_hold
-from my_game.space_forces import empty_fleet_hold as empty_fleet_hold
-from my_game.space_forces import fuel_tank as fuel_tank
-from my_game.space_forces import empty_fuel_tank as empty_fuel_tank
+from my_game.space_forces.fleet_flightplan import fleet_flightplan
+from my_game.space_forces.fleet_management import fleet_manage
+from my_game.space_forces.delete_ship import delete_ship
+from my_game.space_forces.add_ship import add_ship
+from my_game.space_forces.start_flight import start_flightplan
+from my_game.space_forces.fleet_hold import fleet_hold
+from my_game.space_forces.empty_fleet_hold import empty_fleet_hold
+from my_game.space_forces.fuel_tank import fuel_tank
+from my_game.space_forces.empty_fuel_tank import empty_fuel_tank
 
 from my_game.trade import views as trade
 from my_game.trade import add_trade_element as add_trade_element
@@ -108,20 +106,20 @@ urlpatterns = patterns('',
                        url(r'^designingships', design_views.designingships),
                        url(r'^new_ship', new_ship.new_ship),
                        url(r'^modificate_ship', modificate_ship.modificate_ship),
-                       url(r'^choise_project', modificate_ship.choise_project),
-                       url(r'^action_modificate_ship', modificate_ship.action_modificate_ship),
+                       url(r'^choise_project', choise_project),
+                       url(r'^action_modificate_ship', action_modificate_ship),
                        url(r'^work_with_project', work_with_project.work_with_project),
 
                        url(r'^space_forces', space_forces.space_forces),
-                       url(r'^fleet_manage', fleet_management.fleet_manage),
-                       url(r'^delete_ship', delete_ship.delete_ship),
-                       url(r'^add_ship', add_ship.add_ship),
-                       url(r'^fleet_flightplan', fleet_flightplan.fleet_flightplan),
-                       url(r'^start_flight', start_flight.start_flightplan),
-                       url(r'^fleet_hold', fleet_hold.fleet_hold),
-                       url(r'^empty_fleet_hold', empty_fleet_hold.empty_fleet_hold),
-                       url(r'^fuel_tank', fuel_tank.fuel_tank),
-                       url(r'^empty_fuel_tank', empty_fuel_tank.empty_fuel_tank),
+                       url(r'^fleet_manage', fleet_manage),
+                       url(r'^delete_ship', delete_ship),
+                       url(r'^add_ship', add_ship),
+                       url(r'^fleet_flightplan', fleet_flightplan),
+                       url(r'^start_flight', start_flightplan),
+                       url(r'^fleet_hold', fleet_hold),
+                       url(r'^empty_fleet_hold', empty_fleet_hold),
+                       url(r'^fuel_tank', fuel_tank),
+                       url(r'^empty_fuel_tank', empty_fuel_tank),
 
                        url(r'^trade', trade.trade),
                        url(r'^new_trade_space', trade.new_trade_space),

@@ -38,9 +38,8 @@ def modificate_ship(request):
     ship_patterns = ProjectShip.objects.filter(user=session_user).all()
     warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
     user_citys = UserCity.objects.filter(user=int(session_user))
-    output = {'user': user, 'warehouses': warehouses, 'user_city': user_city, 'user_citys': user_citys,
-              'armors': armors,
-              'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
+    output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city, 'user_citys': user_citys,
+              'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
               'main_weapons': main_weapons, 'modules': modules, 'turn_ship_builds': turn_ship_builds,
               'modificate_ship_hull': modificate_ship_hull, 'modificate_ship_elements': modificate_ship_elements,
               'modificate_ship_id': modificate_ship_id, 'ship_patterns': ship_patterns, 'ship_amount': ship_amount,

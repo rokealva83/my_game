@@ -36,8 +36,8 @@ def add_ship(request):
                 ship_id = int(ship_id_dict[i])
             else:
                 message = 'Error'
-                user_citys = UserCity.objects.filter(user=int(session_user))
-                user_fleets = Fleet.objects.filter(user=session_user)
+                user_citys = UserCity.objects.filter(user=session_user).all()
+                user_fleets = Fleet.objects.filter(user=session_user).all()
                 ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
                 ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
                 command = 0
