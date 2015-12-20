@@ -9,7 +9,7 @@ from my_game.models import ProjectShip, TurnShipBuild, Ship, ElementShip
 
 def verification_turn_ship_build(request):
     user = request
-    user_citys = UserCity.objects.filter(user=user)
+    user_citys = UserCity.objects.filter(user=user).all()
     for user_city in user_citys:
         turn_ship_build = TurnShipBuild.objects.filter(user=user, user_city=user_city).first()
         if turn_ship_build:
@@ -31,7 +31,7 @@ def verification_turn_ship_build(request):
                         dock = Ship(
                             user=user,
                             project_ship=create_ship,
-                            name=create_ship.name,
+                            ship_name=create_ship.project_name,
                             amount_ship=turn_ship_build.amount,
                             fleet_status=0,
                             place_id=user_city.id
@@ -72,7 +72,7 @@ def verification_turn_ship_build(request):
                         dock = Ship(
                             user=user,
                             project_ship=turn_ship_build.project_ship,
-                            name=create_ship.name,
+                            ship_name=create_ship.project_name,
                             amount_ship=turn_ship_build.amount,
                             fleet_status=0,
                             place_id=user_city.id

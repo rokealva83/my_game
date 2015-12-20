@@ -19,7 +19,7 @@
                         <select name="new_ship_id" class="scientic">
                             <option selected disabled>Choise project</option>
                             {% for ship_pattern in ship_patterns %}
-                                <option value="{{ ship_pattern.id }}"> {{ ship_pattern.name }} </option>
+                                <option value="{{ ship_pattern.id }}"> {{ ship_pattern.project_name }} </option>
                             {% endfor %}
                         </select>
                         <input type="hidden" id="{{ modificate_ship_id }}"
@@ -57,10 +57,10 @@
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 2 %}
                                             {% for armor in armors %}
-                                                {% if armor.id == modificate_ship_element.id_element_pattern %}
-                                                    <h3> {{ armor.name }} ( {{ armor.value_energy_resistance }}
+                                                {% if armor.id == modificate_ship_element.element_pattern_id %}
+                                                    <h3> {{ armor.element_name }} ( {{ armor.value_energy_resistance }}
                                                         / {{ armor.value_phisical_resistance }}
-                                                        / {{ armor.regeneration }}
+                                                        / {{ armor.armor_regeneration }}
                                                         ) - елемент размещен
                                                         {% if modificate_ship_element.position == 1 %}
                                                             вверху корабля
@@ -89,8 +89,8 @@
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 2 %}
                                                 {% for armor in armors %}
-                                                    {% if armor.id == new_ship_element.id_element_pattern %}
-                                                        <h3> {{ armor.name }} ( {{ armor.value_energy_resistance }}
+                                                    {% if armor.id == new_ship_element.element_pattern_id %}
+                                                        <h3> {{ armor.element_name }} ( {{ armor.value_energy_resistance }}
                                                             / {{ armor.value_phisical_resistance }}
                                                             / {{ armor.regeneration }}
                                                             ) - елемент размещен
@@ -129,8 +129,8 @@
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 3 %}
                                             {% for shield in shields %}
-                                                {% if shield.id == modificate_ship_element.id_element_pattern %}
-                                                    <h3> {{ shield.name }} ( {{ shield.value_energy_resistance }}
+                                                {% if shield.id == modificate_ship_element.element_pattern_id %}
+                                                    <h3> {{ shield.element_name }} ( {{ shield.value_energy_resistance }}
                                                         / {{ shield.value_phisical_resistance }}
                                                         / {{ shield.regeneration }}
                                                         ) - елемент размещен
@@ -160,8 +160,8 @@
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 3 %}
                                                 {% for shield in shields %}
-                                                    {% if shield.id == new_ship_element.id_element_pattern %}
-                                                        <h3> {{ shield.name }} ( {{ shield.value_energy_resistance }}
+                                                    {% if shield.id == new_ship_element.element_pattern_id %}
+                                                        <h3> {{ shield.element_name }} ( {{ shield.value_energy_resistance }}
                                                             / {{ shield.value_phisical_resistance }}
                                                             / {{ shield.regeneration }}
                                                             ) - елемент размещен
@@ -200,8 +200,8 @@
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 4 %}
                                             {% for engine in engines %}
-                                                {% if engine.id == modificate_ship_element.id_element_pattern %}
-                                                    <h3> {{ engine.name }} ( {{ engine.system_power }}
+                                                {% if engine.id == modificate_ship_element.element_pattern_id %}
+                                                    <h3> {{ engine.element_name }} ( {{ engine.system_power }}
                                                         / {{ engine.intersystem_power }} / {{ engine.giper_power }}
                                                         / {{ engine.nullT_power }}) - елемент размещен
                                                         {% if modificate_ship_element.position == 1 %}
@@ -230,8 +230,8 @@
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 4 %}
                                                 {% for engine in engines %}
-                                                    {% if engine.id == new_ship_element.id_element_pattern %}
-                                                        <h3> {{ engine.name }} ( {{ engine.system_power }}
+                                                    {% if engine.id == new_ship_element.element_pattern_id %}
+                                                        <h3> {{ engine.element_name }} ( {{ engine.system_power }}
                                                             / {{ engine.intersystem_power }} / {{ engine.giper_power }}
                                                             / {{ engine.nullT_power }}
                                                             ) - елемент размещен
@@ -270,8 +270,8 @@
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 5 %}
                                             {% for generator in generators %}
-                                                {% if generator.id == modificate_ship_element.id_element_pattern %}
-                                                    <h3> {{ generator.name }} ( {{ generator.produced_energy }}
+                                                {% if generator.id == modificate_ship_element.element_pattern_id %}
+                                                    <h3> {{ generator.element_name }} ( {{ generator.produced_energy }}
                                                         / {{ generator.fuel_necessary }}) - елемент размещен
                                                         {% if modificate_ship_element.position == 1 %}
                                                             вверху корабля
@@ -299,8 +299,8 @@
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 5 %}
                                                 {% for generator in generators %}
-                                                    {% if generator.id == new_ship_element.id_element_pattern %}
-                                                        <h3> {{ generator.name }}
+                                                    {% if generator.id == new_ship_element.element_pattern_id %}
+                                                        <h3> {{ generator.element_name }}
                                                             ( {{ generator.produced_energy }}
                                                             / {{ generator.fuel_necessary }}
                                                             ) - елемент размещен
@@ -339,8 +339,8 @@
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 6 %}
                                             {% for weapon in weapons %}
-                                                {% if weapon.id == modificate_ship_element.id_element_pattern %}
-                                                    <h3> {{ weapon.name }}
+                                                {% if weapon.id == modificate_ship_element.element_pattern_id %}
+                                                    <h3> {{ weapon.element_name }}
                                                         {% if weapon.energy_damage %}
                                                             ( {{ weapon.energy_damage }}
                                                             / {{ weapon.regenerations }} )
@@ -374,8 +374,8 @@
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 6 %}
                                                 {% for weapon in weapons %}
-                                                    {% if weapon.id == new_ship_element.id_element_pattern %}
-                                                        <h3> {{ weapon.name }}
+                                                    {% if weapon.id == new_ship_element.element_pattern_id %}
+                                                        <h3> {{ weapon.element_name }}
                                                             {% if weapon.energy_damage %}
                                                                 ( {{ weapon.energy_damage }}
                                                                 / {{ weapon.regenerations }} )
@@ -418,8 +418,8 @@
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 7 %}
                                             {% for weapon in weapons %}
-                                                {% if weapon.id == modificate_ship_element.id_element_pattern %}
-                                                    <h3> {{ weapon.name }}
+                                                {% if weapon.id == modificate_ship_element.element_pattern_id %}
+                                                    <h3> {{ weapon.element_name }}
                                                         {% if weapon.energy_damage %}
                                                             ( {{ weapon.energy_damage }}
                                                             / {{ weapon.regenerations }} )
@@ -452,8 +452,8 @@
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 7 %}
                                                 {% for weapon in weapons %}
-                                                    {% if weapon.id == new_ship_element.id_element_pattern %}
-                                                        <h3> {{ weapon.name }}
+                                                    {% if weapon.id == new_ship_element.element_pattern_id %}
+                                                        <h3> {{ weapon.element_name }}
                                                             {% if weapon.energy_damage %}
                                                                 ( {{ weapon.energy_damage }}
                                                                 / {{ weapon.regenerations }} )
@@ -496,8 +496,8 @@
                                     {% for modificate_ship_element in modificate_ship_elements %}
                                         {% if modificate_ship_element.class_element == 8 %}
                                             {% for module in modules %}
-                                                {% if module.id == modificate_ship_element.id_element_pattern %}
-                                                    <h3> {{ module.name }} ( {{ module.param1 }}
+                                                {% if module.id == modificate_ship_element.element_pattern_id %}
+                                                    <h3> {{ module.element_name }} ( {{ module.param1 }}
                                                         / {{ module.param2 }} / {{ module.param3 }}) - елемент размещен
                                                         {% if modificate_ship_element.position == 1 %}
                                                             вверху корабля
@@ -525,8 +525,8 @@
                                         {% for new_ship_element in new_ship_elements %}
                                             {% if new_ship_element.class_element == 8 %}
                                                 {% for module in modules %}
-                                                    {% if module.id == new_ship_element.id_element_pattern %}
-                                                        <h3> {{ module.name }} ( {{ module.param1 }}
+                                                    {% if module.id == new_ship_element.element_pattern_id %}
+                                                        <h3> {{ module.element_name }} ( {{ module.param1 }}
                                                             / {{ module.param2 }} / {{ module.param3 }}
                                                             ) - елемент размещен
                                                             {% if new_ship_element.position == 1 %}

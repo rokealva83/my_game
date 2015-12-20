@@ -4,7 +4,7 @@
     opacity: 0.8;
     border-radius: 7px;
     float: left;
-    margin: 5px 5px 0px 5px;
+    margin: 5px 5px 0 5px;
     border: 1px solid #000000;
     padding: 8px;
 }
@@ -15,7 +15,7 @@
     opacity: 0.8;
     border-radius: 7px;
     float: left;
-    margin: 5px 5px 0px 5px;
+    margin: 5px 5px 0 5px;
     border: 1px solid #000000;
     padding: 8px;
 }
@@ -157,7 +157,6 @@
     color: rgb(0, 0, 0);
 }
 
-
 .design_place {
     display: inline-block;
     width: 150px;
@@ -171,4 +170,20 @@
     border-radius: 6px;
     background: #c0c0c0;
     color: rgb(0, 0, 0);
+}
+
+.project_link {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.project_link:hover {
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    font-weight: bold;
+    color: #151515;
+    font-style: italic;
 }

@@ -23,9 +23,9 @@
                                         <option value="{{ armor.id }}"
                                                 data-value_energy_resistance="{{ armor.value_energy_resistance }}"
                                                 data-value_phisical_resistance="{{ armor.value_phisical_resistance }}"
-                                                data-power_consuption="{{ armor.power }}"
-                                                data-regeneration="{{ armor.regeneration }}"
-                                                data-mass="{{ armor.mass }}">{{ armor.name }}</option>
+                                                data-power_consuption="{{ armor.armor_power }}"
+                                                data-regeneration="{{ armor.armor_regeneration }}"
+                                                data-mass="{{ armor.armor_mass }}">{{ armor.element_name }}</option>
                                     {% endfor %}
                                 </select>
                                 <select name="choice_armor_side" class="design_button"
@@ -58,9 +58,9 @@
                                                             {{ shield.value_energy_resistance }}"
                                                 data-value_phisical_resistance="{{ shield.value_phisical_resistance }}"
                                                 data-power_consuption="{{ shield.power_consuption }}"
-                                                data-regeneration="{{ shield.regeneration }}"
+                                                data-regeneration="{{ shield.shield_regeneration }}"
                                                 data-number_of_emitter="{{ shield.number_of_emitter }}"
-                                                data-mass="{{ shield.mass }}"> {{ shield.name }} </option>
+                                                data-mass="{{ shield.shield_mass }}"> {{ shield.element_name }} </option>
                                     {% endfor %}
                                 </select>
                                 <select name="choice_shield_side" class="design_button"
@@ -94,9 +94,9 @@
                                                 data-intersystem_power="{{ engine.intersystem_power }}"
                                                 data-giper_power="{{ engine.giper_power }}"
                                                 data-nullT_power="{{ engine.nullT_power }}"
-                                                data-mass="{{ engine.mass }}"
-                                                data-size="{{ engine.size }}"
-                                                data-power_consuption="{{ engine.power_consuption }}"> {{ engine.name }} </option>
+                                                data-mass="{{ engine.engine_mass }}"
+                                                data-size="{{ engine.engine_size }}"
+                                                data-power_consuption="{{ engine.power_consuption }}"> {{ engine.element_name }} </option>
                                     {% endfor %}
                                 </select>
                                 <select name="choice_engine_side" class="design_button">
@@ -122,8 +122,9 @@
                                         <option value="{{ generator.id }}"
                                                 data-produced_energy="{{ generator.produced_energy }}"
                                                 data-fuel_necessary="{{ generator.fuel_necessary }}"
-                                                data-mass="{{ generator.mass }}"
-                                                data-size="{{ generator.size }}"> {{ generator.name }} </option>
+                                                data-mass="{{ generator.generator_mass }}"
+                                                data-size="{{ generator.generator_size }}">
+                                                {{ generator.element_name }} </option>
                                     {% endfor %}
                                 </select>
                             </p>
@@ -143,14 +144,14 @@
                                     <option value="0">Выберите елемент</option>
                                     {% for weapon in weapons %}
                                         <option value="{{ weapon.id }}"
-                                                data-energy_damage="{{ weapon.energy_damage }}"
-                                                data-regenerations="{{ weapon.regenerations }}"
+                                                data-energy_damage="{{ weapon.weapon_energy_damage }}"
+                                                data-regenerations="{{ weapon.weapon_regenerations }}"
                                                 data-number_of_bursts="{{ weapon.number_of_bursts }}"
-                                                data-range="{{ weapon.range }}"
-                                                data-accuracy="{{ weapon.accuracy }}"
-                                                data-mass="{{ weapon.mass }}"
-                                                data-size="{{ weapon.size }}"
-                                                data-power_consuption="{{ weapon.power_consuption }}"> {{ weapon.name }} </option>
+                                                data-range="{{ weapon.weapon_range }}"
+                                                data-accuracy="{{ weapon.weapon_accuracy }}"
+                                                data-mass="{{ weapon.weapon_mass }}"
+                                                data-size="{{ weapon.weapon_size }}"
+                                                data-power_consuption="{{ weapon.power_consuption }}"> {{ weapon.element_name }} </option>
                                     {% endfor %}
                                 </select>
                                 <select name="choice_weapon_side" class="design_button"
@@ -179,14 +180,14 @@
                                     <option value="0">Выберите елемент</option>
                                     {% for main_weapon in main_weapons %}
                                         <option value="{{ main_weapon.id }}"
-                                                data-energy_damage="{{ weapon.energy_damage }}"
-                                                data-regenerations="{{ weapon.regenerations }}"
+                                                data-energy_damage="{{ weapon.weapon_energy_damage }}"
+                                                data-regenerations="{{ weapon.weapon_regenerations }}"
                                                 data-number_of_bursts="{{ weapon.number_of_bursts }}"
-                                                data-range="{{ weapon.range }}"
-                                                data-accuracy="{{ weapon.accuracy }}"
-                                                data-mass="{{ weapon.mass }}"
-                                                data-size="{{ weapon.size }}"
-                                                data-power_consuption="{{ weapon.power_consuption }}"> {{ main_weapon.name }} </option>
+                                                data-range="{{ weapon.weapon_range }}"
+                                                data-accuracy="{{ weapon.weapon_accuracy }}"
+                                                data-mass="{{ weapon.weapon_mass }}"
+                                                data-size="{{ weapon.weapon_size }}"
+                                                data-power_consuption="{{ weapon.power_consuption }}"> {{ main_weapon.element_name }} </option>
                                     {% endfor %}
                                 </select>
                                 <select name="choice_main_weapon_side" class="design_button">
@@ -212,10 +213,10 @@
                                                 data-param1="{{ module.param1 }}"
                                                 data-param2="{{ module.param2 }}"
                                                 data-param3="{{ module.param3 }}"
-                                                data-mass="{{ module.mass }}"
-                                                data-size="{{ module.size }}"
+                                                data-mass="{{ module.module_mass }}"
+                                                data-size="{{ module.module_size }}"
                                                 data-power_consuption="{{ module.power_consuption }}"
-                                                > {{ module.name }} </option>
+                                                > {{ module.element_name }} </option>
                                     {% endfor %}
                                 </select>
                             </p>

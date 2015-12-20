@@ -2,11 +2,12 @@
 
 from datetime import datetime, timedelta
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import MyUser, UserCity
 from my_game.models import WarehouseElement
 from my_game import function
 from my_game.models import ProjectShip, ElementShip, TurnShipBuild
 from my_game.models import HullPattern
+from my_game.space_forces.view_ship_project import view_ship_project
 
 
 def work_with_project(request):
@@ -25,7 +26,7 @@ def work_with_project(request):
                 ship_pattern = ProjectShip.objects.filter(id=ship_id).first()
                 warehouse_hull = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city,
                                                                  element_class=1,
-                                                                 element_id=ship_pattern.hull_pattern).first()
+                                                                 element_id=ship_pattern.hull_pattern.id).first()
                 if warehouse_hull is not None and warehouse_hull.amount >= amount_ship:
                     error = 0
                     for i in range(2, 9):
@@ -47,7 +48,7 @@ def work_with_project(request):
                                                                                         element_class=j,
                                                                                         element_id=element_id).first()
                                     if warehouse_element <= number_element * amount_ship:
-                                        error = error + 1
+                                        error += 1
                                     work_element_id = element_id
                     if error == 0:
                         last_ship_build = TurnShipBuild.objects.filter(user=session_user,
@@ -60,7 +61,7 @@ def work_with_project(request):
                         turn_create_ship = TurnShipBuild(
                             user=session_user,
                             user_city=session_user_city,
-                            projact_ship=ship_pattern,
+                            project_ship=ship_pattern,
                             amount=amount_ship,
                             start_time_build=start_time,
                             finish_time_build=finish_time,
@@ -105,15 +106,18 @@ def work_with_project(request):
             ElementShip.objects.filter(project_ship=ship_id).all().delete()
             message = 'Проект удален'
 
-        warehouses = Warehouse.objects.filter(user=session_user, user_city=session_user_city).order_by('resource_id')
-        user_citys = UserCity.objects.filter(user=int(session_user))
-        hulls = HullPattern.objects.filter(user=session_user).all()
+        if request.POST.get('view_ship_project'):
+            output = view_ship_project(request)
+            return render(request, "designingships.html", output)
+
+        user_citys = UserCity.objects.filter(user=session_user)
+        hulls = HullPattern.objects.filter(user=session_user).order_by('basic_pattern')
         project_ships = ProjectShip.objects.filter(user=session_user).order_by('id')
         turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
         request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
-        output = {'user': session_user, 'warehouses': warehouses, 'user_city': session_user_city,
+        output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
                   'user_citys': user_citys, 'hulls': hulls, 'project_ships': project_ships,
                   'turn_ship_builds': turn_ship_builds, 'message': message}
         return render(request, "designingships.html", output)

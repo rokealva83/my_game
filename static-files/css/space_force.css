@@ -1,28 +1,29 @@
 /* Space force Styles */
-p{
+p {
     font-size: 12px;
 }
 
-.left_block_force{
+.left_block_force {
     width: 550px;
     background-color: #616161;
     opacity: 0.75;
     border-radius: 7px;
     float: left;
-    margin: 5px 5px 0px 5px;
+    margin: 5px 5px 0 5px;
     border: 1px solid #000000;
 }
-.right_block_force{
+
+.right_block_force {
     width: 460px;
     background-color: #616161;
     opacity: 0.75;
     border-radius: 7px;
     float: left;
-    margin: 5px 5px 0px 5px;
+    margin: 5px 5px 0 5px;
     border: 1px solid #000000;
 }
 
-.button_force{
+.button_force {
     display: inline-block;
     width: 110px;
     height: 18px;
@@ -39,7 +40,7 @@ p{
     color: rgb(0, 0, 0);
 }
 
-.button_force:hover{
+.button_force:hover {
     display: inline-block;
     width: 110px;
     height: 18px;
@@ -56,8 +57,7 @@ p{
     color: rgb(208, 208, 208);
 }
 
-
-.list_force{
+.list_force {
     display: inline-block;
     width: 125px;
     height: 18px;
@@ -74,8 +74,7 @@ p{
     color: rgb(0, 0, 0);
 }
 
-
-.list_force:hover{
+.list_force:hover {
     display: inline-block;
     width: 125px;
     height: 18px;
@@ -105,7 +104,7 @@ p{
     background: #c0c0c0;
 }
 
-.number_ship{
+.number_ship {
     display: inline-block;
     width: 50px;
     height: 18px;
@@ -118,7 +117,6 @@ p{
     background: #c0c0c0;
 }
 
-
 .flightplan_checkbox {
     display: inline-block;
     width: 14px;
@@ -127,8 +125,7 @@ p{
     vertical-align: middle;
 }
 
-
-.fleet_number{
+.fleet_number {
     display: inline-block;
     width: 75px;
     height: 18px;
@@ -141,14 +138,12 @@ p{
     background: #c0c0c0;
 }
 
-
-.operation{
+.operation {
     width: 100%;
     border-bottom: 1px solid black;
     margin-top: 3px;
     margin-bottom: 3px;
 }
-
 
 .coordinate_place {
     display: inline-block;
@@ -169,7 +164,7 @@ p{
     display: inline-block;
     width: 17px;
     height: 20px;
-    margin-top: 0px;
+    margin-top: 0;
     vertical-align: middle;
 }
 
@@ -181,17 +176,17 @@ p{
     padding: 2px 0 7px 0;
 }
 
-.fleet p{
+.fleet p {
     margin-bottom: -5px;
     margin-top: -5px;
 }
 
-td p{
+td p {
     margin-bottom: -5px;
     margin-top: -5px;
 }
 
-.delete_button{
+.delete_button {
     display: inline-block;
     width: 75px;
     height: 18px;
@@ -208,7 +203,7 @@ td p{
     color: rgb(0, 0, 0);
 }
 
-.delete_button:hover{
+.delete_button:hover {
     display: inline-block;
     width: 75px;
     height: 18px;
@@ -223,4 +218,20 @@ td p{
     background: rgb(50, 50, 50) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
     box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
     color: rgb(208, 208, 208);
+}
+
+.project_link {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.project_link:hover {
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    font-weight: bold;
+    color: #151515;
+    font-style: italic;
 }

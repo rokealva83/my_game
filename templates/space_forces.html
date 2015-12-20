@@ -16,9 +16,10 @@
             {% if ships %}
                 {% for ship in ships %}
                     <p style="margin-top: 6px">
-                        {{ ship.name }} ( {{ ship.amount_ship }} )
+                        <input class="project_link" type="submit" value="{{ ship.ship_name }}"
+                               name="view_ship_project"/> ( {{ ship.amount_ship }} )
                         <input type="hidden" id="ship_id_{{ ship.id }}"
-                               value={{ ship.id_project_ship }} name="hidden_ship_id"/>
+                               value={{ ship.project_ship.id }} name="hidden_ship_id"/>
 
                         <input type="hidden" id="{{ ship.amount_ship }}"
                                value="{{ ship.amount_ship }}" name="hidden_amount_ship"/>

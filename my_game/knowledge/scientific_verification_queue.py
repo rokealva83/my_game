@@ -29,7 +29,7 @@ def check_scientific_verification_queue(request):
             delta_time = time - time_start
             new_delta = delta_time.total_seconds()
             delta_time = turn_scientic.finish_time_science - turn_scientic.start_time_science
-            delta = delta_time.total_seconds()
+            delta = delta_time.seconds
             if new_delta > delta:
                 scientic = UserScientic.objects.filter(user=user).first()
                 UserScientic.objects.filter(user=user).update(
@@ -49,6 +49,7 @@ def check_scientific_verification_queue(request):
                              science_users.radionics_up + science_users.nanotech_up + science_users.astronomy_up + \
                              science_users.logistic_up
                 UserScientic.objects.filter(user=user).update(all_scientic=all_scient)
+
     # the addition of new technology
     table_scan_time = user.last_time_scan_scient
     delta = time - table_scan_time

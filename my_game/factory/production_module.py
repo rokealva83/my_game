@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
-from my_game.models import MyUser
 from my_game.models import TurnProduction
 from my_game.models import HullPattern, ShellPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
     ArmorPattern, ModulePattern, WeaponPattern, FuelPattern, DevicePattern
-from my_game.models import Warehouse
 
 
 def production_module(*args):
@@ -43,31 +41,56 @@ def production_module(*args):
             elif factory.production_class == 14:
                 module_which_produces = FuelPattern.objects.filter(id=element_id).first()
 
-            if session_user.internal_currency >= module_which_produces.price_internal_currency * \
-                    int(amount_element) and warehouse.mat_construction_material >= \
-                            module_which_produces.price_construction_material * int(amount_element) and \
-                            warehouse.mat_chemical >= module_which_produces.price_chemical * int(amount_element) and \
-                            warehouse.mat_high_strength_allov >= module_which_produces.price_high_strength_allov * \
-                            int(amount_element) and warehouse.mat_nanoelement >= \
-                            module_which_produces.price_nanoelement * int(amount_element) and \
-                            warehouse.mat_microprocessor_element >= module_which_produces.price_microprocessor_element * \
-                            int(amount_element) and warehouse.mat_fober_optic_element >= \
-                            module_which_produces.price_fober_optic_element * int(amount_element):
+            if session_user.internal_currency >= module_which_produces.price_internal_currency * int(amount_element) \
+                    and warehouse.res_nickel >= module_which_produces.price_nickel * int(amount_element) \
+                    and warehouse.res_iron >= module_which_produces.price_iron * int(amount_element) \
+                    and warehouse.res_cooper >= module_which_produces.price_cooper * int(amount_element) \
+                    and warehouse.res_aluminum >= module_which_produces.price_aluminum * int(amount_element) \
+                    and warehouse.res_veriarit >= module_which_produces.price_veriarit * int(amount_element) \
+                    and warehouse.res_inneilit >= module_which_produces.price_inneilit * int(amount_element) \
+                    and warehouse.res_renniit >= module_which_produces.price_renniit * int(amount_element) \
+                    and warehouse.res_cobalt >= module_which_produces.price_cobalt * int(amount_element) \
+                    and warehouse.mat_construction_material >= module_which_produces.price_construction_material * (
+                                                int(amount_element)) \
+                    and warehouse.mat_chemical >= module_which_produces.price_chemical * int(amount_element) \
+                    and warehouse.mat_high_strength_allov >= module_which_produces.price_high_strength_allov * (
+                            int(amount_element)) \
+                    and warehouse.mat_nanoelement >= module_which_produces.price_nanoelement * int(amount_element) \
+                    and warehouse.mat_microprocessor_element >= module_which_produces.price_microprocessor_element * (
+                                int(amount_element)) \
+                    and warehouse.mat_fober_optic_element >= module_which_produces.price_fober_optic_element * (
+                            int(amount_element)):
 
-                new_internal_currency = session_user.internal_currency - \
-                                        module_which_produces.price_internal_currency * int(amount_element)
-                new_construction_material = warehouse.mat_construction_material - \
-                                            module_which_produces.price_construction_material * int(amount_element)
+                new_internal_currency = session_user.internal_currency - (
+                    module_which_produces.price_internal_currency * int(amount_element))
+                new_res_nickel = warehouse.res_nickel - module_which_produces.price_nickel * int(amount_element)
+                new_res_iron = warehouse.res_iron - module_which_produces.price_iron * int(amount_element)
+                new_res_cooper = warehouse.res_cooper - module_which_produces.price_cooper * int(amount_element)
+                new_res_aluminum = warehouse.res_aluminum - module_which_produces.price_aluminum * int(amount_element)
+                new_res_veriarit = warehouse.res_veriarit - module_which_produces.price_veriarit * int(amount_element)
+                new_res_inneilit = warehouse.res_inneilit - module_which_produces.price_inneilit * int(amount_element)
+                new_res_renniit = warehouse.res_renniit - module_which_produces.price_renniit * int(amount_element)
+                new_res_cobalt = warehouse.res_cobalt - module_which_produces.price_cobalt * int(amount_element)
+                new_construction_material = warehouse.mat_construction_material - (
+                    module_which_produces.price_construction_material * int(amount_element))
                 new_chemical = warehouse.mat_chemical - module_which_produces.price_chemical * int(amount_element)
-                new_high_strength_allov = warehouse.mat_high_strength_allov - \
-                                          module_which_produces.price_high_strength_allov * int(amount_element)
-                new_nanoelement = warehouse.mat_nanoelement - \
-                                  module_which_produces.price_nanoelement * int(amount_element)
-                new_microprocessor_element = warehouse.mat_microprocessor_element - \
-                                             module_which_produces.price_microprocessor_element * int(amount_element)
-                new_fober_optic_element = warehouse.mat_fober_optic_element - \
-                                          module_which_produces.price_fober_optic_element * int(amount_element)
+                new_high_strength_allov = warehouse.mat_high_strength_allov - (
+                    module_which_produces.price_high_strength_allov * int(amount_element))
+                new_nanoelement = warehouse.mat_nanoelement - (
+                    module_which_produces.price_nanoelement * int(amount_element))
+                new_microprocessor_element = warehouse.mat_microprocessor_element - (
+                    module_which_produces.price_microprocessor_element * int(amount_element))
+                new_fober_optic_element = warehouse.mat_fober_optic_element - (
+                    module_which_produces.price_fober_optic_element * int(amount_element))
 
+                setattr(warehouse, 'res_nickel', new_res_nickel)
+                setattr(warehouse, 'res_iron', new_res_iron)
+                setattr(warehouse, 'res_cooper', new_res_cooper)
+                setattr(warehouse, 'res_aluminum', new_res_aluminum)
+                setattr(warehouse, 'res_veriarit', new_res_veriarit)
+                setattr(warehouse, 'res_inneilit', new_res_inneilit)
+                setattr(warehouse, 'res_renniit', new_res_renniit)
+                setattr(warehouse, 'res_cobalt', new_res_cobalt)
                 setattr(warehouse, 'mat_construction_material', new_construction_material)
                 setattr(warehouse, 'mat_chemical', new_chemical)
                 setattr(warehouse, 'mat_high_strength_allov', new_high_strength_allov)

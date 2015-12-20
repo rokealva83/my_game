@@ -26,7 +26,7 @@ def armor_upgrade(request):
             armor_pattern = ArmorPattern(
                 user=user,
                 basic_pattern=armor_scient,
-                element_name=armor_scient.armon_name,
+                element_name=armor_scient.armor_name,
                 armor_health=armor_scient.armor_health,
                 value_energy_resistance=armor_scient.value_energy_resistance * race.armor,
                 value_phisical_resistance=armor_scient.value_phisical_resistance * race.armor,

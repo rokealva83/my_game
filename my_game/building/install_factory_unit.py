@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from my_game.models import UserCity, TurnBuildingBuilding, TurnBuildingFactory
 from my_game.models import FactoryPattern, BuildingPattern
 from my_game.models import WarehouseFactory, WarehouseBuilding
+from my_game.models import UserVariables
 
 
 # Развертывание заготоки
@@ -12,11 +13,11 @@ def install_factory_unit(*args):
     session_user_city = args[1]
     pattern_id = args[2]
     class_id = int(args[3])
-    warehouse_factory = None
+    user_variables = UserVariables.objects.first()
     if class_id != 21:
         factory_pattern = FactoryPattern.objects.filter(id=pattern_id).first()
         warehouse_building = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city,
-                                                            factory=factory_pattern).first()
+                                                             factory=factory_pattern).first()
         turn_building = TurnBuildingFactory.objects.filter(user=session_user, user_city=session_user_city).all()
         len_turn_building = len(turn_building)
     else:
@@ -26,7 +27,7 @@ def install_factory_unit(*args):
         turn_building = TurnBuildingBuilding.objects.filter(user=session_user, user_city=session_user_city).all()
         len_turn_building = len(turn_building)
 
-    if warehouse_building and len_turn_building < 30:
+    if warehouse_building and len_turn_building < user_variables.max_turn_building_basic:
         free_energy = session_user_city.power - session_user_city.use_energy
         if factory_pattern.production_class == 12:
             power_consumption = 0
@@ -37,14 +38,14 @@ def install_factory_unit(*args):
         last_building = []
         if factory_pattern.cost_expert_deployment < session_user_city.population and free_energy > power_consumption:
             if len_turn_building >= 1:
-                last_building = turn_building[len_turn_building-1]
+                last_building = turn_building[len_turn_building - 1]
             if last_building:
                 start_time = last_building.finish_time_deployment
             else:
                 start_time = datetime.now()
 
             finish_time = start_time + timedelta(seconds=factory_pattern.time_deployment)
-            if class_id !=21:
+            if class_id != 21:
                 turn_building = TurnBuildingFactory(
                     user=session_user,
                     user_city=session_user_city,

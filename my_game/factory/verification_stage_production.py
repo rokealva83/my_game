@@ -3,7 +3,6 @@
 from django.utils import timezone
 from my_game.models import UserCity
 from my_game.models import TurnProduction
-from my_game.models import FactoryInstalled
 from my_game.models import WarehouseElement
 
 

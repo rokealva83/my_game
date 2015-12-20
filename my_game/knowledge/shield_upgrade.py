@@ -25,7 +25,7 @@ def shield_upgrade(request):
         if 0 < new_shield < upper_scope:
             shield_pattern = ShieldPattern(
                 user=user,
-                basic_shield=shield_scient,
+                basic_pattern=shield_scient,
                 element_name=shield_scient.shield_name,
                 shield_health=shield_scient.shield_health,
                 value_energy_resistance=shield_scient.value_energy_resistance * race.shield,
@@ -83,4 +83,4 @@ def shield_upgrade(request):
                             setattr(user_shield, attribute, element)
                     summary_percent_up += percent_update
                 user_shield.save()
-                price_increase(user_shield, (summary_percent_up/len(shield_attribute)))
+                price_increase(user_shield, (summary_percent_up / len(shield_attribute)))

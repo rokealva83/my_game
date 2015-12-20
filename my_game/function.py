@@ -22,7 +22,7 @@ def check_all_queues(request):
     assembly_line_workpieces.check_assembly_line_workpieces(user)
     # verification_stage_production.verification_stage_production(user)
     # verification_complex_stage.verification_complex_stage(user)
-    # turn_ship_build.verification_turn_ship_build(user)
+    turn_ship_build.verification_turn_ship_build(user)
 
 
 def check_all_user():

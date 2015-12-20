@@ -15,7 +15,7 @@ def verification_of_resources(request):
     elapsed_time_seconds = elapsed_time_full.total_seconds()
     time_update = now_date
     user_variables = UserVariables.objects.first()
-    if elapsed_time_seconds > 30:
+    if elapsed_time_seconds > 300:
         user_citys = UserCity.objects.filter(user=user)
         for user_city in user_citys:
             check_user_factory_resourse_city = FactoryInstalled.objects.filter(user=user, user_city=user_city,
