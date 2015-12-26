@@ -15,9 +15,8 @@ def buy_credit(request):
         function.check_all_queues(session_user)
         message = ''
         trade_space_id = request.POST.get('trade_space_id')
-        user = MyUser.objects.filter(user_id=session_user).first()
-        foreigh_currency = user.foreigh_currency
-        internal_currency = user.internal_currency
+        foreigh_currency = session_user.foreigh_currency
+        internal_currency = session_user.internal_currency
         amount_foreigh = int(request.POST.get('amount'))
         operation = int(request.POST.get('operation'))
         if operation == 0:
@@ -25,8 +24,9 @@ def buy_credit(request):
             if internal_currency >= need_internal_currency:
                 new_internal_currency = internal_currency - need_internal_currency
                 new_foreigh_currency = foreigh_currency + amount_foreigh
-                MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency,
-                                                                   foreigh_currency=new_foreigh_currency)
+                setattr(session_user, 'internal_currency', new_internal_currency)
+                setattr(session_user, 'foreigh_currency', new_foreigh_currency)
+                session_user.save()
                 message = 'Покупка совершена'
             else:
                 message = 'Нехватка внутренней валюты'
@@ -35,11 +35,12 @@ def buy_credit(request):
                 bought_currency = amount_foreigh * 495
                 new_internal_currency = internal_currency + bought_currency
                 new_foreigh_currency = foreigh_currency - amount_foreigh
-                MyUser.objects.filter(user_id=session_user).update(internal_currency=new_internal_currency,
-                                                                   foreigh_currency=new_foreigh_currency)
+                setattr(session_user, 'internal_currency', new_internal_currency)
+                setattr(session_user, 'foreigh_currency', new_foreigh_currency)
+                session_user.save()
                 message = 'Продажа совершена'
-        request.session['userid'] = session_user
-        request.session['user_city'] = session_user_city
+        request.session['user'] = session_user.id
+        request.session['user_city'] = session_user_city.id
         request.session['live'] = True
 
         output = create_trade_output(session_user, session_user_city, trade_space_id, message)

@@ -40,7 +40,7 @@ def trade(request):
             return render(request, "trade.html", output)
         else:
             warehouse = session_user_city.warehouse
-            user_citys = UserCity.objects.filter(user=int(session_user))
+            user_citys = UserCity.objects.filter(user=session_user)
             planet = session_user_city.planet
             request.session['user'] = session_user.id
             request.session['user_city'] = session_user_city.id

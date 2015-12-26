@@ -1,5 +1,49 @@
 <select name="id_hold_element" class="list_force">
     <option selected disabled>Товар</option>
+    {% if fleet.resource_hold %}
+        {% if fleet.resource_hold.res_nickel > 0 %}
+            <option value="1">Никель( {{ fleet.resource_hold.res_nickel }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.res_iron > 0 %}
+            <option value="2">Железо( {{ fleet.resource_hold.res_iron }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.res_cooper > 0 %}
+            <option value="3">Медь( {{ fleet.resource_hold.res_cooper }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.res_aluminum > 0 %}
+            <option value="4">Алюминий( {{ fleet.resource_hold.res_aluminum }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.res_veriarit > 0 %}
+            <option value="5">Вариарит( {{ fleet.resource_hold.res_veriarit }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.res_inneilit > 0 %}
+            <option value="6">Иннэлит( {{ fleet.resource_hold.res_inneilit }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.res_renniit > 0 %}
+            <option value="7">Иннэлит( {{ fleet.resource_hold.res_renniit }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.res_cobalt > 0 %}
+            <option value="8">Кобальт( {{ fleet.resource_hold.res_cobalt }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.mat_construction_material > 0 %}
+            <option value="9">Строительные материалы( {{ fleet.resource_hold.mat_construction_material }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.mat_chemical > 0 %}
+            <option value="10">Химические реактивы( {{ fleet.resource_hold.mat_chemical }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.mat_high_strength_allov > 0 %}
+            <option value="11"><option value="1">Высокопрочные сплавы( {{ fleet.resource_hold.mat_high_strength_allov }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.mat_nanoelement > 0 %}
+            <option value="12">Наноэлементы( {{ fleet.resource_hold.mat_nanoelement }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.mat_microprocessor_element > 0 %}
+            <option value="13">Микропроцессорные элементы( {{ fleet.resource_hold.mat_microprocessor_element }} )</option>
+        {% endif %}
+        {% if fleet.resource_hold.mat_fober_optic_element > 0 %}
+            <option value="14">Оптоволоконные элементы( {{ fleet.resource_hold.mat_fober_optic_element }} )</option>
+        {% endif %}
+    {% endif %}
     {% if ship_holds %}
         <optgroup label="Resource">
             {% for ship_hold in ship_holds %}

@@ -36,13 +36,13 @@ def delete_ship(request):
         fleet = Fleet.objects.filter(id=fleet_id).first()
         user_city = UserCity.objects.filter(user=session_user, x=fleet.x, y=fleet.y, z=fleet.z).first()
         if user_city:
-            if fleet.hold == fleet.empty_hold:
+            if fleet.fleet_hold == fleet.empty_hold:
                 fleet_engine = FleetEngine.objects.filter(fleet=fleet).first()
                 fleet_energy_power = FleetEnergyPower.objects.filter(fleet=fleet).first()
                 project_ship = ProjectShip.objects.filter(id=ship_id).first()
                 ship = Ship.objects.filter(user=session_user, project_ship=project_ship, place_id=fleet.id,
                                            fleet_status=1).first()
-                ship_elements = ElementShip.objects.filter(id_project_ship=ship.id_project_ship)
+                ship_elements = ElementShip.objects.filter(project_ship=ship.project_ship)
                 use_energy = project_ship.hull_pattern.power_consuption
                 use_fuel_system = use_fuel_intersystem = use_energy_giper = use_energy_null = use_fuel_generator = 0
                 produced_energy = 0
@@ -169,8 +169,8 @@ def delete_ship(request):
                     giper_accuracy = int(fleet_engine.giper_accuracy) - int(project_ship.giper_accuracy) * amount_ship
                     null_power = int(fleet_engine.null_power) - int(project_ship.null_power) * amount_ship
                     null_accuracy = int(fleet_engine.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
-                    ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
-                    hold = int(fleet.hold) - hold * amount_ship
+                    ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.ship_mass) * amount_ship
+                    hold = int(fleet.fleet_hold) - hold * amount_ship
                     fuel_tank = int(fleet.fuel_tank) - fuel_tank * amount_ship
                     use_energy = fleet_energy_power.use_energy - use_energy
                     use_fuel_system = fleet_energy_power.use_fuel_system - use_fuel_system
@@ -180,13 +180,13 @@ def delete_ship(request):
                     use_fuel_generator = fleet_energy_power.use_fuel_generator - use_fuel_generator
                     produced_energy = fleet_energy_power.produce_energy - produced_energy
 
-                    fleet = Fleet.objects.filter(user=session_user, id=fleet.id).update(
-                        ship_empty_mass=ship_empty_mass,
-                        hold=hold,
-                        empty_hold=hold,
-                        fuel_tank=fuel_tank,
-                        free_fuel_tank=fuel_tank
-                    )
+                    fleet_upd =Fleet.objects.filter(id=fleet.id).first()
+                    setattr(fleet_upd, 'ship_empty_mass', ship_empty_mass)
+                    setattr(fleet_upd, 'fleet_hold', hold)
+                    setattr(fleet_upd, 'empty_hold', hold)
+                    setattr(fleet_upd, 'fuel_tank', fuel_tank)
+                    setattr(fleet_upd, 'free_fuel_tank', fuel_tank)
+                    fleet_upd.save()
 
                     FleetEngine.objects.filter(fleet=fleet).update(
                         system_power=system_power,
@@ -212,18 +212,18 @@ def delete_ship(request):
                         amount_ship=amount_ship,
                         fleet_status=0,
                         place_id=session_user_city.id,
-                        name=project_ship.name
+                        ship_name=project_ship.project_name
                     )
                     ship.save()
-                    ship = Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet.id,
+                    ship = Ship.objects.filter(user=session_user, project_ship=project_ship, place_id=fleet.id,
                                                fleet_status=1).first()
                     new_amount = int(ship.amount_ship) - int(amount_ship)
 
                     if new_amount == 0:
-                        Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet.id,
+                        Ship.objects.filter(user=session_user, project_ship=project_ship, place_id=fleet.id,
                                             fleet_status=1).delete()
                     else:
-                        Ship.objects.filter(user=session_user, id_project_ship=ship_id, place_id=fleet.id,
+                        Ship.objects.filter(user=session_user, project_ship=project_ship, place_id=fleet.id,
                                             fleet_status=1).update(amount_ship=new_amount)
 
                     fleet = Fleet.objects.filter(user=session_user, id=fleet.id).first()
@@ -236,8 +236,8 @@ def delete_ship(request):
                     giper_accuracy = int(fleet_engine.giper_accuracy) - int(project_ship.giper_accuracy) * amount_ship
                     null_power = int(fleet_engine.null_power) - int(project_ship.null_power) * amount_ship
                     null_accuracy = int(fleet_engine.null_accuracy) - int(project_ship.null_accuracy) * amount_ship
-                    ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.mass) * amount_ship
-                    hold = int(fleet.hold) - hold * amount_ship
+                    ship_empty_mass = int(fleet.ship_empty_mass) - int(project_ship.ship_mass) * amount_ship
+                    hold = int(fleet.fleet_hold) - hold * amount_ship
                     fuel_tank = int(fleet.fuel_tank) - fuel_tank * amount_ship
                     use_energy = fleet_energy_power.use_energy - use_energy
                     use_fuel_system = fleet_energy_power.use_fuel_system - use_fuel_system
@@ -247,13 +247,13 @@ def delete_ship(request):
                     use_fuel_generator = fleet_energy_power.use_fuel_generator - use_fuel_generator
                     produced_energy = fleet_energy_power.produce_energy - produced_energy
 
-                    fleet = Fleet.objects.filter(user=session_user, id=fleet.id).update(
-                        ship_empty_mass=ship_empty_mass,
-                        hold=hold,
-                        empty_hold=hold,
-                        fuel_tank=fuel_tank,
-                        free_fuel_tank=fuel_tank,
-                    )
+                    fleet_upd =Fleet.objects.filter(id=fleet.id).first()
+                    setattr(fleet_upd, 'ship_empty_mass', ship_empty_mass)
+                    setattr(fleet_upd, 'fleet_hold', hold)
+                    setattr(fleet_upd, 'empty_hold', hold)
+                    setattr(fleet_upd, 'fuel_tank', fuel_tank)
+                    setattr(fleet_upd, 'free_fuel_tank', fuel_tank)
+                    fleet_upd.save()
 
                     FleetEngine.objects.filter(fleet=fleet).update(
                         system_power=system_power,

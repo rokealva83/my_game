@@ -2,18 +2,20 @@
 <select name="name_upload_element" class="list_force">
     <option selected disabled>Товар</option>
     <optgroup label="Resource">
-        {% for warehouse in warehouses %}
-            {% if warehouse.amount > 0 %}
-                {% for basic_resource in basic_resources %}
-                    {% if basic_resource.id == warehouse.id_resource %}
-                        <option value="{{ warehouse.id_resource }}; 0">{{ basic_resource.name }}
-                            ( {{ warehouse.amount }} )
-                        </option>
-
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
+                    <option value="1">Никель( {{ warehouse.res_nickel }} )</option>
+                    <option value="2">Железо( {{ warehouse.res_iron }} )</option>
+                    <option value="3">Медь( {{ warehouse.res_cooper }} )</option>
+                    <option value="4">Алюминий( {{ warehouse.res_aluminum }} )</option>
+                    <option value="5">Вариарит( {{ warehouse.res_veriarit }} )</option>
+                    <option value="6">Иннэлит( {{ warehouse.res_inneilit }} )</option>
+                    <option value="7">Иннэлит( {{ warehouse.res_renniit }} )</option>
+                    <option value="8">Кобальт( {{ warehouse.res_cobalt }} )</option>
+                    <option value="9">Строительные материалы( {{ warehouse.mat_construction_material }} )</option>
+                    <option value="10">имические реактивы( {{ warehouse.mat_chemical }} )</option>
+                    <option value="11">Высокопрочные сплавы( {{ warehouse.mat_high_strength_allov }} )</option>
+                    <option value="12">Наноэлементы( {{ warehouse.mat_nanoelement }} )</option>
+                    <option value="13">Микропроцессорные элементы( {{ warehouse.mat_microprocessor_element }} )</option>
+                    <option value="14">Оптоволоконные элементы( {{ warehouse.mat_fober_optic_element }} )</option>
     </optgroup>
     <optgroup label="Factory">
         {% if warehouse_factorys %}
@@ -21,7 +23,7 @@
                 {% for factory_pattern in factory_patterns %}
                     {% if warehouse_factory.factory_id == factory_pattern.id %}
                         {% if warehouse_factory.amount > 0 %}
-                            <option value="{{ warehouse_factory.id }}; 10">{{ factory_pattern.name }}
+                            <option value="{{ warehouse_factory.id }}; 10">{{ factory_pattern.factory_name }}
                                 ( {{ warehouse_factory.amount }} )
                             </option>
                         {% endif %}
@@ -36,7 +38,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for hull_pattern in hull_patterns %}
                         {% if hull_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ hull_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ hull_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -51,7 +53,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for armor_pattern in armor_patterns %}
                         {% if armor_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ armor_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ armor_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -66,7 +68,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for shield_pattern in shield_patterns %}
                         {% if shield_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shield_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shield_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -81,7 +83,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for engine_pattern in engine_patterns %}
                         {% if engine_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ engine_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ engine_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -97,7 +99,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for generator_pattern in generator_patterns %}
                         {% if generator_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ generator_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ generator_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -112,7 +114,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for weapon_pattern in weapon_patterns %}
                         {% if weapon_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ weapon_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ weapon_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -127,7 +129,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for shell_pattern in shell_patterns %}
                         {% if shell_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shell_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ shell_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -142,7 +144,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for module_pattern in module_patterns %}
                         {% if module_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ module_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ module_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -157,7 +159,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for device_pattern in device_patterns %}
                         {% if device_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ device_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ device_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}
@@ -172,7 +174,7 @@
                 {% if warehouse_element.amount > 0 %}
                     {% for fuel_pattern in fuel_patterns %}
                         {% if fuel_pattern.id == warehouse_element.element_id %}
-                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ fuel_pattern.name }}
+                            <option value="{{ warehouse_element.element_id }}; {{ warehouse_element.element_class }}">{{ fuel_pattern.element_name }}
                                 ( {{ warehouse_element.amount }} )
                             </option>
                         {% endif %}

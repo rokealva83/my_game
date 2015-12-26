@@ -39,10 +39,10 @@ def modificate_ship(request):
         turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city).all()
         ship_patterns = ProjectShip.objects.filter(user=session_user).all()
         user_citys = UserCity.objects.filter(user=session_user).all()
-        output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city, 'user_citys': user_citys,
-                  'armors': armors, 'shields': shields, 'engines': engines, 'generators': generators, 'weapons': weapons,
-                  'main_weapons': main_weapons, 'modules': modules, 'turn_ship_builds': turn_ship_builds,
-                  'modificate_ship_hull': hull_pattern, 'modificate_ship_elements': modificate_ship_elements,
-                  'modificate_ship_id': modificate_ship_id, 'ship_patterns': ship_patterns, 'ship_amount': ship_amount,
-                  'hidden_amount_ship': hidden_amount_ship}
+        output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
+                  'user_citys': user_citys, 'armors': armors, 'shields': shields, 'engines': engines,
+                  'generators': generators, 'weapons': weapons, 'main_weapons': main_weapons, 'modules': modules,
+                  'turn_ship_builds': turn_ship_builds, 'modificate_ship_hull': hull_pattern,
+                  'modificate_ship_elements': modificate_ship_elements, 'modificate_ship_id': modificate_ship_id,
+                  'ship_patterns': ship_patterns, 'ship_amount': ship_amount, 'hidden_amount_ship': hidden_amount_ship}
         return render(request, "modificate_ship.html", output)

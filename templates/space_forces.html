@@ -34,15 +34,13 @@
         {% for user_fleet in user_fleets %}
             <form method="post" action="fleet_manage" style="text-align: center">
                 <div class="fleet">
-                    <p>{{ user_fleet.name }}</p>
-
-                    <p>
+                    <p>{{ user_fleet.fleet_name }}  (
                         Status:
                         {% if user_fleet.status == 0 %}
                             Waiting
                         {% else %}
                             Working
-                        {% endif %}
+                        {% endif %} )
                     </p>
 
                     <p>
@@ -52,7 +50,7 @@
                     {% spaceless %}
                         {% for ship_fleet in ship_fleets %}
                             {% if ship_fleet.place_id == user_fleet.id %}
-                                <p> {{ ship_fleet.name }} : {{ ship_fleet.amount_ship }}</p>
+                                <p> {{ ship_fleet.ship_name }} : {{ ship_fleet.amount_ship }}</p>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}
@@ -85,7 +83,7 @@
             <form method="post" action="add_ship" style="text-align: center">
                 {% if add_ships %}
                     {% for add_ship in add_ships %}<p>
-                        {{ add_ship.name }} ( {{ add_ship.amount_ship }} )
+                        {{ add_ship.ship_name }} ( {{ add_ship.amount_ship }} )
                         <input value="0" name="amount_ship" class="number_ship"
                                placeholder="Amount ship"/>
                         <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
@@ -100,11 +98,11 @@
                 {% if ship_fleets %}
                     {% for ship_fleet in ship_fleets %}
                         {% if ship_fleet.fleet_status == 1 and ship_fleet.place_id == fleet_id %}
-                            <p>{{ ship_fleet.name }} ( {{ ship_fleet.amount_ship }} )
+                            <p>{{ ship_fleet.ship_name }} ( {{ ship_fleet.amount_ship }} )
                                 <input value="0" name="amount_ship" class="number_ship"
                                        placeholder="Amount ship"/>
                                 <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                                <input type="hidden" value={{ ship_fleet.id_project_ship }} name="hidden_del_ship"/>
+                                <input type="hidden" value={{ ship_fleet.project_ship.id }} name="hidden_del_ship"/>
                                 <input class="button_force" type="submit" value="Убрать из флота" name="del_ship"/></p>
                         {% endif %}
                     {% endfor %}

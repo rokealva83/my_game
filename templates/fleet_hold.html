@@ -7,28 +7,58 @@
 
             <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
 
+            {% if fleet.resource_hold %}
+                {% if fleet.resource_hold.res_nickel > 0 %}
+                    Никель( {{ fleet.resource_hold.res_nickel }} )
+                {% endif %}
+                {% if fleet.resource_hold.res_iron > 0 %}
+                    Железо( {{ fleet.resource_hold.res_iron }} )
+                {% endif %}
+                {% if fleet.resource_hold.res_cooper > 0 %}
+                    Медь( {{ fleet.resource_hold.res_cooper }} )
+                {% endif %}
+                {% if fleet.resource_hold.res_aluminum > 0 %}
+                    Алюминий( {{ fleet.resource_hold.res_aluminum }} )
+                {% endif %}
+                {% if fleet.resource_hold.res_veriarit > 0 %}
+                    Вариарит( {{ fleet.resource_hold.res_veriarit }} )
+                {% endif %}
+                {% if fleet.resource_hold.res_inneilit > 0 %}
+                    Иннэлит( {{ fleet.resource_hold.res_inneilit }} )
+                {% endif %}
+                {% if fleet.resource_hold.res_renniit > 0 %}
+                    Иннэлит( {{ fleet.resource_hold.res_renniit }} )
+                {% endif %}
+                {% if fleet.resource_hold.res_cobalt > 0 %}
+                    Кобальт( {{ fleet.resource_hold.res_cobalt }} )
+                {% endif %}
+                {% if fleet.resource_hold.mat_construction_material > 0 %}
+                    Строительные материалы( {{ fleet.resource_hold.mat_construction_material }} )
+                {% endif %}
+                {% if fleet.resource_hold.mat_chemical > 0 %}
+                    Химические реактивы( {{ fleet.resource_hold.mat_chemical }} )
+                {% endif %}
+                {% if fleet.resource_hold.mat_high_strength_allov > 0 %}
+                    Высокопрочные сплавы( {{ fleet.resource_hold.mat_high_strength_allov }} )
+                {% endif %}
+                {% if fleet.resource_hold.mat_nanoelement > 0 %}
+                    Наноэлементы( {{ fleet.resource_hold.mat_nanoelement }} )
+                {% endif %}
+                {% if fleet.resource_hold.mat_microprocessor_element > 0 %}
+                    Микропроцессорные элементы( {{ fleet.resource_hold.mat_microprocessor_element }} )
+                {% endif %}
+                {% if fleet.resource_hold.mat_fober_optic_element > 0 %}
+                    Оптоволоконные элементы( {{ fleet.resource_hold.mat_fober_optic_element }} )
+                {% endif %}
 
+            {% endif %}
             {% if ship_holds %}
                 {% for ship_hold in ship_holds %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 0 %}
-                            {% for basic_resource in basic_resources %}
-                                {% if basic_resource.id == ship_hold.id_shipment %}
-                                    <p>{{ basic_resource.name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }}
-                                        / {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_resource{{ ship_hold.id_shipment }}"
-                                               class="number_ship">
-                                    </p>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
                     {% spaceless %}
                         {% if ship_hold.class_shipment == 10 %}
                             {% for factory_pattern in factory_patterns %}
                                 {% if factory_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ factory_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ factory_pattern.factory_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_factory" class="number_ship"></p>
@@ -42,7 +72,7 @@
                         {% if ship_hold.class_shipment == 1 %}
                             {% for hull_pattern in hull_patterns %}
                                 {% if hull_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ hull_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ hull_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }}
                                         /
                                         {{ ship_hold.size_shipment }} )
@@ -57,7 +87,7 @@
                         {% if ship_hold.class_shipment == 2 %}
                             {% for armor_pattern in armor_patterns %}
                                 {% if armor_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ armor_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ armor_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_armor" class="number_ship"></p>
@@ -71,7 +101,7 @@
                         {% if ship_hold.class_shipment == 3 %}
                             {% for shield_pattern in shield_patterns %}
                                 {% if shield_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ shield_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ shield_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_shield" class="number_ship"></p>
@@ -85,7 +115,7 @@
                         {% if ship_hold.class_shipment == 4 %}
                             {% for engine_pattern in engine_patterns %}
                                 {% if engine_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ engine_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ engine_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_engine" class="number_ship"></p>
@@ -99,7 +129,7 @@
                         {% if ship_hold.class_shipment == 5 %}
                             {% for generator_pattern in generator_patterns %}
                                 {% if generator_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ generator_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ generator_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_generator" class="number_ship"></p>
@@ -113,7 +143,7 @@
                         {% if ship_hold.class_shipment == 6 %}
                             {% for weapon_pattern in weapon_patterns %}
                                 {% if weapon_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ weapon_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ weapon_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_weapon" class="number_ship"></p>
@@ -127,7 +157,7 @@
                         {% if ship_hold.class_shipment == 7 %}
                             {% for shell_pattern in shell_patterns %}
                                 {% if shell_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ shell_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ shell_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_shell" class="number_ship"></p>
@@ -141,7 +171,7 @@
                         {% if ship_hold.class_shipment == 8 %}
                             {% for module_pattern in module_patterns %}
                                 {% if module_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ module_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ module_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_module" class="number_ship"></p>
@@ -155,7 +185,7 @@
                         {% if ship_hold.class_shipment == 9 %}
                             {% for device_pattern in device_patterns %}
                                 {% if device_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ device_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ device_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_device" class="number_ship"></p>
@@ -169,7 +199,7 @@
                         {% if ship_hold.class_shipment == 14 %}
                             {% for fuel_pattern in fuel_patterns %}
                                 {% if fuel_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ fuel_pattern.name }} ( {{ ship_hold.amount_shipment }}
+                                    <p>{{ fuel_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
                                         / {{ ship_hold.mass_shipment }} /
                                         {{ ship_hold.size_shipment }} )
                                         <input value="0" name="amount_fuel" class="number_ship"></p>
@@ -193,18 +223,20 @@
                 Resource in warehouse
                 <select name="warehouse_resource" class="list_force">
                     <option selected disabled>Choise resource</option>
-                    {% for warehouse in warehouses %}
-                        {% if warehouse.amount > 0 %}
-                            {% for basic_resource in basic_resources %}
-                                {% if basic_resource.id == warehouse.id_resource %}
-                                    <option value="{{ warehouse.id_resource }}">{{ basic_resource.name }}
-                                        ( {{ warehouse.amount }} )
-                                    </option>
-
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
+                    <option value="1">Никель( {{ warehouse.res_nickel }} )</option>
+                    <option value="2">Железо( {{ warehouse.res_iron }} )</option>
+                    <option value="3">Медь( {{ warehouse.res_cooper }} )</option>
+                    <option value="4">Алюминий( {{ warehouse.res_aluminum }} )</option>
+                    <option value="5">Вариарит( {{ warehouse.res_veriarit }} )</option>
+                    <option value="6">Иннэлит( {{ warehouse.res_inneilit }} )</option>
+                    <option value="7">Иннэлит( {{ warehouse.res_renniit }} )</option>
+                    <option value="8">Кобальт( {{ warehouse.res_cobalt }} )</option>
+                    <option value="9">Строительные материалы( {{ warehouse.mat_construction_material }} )</option>
+                    <option value="10">имические реактивы( {{ warehouse.mat_chemical }} )</option>
+                    <option value="11">Высокопрочные сплавы( {{ warehouse.mat_high_strength_allov }} )</option>
+                    <option value="12">Наноэлементы( {{ warehouse.mat_nanoelement }} )</option>
+                    <option value="13">Микропроцессорные элементы( {{ warehouse.mat_microprocessor_element }} )</option>
+                    <option value="14">Оптоволоконные элементы( {{ warehouse.mat_fober_optic_element }} )</option>
                 </select>
                 <input value="0" name="resource_amount" class="number_ship" placeholder="Resource amount"/>
             </div>
@@ -219,7 +251,7 @@
                                 {% if warehouse_factory.factory_id == factory_pattern.id %}
                                     {% if warehouse_factory.amount > 0 %}
                                         {% spaceless %}
-                                            <option value="{{ warehouse_factory.factory_id }}">{{ factory_pattern.name }}
+                                            <option value="{{ warehouse_factory.factory_id }}">{{ factory_pattern.factory_name }}
                                                 ( {{ warehouse_factory.amount }} )
                                             </option>{% endspaceless %}
                                     {% endif %}
@@ -241,7 +273,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for hull_pattern in hull_patterns %}
                                             {% if hull_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ hull_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ hull_pattern.element_name }}(
                                                     {{ warehouse_element.amount }} )
                                                 </option>
                                             {% endif %}
@@ -264,7 +296,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for armor_pattern in armor_patterns %}
                                             {% if armor_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ armor_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ armor_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -288,7 +320,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for shield_pattern in shield_patterns %}
                                             {% if shield_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ shield_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ shield_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -312,7 +344,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for engine_pattern in engine_patterns %}
                                             {% if engine_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ engine_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ engine_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -336,7 +368,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for generator_pattern in generator_patterns %}
                                             {% if generator_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ generator_pattern.name }}
+                                                <option value="{{ warehouse_element.element_id }}">{{ generator_pattern.element_name }}
                                                     ( {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -360,7 +392,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for weapon_pattern in weapon_patterns %}
                                             {% if weapon_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ weapon_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ weapon_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -384,7 +416,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for shell_pattern in shell_patterns %}
                                             {% if shell_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ shell_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ shell_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -408,7 +440,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for module_pattern in module_patterns %}
                                             {% if module_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ module_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ module_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -432,7 +464,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for device_pattern in device_patterns %}
                                             {% if device_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ device_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ device_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>
@@ -456,7 +488,7 @@
                                     {% if warehouse_element.amount > 0 %}
                                         {% for fuel_pattern in fuel_patterns %}
                                             {% if fuel_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ fuel_pattern.name }}(
+                                                <option value="{{ warehouse_element.element_id }}">{{ fuel_pattern.element_name }}(
                                                     {{ warehouse_element.amount }}
                                                     )
                                                 </option>

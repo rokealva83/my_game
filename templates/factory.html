@@ -394,8 +394,12 @@
                             {% if turn_productions %}
                                 {% for turn_production in turn_productions %}
                                     {% if turn_production.factory_id == factory_installed.id %}
-                                        <p> Очередь строительства </p>
-                                        <p>{{ turn_production.finish_time_production }}</p>
+                                        <p> Очередь производства </p>
+                                        <p>{{ turn_production.finish_time_production }}
+                                        <input class="scientic" type="submit"
+                                                   value="Stop" name="stop_production"/>
+                                        <input type="hidden" value={{ turn_production.id }} name="hidden_turn_id">
+                                        </p>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}

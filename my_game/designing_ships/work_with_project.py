@@ -73,7 +73,7 @@ def work_with_project(request):
                                                                          element_id=ship_pattern.hull_pattern.id).first()
                         new_amount = warehouse_hull.amount - amount_ship
                         WarehouseElement.objects.filter(user=session_user, user_city=session_user_city, element_class=1,
-                                                        element_id=ship_pattern.hull_pattern).update(amount=new_amount)
+                                                        element_id=ship_pattern.hull_pattern.id).update(amount=new_amount)
 
                         element_ships = ElementShip.objects.filter(project_ship=ship_pattern).order_by('class_element')
                         for element_ship in element_ships:

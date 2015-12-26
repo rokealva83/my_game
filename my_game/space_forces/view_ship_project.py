@@ -20,8 +20,8 @@ def view_ship_project(request):
             project_ship = ProjectShip.objects.filter(id=project_id).first()
 
         elif request.POST.get('hidden_ship_id'):
-            project_ship = Ship.objects.filter(id=int(request.POST.get('hidden_ship_id'))).first().project_ship
-            project_id = project_ship.id
+            project_id = request.POST.get('hidden_ship_id')
+            project_ship = ProjectShip.objects.filter(id=project_id).first()
 
         project_elements = ElementShip.objects.filter(project_ship=project_ship).order_by('class_element')
         hulls = HullPattern.objects.filter(user=session_user).order_by('basic_pattern')

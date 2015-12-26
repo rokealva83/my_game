@@ -42,7 +42,7 @@ def verification_phase_of_construction(request):
                     factory_installed.save()
                     power_consumption = factory_installed.factory_pattern.power_consumption
                 else:
-                    factory_pattern = BuildingPattern.objects.filter(id=turn_building.factory).first()
+                    factory_pattern = BuildingPattern.objects.filter(id=turn_building.factory.id).first()
                     factory_installed = BuildingInstalled(
                         user=user,
                         user_city=user_city,

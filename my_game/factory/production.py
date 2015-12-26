@@ -9,6 +9,7 @@ from my_game.factory import verification_stage_production
 from my_game.building import assembly_line_workpieces
 from my_game.factory.rename_element_pattern import rename_element_pattern
 from my_game.factory.production_module import production_module
+from my_game.factory.stop_production import stop_production
 
 
 def production(request):
@@ -26,13 +27,13 @@ def production(request):
             element_id = request.POST.get('hidden_element')
             message = rename_element_pattern(session_user, session_user_city, pattern_id, element_id, new_name)
 
-        if request.POST.get('buttom_amount_element'):
+        elif request.POST.get('buttom_amount_element'):
             element_id = request.POST.get('hidden_element')
             amount_element = request.POST.get('amount_element')
             factory = FactoryInstalled.objects.filter(id=request.POST.get('hidden_factory')).first()
             message = production_module(session_user, session_user_city, factory, element_id, amount_element)
 
-        if request.POST.get('disassembling'):
+        elif request.POST.get('disassembling'):
             factory = FactoryInstalled.objects.filter(id=request.POST.get('hidden_factory')).first()
             turn_production = TurnProduction.objects.filter(factory=factory).first()
             if turn_production:
@@ -47,10 +48,15 @@ def production(request):
                 FactoryInstalled.objects.filter(id=factory.id).delete()
                 message = 'Фабрика удалена'
 
+        elif request.POST.get('stop_production'):
+            turn_id = request.POST.get('hidden_turn_id')
+            message = stop_production(turn_id)
+
         factory_installeds = FactoryInstalled.objects.filter(user=session_user, user_city=session_user_city,
                                                              complex_status=0).order_by('production_class',
                                                                                         'production_id')
-        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user, user_city=session_user_city).all()
+        manufacturing_complexs = ManufacturingComplex.objects.filter(user=session_user,
+                                                                     user_city=session_user_city).all()
         user_city = UserCity.objects.filter(user=session_user).first()
         user_citys = UserCity.objects.filter(user=session_user).all()
         request.session['user'] = session_user.id
