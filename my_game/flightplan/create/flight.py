@@ -171,4 +171,3 @@ def flight_system(*args):
         flightplan_flight.save()
 
     return message
-

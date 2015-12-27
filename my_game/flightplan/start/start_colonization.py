@@ -5,7 +5,7 @@ from my_game.models import Fleet, FuelTank, FuelPattern
 from my_game.models import Flightplan, FlightplanColonization
 from my_game.models import Planet, MyUser
 from my_game.models import Hold, DevicePattern
-from my_game.flightplan.fuel import fuel_process
+from my_game.flightplan.fuel_process import fuel_process
 
 
 def start_colonization(*args):
@@ -53,10 +53,9 @@ def start_colonization(*args):
 
             id_flightplan = flightplan.pk
             flightplan_colonization = FlightplanColonization.objects.filter(id_fleet=fleet_id).first()
-            flightplan_colonization = FlightplanColonization.objects.filter(id=flightplan_colonization.pk).update(
-                start_time=start_time)
-            flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+            FlightplanColonization.objects.filter(id=flightplan_colonization.pk).update(start_time=start_time)
+            Flightplan.objects.filter(id=id_flightplan).update(status=1)
+            Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
     else:
         message = 'Нет топлива'
 

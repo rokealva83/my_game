@@ -6,7 +6,7 @@ from my_game.models import UserCity
 from my_game.models import Fleet
 from my_game.models import Flightplan, WarehouseElement, FlightplanRefill, Hold
 from my_game.models import FuelPattern, FuelTank
-from my_game.flightplan.fuel import fuel_process
+from my_game.flightplan.fuel_process import fuel_process
 
 
 def start_refill(*args):
@@ -22,11 +22,9 @@ def start_refill(*args):
 
     if id_command == 1:
         user_city = UserCity.objects.filter(user=session_user, x=fleet.x, y=fleet.y, z=fleet.z).first()
-        free_fuel_tank = fleet.free_fuel_tank
-
         if user_city:
             fuel = WarehouseElement.objects.filter(user_city=user_city.id, element_class=14,
-                                                    element_id=flightplan_refill.id_element).first()
+                                                   element_id=flightplan_refill.id_element).first()
             if fuel is None:
                 message = 'Нет топлива на складе'
                 error = 1
@@ -75,9 +73,9 @@ def start_refill(*args):
             else:
                 start_time = args[2]
             flightplan_refill = FlightplanRefill.objects.filter(id_fleet=fleet_id).first()
-            flightplan_refill = FlightplanRefill.objects.filter(id=flightplan_refill.pk).update(start_time=start_time)
-            flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+            FlightplanRefill.objects.filter(id=flightplan_refill.pk).update(start_time=start_time)
+            Flightplan.objects.filter(id=id_flightplan).update(status=1)
+            Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
     else:
         message = 'Нет топлива'
 

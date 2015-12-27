@@ -4,7 +4,7 @@ from datetime import datetime
 from my_game.models import AsteroidField
 from my_game.models import Fleet, FuelTank, FuelPattern
 from my_game.models import Flightplan, FlightplanProduction
-from my_game.flightplan.fuel import fuel_process
+from my_game.flightplan.fuel_process import fuel_process
 
 
 def start_extraction(*args):
@@ -36,10 +36,9 @@ def start_extraction(*args):
                     start_time = args[1]
                 flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
                 id_flightplan = flightplan.pk
-                flightplan_extraction = FlightplanProduction.objects.filter(id=flightplan_extraction.pk).update(
-                    start_time=start_time)
-                flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-                fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+                FlightplanProduction.objects.filter(id=flightplan_extraction.pk).update(start_time=start_time)
+                Flightplan.objects.filter(id=id_flightplan).update(status=1)
+                Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
         else:
             message = 'Нет топлива'
     return message

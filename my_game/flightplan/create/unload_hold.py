@@ -42,7 +42,6 @@ def unload_hold(*args):
             element_id = hold.shipment_id
             time = 150
         else:
-            message = ''
             error = 1
     if error == 0:
         flightplan = Flightplan(

@@ -4,7 +4,7 @@
 from datetime import datetime
 from my_game.models import Flightplan, FlightplanHold
 from my_game.models import Fleet, FuelPattern, FuelTank
-from my_game.flightplan.fuel import fuel_process
+from my_game.flightplan.fuel_process import fuel_process
 
 
 def start_upload(*args):
@@ -31,9 +31,9 @@ def start_upload(*args):
                 start_time = args[2]
 
             flightplan_upload = FlightplanHold.objects.filter(id_fleet=fleet_id).first()
-            flightplan_upload = FlightplanHold.objects.filter(id=flightplan_upload.pk).update(start_time=start_time)
-            flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+            FlightplanHold.objects.filter(id=flightplan_upload.pk).update(start_time=start_time)
+            Flightplan.objects.filter(id=id_flightplan).update(status=1)
+            Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
     else:
         message = 'Нет топлива'
 

@@ -4,7 +4,8 @@ from datetime import timedelta
 from django.utils import timezone
 from my_game.models import Planet
 from my_game.models import Flightplan, Ship, UserCity, FlightplanColonization
-from my_game.flightplan.fuel import need_fuel_process, minus_fuel
+from my_game.flightplan.need_fuel_process import need_fuel_process
+from my_game.flightplan.minus_fuel import minus_fuel
 
 
 def colonization_veryfication(*args):
@@ -12,12 +13,14 @@ def colonization_veryfication(*args):
     flightplan = Flightplan.objects.filter(id_fleet=fleet.id).first()
     flightplan_colonization = FlightplanColonization.objects.filter(id_fleetplan=flightplan.id).first()
     finish_time = timezone.now()
+    values = {}
     if flightplan_colonization:
         time = timezone.now()
         time_start = flightplan_colonization.start_time
         time_colonization = int(flightplan_colonization.time)
         delta_time = time - time_start
         new_delta = delta_time.total_seconds()
+        message = ''
         if new_delta > time_colonization:
             finish_time = time_start + timedelta(seconds=time_colonization)
             if flightplan_colonization.id_command == 1:
@@ -36,7 +39,7 @@ def colonization_veryfication(*args):
                         extraction_date=timezone.now()
                     )
                     user_city.save()
-                    planet_up = Planet.objects.filter(pk=planet.id).update(planet_free=0)
+                    Planet.objects.filter(pk=planet.id).update(planet_free=0)
 
                 else:
                     message = ''
@@ -58,7 +61,7 @@ def colonization_veryfication(*args):
         need_fuel = need_fuel_process(ship_in_fleets, flightplan, time_colonization, fleet.id)
         minus_fuel(fleet, need_fuel)
 
-        flightplan_del = Flightplan.objects.filter(id=flightplan.id).delete()
-        flightplan_colonization_del = FlightplanColonization.objects.filter(id=flightplan_colonization.id).delete()
-
-    return finish_time
+        Flightplan.objects.filter(id=flightplan.id).delete()
+        FlightplanColonization.objects.filter(id=flightplan_colonization.id).delete()
+        values = {'massage': message, 'finish_time': finish_time}
+    return values

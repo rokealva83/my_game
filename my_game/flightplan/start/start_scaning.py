@@ -3,7 +3,7 @@
 from datetime import datetime
 from my_game.models import Fleet, FuelPattern, FuelTank
 from my_game.models import Flightplan, FlightplanScan
-from my_game.flightplan.fuel import fuel_process
+from my_game.flightplan.fuel_process import fuel_process
 
 
 def start_scaning(*args):
@@ -12,7 +12,6 @@ def start_scaning(*args):
 
     error = 0
     flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
-    id_flightplan = flightplan.pk
     flightplan_scan = FlightplanScan.objects.filter(id_fleet=fleet_id).first()
     message = ''
     need_fuel = fuel_process(fleet_id, flightplan_scan, flightplan)
@@ -33,9 +32,9 @@ def start_scaning(*args):
             flightplan = Flightplan.objects.filter(id_fleet=fleet_id).first()
             id_flightplan = flightplan.pk
 
-            flightplan_scan = FlightplanScan.objects.filter(id=flightplan_scan.pk).update(start_time=start_time)
-            flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-            fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+            FlightplanScan.objects.filter(id=flightplan_scan.pk).update(start_time=start_time)
+            Flightplan.objects.filter(id=id_flightplan).update(status=1)
+            Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
     else:
         message = 'Нет топлива'
     return message

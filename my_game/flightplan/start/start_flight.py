@@ -31,10 +31,10 @@ def start_flight(*args):
                     start_time = datetime.now()
                 else:
                     start_time = args[1]
-                flightplan_flight = FlightplanFlight.objects.filter(id=flightplan_flight_id).update(
+                FlightplanFlight.objects.filter(id=flightplan_flight_id).update(
                     start_time=start_time)
-                flightplan = Flightplan.objects.filter(id=id_flightplan).update(status=1)
-                fleet = Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
+                Flightplan.objects.filter(id=id_flightplan).update(status=1)
+                Fleet.objects.filter(id=fleet_id).update(status=True, planet_status=0)
         else:
             message = 'Нет топлива'
 

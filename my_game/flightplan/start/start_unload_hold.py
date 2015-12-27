@@ -4,7 +4,7 @@
 from datetime import datetime
 from my_game.models import Fleet, FuelPattern, FuelTank
 from my_game.models import Flightplan, FlightplanHold
-from my_game.flightplan.fuel import fuel_process
+from my_game.flightplan.fuel_process import fuel_process
 
 
 def start_unload(*args):

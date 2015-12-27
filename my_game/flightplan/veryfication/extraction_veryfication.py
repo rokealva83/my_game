@@ -5,8 +5,8 @@ from django.utils import timezone
 from my_game.models import AsteroidField, FleetParametrResourceExtraction
 from my_game.models import Fleet, Ship
 from my_game.models import Flightplan, FlightplanProduction, Hold
-from my_game.flightplan.fuel import need_fuel_process, minus_fuel
-
+from my_game.flightplan.need_fuel_process import need_fuel_process
+from my_game.flightplan.minus_fuel import minus_fuel
 
 
 def extraction_veryfication(*args):
@@ -78,15 +78,14 @@ def extraction_veryfication(*args):
             mass = extraction
             new_mass = fleet.ship_empty_mass + mass
             new_empty_hold = fleet.empty_hold - extraction
-            fleet_up = Fleet.objects.filter(id=fleet.id).update(hold=new_hold, ship_empty_mass=new_mass,
-                                                                empty_hold=new_empty_hold)
+            Fleet.objects.filter(id=fleet.id).update(hold=new_hold, ship_empty_mass=new_mass, empty_hold=new_empty_hold)
             new_time = flightplan_extraction.time_extraction - delta
             if new_time > 0:
-                flightplan_extraction = FlightplanProduction.objects.filter(id_fleetplan=flightplan.id).update(
-                    start_time=time, time_extraction=new_time)
+                FlightplanProduction.objects.filter(id_fleetplan=flightplan.id).update(start_time=time,
+                                                                                       time_extraction=new_time)
             else:
-                flightplan_del = Flightplan.objects.filter(id=flightplan.id).delete()
-                flightplan_extraction_del = FlightplanProduction.objects.filter(id=flightplan_extraction.id).delete()
+                Flightplan.objects.filter(id=flightplan.id).delete()
+                FlightplanProduction.objects.filter(id=flightplan_extraction.id).delete()
 
             ship_in_fleets = Ship.objects.filter(fleet_status=1, place_id=fleet.id)
             need_fuel = need_fuel_process(ship_in_fleets, flightplan, delta, fleet.id)
@@ -102,8 +101,7 @@ def add_res(*args):
 
     if res:
         new_res = int(res.amount_shipment) + int(resource)
-        up_res = Hold.objects.filter(fleet_id=fleet.id, class_shipment=0,
-                                     id_shipment=1).update(amount_shipment=new_res)
+        Hold.objects.filter(fleet_id=fleet.id, class_shipment=0, id_shipment=1).update(amount_shipment=new_res)
     else:
         new_res = Hold(
             fleet_id=fleet.id,
@@ -115,3 +113,4 @@ def add_res(*args):
 
         )
         new_res.save()
+    return True

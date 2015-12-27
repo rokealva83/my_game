@@ -5,7 +5,8 @@ from django.utils import timezone
 from my_game.models import Planet
 from my_game.models import Fleet
 from my_game.models import Flightplan, FlightplanFlight
-from my_game.flightplan import fuel
+from my_game.flightplan.fuel import fuel
+from my_game.flightplan.minus_fuel import minus_fuel
 
 
 def verification_flight(*args):
@@ -36,23 +37,24 @@ def verification_flight(*args):
                     y = flightplan_flight.finish_y
                     z = flightplan_flight.finish_z
 
-                fleet_up = Fleet.objects.filter(id=fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
-                                                                    planet=flightplan_flight.planet,
-                                                                    system=flightplan_flight.system)
+                Fleet.objects.filter(id=fleet.id).update(x=x, y=y, z=z, planet_status=planet_status,
+                                                         planet=flightplan_flight.planet,
+                                                         system=flightplan_flight.system)
 
-                need_fuel = fuel.fuel(fleet.id, flightplan_flight, fleet)
-                fuel.minus_fuel(fleet, need_fuel)
+                need_fuel = fuel(fleet.id, flightplan_flight, fleet)
+                minus_fuel(fleet, need_fuel)
 
-                flightplan_flight = FlightplanFlight.objects.filter(id_fleetplan=flightplan.id).delete()
-                flightplan = Flightplan.objects.filter(id=flightplan.id).delete()
+                FlightplanFlight.objects.filter(id_fleetplan=flightplan.id).delete()
+                Flightplan.objects.filter(id=flightplan.id).delete()
             else:
                 new_x = flightplan_flight.start_x - (
-                                                        flightplan_flight.start_x - flightplan_flight.finish_x) / flightplan_flight.flight_time * new_delta
+                    (flightplan_flight.start_x - flightplan_flight.finish_x) / (
+                        flightplan_flight.flight_time * new_delta))
                 new_y = flightplan_flight.start_y - (
-                                                        flightplan_flight.start_y - flightplan_flight.finish_y) / flightplan_flight.flight_time * new_delta
+                    (flightplan_flight.start_y - flightplan_flight.finish_y) / (
+                        flightplan_flight.flight_time * new_delta))
                 new_z = flightplan_flight.start_z - (
-                                                        flightplan_flight.start_z - flightplan_flight.finish_z) / flightplan_flight.flight_time * new_delta
-                fleet_up = Fleet.objects.filter(id=fleet.id).update(x=new_x, y=new_y, z=new_z,
-                                                                    planet_status=0, planet=0,
-                                                                    system=0)
+                    (flightplan_flight.start_z - flightplan_flight.finish_z) / (
+                        flightplan_flight.flight_time * new_delta))
+                Fleet.objects.filter(id=fleet.id).update(x=new_x, y=new_y, z=new_z, planet_status=0, planet=0, system=0)
             return finish_time

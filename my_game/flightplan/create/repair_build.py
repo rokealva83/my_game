@@ -23,7 +23,7 @@ def repair_build(*args):
         hold = Hold.objects.filter(id=hold_factory_id).first()
         factory = FactoryPattern.objects.filter(id=hold.shipment_id).first().time_deployment
         fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet=fleet,
-                                                                          class_process=1).first().process_per_minute
+                                                                       class_process=1).first().process_per_minute
         time = factory * fleet_parametr_build
 
     if repair:

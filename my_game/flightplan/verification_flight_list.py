@@ -60,3 +60,4 @@ def verification_flight_list(request):
                         start_scaning.start_scaning(fleet, finish_time)
                 else:
                     Fleet.objects.filter(id=fleet.id).update(status=0)
+    return True
