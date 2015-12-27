@@ -54,8 +54,7 @@ def engine_upgrade(request):
             )
             engine_pattern.save()
             new_factory_pattern(user, 4, engine_scient.id)
-            # if engine_pattern.system_power != 0 or engine_pattern.intersystem_power != 0:
-                # open_fuel(user, engine_pattern.system_power, engine_pattern.intersystem_power)
+            open_fuel(user, engine_scient, None)
     else:
         studied_engine = EnginePattern.objects.filter(user=user, basic_pattern=engine_scient, bought_template=0)
         len_studied_engine = len(studied_engine)
@@ -75,7 +74,8 @@ def engine_upgrade(request):
                     element_basic = getattr(engine_scient, attribute)
                     if element_basic != 0:
                         if element / element_basic < 4.0:
-                            if attribute == 'engine_mass' or attribute == 'engine_size' or attribute == 'power_consuption':
+                            if attribute == 'engine_mass' or attribute == 'engine_size' or (
+                                        attribute == 'power_consuption'):
                                 percent_update = 1 - random.randint(2, 5) / 100.0
                                 element *= percent_update
                                 setattr(user_engine, attribute, element)
@@ -84,4 +84,4 @@ def engine_upgrade(request):
                                 setattr(user_engine, attribute, element)
                         summary_percent_up += percent_update
                 user_engine.save()
-                price_increase(user_engine, (summary_percent_up/len(engine_attribute)))
+                price_increase(user_engine, (summary_percent_up / len(engine_attribute)))

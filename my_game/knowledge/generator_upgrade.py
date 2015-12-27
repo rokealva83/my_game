@@ -6,6 +6,7 @@ from my_game.models import BasicGenerator
 from my_game.knowledge.element_open import element_open
 from my_game.knowledge.new_factory_pattern import new_factory_pattern
 from my_game.knowledge.price_increase import price_increase
+from my_game.knowledge.open_fuel import open_fuel
 
 
 def generator_upgrade(request):
@@ -50,6 +51,7 @@ def generator_upgrade(request):
             )
             generator_pattern.save()
             new_factory_pattern(user, 5, generator_scient.id)
+            open_fuel(user, None, generator_scient)
     else:
         studied_generator = GeneratorPattern.objects.filter(user=user, basic_pattern=generator_scient,
                                                             bought_template=0)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from my_game.models import MyUser
+from my_game.models import MyUser, BasicFuel
 
 
 class BasicGenerator(models.Model):
@@ -17,6 +17,7 @@ class BasicGenerator(models.Model):
     fuel_necessary = models.IntegerField(verbose_name=u'Потребление топлива')
     generator_mass = models.IntegerField(verbose_name=u'Масса')
     generator_size = models.IntegerField(verbose_name=u'Размер')
+    fuel = models.ManyToManyField(BasicFuel, verbose_name=u'Топливо')
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')

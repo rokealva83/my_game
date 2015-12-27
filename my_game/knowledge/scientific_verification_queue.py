@@ -15,6 +15,7 @@ from my_game.knowledge.shield_upgrade import shield_upgrade
 from my_game.knowledge.hull_upgrade import hull_upgrade
 from my_game.knowledge.generator_upgrade import generator_upgrade
 from my_game.knowledge.device_open import device_open
+from my_game.knowledge.open_fuel import open_fuel
 
 
 def check_scientific_verification_queue(request):
@@ -81,8 +82,9 @@ def check_scientific_verification_queue(request):
                 if 0.875 <= new_technology <= 1:
                     module_upgrade(user)
                 new_device = random.random()
-                if 0 < new_device < 1:
+                if 0.3 < new_device < 0.5:
                     device_open(user)
+                open_fuel(user, None, None)
         last_time_scan_scient = datetime.datetime.now() + datetime.timedelta(1)
         MyUser.objects.filter(id=user.id).update(last_time_scan_scient=last_time_scan_scient)
     science_users = UserScientic.objects.filter(user=user).first()

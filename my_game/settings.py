@@ -34,7 +34,6 @@ CELERY_SEND_TASK_ERROR_EMAILS = True
 djcelery.setup_loader()
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -134,7 +133,6 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
 )
-
 
 SUIT_CONFIG = {
     'ADMIN_NAME': 'LIBRE',

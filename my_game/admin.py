@@ -212,7 +212,7 @@ admin.site.register(BasicModule, MyModuleAdmin)
 class MyFuelAdmin(admin.ModelAdmin):
     list_display = ['fuel_name', 'fuel_mass', 'fuel_size', 'fuel_efficiency', 'fuel_class', 'fuel_id',
                     'price_internal_currency', 'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt',
-                    'price_chemical', ]
+                    'price_chemical', 'min_all_scientic']
 
 
 admin.site.register(BasicFuel, MyFuelAdmin)

@@ -6,6 +6,7 @@ from my_game.models.city_models import *
 from my_game.models.building_models import *
 from my_game.models.chat_models import *
 from my_game.models.device_models import *
+from my_game.models.fuel_models import *
 from my_game.models.engine_models import *
 from my_game.models.manufacturing_complex_models import *
 from my_game.models.factory_models import *
