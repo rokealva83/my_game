@@ -102,7 +102,7 @@
                                 <input value="0" name="amount_ship" class="number_ship"
                                        placeholder="Amount ship"/>
                                 <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                                <input type="hidden" value={{ ship_fleet.project_ship.id }} name="hidden_del_ship"/>
+                                <input type="hidden" value={{ ship_fleet.id }} name="hidden_del_ship"/>
                                 <input class="button_force" type="submit" value="Убрать из флота" name="del_ship"/></p>
                         {% endif %}
                     {% endfor %}

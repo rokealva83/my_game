@@ -29,9 +29,11 @@ class FleetEnergyPower(models.Model):
     produce_energy = models.IntegerField(default=0)
     use_fuel_generator = models.IntegerField(default=0)
 
+
 class ResourceHold(models.Model):
     class Meta:
         db_table = 'resource_hold'
+
     res_nickel = models.IntegerField(default=0)
     res_iron = models.IntegerField(default=0)
     res_cooper = models.IntegerField(default=0)
@@ -120,3 +122,13 @@ class FuelTank(models.Model):
     amount_fuel = models.IntegerField()
     mass_fuel = models.IntegerField()
     size_fuel = models.IntegerField()
+
+
+class FleetParametrAcceleration(models.Model):
+    class Meta:
+        db_table = 'fleet_parametr_acceleration'
+
+    fleet = models.ForeignKey(Fleet, db_index=True)
+    acceleration = models.FloatField()
+    braking = models.FloatField()
+    reverse = models.FloatField()

@@ -11,20 +11,24 @@ class BasicModule(models.Model):
         verbose_name_plural = u'Модули'
 
     CHOICES_CLASS_MODULE = (
-        (1,'Полетные модули'),
-        (2,'Модули трюма'),
-        (3,'Геологические модули'),
-        (4,'Заправочные модули'),
-        (5,'Ремонтные модули'),
-        (6,'Модули сканирования')
-        )
+        (1, 'Полетные модули'),
+        (2, 'Модули трюма'),
+        (3, 'Геологические модули'),
+        (4, 'Заправочные модули'),
+        (5, 'Ремонтные модули'),
+        (6, 'Модули сканирования')
+    )
 
     module_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
     module_health = models.IntegerField(verbose_name=u'Количество жизни')
-    param1 = models.IntegerField(verbose_name=u'Параметр 1', help_text=u'Добыча в минуту, Растояние сканирования, Процент ускорения')
-    param2 = models.IntegerField(verbose_name=u'Параметр 2', help_text=u'Ремонт/Строительство в минуту, Время сканирования, Процент при торможении')
-    param3 = models.IntegerField(verbose_name=u'Параметр 3', help_text=u'Метод ремонта/строительства, Метод сканирования, Процент при реверсе')
+    param1 = models.IntegerField(verbose_name=u'Параметр 1',
+                                 help_text=u'Добыча в минуту, Растояние сканирования, '
+                                           u'Процент ускорения, Ремонт/строительство м минуту')
+    param2 = models.IntegerField(verbose_name=u'Параметр 2', help_text=u'Время сканирования, Процент при торможении')
+    param3 = models.IntegerField(verbose_name=u'Параметр 3',
+                                 help_text=u'Метод сканирования, Процент при реверсе, '
+                                           u'Метод строительства(1)/ремонта(2), Метод заправки(1)/перегрузки(2)')
     module_mass = models.IntegerField(verbose_name=u'Масса')
     module_size = models.IntegerField(verbose_name=u'Размер')
     power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
