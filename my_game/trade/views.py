@@ -48,30 +48,3 @@ def trade(request):
             output = {'user': session_user, 'warehouse': warehouse, 'user_city': session_user_city,
                       'user_citys': user_citys, 'planet': planet}
             return render(request, "civilization.html", output)
-
-
-def new_trade_space(request):
-    if "live" not in request.session:
-        return render(request, "index.html", {})
-    else:
-        session_user = MyUser.objects.filter(id=int(request.session['user'])).first()
-        session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
-        function.check_all_queues(session_user)
-        message = ''
-        trade_space_id = request.POST.get('trade_space_id')
-        name = request.POST.get('name')
-        password = request.POST.get('pass')
-        tax = request.POST.get('tax')
-        trade_space = TradeSpace(
-            name=name,
-            user=session_user,
-            password=password,
-            tax=tax
-        )
-        trade_space.save()
-
-        request.session['user'] = session_user.id
-        request.session['user_city'] = session_user_city.id
-        request.session['live'] = True
-        output = create_trade_output(session_user, session_user_city, trade_space_id, message)
-        return render(request, "trade.html", output)
