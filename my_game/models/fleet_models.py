@@ -2,6 +2,7 @@
 
 from django.db import models
 from my_game.models import MyUser
+from my_game.models import FuelPattern
 
 
 class FleetEngine(models.Model):
@@ -117,8 +118,8 @@ class FuelTank(models.Model):
         db_table = 'fuel_tank'
 
     fleet = models.ForeignKey(Fleet, db_index=True)
+    fuel_pattern = models.ForeignKey(FuelPattern)
     fuel_class = models.IntegerField()
-    fuel_id = models.IntegerField(default=1)
     amount_fuel = models.IntegerField()
     mass_fuel = models.IntegerField()
     size_fuel = models.IntegerField()

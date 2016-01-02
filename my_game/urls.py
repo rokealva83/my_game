@@ -51,6 +51,7 @@ from my_game.space_forces.fuel_tank import fuel_tank
 from my_game.space_forces.empty_fuel_tank import empty_fuel_tank
 
 from my_game.trade import views as trade
+from my_game.trade.new_trade_space import new_trade_space
 from my_game.trade import add_trade_element as add_trade_element
 from my_game.trade import del_trade_element as del_trade_element
 from my_game.trade import buy_trade_element as buy_trade_element
@@ -122,7 +123,7 @@ urlpatterns = patterns('',
                        url(r'^empty_fuel_tank', empty_fuel_tank),
 
                        url(r'^trade', trade.trade),
-                       url(r'^new_trade_space', trade.new_trade_space),
+                       url(r'^new_trade_space', new_trade_space),
                        url(r'^add_trade_element', add_trade_element.add_trade_element),
                        url(r'^del_trade', del_trade_element.del_trade),
                        url(r'^buy_trade', buy_trade_element.buy_trade),

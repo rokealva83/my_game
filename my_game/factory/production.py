@@ -9,6 +9,7 @@ from my_game.factory import verification_stage_production
 from my_game.building import assembly_line_workpieces
 from my_game.factory.rename_element_pattern import rename_element_pattern
 from my_game.factory.production_module import production_module
+from my_game.factory.production_fuel import production_fuel
 from my_game.factory.stop_production import stop_production
 
 
@@ -31,7 +32,10 @@ def production(request):
             element_id = request.POST.get('hidden_element')
             amount_element = request.POST.get('amount_element')
             factory = FactoryInstalled.objects.filter(id=request.POST.get('hidden_factory')).first()
-            message = production_module(session_user, session_user_city, factory, element_id, amount_element)
+            if factory.production_class != 14:
+                message = production_module(session_user, session_user_city, factory, element_id, amount_element)
+            else:
+                message = production_fuel(session_user, session_user_city, factory, element_id, amount_element)
 
         elif request.POST.get('disassembling'):
             factory = FactoryInstalled.objects.filter(id=request.POST.get('hidden_factory')).first()

@@ -222,7 +222,7 @@
             <div>
                 Resource in warehouse
                 <select name="warehouse_resource" class="list_force">
-                    <option selected disabled>Choise resource</option>
+                    <option selected disabled>Ресурсы</option>
                     <option value="1">Никель( {{ warehouse.res_nickel }} )</option>
                     <option value="2">Железо( {{ warehouse.res_iron }} )</option>
                     <option value="3">Медь( {{ warehouse.res_cooper }} )</option>
@@ -245,7 +245,7 @@
             <div>
                 {% if warehouse_factorys %} Factory in warehouse
                     {% spaceless %}<select name="warehouse_factory" class="list_force">
-                        <option selected disabled>Choise factory</option>
+                        <option selected disabled>Фабрики</option>
                         {% for warehouse_factory in warehouse_factorys %}
                             {% for factory_pattern in factory_patterns %}
                                 {% if warehouse_factory.factory_id == factory_pattern.id %}
@@ -267,7 +267,7 @@
                 <div>
                     {% if warehouse_elements %} Hull in warehouse
                         <select name="warehouse_hull" class="list_force">
-                            <option selected disabled>Choise hull</option>
+                            <option selected disabled>Корпуса</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 1 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -290,7 +290,7 @@
                 <div>
                     {% if warehouse_elements %} Armor in warehouse
                         <select name="warehouse_armor" class="list_force">
-                            <option selected disabled>Choise armor</option>
+                            <option selected disabled>Броня</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 2 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -314,7 +314,7 @@
                 <div>
                     {% if warehouse_elements %} Shield in warehouse
                         <select name="warehouse_shield" class="list_force">
-                            <option selected disabled>Choise shield</option>
+                            <option selected disabled>Щиты</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 3 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -338,7 +338,7 @@
                 <div>
                     {% if warehouse_elements %} Engine in warehouse
                         <select name="warehouse_engine" class="list_force">
-                            <option selected disabled>Choise engine</option>
+                            <option selected disabled>Двигатели</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 4 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -362,7 +362,7 @@
                 <div>
                     {% if warehouse_elements %} Generator in warehouse
                         <select name="warehouse_generator" class="list_force">
-                            <option selected disabled>Choise generator</option>
+                            <option selected disabled>Генераторы</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 5 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -386,7 +386,7 @@
                 <div>
                     {% if warehouse_elements %} Weapon in warehouse
                         <select name="warehouse_weapon" class="list_force">
-                            <option selected disabled>Choise weapon</option>
+                            <option selected disabled>Оружие</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 6 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -410,7 +410,7 @@
                 <div>
                     {% if warehouse_elements %} Shell in warehouse
                         <select name="warehouse_shell" class="list_force">
-                            <option selected disabled>Choise shell</option>
+                            <option selected disabled>Боеприпасы</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 7 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -434,7 +434,7 @@
                 <div>
                     {% if warehouse_elements %} Module in warehouse
                         <select name="warehouse_module" class="list_force">
-                            <option selected disabled>Choise module</option>
+                            <option selected disabled>Модули</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 8 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -458,7 +458,7 @@
                 <div>
                     {% if warehouse_elements %} Device in warehouse
                         <select name="warehouse_device" class="list_force">
-                            <option selected disabled>Choise device</option>
+                            <option selected disabled>Устройства</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 9 %}
                                     {% if warehouse_element.amount > 0 %}
@@ -482,7 +482,7 @@
                 <div>
                     {% if warehouse_elements %} Fuel in warehouse
                         <select name="warehouse_fuel" class="list_force">
-                            <option selected disabled>Choise fuel</option>
+                            <option selected disabled>Топливо</option>
                             {% for warehouse_element in warehouse_elements %}
                                 {% if warehouse_element.element_class == 14 %}
                                     {% if warehouse_element.amount > 0 %}

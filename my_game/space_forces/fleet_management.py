@@ -160,7 +160,7 @@ def fleet_manage(request):
             user_citys = UserCity.objects.filter(user=session_user).all()
             user_fleets = Fleet.objects.filter(user=session_user)
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1)
-            ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city)
+            ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city.id)
             request.session['user'] = session_user.id
             request.session['user_city'] = session_user_city.id
             request.session['live'] = True

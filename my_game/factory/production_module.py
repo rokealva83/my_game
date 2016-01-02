@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 from my_game.models import TurnProduction
 from my_game.models import HullPattern, ShellPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
-    ArmorPattern, ModulePattern, WeaponPattern, FuelPattern, DevicePattern
+    ArmorPattern, ModulePattern, WeaponPattern, DevicePattern
 
 
 def production_module(*args):
@@ -12,13 +12,13 @@ def production_module(*args):
     factory = args[2]
     element_id = args[3]
     amount_element = args[4]
-
+    message = ''
     warehouse = factory.factory_warehouse
 
     if warehouse:
         len_turn_production = len(TurnProduction.objects.filter(user=session_user, user_city=session_user_city,
                                                                 factory=factory))
-        module_which_produces = 0
+        module_which_produces = None
         if len_turn_production < 1:
             if factory.production_class == 1:
                 module_which_produces = HullPattern.objects.filter(id=element_id).first()
@@ -38,9 +38,6 @@ def production_module(*args):
                 module_which_produces = ModulePattern.objects.filter(id=element_id).first()
             elif factory.production_class == 9:
                 module_which_produces = DevicePattern.objects.filter(id=element_id).first()
-            elif factory.production_class == 14:
-                module_which_produces = FuelPattern.objects.filter(id=element_id).first()
-
             if session_user.internal_currency >= module_which_produces.price_internal_currency * int(amount_element) \
                     and warehouse.res_nickel >= module_which_produces.price_nickel * int(amount_element) \
                     and warehouse.res_iron >= module_which_produces.price_iron * int(amount_element) \
@@ -51,13 +48,13 @@ def production_module(*args):
                     and warehouse.res_renniit >= module_which_produces.price_renniit * int(amount_element) \
                     and warehouse.res_cobalt >= module_which_produces.price_cobalt * int(amount_element) \
                     and warehouse.mat_construction_material >= module_which_produces.price_construction_material * (
-                                                int(amount_element)) \
+                            int(amount_element)) \
                     and warehouse.mat_chemical >= module_which_produces.price_chemical * int(amount_element) \
                     and warehouse.mat_high_strength_allov >= module_which_produces.price_high_strength_allov * (
                             int(amount_element)) \
                     and warehouse.mat_nanoelement >= module_which_produces.price_nanoelement * int(amount_element) \
                     and warehouse.mat_microprocessor_element >= module_which_produces.price_microprocessor_element * (
-                                int(amount_element)) \
+                            int(amount_element)) \
                     and warehouse.mat_fober_optic_element >= module_which_produces.price_fober_optic_element * (
                             int(amount_element)):
 
@@ -66,9 +63,12 @@ def production_module(*args):
                 new_res_nickel = warehouse.res_nickel - module_which_produces.price_nickel * int(amount_element)
                 new_res_iron = warehouse.res_iron - module_which_produces.price_iron * int(amount_element)
                 new_res_cooper = warehouse.res_cooper - module_which_produces.price_cooper * int(amount_element)
-                new_res_aluminum = warehouse.res_aluminum - module_which_produces.price_aluminum * int(amount_element)
-                new_res_veriarit = warehouse.res_veriarit - module_which_produces.price_veriarit * int(amount_element)
-                new_res_inneilit = warehouse.res_inneilit - module_which_produces.price_inneilit * int(amount_element)
+                new_res_aluminum = warehouse.res_aluminum - module_which_produces.price_aluminum * int(
+                    amount_element)
+                new_res_veriarit = warehouse.res_veriarit - module_which_produces.price_veriarit * int(
+                    amount_element)
+                new_res_inneilit = warehouse.res_inneilit - module_which_produces.price_inneilit * int(
+                    amount_element)
                 new_res_renniit = warehouse.res_renniit - module_which_produces.price_renniit * int(amount_element)
                 new_res_cobalt = warehouse.res_cobalt - module_which_produces.price_cobalt * int(amount_element)
                 new_construction_material = warehouse.mat_construction_material - (

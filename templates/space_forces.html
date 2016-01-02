@@ -10,7 +10,7 @@
     <div class="left_block_force">
         <form method="post" action="fleet_manage" style="text-align: center">
             <input value="" name="fleet_name" class="force_name" placeholder="Fleet name"/>
-            <input class="button_force" type="submit" value="New fleet" name="create_fleet"/>
+            <input class="button_force" type="submit" value="Новый флот" name="create_fleet"/>
         </form>
         <form method="post" action="modificate_ship" style="text-align: center">
             {% if ships %}
@@ -25,8 +25,8 @@
                                value="{{ ship.amount_ship }}" name="hidden_amount_ship"/>
 
                         <input value="" name="amount_ship" class="number_ship" placeholder="Amount ship"/>
-                        <input class="button_force" type="submit" value="Modification" name="modificate_ship"/>
-                        <input class="button_force" type="submit" value="Disassemble" name="disassemble_ship"/>
+                        <input class="button_force" type="submit" value="Улучшить" name="modificate_ship"/>
+                        <input class="button_force" type="submit" value="Разобрать" name="disassemble_ship"/>
                     </p>
                 {% endfor %}
             {% endif %}
@@ -55,18 +55,17 @@
                         {% endfor %}
                     {% endspaceless %}
                     <p>
-                        <input class="button_force" type="submit" value="Navy ships" name="navy_ships"/>
-                        <input class="button_force" type="submit" value="The hold of the fleet" name="hold_fleet"
-                               style="width: 150px"/>
-                        <input class="button_force" type="submit" value="Fuel tank" name="fuel_tank"/>
-                        <input class="button_force" type="submit" value="Flight plan" name="flight_plan"/>
+                        <input class="button_force" type="submit" value="Корабли" name="navy_ships"/>
+                        <input class="button_force" type="submit" value="Трюм" name="hold_fleet"/>
+                        <input class="button_force" type="submit" value="Топливо" name="fuel_tank"/>
+                        <input class="button_force" type="submit" value="Полетный лист" name="flight_plan"/>
 
                         <input type="hidden" id="user_fleet{{ user_fleet.id }}"
                                value={{ user_fleet.id }} name="hidden_fleet"/>
                     </p>
 
                     <p>
-                        <input class="button_force" type="submit" value="Delete fleet" name="delete_fleet"
+                        <input class="button_force" type="submit" value="Удалить флот" name="delete_fleet"
                                style="margin-top: 5px"/>
                         <input type="hidden" id="user_fleet{{ user_fleet.id }}"
                                value={{ user_fleet.id }} name="hidden_fleet"/>

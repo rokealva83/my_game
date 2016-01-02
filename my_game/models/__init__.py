@@ -10,9 +10,9 @@ from my_game.models.fuel_models import *
 from my_game.models.engine_models import *
 from my_game.models.manufacturing_complex_models import *
 from my_game.models.factory_models import *
+from my_game.models.fuel_models import *
 from my_game.models.fleet_models import *
 from my_game.models.flightplan_models import *
-from my_game.models.fuel_models import *
 from my_game.models.generator_models import *
 from my_game.models.hull_models import *
 from my_game.models.module_models import *

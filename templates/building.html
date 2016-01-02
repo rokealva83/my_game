@@ -341,7 +341,7 @@
             </div>
         {% else %}
             {% for factory_pattern in factory_patterns %}
-                {% if factory_pattern.production_class > 9 and factory_pattern.production_class < 14 %}
+                {% if factory_pattern.production_class > 9 and factory_pattern.production_class < 21 %}
                     <form method="post" action="working">
                         <input class="toggle-box" id="factory{{ factory_pattern.id }}" type="checkbox" align="left">
                         <label class="slide" id="slowdown" for="factory{{ factory_pattern.id }}">

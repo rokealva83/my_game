@@ -25,44 +25,46 @@ def fuel_tank(request):
             add_shipment = 0
             if int(fuel_amount) != 0 and add_shipment == 0 and fuel_pattern_id is not None:
                 fuel = FuelPattern.objects.filter(id=fuel_pattern_id).first()
-                size = fuel.size * int(fuel_amount)
+                size = fuel.fuel_size * int(fuel_amount)
                 if size <= fleet.free_fuel_tank:
                     warehouse_element = WarehouseElement.objects.filter(user_city=session_user_city,
                                                                         element_class=14,
                                                                         element_id=fuel_pattern_id).first()
                     if warehouse_element.amount >= fuel_amount:
                         new_element_amount = warehouse_element.amount - fuel_amount
-                        WarehouseElement.objects.filter(user_city=session_user_city, element_class=14,
-                                                        element_id=fuel_pattern_id).update(amount=new_element_amount)
+                        setattr(warehouse_element, 'amount', new_element_amount)
+                        warehouse_element.save()
                         error = 0
                     else:
                         error = 1
 
                     if error == 0:
-                        fuel_tank_obj = FuelTank.objects.filter(fleet=fleet, fuel_class=fuel_pattern_id).first()
+                        fuel_tank_obj = FuelTank.objects.filter(fleet=fleet, fuel_pattern=fuel).first()
                         if fuel_tank_obj:
                             new_fuel_amount = fuel_amount + fuel_tank_obj.amount_fuel
-                            mass_fuel = fuel.mass * fuel_amount + fuel_tank_obj.mass_fuel
-                            size_fuel = fuel.size * fuel_amount + fuel_tank_obj.size_fuel
-                            FuelTank.objects.filter(fleet=fleet, fuel_class=fuel_pattern_id).update(
-                                amount_fuel=new_fuel_amount, mass_fuel=mass_fuel, size_fuel=size_fuel)
-
+                            mass_fuel = fuel.fuel_mass * fuel_amount + fuel_tank_obj.mass_fuel
+                            size_fuel = fuel.fuel_size * fuel_amount + fuel_tank_obj.size_fuel
+                            setattr(fuel_tank_obj, 'amount_fuel', new_fuel_amount)
+                            setattr(fuel_tank_obj, 'mass_fuel', mass_fuel)
+                            setattr(fuel_tank_obj, 'size_fuel', size_fuel)
+                            fuel_tank_obj.save()
                         else:
                             fuel_tank_obj = FuelTank(
                                 fleet=fleet,
-                                fuel_class=fuel_pattern_id,
+                                fuel_class=fuel.fuel_class,
                                 amount_fuel=fuel_amount,
-                                mass_fuel=fuel.mass * fuel_amount,
-                                size_fuel=fuel.size * fuel_amount,
-                                fuel_id=fuel.fuel_id
+                                mass_fuel=fuel.fuel_mass * fuel_amount,
+                                size_fuel=fuel.fuel_size * fuel_amount,
+                                fuel_pattern=fuel,
                             )
                             fuel_tank_obj.save()
 
-                        new_fleet_mass = fleet.ship_empty_mass + fuel.mass * fuel_amount
-                        new_empty_fuel_tank = fleet.free_fuel_tank - fuel.size * fuel_amount
+                        new_fleet_mass = fleet.ship_empty_mass + fuel.fuel_mass * fuel_amount
+                        new_empty_fuel_tank = fleet.free_fuel_tank - fuel.fuel_size * fuel_amount
 
-                        fleet = Fleet.objects.filter(id=fleet.id).update(ship_empty_mass=new_fleet_mass,
-                                                                         free_fuel_tank=new_empty_fuel_tank)
+                        setattr(fleet, 'ship_empty_mass', new_fleet_mass)
+                        setattr(fleet, 'free_fuel_tank', new_empty_fuel_tank)
+                        fleet.save()
                         message = 'Топливо загружено'
                     else:
                         message = 'Нехватка топлива на складе'
