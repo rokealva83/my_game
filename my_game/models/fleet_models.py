@@ -14,7 +14,7 @@ class FleetEngine(models.Model):
     giper_accuracy = models.FloatField(default=0)
     null_power = models.IntegerField(default=0)
     null_accuracy = models.FloatField(default=0)
-    maneuverability = models.FloatField(default=0)
+    maneuverability = models.FloatField(default=0, verbose_name=u'Маневриность')
 
 
 class FleetEnergyPower(models.Model):
