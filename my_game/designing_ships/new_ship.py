@@ -36,7 +36,11 @@ def new_ship(request):
             weapons = WeaponPattern.objects.filter(user=session_user, weapon_class__in=[1, 3]).order_by('basic_pattern')
             main_weapons = WeaponPattern.objects.filter(user=session_user, weapon_class__in=[2, 4]).order_by(
                 'basic_pattern')
-            modules = ModulePattern.objects.filter(user=session_user).order_by('basic_pattern')
+            all_modules = ModulePattern.objects.filter(user=session_user).order_by('basic_pattern')
+            if chosen_hull.basic_pattern.id in [1, 2]:
+                modules = [module for module in all_modules if module.module_class not in [2, 3, 4]]
+            else:
+                modules = [module for module in all_modules if module.module_class !=6]
             turn_ship_builds = TurnShipBuild.objects.filter(user=session_user, user_city=session_user_city)
             output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
                       'user_citys': user_citys, 'chosen_hull': chosen_hull, 'chosen_name': chosen_name,

@@ -12,20 +12,20 @@ class BasicHull(models.Model):
 
     hull_name = models.CharField(max_length=50, verbose_name=u'Название')
     description = models.CharField(max_length=500, verbose_name=u'Описание')
-    hull_health = models.IntegerField(verbose_name=u'Количество здоровья')
-    generator = models.IntegerField(verbose_name=u'Количество герераторов')
-    engine = models.IntegerField(verbose_name=u'Количество двигателей')
-    weapon = models.IntegerField(verbose_name=u'Количество оружия')
-    armor = models.IntegerField(verbose_name=u'Количество брони')
-    shield = models.IntegerField(verbose_name=u'Количество щитов')
-    module = models.IntegerField(verbose_name=u'Количество модулей')
-    main_weapon = models.IntegerField(verbose_name=u'Количество главного калибра')
-    hold_size = models.IntegerField(verbose_name=u'Размер трюма')
+    hull_health = models.IntegerField(default=0, verbose_name=u'Количество здоровья')
+    generator = models.IntegerField(default=0, verbose_name=u'Количество герераторов')
+    engine = models.IntegerField(default=0, verbose_name=u'Количество двигателей')
+    weapon = models.IntegerField(default=0, verbose_name=u'Количество оружия')
+    armor = models.IntegerField(default=0, verbose_name=u'Количество брони')
+    shield = models.IntegerField(default=0, verbose_name=u'Количество щитов')
+    module = models.IntegerField(default=0, verbose_name=u'Количество модулей')
+    main_weapon = models.IntegerField(default=0, verbose_name=u'Количество главного калибра')
+    hold_size = models.IntegerField(default=0, verbose_name=u'Размер трюма')
     fuel_tank = models.IntegerField(default=0, verbose_name=u'Размер топливного бака')
-    hull_mass = models.IntegerField(verbose_name=u'Масса')
-    hull_size = models.IntegerField(verbose_name=u'Размер')
-    power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
-    price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
+    hull_mass = models.IntegerField(default=0, verbose_name=u'Масса')
+    hull_size = models.IntegerField(default=0, verbose_name=u'Размер')
+    power_consuption = models.IntegerField(default=0, verbose_name=u'Потребление энергии')
+    price_internal_currency = models.IntegerField(default=0, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')
     price_cooper = models.IntegerField(default=0, verbose_name=u'Цена в меди')
@@ -51,7 +51,7 @@ class BasicHull(models.Model):
     min_logist = models.IntegerField(default=0, verbose_name=u'Минимальный уровень логистики')
 
     def __unicode__(self):
-        return self.element_name
+        return self.hull_name
 
 
 class HullPattern(models.Model):

@@ -17,7 +17,6 @@ def delete_ship(request):
         function.check_all_queues(session_user)
         flightplans = flightplan_flights = warehouse_factorys = {}
         fleet_id = ship_id = command = amount_ship = 0
-        message = 'Корабль уже не приписан к флоту'
 
         full_request = request.POST
         my_dictionary = dict(full_request.iterlists())

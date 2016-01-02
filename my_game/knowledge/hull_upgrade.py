@@ -80,7 +80,7 @@ def hull_upgrade(request):
                                 element *= percent_update
                                 setattr(user_hull, attribute, element)
                             elif attribute == 'hull_mass' or attribute == 'power_consuption':
-                                percent_update = 1 - random.randint(2, 4) / 100.0
+                                percent_update = 1 + random.randint(1, 3) / 100.0
                                 element *= percent_update
                                 setattr(user_hull, attribute, element)
                             elif attribute == 'hold_size' or attribute == 'hull_size':
