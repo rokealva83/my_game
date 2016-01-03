@@ -2,263 +2,284 @@
 {% block content_1 %}
 
     {% spaceless %}
-        <form method="post" action="empty_fleet_hold" style="text-align: center">
-            <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
+        <label>
+            <form method="post" action="empty_fleet_hold" style="text-align: center">
+                <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
+                {% if fleet.resource_hold %}
 
-            <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
+                    {% if fleet.resource_hold.res_nickel > 0 %}
+                        <p>Никель( {{ fleet.resource_hold.res_nickel }} )
+                            <input value="0" name="res_nickel" class="number_ship"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.res_iron > 0 %}
+                        <p>Железо( {{ fleet.resource_hold.res_iron }} )
+                            <input value="0" name="res_iron" class="number_ship"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.res_cooper > 0 %}
+                        <p>Медь( {{ fleet.resource_hold.res_cooper }} )
+                            <input value="0" name="res_cooper" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.res_aluminum > 0 %}
+                        <p>Алюминий( {{ fleet.resource_hold.res_aluminum }} )
+                            <input value="0" name="res_aluminum" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.res_veriarit > 0 %}
+                        <p>Вариарит( {{ fleet.resource_hold.res_veriarit }} )
+                            <input value="0" name="res_veriarit" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.res_inneilit > 0 %}
+                        <p>Иннэлит( {{ fleet.resource_hold.res_inneilit }} )
+                            <input value="0" name="res_inneilit" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.res_renniit > 0 %}
+                        <p>Иннэлит( {{ fleet.resource_hold.res_renniit }} )
+                            <input value="0" name="res_renniit" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.res_cobalt > 0 %}
+                        <p>Кобальт( {{ fleet.resource_hold.res_cobalt }} )
+                            <input value="0" name="res_cobalt" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.mat_construction_material > 0 %}
+                        <p>Строительные материалы( {{ fleet.resource_hold.mat_construction_material }} )
+                            <input value="0" name="mat_construction_material" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.mat_chemical > 0 %}
+                        <p>Химические реактивы( {{ fleet.resource_hold.mat_chemical }} )
+                            <input value="0" name="mat_chemical" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.mat_high_strength_allov > 0 %}
+                        <p>Высокопрочные сплавы( {{ fleet.resource_hold.mat_high_strength_allov }} )
+                            <input value="0" name="mat_high_strength_allov" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.mat_nanoelement > 0 %}
+                        <p>Наноэлементы( {{ fleet.resource_hold.mat_nanoelement }} )
+                            <input value="0" name="mat_nanoelement" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.mat_microprocessor_element > 0 %}
+                        <p>Микропроцессорные элементы( {{ fleet.resource_hold.mat_microprocessor_element }} )
+                            <input value="0" name="mat_microprocessor_element" class="number_ship" type="text"></p>
+                    {% endif %}
+                    {% if fleet.resource_hold.mat_fober_optic_element > 0 %}
+                        <p>Оптоволоконные элементы( {{ fleet.resource_hold.mat_fober_optic_element }} )
+                            <input value="0" name="mat_fober_optic_element" class="number_ship" type="text"></p>
+                    {% endif %}
 
-            {% if fleet.resource_hold %}
-                {% if fleet.resource_hold.res_nickel > 0 %}
-                    Никель( {{ fleet.resource_hold.res_nickel }} )
                 {% endif %}
-                {% if fleet.resource_hold.res_iron > 0 %}
-                    Железо( {{ fleet.resource_hold.res_iron }} )
-                {% endif %}
-                {% if fleet.resource_hold.res_cooper > 0 %}
-                    Медь( {{ fleet.resource_hold.res_cooper }} )
-                {% endif %}
-                {% if fleet.resource_hold.res_aluminum > 0 %}
-                    Алюминий( {{ fleet.resource_hold.res_aluminum }} )
-                {% endif %}
-                {% if fleet.resource_hold.res_veriarit > 0 %}
-                    Вариарит( {{ fleet.resource_hold.res_veriarit }} )
-                {% endif %}
-                {% if fleet.resource_hold.res_inneilit > 0 %}
-                    Иннэлит( {{ fleet.resource_hold.res_inneilit }} )
-                {% endif %}
-                {% if fleet.resource_hold.res_renniit > 0 %}
-                    Иннэлит( {{ fleet.resource_hold.res_renniit }} )
-                {% endif %}
-                {% if fleet.resource_hold.res_cobalt > 0 %}
-                    Кобальт( {{ fleet.resource_hold.res_cobalt }} )
-                {% endif %}
-                {% if fleet.resource_hold.mat_construction_material > 0 %}
-                    Строительные материалы( {{ fleet.resource_hold.mat_construction_material }} )
-                {% endif %}
-                {% if fleet.resource_hold.mat_chemical > 0 %}
-                    Химические реактивы( {{ fleet.resource_hold.mat_chemical }} )
-                {% endif %}
-                {% if fleet.resource_hold.mat_high_strength_allov > 0 %}
-                    Высокопрочные сплавы( {{ fleet.resource_hold.mat_high_strength_allov }} )
-                {% endif %}
-                {% if fleet.resource_hold.mat_nanoelement > 0 %}
-                    Наноэлементы( {{ fleet.resource_hold.mat_nanoelement }} )
-                {% endif %}
-                {% if fleet.resource_hold.mat_microprocessor_element > 0 %}
-                    Микропроцессорные элементы( {{ fleet.resource_hold.mat_microprocessor_element }} )
-                {% endif %}
-                {% if fleet.resource_hold.mat_fober_optic_element > 0 %}
-                    Оптоволоконные элементы( {{ fleet.resource_hold.mat_fober_optic_element }} )
-                {% endif %}
+                {% if ship_holds or fleet.resource_hold %}
+                    {% for ship_hold in ship_holds %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 10 %}
+                                {% for factory_pattern in factory_patterns %}
+                                    {% if factory_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ factory_pattern.factory_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_factory" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_factory"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 1 %}
+                                {% for hull_pattern in hull_patterns %}
+                                    {% if hull_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ hull_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }}
+                                            /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_hull" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_hull"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 2 %}
+                                {% for armor_pattern in armor_patterns %}
+                                    {% if armor_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ armor_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_armor" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_armor"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 3 %}
+                                {% for shield_pattern in shield_patterns %}
+                                    {% if shield_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ shield_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_shield" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_shield"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 4 %}
+                                {% for engine_pattern in engine_patterns %}
+                                    {% if engine_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ engine_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_engine" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_engine"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 5 %}
+                                {% for generator_pattern in generator_patterns %}
+                                    {% if generator_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ generator_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_generator" class="number_ship" type="text">
+                                        </p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_generator"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 6 %}
+                                {% for weapon_pattern in weapon_patterns %}
+                                    {% if weapon_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ weapon_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_weapon" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_weapon"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 7 %}
+                                {% for shell_pattern in shell_patterns %}
+                                    {% if shell_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ shell_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_shell" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_shell"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 8 %}
+                                {% for module_pattern in module_patterns %}
+                                    {% if module_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ module_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_module" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_module"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 9 %}
+                                {% for device_pattern in device_patterns %}
+                                    {% if device_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ device_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_device" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_device"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
+                        {% spaceless %}
+                            {% if ship_hold.class_shipment == 14 %}
+                                {% for fuel_pattern in fuel_patterns %}
+                                    {% if fuel_pattern.id ==  ship_hold.shipment_id %}
+                                        <p>{{ fuel_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
+                                            / {{ ship_hold.mass_shipment }} /
+                                            {{ ship_hold.size_shipment }} )
+                                            <input value="0" name="amount_fuel" class="number_ship" type="text"></p>
+                                        <input type="hidden" id="fleet_id"
+                                               value={{ ship_hold.shipment_id }} name="hidden_fuel"/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endspaceless %}
 
-            {% endif %}
-            {% if ship_holds %}
-                {% for ship_hold in ship_holds %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 10 %}
-                            {% for factory_pattern in factory_patterns %}
-                                {% if factory_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ factory_pattern.factory_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_factory" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_factory"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 1 %}
-                            {% for hull_pattern in hull_patterns %}
-                                {% if hull_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ hull_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }}
-                                        /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_hull" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_hull"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 2 %}
-                            {% for armor_pattern in armor_patterns %}
-                                {% if armor_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ armor_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_armor" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_armor"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 3 %}
-                            {% for shield_pattern in shield_patterns %}
-                                {% if shield_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ shield_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_shield" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_shield"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 4 %}
-                            {% for engine_pattern in engine_patterns %}
-                                {% if engine_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ engine_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_engine" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_engine"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 5 %}
-                            {% for generator_pattern in generator_patterns %}
-                                {% if generator_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ generator_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_generator" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_generator"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 6 %}
-                            {% for weapon_pattern in weapon_patterns %}
-                                {% if weapon_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ weapon_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_weapon" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_weapon"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 7 %}
-                            {% for shell_pattern in shell_patterns %}
-                                {% if shell_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ shell_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_shell" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_shell"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 8 %}
-                            {% for module_pattern in module_patterns %}
-                                {% if module_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ module_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_module" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_module"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 9 %}
-                            {% for device_pattern in device_patterns %}
-                                {% if device_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ device_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_device" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_device"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-                    {% spaceless %}
-                        {% if ship_hold.class_shipment == 14 %}
-                            {% for fuel_pattern in fuel_patterns %}
-                                {% if fuel_pattern.id ==  ship_hold.id_shipment %}
-                                    <p>{{ fuel_pattern.element_name }} ( {{ ship_hold.amount_shipment }}
-                                        / {{ ship_hold.mass_shipment }} /
-                                        {{ ship_hold.size_shipment }} )
-                                        <input value="0" name="amount_fuel" class="number_ship"></p>
-                                    <input type="hidden" id="fleet_id"
-                                           value={{ ship_hold.id_shipment }} name="hidden_fuel"/>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endspaceless %}
-
-                {% endfor %}
-                <p><input class="list_force" type="submit" value="Выгрузить" name="unload"/>
-                    <input class="list_force" type="submit" value="Выгрузить все" name="unload_all"/></p>
-            {% endif %}
-        </form>
-        <form method="post" action="fleet_hold" style="text-align: center">
+                    {% endfor %}
+                    <p><input class="list_force" type="submit" value="Выгрузить" name="unload"/>
+                        <input class="list_force" type="submit" value="Выгрузить все" name="unload_all"/></p>
+                {% endif %}
+            </form>
+        </label>
+        <form method="post" action="fleet_hold" style="text-align: center" name="fleet_hold">
             <p>Управление трюмом флота</p>
             <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
 
             <div>
                 Resource in warehouse
-                <select name="warehouse_resource" class="list_force">
-                    <option selected disabled>Ресурсы</option>
-                    <option value="1">Никель( {{ warehouse.res_nickel }} )</option>
-                    <option value="2">Железо( {{ warehouse.res_iron }} )</option>
-                    <option value="3">Медь( {{ warehouse.res_cooper }} )</option>
-                    <option value="4">Алюминий( {{ warehouse.res_aluminum }} )</option>
-                    <option value="5">Вариарит( {{ warehouse.res_veriarit }} )</option>
-                    <option value="6">Иннэлит( {{ warehouse.res_inneilit }} )</option>
-                    <option value="7">Иннэлит( {{ warehouse.res_renniit }} )</option>
-                    <option value="8">Кобальт( {{ warehouse.res_cobalt }} )</option>
-                    <option value="9">Строительные материалы( {{ warehouse.mat_construction_material }} )</option>
-                    <option value="10">имические реактивы( {{ warehouse.mat_chemical }} )</option>
-                    <option value="11">Высокопрочные сплавы( {{ warehouse.mat_high_strength_allov }} )</option>
-                    <option value="12">Наноэлементы( {{ warehouse.mat_nanoelement }} )</option>
-                    <option value="13">Микропроцессорные элементы( {{ warehouse.mat_microprocessor_element }} )</option>
-                    <option value="14">Оптоволоконные элементы( {{ warehouse.mat_fober_optic_element }} )</option>
-                </select>
+                <label>
+                    <select name="warehouse_resource" class="list_force">
+                        <option selected disabled>Ресурсы</option>
+                        <option value="1">Никель( {{ warehouse.res_nickel }} )</option>
+                        <option value="2">Железо( {{ warehouse.res_iron }} )</option>
+                        <option value="3">Медь( {{ warehouse.res_cooper }} )</option>
+                        <option value="4">Алюминий( {{ warehouse.res_aluminum }} )</option>
+                        <option value="5">Вариарит( {{ warehouse.res_veriarit }} )</option>
+                        <option value="6">Иннэлит( {{ warehouse.res_inneilit }} )</option>
+                        <option value="7">Иннэлит( {{ warehouse.res_renniit }} )</option>
+                        <option value="8">Кобальт( {{ warehouse.res_cobalt }} )</option>
+                        <option value="9">Строительные материалы( {{ warehouse.mat_construction_material }} )</option>
+                        <option value="10">имические реактивы( {{ warehouse.mat_chemical }} )</option>
+                        <option value="11">Высокопрочные сплавы( {{ warehouse.mat_high_strength_allov }} )</option>
+                        <option value="12">Наноэлементы( {{ warehouse.mat_nanoelement }} )</option>
+                        <option value="13">Микропроцессорные элементы( {{ warehouse.mat_microprocessor_element }} )
+                        </option>
+                        <option value="14">Оптоволоконные элементы( {{ warehouse.mat_fober_optic_element }} )</option>
+                    </select>
+                </label>
                 <input value="0" name="resource_amount" class="number_ship" placeholder="Resource amount"/>
             </div>
 
 
             <div>
                 {% if warehouse_factorys %} Factory in warehouse
-                    {% spaceless %}<select name="warehouse_factory" class="list_force">
-                        <option selected disabled>Фабрики</option>
-                        {% for warehouse_factory in warehouse_factorys %}
-                            {% for factory_pattern in factory_patterns %}
-                                {% if warehouse_factory.factory_id == factory_pattern.id %}
-                                    {% if warehouse_factory.amount > 0 %}
-                                        {% spaceless %}
-                                            <option value="{{ warehouse_factory.factory_id }}">{{ factory_pattern.factory_name }}
-                                                ( {{ warehouse_factory.amount }} )
-                                            </option>{% endspaceless %}
+                    {% spaceless %}<label>
+                        <select name="warehouse_factory" class="list_force">
+                            <option selected disabled>Фабрики</option>
+                            {% for warehouse_factory in warehouse_factorys %}
+                                {% for factory_pattern in factory_patterns %}
+                                    {% if warehouse_factory.factory_id == factory_pattern.id %}
+                                        {% if warehouse_factory.amount > 0 %}
+                                            {% spaceless %}
+                                                <option value="{{ warehouse_factory.factory_id }}">{{ factory_pattern.factory_name }}
+                                                    ( {{ warehouse_factory.amount }} )
+                                                </option>
+                                            {% endspaceless %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-                    </select>{% endspaceless %}
+                        </select>
+                    </label>{% endspaceless %}
                 {% endif %}
                 <input value="0" name="factory_amount" class="number_ship" placeholder="Factory amount"/>
             </div>
@@ -266,22 +287,24 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Hull in warehouse
-                        <select name="warehouse_hull" class="list_force">
-                            <option selected disabled>Корпуса</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 1 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for hull_pattern in hull_patterns %}
-                                            {% if hull_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ hull_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }} )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_hull" class="list_force">
+                                <option selected disabled>Корпуса</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 1 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for hull_pattern in hull_patterns %}
+                                                {% if hull_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ hull_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }} )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="hull_amount" class="number_ship" placeholder="Hull amount"/>
                 </div>
@@ -289,23 +312,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Armor in warehouse
-                        <select name="warehouse_armor" class="list_force">
-                            <option selected disabled>Броня</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 2 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for armor_pattern in armor_patterns %}
-                                            {% if armor_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ armor_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_armor" class="list_force">
+                                <option selected disabled>Броня</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 2 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for armor_pattern in armor_patterns %}
+                                                {% if armor_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ armor_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="armor_amount" class="number_ship" placeholder="Armor amount"/>
                 </div>
@@ -313,23 +338,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Shield in warehouse
-                        <select name="warehouse_shield" class="list_force">
-                            <option selected disabled>Щиты</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 3 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for shield_pattern in shield_patterns %}
-                                            {% if shield_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ shield_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_shield" class="list_force">
+                                <option selected disabled>Щиты</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 3 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for shield_pattern in shield_patterns %}
+                                                {% if shield_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ shield_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="shield_amount" class="number_ship" placeholder="Shield amount"/>
                 </div>
@@ -337,23 +364,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Engine in warehouse
-                        <select name="warehouse_engine" class="list_force">
-                            <option selected disabled>Двигатели</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 4 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for engine_pattern in engine_patterns %}
-                                            {% if engine_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ engine_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_engine" class="list_force">
+                                <option selected disabled>Двигатели</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 4 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for engine_pattern in engine_patterns %}
+                                                {% if engine_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ engine_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="engine_amount" class="number_ship" placeholder="Engine amount"/>
                 </div>
@@ -361,23 +390,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Generator in warehouse
-                        <select name="warehouse_generator" class="list_force">
-                            <option selected disabled>Генераторы</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 5 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for generator_pattern in generator_patterns %}
-                                            {% if generator_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ generator_pattern.element_name }}
-                                                    ( {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_generator" class="list_force">
+                                <option selected disabled>Генераторы</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 5 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for generator_pattern in generator_patterns %}
+                                                {% if generator_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ generator_pattern.element_name }}
+                                                        ( {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="generator_amount" class="number_ship" placeholder="Generator amount"/>
                 </div>
@@ -385,23 +416,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Weapon in warehouse
-                        <select name="warehouse_weapon" class="list_force">
-                            <option selected disabled>Оружие</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 6 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for weapon_pattern in weapon_patterns %}
-                                            {% if weapon_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ weapon_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_weapon" class="list_force">
+                                <option selected disabled>Оружие</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 6 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for weapon_pattern in weapon_patterns %}
+                                                {% if weapon_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ weapon_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="weapon_amount" class="number_ship" placeholder="Weapon amount"/>
                 </div>
@@ -409,23 +442,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Shell in warehouse
-                        <select name="warehouse_shell" class="list_force">
-                            <option selected disabled>Боеприпасы</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 7 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for shell_pattern in shell_patterns %}
-                                            {% if shell_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ shell_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_shell" class="list_force">
+                                <option selected disabled>Боеприпасы</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 7 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for shell_pattern in shell_patterns %}
+                                                {% if shell_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ shell_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="shell_amount" class="number_ship" placeholder="Shell amount"/>
                 </div>
@@ -433,23 +468,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Module in warehouse
-                        <select name="warehouse_module" class="list_force">
-                            <option selected disabled>Модули</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 8 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for module_pattern in module_patterns %}
-                                            {% if module_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ module_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_module" class="list_force">
+                                <option selected disabled>Модули</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 8 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for module_pattern in module_patterns %}
+                                                {% if module_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ module_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="module_amount" class="number_ship" placeholder="Module amount"/>
                 </div>
@@ -457,23 +494,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Device in warehouse
-                        <select name="warehouse_device" class="list_force">
-                            <option selected disabled>Устройства</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 9 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for device_pattern in device_patterns %}
-                                            {% if device_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ device_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_device" class="list_force">
+                                <option selected disabled>Устройства</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 9 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for device_pattern in device_patterns %}
+                                                {% if device_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ device_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="device_amount" class="number_ship" placeholder="Device amount"/>
                 </div>
@@ -481,23 +520,25 @@
             {% spaceless %}
                 <div>
                     {% if warehouse_elements %} Fuel in warehouse
-                        <select name="warehouse_fuel" class="list_force">
-                            <option selected disabled>Топливо</option>
-                            {% for warehouse_element in warehouse_elements %}
-                                {% if warehouse_element.element_class == 14 %}
-                                    {% if warehouse_element.amount > 0 %}
-                                        {% for fuel_pattern in fuel_patterns %}
-                                            {% if fuel_pattern.id == warehouse_element.element_id %}
-                                                <option value="{{ warehouse_element.element_id }}">{{ fuel_pattern.element_name }}(
-                                                    {{ warehouse_element.amount }}
-                                                    )
-                                                </option>
-                                            {% endif %}
-                                        {% endfor %}
+                        <label>
+                            <select name="warehouse_fuel" class="list_force">
+                                <option selected disabled>Топливо</option>
+                                {% for warehouse_element in warehouse_elements %}
+                                    {% if warehouse_element.element_class == 14 %}
+                                        {% if warehouse_element.amount > 0 %}
+                                            {% for fuel_pattern in fuel_patterns %}
+                                                {% if fuel_pattern.id == warehouse_element.element_id %}
+                                                    <option value="{{ warehouse_element.element_id }}">{{ fuel_pattern.element_name }}(
+                                                        {{ warehouse_element.amount }}
+                                                        )
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                                {% endfor %}
+                            </select>
+                        </label>
                     {% endif %}
                     <input value="0" name="fuel_amount" class="number_ship" placeholder="Fuel amount"/>
                 </div>

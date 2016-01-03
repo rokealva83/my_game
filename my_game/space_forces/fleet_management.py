@@ -198,5 +198,5 @@ def fleet_manage(request):
                   'engine_patterns': engine_patterns, 'generator_patterns': generator_patterns,
                   'weapon_patterns': weapon_patterns, 'shell_patterns': shell_patterns, 'fuel_patterns': fuel_patterns,
                   'module_patterns': module_patterns, 'message': message, 'ship_holds': ship_holds,
-                  'device_patterns': device_patterns}
+                  'device_patterns': device_patterns, 'fleet': fleet}
         return render(request, "fleet_hold.html", output)

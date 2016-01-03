@@ -46,9 +46,9 @@ from my_game.space_forces.delete_ship import delete_ship
 from my_game.space_forces.add_ship import add_ship
 from my_game.space_forces.start_flight import start_flightplan
 from my_game.space_forces.fleet_hold import fleet_hold
-from my_game.space_forces.empty_fleet_hold import empty_fleet_hold
+from my_game.space_forces.hold_and_tank.empty_fleet_hold import empty_fleet_hold
 from my_game.space_forces.fuel_tank import fuel_tank
-from space_forces.hold_and_tank.empty_fuel_tank import empty_fuel_tank
+from my_game.space_forces.hold_and_tank.empty_fuel_tank import empty_fuel_tank
 
 from my_game.trade import views as trade
 from my_game.trade.new_trade_space import new_trade_space
@@ -62,8 +62,8 @@ from my_game.trade import delivery as delivery
 from my_game.diplomacy import views as diplomacy
 from my_game.diplomacy import send_mail as send_mail
 from my_game.diplomacy import remove_mail as remove
-from my_game.chat import views as chatroom
 
+from my_game.chat import views as chatroom
 from my_game.chat import private_message as private_chatroom
 
 urlpatterns = patterns('',

@@ -17,8 +17,9 @@ def add_ship(request):
         function.check_all_queues(session_user)
         flightplans = flightplan_flights = warehouse_factorys = {}
         command = 1
-        ship_id = amount_ship = 0
+        ship_id = 0
         fleet_id = 0
+        message = ''
         full_request = request.POST
         my_dictionary = dict(full_request.iterlists())
         amount_ship_dict = my_dictionary.get('amount_ship')
@@ -26,8 +27,8 @@ def add_ship(request):
         ship_id_dict = my_dictionary.get('hidden_ship')
         len_amount_ship_dict = int(len(amount_ship_dict))
         for i in range(len_amount_ship_dict):
-            if int(amount_ship_dict[i]) != 0:
-                amount_ship = int(amount_ship_dict[i])
+            amount_ship = int(amount_ship_dict[i])
+            if amount_ship:
                 fleet_id = int(fleet_id_dict[i])
                 ship_id = int(ship_id_dict[i])
             if amount_ship and fleet_id and ship_id:
@@ -41,7 +42,7 @@ def add_ship(request):
                                                            fleet_status=1, place_id=fleet.id).first()
 
                     if amount_ship > ship.amount_ship:
-                            amount_ship = ship.amount_ship
+                        amount_ship = ship.amount_ship
                     if amount_ship == ship.amount_ship:
                         if added_ship_fleet:
                             new_amount = ship.amount_ship + amount_ship
