@@ -153,9 +153,9 @@ def fleet_manage(request):
         if request.POST.get('fuel_tank'):
             warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city,
                                                                  element_class=14).order_by('element_id')
-            fuel_patterns = FuelPattern.objects.filter(user=session_user)
+            fuel_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_pattern')
+            fuel_tanks = FuelTank.objects.filter(fleet=fleet).order_by('fuel_pattern')
             command = 4
-            fuel_tanks = FuelTank.objects.filter(fleet=fleet)
             basic_fuels = BasicFuel.objects.filter()
             user_citys = UserCity.objects.filter(user=session_user).all()
             user_fleets = Fleet.objects.filter(user=session_user)

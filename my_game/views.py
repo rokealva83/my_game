@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from my_game.models import MyUser, UserCity, Warehouse
+from my_game.models import MyUser, UserCity
 from my_game import function
 from my_game.models import Ship, Fleet
 

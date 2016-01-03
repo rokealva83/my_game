@@ -2,16 +2,9 @@
 {% block content_3 %}
 
     {% spaceless %}
-
-
-
-        <p style="text-align: center; color: rgb(152, 32, 32);text-decoration: underline;font-style: italic;"> {{ message }}</p>
-
-    {% endspaceless %}
-    {% spaceless %}
         {% if fuel_tanks %}
             {% for fuel_tank in fuel_tanks %}
-                <form method="post" action="empty_fuel_tank" style="text-align: center">
+                <form method="post" action="unload_fuel" style="text-align: center">
                     <p>
                         {{ fuel_tank.fuel_pattern.element_name }} ( {{ fuel_tank.amount_fuel }}
                         / {{ fuel_tank.mass_fuel }} / {{ fuel_tank.size_fuel }} )
@@ -24,7 +17,10 @@
                 </form>
             {% endfor %}
             <p>
-                <input class="list_force" type="submit" value="Выгрузить все" name="unload_all"/></p>
+            <form method="post" action="unload_fuel_all">
+                <input class="list_force" type="submit" value="Выгрузить все" name="unload_fuel_all"/></p>
+                <input type="hidden" id="fleet_id" value={{ fleet_id }} name="hidden_fleet"/>
+            </form>
         {% endif %}
     {% endspaceless %}
 

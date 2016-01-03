@@ -78,8 +78,8 @@ def fuel_tank(request):
         command = 4
         warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city,
                                                              element_class=14).order_by('element_id')
-        fuel_patterns = FuelPattern.objects.filter(user=session_user).all()
-        fuel_tanks = FuelTank.objects.filter(fleet=fleet).all()
+        fuel_patterns = FuelPattern.objects.filter(user=session_user).order_by('basic_pattern')
+        fuel_tanks = FuelTank.objects.filter(fleet=fleet).order_by('fuel_pattern')
         basic_fuels = BasicFuel.objects.all()
         user_citys = UserCity.objects.filter(user=session_user).all()
         user_fleets = Fleet.objects.filter(user=session_user).all()

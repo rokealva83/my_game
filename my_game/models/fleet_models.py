@@ -68,7 +68,6 @@ class Fleet(models.Model):
     resource_hold = models.ForeignKey(ResourceHold)
     empty_hold = models.IntegerField(default=0)
     ship_empty_mass = models.IntegerField(default=0)
-    fuel_tank = models.IntegerField(default=0)
     free_fuel_tank = models.IntegerField(default=0)
     fleet_engine = models.ForeignKey(FleetEngine, null=True, default=None)
     fleet_energy_power = models.ForeignKey(FleetEnergyPower, null=True, default=None)
