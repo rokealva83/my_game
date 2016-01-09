@@ -46,34 +46,34 @@ def choice_build(request):
                 "building_mass", "power_consumption", "max_warehouse")
         if request.POST.get('hull') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=1).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('armor') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=2).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('shield') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=3).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('engine') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=4).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('generator') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=5).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('weapon') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=6).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('shell') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=7, ).order_by(
-                'production_class', 'production_id')
+                'production_class','production_id')
         if request.POST.get('module') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=8).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('device') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=9).order_by(
-                'production_id')
+                'production_class','production_id')
         if request.POST.get('fuel') is not None:
             factory_patterns = FactoryPattern.objects.filter(user=session_user, production_class=14).order_by(
-                'production_id')
+                'production_class','production_id')
 
         if request.POST.get('infrastructure') is not None:
             warehouse_elements = [

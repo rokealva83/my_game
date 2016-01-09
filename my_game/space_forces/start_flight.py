@@ -26,7 +26,8 @@ def start_flightplan(request):
 
         if request.POST.get('start_flight'):
             fleet_id = int(request.POST.get('hidden_fleet'))
-            message = starting_flight(fleet_id, session_user)
+            fleet = Fleet.objects.filter(id=fleet_id).first()
+            message = starting_flight(fleet, session_user)
             command = 0
 
         if request.POST.get('delete_list'):
@@ -54,7 +55,7 @@ def start_flightplan(request):
         flightplan_productions = FlightplanProduction.objects.filter(fleet=fleet).all()
         flightplan_refills = FlightplanRefill.objects.filter(fleet=fleet).order_by('id')
         flightplan_build_repairs = FlightplanBuildRepair.objects.filter(fleet=fleet).order_by('id')
-        flightplan_colonization = FlightplanColonization.objects.filter(fleet=fleet).order_by('id')
+        flightplan_colonizations = FlightplanColonization.objects.filter(fleet=fleet).order_by('id')
         fleet_engine = FleetEngine.objects.filter(fleet=fleet).first()
         fleet_parametr_scans = FleetParametrScan.objects.filter(fleet=fleet).all()
         fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(
@@ -63,11 +64,8 @@ def start_flightplan(request):
                                                                        class_process=1).first()
         fleet_parametr_repair = FleetParametrBuildRepair.objects.filter(fleet=fleet,
                                                                         class_process=2).first()
-        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user,
-                                                             user_city=session_user_city).order_by(
-            'production_class', 'production_id')
-        warehouse_elements = WarehouseElement.objects.filter(user=session_user,
-                                                             user_city=session_user_city).order_by(
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).all()
+        warehouse_elements = WarehouseElement.objects.filter(user=session_user, user_city=session_user_city).order_by(
             'element_class', 'element_id')
         factory_patterns = FactoryPattern.objects.filter(user=session_user).all()
         hull_patterns = HullPattern.objects.filter(user=session_user).all()
@@ -84,11 +82,11 @@ def start_flightplan(request):
         ship_holds = Hold.objects.filter(fleet=fleet).order_by('class_shipment')
         add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city.id).all()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city.id).all()
-        request.session['userid'] = session_user.id
+        request.session['user'] = session_user.id
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
 
-        output = {'user': session_user, 'warehouse': session_user.warehouse, 'user_city': session_user_city,
+        output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
                   'user_citys': user_citys, 'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet_id': fleet_id,
                   'ship_fleets': ship_fleets, 'ships': ships, 'fleet': fleet, 'command': command,
                   'flightplans': flightplans, 'flightplan_flights': flightplan_flights,
@@ -103,6 +101,6 @@ def start_flightplan(request):
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction,
                   'flightplan_refills': flightplan_refills, 'flightplan_build_repairs': flightplan_build_repairs,
                   'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
-                  'flightplan_colonization': flightplan_colonization, 'device_patterns': device_patterns}
+                  'flightplan_colonizations': flightplan_colonizations, 'device_patterns': device_patterns}
 
         return render(request, "space_forces.html", output)

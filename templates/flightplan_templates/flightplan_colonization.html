@@ -1,22 +1,22 @@
-{% for flightplan_production in flightplan_productions %}
-    {% if flightplan_production.flightplan.id == flightplan.id %}
+{% for flightplan_colonization in flightplan_colonizations %}
+    {% if flightplan_colonization.flightplan.id == flightplan.id %}
         <tr align="center">
-            <td>
-                <p style="line-height: 12px">
-                    Добыча ресурсов
-                </p>
-            </td>
+            <td><p>Колонизация</p></td>
             <td>
                 <p>
-                    Время добычи {{ flightplan_production.time_extraction }} минут
+                    {% if flightplan_colonization.command_id == 1 %}
+                        Колонизация
+                    {% elif flightplan_colonization.command_id == 2 %}
+                        Развертывание базы
+                    {% endif %}
                 </p>
 
-                <p>
-                    Status:
+                <p>Статус:
                     {% if flightplan.status == 0 %}
-                        stand by
+                        <span style="font-weight: bold">Ожидание</span>
                     {% else %}
-                        prosecution
+                        <span style="font-weight: bold">В
+                        процессе</span>
                     {% endif %}
                 </p>
             </td>

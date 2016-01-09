@@ -2,16 +2,15 @@
 
 import math
 from my_game.models import System, Planet
-from my_game.models import Fleet
 from my_game.models import Flightplan, FlightplanFlight
 from my_game.flightplan.create.calculation import calculation
 
 
-def flight_system(*args):
+def flight(*args):
     session_user = args[0]
     fleet = args[2]
     request = args[3]
-    fleet_engine = Fleet.fleet_engine
+    fleet_engine = fleet.fleet_engine
     city = request.POST.get('city')
     coordinate = request.POST.get('coordinate')
     message = ''
@@ -23,7 +22,6 @@ def flight_system(*args):
         target_system = System.objects.filter(id=planet_system).first()
         target_planet = Planet.objects.filter(system=target_system, planet_num=planet_planet).first()
         if target_planet:
-            system = System.objects.filter(id=fleet.system_id).first()
             flightplan_flight = FlightplanFlight.objects.filter(fleet=fleet).last()
             if flightplan_flight:
                 xx1 = flightplan_flight.finish_x
@@ -48,13 +46,11 @@ def flight_system(*args):
                 zz2 = zz1 + (int(target_system.z) - zz1) * (distance - int(target_system.system_size)) / distance
 
             distance = math.sqrt((xx1 - xx2) ** 2 + (yy1 - yy2) ** 2 + (zz1 - zz2) ** 2)
-
-            if fleet.system_id != 0:
+            flightplan_flight = FlightplanFlight.objects.filter(fleet=fleet).last()
+            if fleet.system_id != 0 and not flightplan_flight:
                 system = System.objects.filter(id=fleet.system_id).first()
             else:
-                flightplan_flight = FlightplanFlight.objects.filter(fleet=fleet).last()
-                if flightplan_flight:
-                    system = System.objects.filter(id=flightplan_flight.system_id).first()
+                system = System.objects.filter(id=flightplan_flight.system_id).first()
 
             if system:
                 if int(system.id) == planet_system:
@@ -129,13 +125,13 @@ def flight_system(*args):
         command_id = answer['command_id']
         flight_time = answer['flight_time']
 
-        system = 0
+        system_id = 0
         planet = Planet.objects.filter(global_x=coordinate_x, global_y=coordinate_y, global_z=coordinate_z).first()
         if planet:
-            planet = planet.planet_num
-            system = planet.system_id
+            planet_id = planet.planet_num
+            system_id = planet.system.id
         else:
-            planet = 0
+            planet_id = 0
 
         if command_id != 1:
             system_flight = 0
@@ -151,7 +147,6 @@ def flight_system(*args):
         )
         flightplan.save()
 
-        flightplan = flightplan.pk
         flightplan_flight = FlightplanFlight(
             user=session_user,
             fleet=fleet,
@@ -164,8 +159,8 @@ def flight_system(*args):
             finish_y=yy2,
             finish_z=zz2,
             flight_time=flight_time,
-            planet_id=planet,
-            system_id=system,
+            planet_id=planet_id,
+            system_id=system_id,
             system_flight=system_flight
         )
         flightplan_flight.save()

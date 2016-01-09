@@ -1,69 +1,59 @@
 <select name="id_hold_element" class="list_force">
     <option selected disabled>Товар</option>
-    {% if fleet.resource_hold %}
-        {% if fleet.resource_hold.res_nickel > 0 %}
-            <option value="1">Никель( {{ fleet.resource_hold.res_nickel }} )</option>
+    <optgroup label="Ресурсы">
+        {% if fleet.resource_hold %}
+            {% if fleet.resource_hold.res_nickel > 0 %}
+                <option value=[0,1,]>Никель( {{ fleet.resource_hold.res_nickel }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.res_iron > 0 %}
+                <option value="[0,2,]">Железо( {{ fleet.resource_hold.res_iron }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.res_cooper > 0 %}
+                <option value="[0,3,]">Медь( {{ fleet.resource_hold.res_cooper }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.res_aluminum > 0 %}
+                <option value="[0,4,]">Алюминий( {{ fleet.resource_hold.res_aluminum }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.res_veriarit > 0 %}
+                <option value="[0,5,]">Вариарит( {{ fleet.resource_hold.res_veriarit }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.res_inneilit > 0 %}
+                <option value="[0,6,]">Иннэлит( {{ fleet.resource_hold.res_inneilit }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.res_renniit > 0 %}
+                <option value="[0,7,]">Иннэлит( {{ fleet.resource_hold.res_renniit }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.res_cobalt > 0 %}
+                <option value="[0,8,]">Кобальт( {{ fleet.resource_hold.res_cobalt }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.mat_construction_material > 0 %}
+                <option value="[0,9,]">Строительные материалы( {{ fleet.resource_hold.mat_construction_material }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.mat_chemical > 0 %}
+                <option value="[0,10,]">Химические реактивы( {{ fleet.resource_hold.mat_chemical }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.mat_high_strength_allov > 0 %}
+                <option value="[0,11,]">Высокопрочные сплавы( {{ fleet.resource_hold.mat_high_strength_allov }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.mat_nanoelement > 0 %}
+                <option value="[0,12,]">Наноэлементы( {{ fleet.resource_hold.mat_nanoelement }} )</option>
+            {% endif %}
+            {% if fleet.resource_hold.mat_microprocessor_element > 0 %}
+                <option value="[0,13,]">Микропроцессорные элементы( {{ fleet.resource_hold.mat_microprocessor_element }} )
+                </option>
+            {% endif %}
+            {% if fleet.resource_hold.mat_fober_optic_element > 0 %}
+                <option value="[0,14,]">Оптоволоконные элементы( {{ fleet.resource_hold.mat_fober_optic_element }} )</option>
+            {% endif %}
         {% endif %}
-        {% if fleet.resource_hold.res_iron > 0 %}
-            <option value="2">Железо( {{ fleet.resource_hold.res_iron }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.res_cooper > 0 %}
-            <option value="3">Медь( {{ fleet.resource_hold.res_cooper }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.res_aluminum > 0 %}
-            <option value="4">Алюминий( {{ fleet.resource_hold.res_aluminum }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.res_veriarit > 0 %}
-            <option value="5">Вариарит( {{ fleet.resource_hold.res_veriarit }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.res_inneilit > 0 %}
-            <option value="6">Иннэлит( {{ fleet.resource_hold.res_inneilit }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.res_renniit > 0 %}
-            <option value="7">Иннэлит( {{ fleet.resource_hold.res_renniit }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.res_cobalt > 0 %}
-            <option value="8">Кобальт( {{ fleet.resource_hold.res_cobalt }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.mat_construction_material > 0 %}
-            <option value="9">Строительные материалы( {{ fleet.resource_hold.mat_construction_material }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.mat_chemical > 0 %}
-            <option value="10">Химические реактивы( {{ fleet.resource_hold.mat_chemical }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.mat_high_strength_allov > 0 %}
-            <option value="11"><option value="1">Высокопрочные сплавы( {{ fleet.resource_hold.mat_high_strength_allov }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.mat_nanoelement > 0 %}
-            <option value="12">Наноэлементы( {{ fleet.resource_hold.mat_nanoelement }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.mat_microprocessor_element > 0 %}
-            <option value="13">Микропроцессорные элементы( {{ fleet.resource_hold.mat_microprocessor_element }} )</option>
-        {% endif %}
-        {% if fleet.resource_hold.mat_fober_optic_element > 0 %}
-            <option value="14">Оптоволоконные элементы( {{ fleet.resource_hold.mat_fober_optic_element }} )</option>
-        {% endif %}
-    {% endif %}
+    </optgroup>
     {% if ship_holds %}
-        <optgroup label="Resource">
-            {% for ship_hold in ship_holds %}
-                {% if ship_hold.class_shipment == 0 %}
-                    {% for basic_resource in basic_resources %}
-                        {% if basic_resource.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ basic_resource.name }}
-                                ( {{ ship_hold.amount_shipment }} )
-                            </option>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-        </optgroup>
-        <optgroup label="Factory">
+        <optgroup label="Заводы">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 10 %}
                     {% for factory_pattern in factory_patterns %}
-                        {% if factory_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ factory_pattern.name }}
+                        {% if factory_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ factory_pattern.factory_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -71,12 +61,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Hull">
+        <optgroup label="Корпуса">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 1 %}
                     {% for hull_pattern in hull_patterns %}
-                        {% if hull_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ hull_pattern.name }}
+                        {% if hull_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ hull_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -84,12 +74,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Armor">
+        <optgroup label="Броня">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 2 %}
                     {% for armor_pattern in armor_patterns %}
-                        {% if armor_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ armor_pattern.name }}
+                        {% if armor_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ armor_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -97,12 +87,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Shield">
+        <optgroup label="Щиты">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 3 %}
                     {% for shield_pattern in shield_patterns %}
-                        {% if shield_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ shield_pattern.name }}
+                        {% if shield_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ shield_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -110,12 +100,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Engine">
+        <optgroup label="Двигатели">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 4 %}
                     {% for engine_pattern in engine_patterns %}
-                        {% if engine_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ engine_pattern.name }}
+                        {% if engine_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ engine_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -123,12 +113,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Generator">
+        <optgroup label="Генераторы">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 5 %}
                     {% for generator_pattern in generator_patterns %}
-                        {% if generator_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ generator_pattern.name }}
+                        {% if generator_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ generator_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -136,12 +126,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Weapon">
+        <optgroup label="Оружие">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 6 %}
                     {% for weapon_pattern in weapon_patterns %}
-                        {% if weapon_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ weapon_pattern.name }}
+                        {% if weapon_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ weapon_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -149,12 +139,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Shell">
+        <optgroup label="Боеприпасы">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 7 %}
                     {% for shell_pattern in shell_patterns %}
-                        {% if shell_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ shell_pattern.name }}
+                        {% if shell_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ shell_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -162,12 +152,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Module">
+        <optgroup label="Модули">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 8 %}
                     {% for module_pattern in module_patterns %}
-                        {% if module_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ module_pattern.name }}
+                        {% if module_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ module_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -175,12 +165,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Device">
+        <optgroup label="Устройства">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 9 %}
                     {% for device_pattern in device_patterns %}
-                        {% if device_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ device_pattern.name }}
+                        {% if device_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ device_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}
@@ -188,12 +178,12 @@
                 {% endif %}
             {% endfor %}
         </optgroup>
-        <optgroup label="Fuel">
+        <optgroup label="Топливо">
             {% for ship_hold in ship_holds %}
                 {% if ship_hold.class_shipment == 14 %}
                     {% for fuel_pattern in fuel_patterns %}
-                        {% if fuel_pattern.id == ship_hold.id_shipment %}
-                            <option value="{{ ship_hold.id }}">{{ fuel_pattern.name }}
+                        {% if fuel_pattern.id == ship_hold.shipment_id %}
+                            <option value="{{ ship_hold.id }}">{{ fuel_pattern.element_name }}
                                 ( {{ ship_hold.amount_shipment }} )
                             </option>
                         {% endif %}

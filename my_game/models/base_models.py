@@ -43,8 +43,6 @@ class UserVariables(models.Model):
     koef_price_increace_modern_element = models.FloatField(default=0, verbose_name=u'Коефициент увеличения цены при модернизации')
     time_refill = models.IntegerField(default=0, verbose_name=u'Время заправки флота')
     time_refill_all_goods = models.IntegerField(default=0, verbose_name=u'Время заправки флота до полного')
-    time_refill_youself = models.IntegerField(default=0, verbose_name=u'Время заправки себя')
-    time_refill_youself_all_goods = models.IntegerField(default=0, verbose_name=u'Время заправки себя до полного')
     time_verification_resource = models.IntegerField(default=0, verbose_name=u'Время проверки добычи ресурсов')
 
 

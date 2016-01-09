@@ -76,6 +76,7 @@ def add_ship(request):
                 else:
                     message = 'Флот не над планетой'
             else:
+                fleet_id = int(fleet_id_dict[0])
                 message = 'Неверное количество кораблей'
 
         request.session['user'] = session_user.id

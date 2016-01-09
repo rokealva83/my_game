@@ -197,13 +197,12 @@ class MyModuleAdmin(admin.ModelAdmin):
                     'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
                     'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
                     'min_astronomy', 'min_logist']
-    # list_editable = ['module_health', 'param1', 'param2', 'param3', 'module_mass',
-    #                 'module_size', 'power_consuption', 'price_internal_currency', 'price_nickel',
-    #                 'price_iron', 'price_cooper', 'price_aluminum', 'price_veriarit', 'price_inneilit', 'price_renniit',
-    #                 'price_cobalt', 'price_construction_material', 'price_chemical', 'price_high_strength_allov',
-    #                 'price_nanoelement', 'price_microprocessor_element', 'price_fober_optic_element',
-    #                 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy', 'min_radio', 'min_nanotech',
-    #                 'min_astronomy', 'min_logist']
+    # list_editable = ['module_health', 'param1', 'param2', 'param3', 'module_mass', 'module_size', 'power_consuption',
+    #                  'price_internal_currency', 'price_nickel', 'price_iron', 'price_cooper', 'price_aluminum',
+    #                  'price_veriarit', 'price_inneilit', 'price_renniit', 'price_cobalt', 'price_construction_material',
+    #                  'price_chemical', 'price_high_strength_allov', 'price_nanoelement', 'price_microprocessor_element',
+    #                  'price_fober_optic_element', 'min_all_scientic', 'min_math', 'min_phis', 'min_biol', 'min_energy',
+    #                  'min_radio', 'min_nanotech', 'min_astronomy', 'min_logist']
 
 
 admin.site.register(BasicModule, MyModuleAdmin)

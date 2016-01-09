@@ -7,12 +7,14 @@ from my_game import function
 from my_game.models import Ship, Fleet, FleetParametrScan, FleetEngine, FleetParametrResourceExtraction
 from my_game.models import Flightplan, FlightplanFlight, FlightplanScan, FlightplanProduction, FlightplanHold, \
     FlightplanRefill, FlightplanBuildRepair, FleetParametrBuildRepair, FlightplanColonization, DevicePattern
-from my_game.flightplan.create import flight, scan, upload_hold, unload_hold, refill, repair_build
+from my_game.flightplan.create import upload_hold, unload_hold, refill, repair_build
 from my_game.flightplan.create import resource_extraction
 from my_game.models import HullPattern, ArmorPattern, ShellPattern, ShieldPattern, WeaponPattern, \
     WarehouseFactory, WarehouseElement, FactoryPattern, EnginePattern, GeneratorPattern, ModulePattern, \
-    BasicResource, Hold, FuelPattern
+    BasicResource, Hold, FuelPattern, FleetFuelRefill, FleetOverload
 from my_game.models import ResourceHold
+from my_game.flightplan.create.flight import flight
+from my_game.flightplan.create.scan import scan
 
 
 def fleet_flightplan(request):
@@ -24,7 +26,7 @@ def fleet_flightplan(request):
         function.check_all_queues(session_user)
         fleet = Fleet.objects.filter(id=int(request.POST.get('hidden_fleet'))).first()
         command = 0
-        message = ''
+        message = 'Команду добавленно'
         if request.POST.get('add_command'):
             command = 3
             answer = request
@@ -32,7 +34,7 @@ def fleet_flightplan(request):
             city = request.POST.get('city')
             coordinate = request.POST.get('coordinate')
             if city or coordinate:
-                message = flight.flight_system(session_user, session_user_city, fleet, answer)
+                message = flight(session_user, session_user_city, fleet, answer)
 
             extraction = request.POST.get('resource_extraction')
             if extraction:
@@ -40,10 +42,10 @@ def fleet_flightplan(request):
                 full_hold = request.POST.get('full_hold')
                 resource_extraction.resource_extraction(session_user, fleet, time_extraction, full_hold)
 
-            scaning = request.POST.get('scan')
-            if scaning:
-                method_scanning = int(request.POST.get('scaning'))
-                scan.scan(session_user, fleet, method_scanning)
+            method_scanning = request.POST.get('scan')
+            if method_scanning:
+                method_scanning = int(request.POST.get('scan'))
+                scan(session_user, fleet, method_scanning)
 
             upload = request.POST.get('upload_hold')
             if upload:
@@ -56,15 +58,15 @@ def fleet_flightplan(request):
                 unload_all = request.POST.get('unload_all')
                 unload_all_hold = request.POST.get('unload_all_hold')
                 unload_amount = request.POST.get('unload_amount')
-                id_hold_element = request.POST.get('id_hold_element')
-                unload_hold.unload_hold(session_user, fleet, unload_all, unload_all_hold, unload_amount,
-                                        id_hold_element)
+                hold_element_id = request.POST.get('id_hold_element')
+                message = unload_hold.unload_hold(session_user, fleet, unload_all, unload_all_hold, unload_amount,
+                                                  hold_element_id)
 
             refill_fleet = request.POST.get('refill_fleet')
             overload = request.POST.get('overload')
             yourself = request.POST.get('yourself')
-            if refill_fleet is not None or overload is not None or yourself is not None:
-                refill.refill(session_user, fleet, request)
+            if refill_fleet or overload or yourself:
+                message = refill.refill(session_user, fleet, request)
 
             repair = request.POST.get('repair')
             build = request.POST.get('build')
@@ -76,7 +78,7 @@ def fleet_flightplan(request):
                 command_id = 1
                 hold = Hold.objects.filter(fleet=fleet, class_shipment=9).first()
                 if hold:
-                    colonization_module = DevicePattern.objects.filter(id=hold.id_shipment).first()
+                    colonization_module = DevicePattern.objects.filter(id=hold.shipment_id).first()
                     flightplan = Flightplan(
                         user=session_user,
                         fleet=fleet,
@@ -89,7 +91,7 @@ def fleet_flightplan(request):
                     flightplan_colonization = FlightplanColonization(
                         fleet=fleet,
                         command_id=command_id,
-                        fleetplan=flightplan,
+                        flightplan=flightplan,
                         start_time=datetime.now(),
                         time=colonization_module.param1,
                     )
@@ -97,19 +99,18 @@ def fleet_flightplan(request):
 
         if request.POST.get('delete_command'):
             command = 3
-            fleet = int(request.POST.get('hidden_fleet'))
             hidden_flightplan_id = int(request.POST.get('hidden_flightplan_id'))
             flightplan = Flightplan.objects.filter(id=hidden_flightplan_id).first()
             if flightplan.class_command == 1:
-                FlightplanFlight.objects.filter(fleetplan=flightplan).delete()
+                FlightplanFlight.objects.filter(flightplan=flightplan).delete()
             if flightplan.class_command == 2:
-                FlightplanHold.objects.filter(fleetplan=flightplan).delete()
+                FlightplanHold.objects.filter(flightplan=flightplan).delete()
             if flightplan.class_command == 6:
-                FlightplanScan.objects.filter(fleetplan=flightplan).delete()
+                FlightplanScan.objects.filter(flightplan=flightplan).delete()
             if flightplan.class_command == 4:
-                FlightplanRefill.objects.filter(fleetplan=flightplan).delete()
+                FlightplanRefill.objects.filter(flightplan=flightplan).delete()
             if flightplan.class_command == 3:
-                FlightplanProduction.objects.filter(fleetplan=flightplan).delete()
+                FlightplanProduction.objects.filter(flightplan=flightplan).delete()
             flightplan.delete()
 
         user_citys = UserCity.objects.filter(user=session_user).all()
@@ -122,7 +123,9 @@ def fleet_flightplan(request):
         flightplan_holds = FlightplanHold.objects.filter(fleet=fleet).order_by('id')
         flightplan_refills = FlightplanRefill.objects.filter(fleet=fleet).order_by('id')
         flightplan_build_repairs = FlightplanBuildRepair.objects.filter(fleet=fleet).order_by('id')
-        flightplan_colonization = FlightplanColonization.objects.filter(fleet=fleet).order_by('id')
+        fleet_refill = FleetFuelRefill.objects.filter(fleet=fleet).first()
+        fleet_overload = FleetOverload.objects.filter(fleet=fleet).first()
+        flightplan_colonizations = FlightplanColonization.objects.filter(fleet=fleet).order_by('id')
         fleet_engine = FleetEngine.objects.filter(fleet=fleet).first()
         fleet_parametr_scans = FleetParametrScan.objects.filter(fleet=fleet).all()
         fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(
@@ -131,9 +134,7 @@ def fleet_flightplan(request):
                                                                         class_process=1).first()
         fleet_parametr_repair = FleetParametrBuildRepair.objects.filter(fleet=fleet,
                                                                         class_process=2).first()
-        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user,
-                                                             user_city=session_user_city).order_by(
-            'production_class', 'production_id')
+        warehouse_factorys = WarehouseFactory.objects.filter(user=session_user, user_city=session_user_city).all()
         warehouse_elements = WarehouseElement.objects.filter(user=session_user,
                                                              user_city=session_user_city).order_by(
             'element_class', 'element_id')
@@ -150,7 +151,7 @@ def fleet_flightplan(request):
         fuel_patterns = FuelPattern.objects.filter(user=session_user).all()
         device_patterns = DevicePattern.objects.filter(user=session_user).all()
         ship_holds = Hold.objects.filter(fleet=fleet).order_by('class_shipment')
-        ship_resource_hold = ResourceHold.objects.filter(fleet - fleet).first()
+        ship_resource_hold = ResourceHold.objects.filter(fleet=fleet).first()
         add_ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city.id).all()
         ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city.id)
 
@@ -158,7 +159,7 @@ def fleet_flightplan(request):
         request.session['user_city'] = session_user_city.id
         request.session['live'] = True
 
-        output = {'user': session_user, 'warehouse': session_user.warehouse, 'user_city': session_user_city,
+        output = {'user': session_user, 'warehouse': session_user_city.warehouse, 'user_city': session_user_city,
                   'user_citys': user_citys, 'user_fleets': user_fleets, 'add_ships': add_ships, 'fleet': fleet,
                   'ship_fleets': ship_fleets, 'ships': ships, 'command': command, 'flightplans': flightplans,
                   'flightplan_flights': flightplan_flights, 'warehouse_factorys': warehouse_factorys,
@@ -173,7 +174,7 @@ def fleet_flightplan(request):
                   'fleet_parametr_resource_extraction': fleet_parametr_resource_extraction, 'ship_holds': ship_holds,
                   'message': message, 'flightplan_holds': flightplan_holds, 'flightplan_refills': flightplan_refills,
                   'fleet_parametr_builds': fleet_parametr_builds, 'fleet_parametr_repair': fleet_parametr_repair,
-                  'flightplan_build_repairs': flightplan_build_repairs,
-                  'flightplan_colonization': flightplan_colonization}
+                  'flightplan_build_repairs': flightplan_build_repairs, 'fleet_overload': fleet_overload,
+                  'fleet_refill': fleet_refill, 'flightplan_colonizations': flightplan_colonizations}
 
         return render(request, "flightplan.html", output)

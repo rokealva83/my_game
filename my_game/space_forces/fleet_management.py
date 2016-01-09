@@ -5,7 +5,7 @@ from my_game.models import MyUser, UserCity
 from my_game.models import WarehouseElement, WarehouseFactory, BasicResource, BasicFuel
 from my_game.models import Ship, Fleet, Hold, FleetParametrScan, FleetEnergyPower, FleetEngine, \
     FlightplanProduction, FlightplanScan, FlightplanHold, FlightplanRefill, FlightplanBuildRepair, \
-    FlightplanColonization, ResourceHold
+    FlightplanColonization, ResourceHold, FleetFuelRefill, FleetOverload
 from my_game.models import Flightplan, FlightplanFlight, FleetParametrResourceExtraction, \
     FleetParametrBuildRepair
 from my_game.models import HullPattern, ShellPattern, ShieldPattern, GeneratorPattern, EnginePattern, \
@@ -81,6 +81,7 @@ def fleet_manage(request):
             user_fleets = Fleet.objects.filter(user=session_user).all()
             ships = Ship.objects.filter(user=session_user, fleet_status=0, place_id=session_user_city.id).all()
             ship_fleets = Ship.objects.filter(user=session_user, fleet_status=1).all()
+            fleet_engine = FleetEngine.objects.filter(fleet=fleet).first()
             fleet_parametr_scans = FleetParametrScan.objects.filter(fleet=fleet).all()
             fleet_parametr_resource_extraction = FleetParametrResourceExtraction.objects.filter(fleet=fleet).first()
             fleet_parametr_build = FleetParametrBuildRepair.objects.filter(fleet=fleet, class_process=1).first()
@@ -90,7 +91,9 @@ def fleet_manage(request):
             flightplan_holds = FlightplanHold.objects.filter(fleet=fleet).order_by('id')
             flightplan_refills = FlightplanRefill.objects.filter(fleet=fleet).order_by('id')
             flightplan_build_repairs = FlightplanBuildRepair.objects.filter(fleet=fleet).order_by('id')
-            flightplan_colonization = FlightplanColonization.objects.filter(fleet=fleet).order_by('id')
+            fleet_refill = FleetFuelRefill.objects.filter(fleet=fleet).first()
+            fleet_overload = FleetOverload.objects.filter(fleet=fleet).first()
+            flightplan_colonizations = FlightplanColonization.objects.filter(fleet=fleet).order_by('id')
             warehouse_factorys = WarehouseFactory.objects.filter(user=session_user,
                                                                  user_city=session_user_city).all()
             warehouse_elements = WarehouseElement.objects.filter(user=session_user,
@@ -127,7 +130,8 @@ def fleet_manage(request):
                       'ship_holds': ship_holds, 'flightplan_holds': flightplan_holds,
                       'fleet_parametr_build': fleet_parametr_build, 'fleet_parametr_repair': fleet_parametr_repair,
                       'flightplan_build_repairs': flightplan_build_repairs, 'device_patterns': device_patterns,
-                      'flightplan_colonization': flightplan_colonization}
+                      'fleet_overload': fleet_overload, 'fleet_refill': fleet_refill, 'fleet_engine': fleet_engine,
+                      'flightplan_colonizations': flightplan_colonizations}
             return render(request, "flightplan.html", output)
 
         if request.POST.get('hold_fleet'):

@@ -132,3 +132,19 @@ class FleetParametrAcceleration(models.Model):
     acceleration = models.FloatField()
     braking = models.FloatField()
     reverse = models.FloatField()
+
+
+class FleetFuelRefill(models.Model):
+    class Meta:
+        db_table = 'fleet_fuel_refill'
+
+    fleet = models.ForeignKey(Fleet, db_index=True)
+    fuel_refill = models.IntegerField(default=0)
+
+
+class FleetOverload(models.Model):
+    class Meta:
+        db_table = 'fleet_overload'
+
+    fleet = models.ForeignKey(Fleet, db_index=True)
+    overload = models.IntegerField(default=0)

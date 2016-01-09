@@ -22,23 +22,20 @@ def verification_flight_list(request):
             if flightplan.status == 1:
                 if flightplan.class_command == 1:
                     finish_time = verification_flight(fleet)
-                    flightplan = Flightplan.objects.filter(fleet=fleet, status=0).first()
 
                 elif flightplan.class_command == 2:
                     finish_time = upload_unload_veryfication(fleet)
-                    flightplan = Flightplan.objects.filter(fleet=fleet, status=0).first()
 
                 elif flightplan.class_command == 3:
                     finish_time = extraction_veryfication(fleet)
-                    flightplan = Flightplan.objects.filter(fleet=fleet, status=0).first()
 
                 elif flightplan.class_command == 6:
                     finish_time = scan_veryfication(fleet)
-                    flightplan = Flightplan.objects.filter(fleet=fleet, status=0).first()
 
                 elif flightplan.class_command == 8:
                     finish_time = colonization_veryfication(fleet)
-                    flightplan = Flightplan.objects.filter(fleet=fleet, status=0).first()
+
+                flightplan = Flightplan.objects.filter(fleet=fleet, status=0).first()
 
                 if flightplan:
                     if flightplan.class_command == 1:

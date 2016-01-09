@@ -31,10 +31,10 @@ def upload_hold(*args):
         command_id=1,
         amount=upload_amount,
         start_time=datetime.now(),
-        fleetplan=flightplan,
+        flightplan=flightplan,
         time=300,
         class_element=class_element,
-        id_element=element_id,
+        element_id=element_id,
         name=name
     )
     flightplan_hold.save()

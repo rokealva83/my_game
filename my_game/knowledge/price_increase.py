@@ -5,7 +5,9 @@ from my_game.models import UserVariables
 def price_increase(*args):
     pattern = args[0]
     summary_percent_up = args[1]
-    koef_up = (1 + UserVariables.objects.get(id=1).koef_price_increace_modern_element) * (1 + summary_percent_up)
+    if summary_percent_up < 1:
+        summary_percent_up = 1.15
+    koef_up = (1 + UserVariables.objects.get(id=1).koef_price_increace_modern_element) * summary_percent_up
     price_internal_currency = pattern.price_internal_currency * koef_up
     price_nickel = pattern.price_nickel * koef_up
     price_iron = pattern.price_iron * koef_up

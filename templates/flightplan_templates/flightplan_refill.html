@@ -1,38 +1,43 @@
 {% for flightplan_refill in flightplan_refills %}
-    {% if flightplan.id == flightplan_refill.id_fleetplan %}
+    {% if flightplan.id == flightplan_refill.flightplan.id %}
         <tr align="center">
             <td>
                 <p>
-                    {% if flightplan_refill.id_command == 1 %}
+                    {% if flightplan_refill.command_id == 1 %}
                         Заправить себя
-                    {% elif flightplan_refill.id_command == 2 %}
+                    {% elif flightplan_refill.command_id == 2 %}
                         Заправить флот
-                    {% elif flightplan_refill.id_command == 3 %}
+                    {% elif flightplan_refill.command_id == 3 %}
                         Перегрузить
                     {% endif %}
                 </p>
             </td>
             <td>
                 <p>
-                    {% if flightplan_refill.id_command == 1 %}
+                    {% if flightplan_refill.command_id == 1 %}
                         {% if flightplan_refill.class_refill == 1 %}
                             {{ flightplan_refill.name }}: {{ flightplan_refill.amount }} единиц
                         {% else %}
                             {{ flightplan_refill.name }} до полного
                         {% endif %}
-                    {% elif flightplan_refill.id_command == 2 %}
+                    {% elif flightplan_refill.command_id == 2 %}
                         {% if flightplan_refill.class_refill == 1 %}
-                            №{{ flightplan_refill.id_fleet_refill }}
+                            №{{ flightplan_refill.fleet_refill_id }}
                             {{ flightplan_refill.name }}: {{ flightplan_refill.amount }} единиц
                         {% else %}
                             {{ flightplan_refill.name }} до полного
                         {% endif %}
-                    {% elif flightplan_refill.id_command == 3 %}
+                    {% elif flightplan_refill.command_id == 3 %}
+                        во флот №{{ flightplan_refill.fleet_refill_id }}
                         {% if flightplan_refill.class_refill == 1 %}
-                            во флот №{{ flightplan_refill.id_fleet_refill }}
                             {{ flightplan_refill.name }}: {{ flightplan_refill.amount }} единиц
                         {% else %}
-                            во флот №{{ flightplan_refill.id_fleet_refill }} весь {{ flightplan_refill.name }}
+                            весь
+                            {% if flightplan_refill.class_element == 0 %}
+                                товар
+                            {% else %}
+                                {{ flightplan_refill.name }}
+                            {% endif %}
                         {% endif %}
                     {% endif %}
 
@@ -51,11 +56,13 @@
                 </p>
             </td>
             <td>
-                <input type="hidden" value={{ fleet_id }} name="hidden_fleet"/>
-                <input type="hidden"
-                       value={{ flightplan.id }} name="hidden_flightplan_id"/>
-                <input class="delete_button" type="submit" value="Remove"
-                       name="delete_command"/>
+                <form method="post" action="fleet_flightplan">
+                    <input type="hidden" value={{ fleet.id }} name="hidden_fleet"/>
+                    <input type="hidden"
+                           value={{ flightplan.id }} name="hidden_flightplan_id"/>
+                    <input class="delete_button" type="submit" value="Remove"
+                           name="delete_command"/>
+                </form>
             </td>
         </tr>
     {% endif %}

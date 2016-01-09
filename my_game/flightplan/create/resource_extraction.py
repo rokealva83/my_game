@@ -27,7 +27,7 @@ def resource_extraction(*args):
     flightplan_production = FlightplanProduction(
         user=session_user,
         fleet=fleet,
-        fleetplan=flightplan,
+        flightplan=flightplan,
         command_id=1,
         production_per_minute=fleet_parametr_resource_extraction.extraction_per_minute,
         time_extraction=time_extraction

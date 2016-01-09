@@ -5,6 +5,8 @@ from my_game.models import Fleet, ModulePattern
 from my_game.space_forces.fleet_parametr import fleet_engine_parametr, fleet_parametr_resource_extraction
 from my_game.space_forces.fleet_parametr import fleet_acceleration, fleet_build_repair_parametr
 from my_game.space_forces.fleet_parametr import fleet_energy_power, ship_module_hold, fleet_scan_parametr
+from my_game.space_forces.fleet_parametr.fleet_parametr_overload import fleet_parametr_overload
+from my_game.space_forces.fleet_parametr.fleet_parametr_refill import fleet_parametr_refill
 
 
 def fleet_parametr(*args):
@@ -32,6 +34,8 @@ def fleet_parametr(*args):
     ship_extraction_elements = []
     ship_repair_elements =[]
     ship_acceleration_elements = []
+    ship_refill_elements = []
+    ship_overload_elements = []
     for ship_element in ship_elements:
         if ship_element.class_element == 8:
             element_pattern = ModulePattern.objects.filter(id=ship_element.element_pattern_id).first()
@@ -39,10 +43,14 @@ def fleet_parametr(*args):
                 ship_acceleration_elements.append(element_pattern)
             if element_pattern.module_class == 3:
                 ship_extraction_elements.append(element_pattern)
+            if element_pattern.module_class == 4:
+                ship_refill_elements.append(element_pattern)
             if element_pattern.module_class == 5:
                 ship_repair_elements.append(element_pattern)
             if element_pattern.module_class == 6:
                 ship_scan_elements.append(element_pattern)
+            if element_pattern.module_class == 7:
+                ship_overload_elements.append(element_pattern)
     if ship_repair_elements:
         fleet_build_repair_parametr(fleet, ship_repair_elements, amount_ship, added_remove)
     if ship_scan_elements:
@@ -51,4 +59,8 @@ def fleet_parametr(*args):
         fleet_parametr_resource_extraction(fleet, ship_extraction_elements, amount_ship, added_remove)
     if ship_acceleration_elements:
         fleet_acceleration(fleet)
+    if ship_refill_elements:
+        fleet_parametr_refill(fleet, ship_refill_elements, amount_ship, added_remove)
+    if ship_overload_elements:
+        fleet_parametr_overload(fleet, ship_overload_elements, amount_ship, added_remove)
     return fleet

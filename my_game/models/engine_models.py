@@ -20,7 +20,7 @@ class BasicEngine(models.Model):
     engine_mass = models.IntegerField(verbose_name=u'Масса')
     engine_size = models.IntegerField(verbose_name=u'Размер')
     power_consuption = models.IntegerField(verbose_name=u'Потребление энергии')
-    fuel = models.ManyToManyField(BasicFuel, verbose_name=u'Топливо')
+    fuel = models.ManyToManyField(BasicFuel, verbose_name=u'Топливо', blank=True)
     price_internal_currency = models.IntegerField(default=25, verbose_name=u'Цена в валюте')
     price_nickel = models.IntegerField(default=0, verbose_name=u'Цена в никеле')
     price_iron = models.IntegerField(default=0, verbose_name=u'Цена в железе')

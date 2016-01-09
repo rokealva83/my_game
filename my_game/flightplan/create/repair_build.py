@@ -45,7 +45,7 @@ def repair_build(*args):
 
     flightplan_build_repair = FlightplanBuildRepair(
         fleet=fleet,
-        fleetplan=flightplan,
+        flightplan=flightplan,
         command_id=command_id,
         fleet_repair=fleet_repair,
         start_time=datetime.now(),

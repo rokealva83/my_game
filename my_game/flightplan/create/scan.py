@@ -26,6 +26,6 @@ def scan(*args):
         range_scanning=fleet_parametr_scan.range_scanning,
         start_time=datetime.now(),
         time_scanning=fleet_parametr_scan.time_scanning,
-        fleetplan=flightplan
+        flightplan=flightplan
     )
     flightplan_scan.save()

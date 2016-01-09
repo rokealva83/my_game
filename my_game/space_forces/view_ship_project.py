@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from my_game.models import MyUser, UserCity
-from my_game.models import ProjectShip, TurnShipBuild, Ship, ElementShip
+from my_game.models import ProjectShip, TurnShipBuild, ElementShip
 from my_game.models import HullPattern, ShieldPattern, GeneratorPattern, EnginePattern, ArmorPattern, ModulePattern, \
     WeaponPattern
 
@@ -15,6 +15,7 @@ def view_ship_project(request):
         session_user_city = UserCity.objects.filter(id=int(request.session['user_city'])).first()
         user_citys = UserCity.objects.filter(user=session_user)
         project_id = 1
+        project_ship = 1
         if request.POST.get('hidden_ship'):
             project_id = request.POST.get('hidden_ship')
             project_ship = ProjectShip.objects.filter(id=project_id).first()
