@@ -83,14 +83,15 @@ WSGI_APPLICATION = 'my_game.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'CHARSET': 'utf8',
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'libre',
-        'USER': 'root',
-        'PASSWORD': 'tolik2000',
-
+        'USER': 'libre',
+        'PASSWORD': 'libre',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -142,3 +143,9 @@ SUIT_CONFIG = {
     'MENU_EXCLUDE': ('auth.group', 'auth'),
     'LIST_PER_PAGE': 20
 }
+
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
